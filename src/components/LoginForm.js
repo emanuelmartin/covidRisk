@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import { Text } from 'react-native';
-import firebase from 'firebase';
+import { Text, Image } from 'react-native';
 import { Button, Card, CardSection, Input, Spinner } from './common';
 import Parse from 'parse/react-native';
 
 class LoginForm extends Component {
   state = { email: '', password: '', error: '', loading: false };
 
-  onButtonPress() {
+  onLoginButtonPress() {
     const { email, password } = this.state;
     const username = email;
 
@@ -30,6 +29,10 @@ class LoginForm extends Component {
           });
 }
 
+  onSignupButtonPress() {
+    // Navegar hacia pantalla de registro de usuario
+  }
+
   onLoginFail() {
     this.setState({ error: 'Error al iniciar sesión', loading: false });
   }
@@ -43,13 +46,13 @@ class LoginForm extends Component {
     });
   }
 
-  renderButton() {
+  renderLoginButton() {
     if (this.state.loading) {
       return <Spinner size="small" />;
     }
 
     return (
-      <Button onPress={this.onButtonPress.bind(this)}>
+      <Button onPress={this.onLoginButtonPress.bind(this)}>
         Iniciar sesión
       </Button>
     );
@@ -58,6 +61,13 @@ class LoginForm extends Component {
   render() {
     return (
       <Card>
+      <CardSection>
+      <Image
+        style={styles.imageStyle}
+        source={require('./LogoVerde.png')}
+      />
+      </CardSection>
+
         <CardSection>
           <Input
             placeholder="usuario@gmail.com"
@@ -82,7 +92,13 @@ class LoginForm extends Component {
         </Text>
 
         <CardSection>
-          {this.renderButton()}
+          {this.renderLoginButton()}
+        </CardSection>
+
+        <CardSection>
+          <Button onPress={this.onSignupButtonPress.bind(this)}>
+            Registrarse
+            </Button>
         </CardSection>
       </Card>
     );
@@ -94,6 +110,11 @@ const styles = {
     fontSize: 20,
     alignSelf: 'center',
     color: 'red'
+  },
+  imageStyle: {
+    height: 300,
+    flex: 1,
+    width: null
   }
 };
 
