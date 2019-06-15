@@ -23,9 +23,6 @@ class LoginForm extends Component {
         .then(this.onLoginSuccess.bind(this))
         .catch((error) => {
         console.log('Error: ' + error.code + ' ' + error.message);
-        user.signUp()
-          .then(this.onLoginSuccess.bind(this))
-          .catch(this.onLoginFail.bind(this))
           });
 }
 

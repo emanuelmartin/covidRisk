@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { Header, Button, Spinner } from './components/common';
-import LoginForm from './components/LoginForm';
+import SignupForm from './components/SignupForm';
 import Parse from 'parse/react-native';
 
 const AsyncStorage = require('react-native').AsyncStorage;
@@ -39,7 +39,7 @@ Parse.User.currentAsync().then((user) => {
           </Button>
         );
       case false:
-        return <LoginForm />;
+        return <SignupForm   />;
       default:
         return <Spinner size="large" />;
     }

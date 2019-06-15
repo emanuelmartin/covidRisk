@@ -6,7 +6,7 @@ import DatePicker from 'react-native-datepicker'
 import { RadioButton } from 'react-native-paper';
 
 class SignupForm extends Component {
-  state = { email: '', password: '', error: '', loading: false, checked: 'first' };
+  state = { email: '', password: '', error: '', loading: false, checked: '' };
 
   onSignupButtonPress() {
     const { email, password, name, lastName, sex, birthday, degree } = this.state;
@@ -26,15 +26,26 @@ class SignupForm extends Component {
 
     user.signUp()
       .then(this.onSignupSuccess.bind(this))
-      .catch(this.onSignupFail.bind(this))
+      .catch((error) => {
+      console.log('Error: ' + error.code + ' ' + error.message);
+      this.setState({ error: 'Error al registrarse', loading: false });
+    });
 }
 
-  onSignupSuccess() {
+  onSignupFail() {
     this.setState({ error: 'Error al registrarse', loading: false });
   }
 
-  onSignupFail() {
+  onSignupSuccess() {
     this.setState({
+      username: '',
+      email: '',
+      password: '',
+      name: '',
+      lastName: '',
+      sex: '',
+      birthday: '',
+      degree: '',
       loading: false,
       error: ''
     });
@@ -53,6 +64,7 @@ class SignupForm extends Component {
   }
 
   render() {
+    const { checked } = this.state;
     return (
       <Card>
 
@@ -85,30 +97,31 @@ class SignupForm extends Component {
 
         <CardSection>
           <RadioButton
-          value="Hombre"
-          status={checked === 'Hombre' ? 'checked' : 'unchecked'}
-          onPress={() => { this.setState({ checked: 'Hombre' }); }}
+          value="first"
+          status={checked === 'first' ? 'checked' : 'unchecked'}
+          onPress={() => { this.setState({ checked: 'first' }); }}
           />
           <RadioButton
-            value="Mujer"
-            status={checked === 'Mujer' ? 'checked' : 'unchecked'}
-            onPress={() => { this.setState({ checked: 'Mujer' }); }}
+            value="second"
+            status={checked === 'second' ? 'checked' : 'unchecked'}
+            onPress={() => { this.setState({ checked: 'second' }); }}
           />
         </CardSection>
 
         <CardSection>
           <DatePicker
             style={{width: 200}}
-            date={this.state.date}
+            date={this.state.birthday}
             mode="date"
             placeholder="Fecha de nacimiento"
             format="DD-MM-YYYY"
             minDate="01-01-1950"
-            maxDate="01-01-2020x"
+            maxDate="01-01-2020"
             confirmBtnText="Confirmar"
             cancelBtnText="Cancelar"
             customStyles={{
               dateIcon: {
+                showIcon: false,
                 position: 'absolute',
                 left: 0,
                 top: 4,
@@ -118,16 +131,8 @@ class SignupForm extends Component {
                 marginLeft: 36
               }
             }}
-            onDateChange={(date) => {this.setState({date: date})}}
+            onDateChange={(birthday) => {this.setState({birthday})}}
           />
-        </CardSection>
-
-        <Text style={styles.errorTextStyle}>
-          {this.state.error}
-        </Text>
-
-        <CardSection>
-          {this.renderLoginButton()}
         </CardSection>
 
         <CardSection>
@@ -152,6 +157,10 @@ class SignupForm extends Component {
         <CardSection>
           {this.renderSignupButton()}
         </CardSection>
+
+        <Text style={styles.errorTextStyle}>
+          {this.state.error}
+        </Text>
 
       </Card>
     );
