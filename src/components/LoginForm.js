@@ -16,7 +16,7 @@ class LoginForm extends Component {
   console.log("Usuario : " + username + ", Contraseña: " + password);
 
     user.set("username", username);
-    user.set("password", password);
+    user.set("email", email);
     user.set("password", password);
 
       user.logIn(username, password)
