@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import Parse from 'parse/react-native';
 import { Header, Button, Spinner } from './components/common';
-import SignupForm from './components/SignupForm';
+import SignupForm from './components/SignUpForm';
+import Nav from './components/navigator';
 
 const AsyncStorage = require('react-native').AsyncStorage;
 
@@ -50,10 +51,7 @@ Parse.User.currentAsync().then((user) => {
 
   render() {
     return (
-      <View>
-        <Header headerText="Hospital Real San Lucas" />
-        {this.renderContent()}
-      </View>
+      <Nav />
     );
   }
 }

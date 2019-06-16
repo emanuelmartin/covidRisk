@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { Text, Image } from 'react-native';
 import Parse from 'parse/react-native';
-import { Button, Card, CardSection, Input, Spinner } from './common';
+import { Header, Button, Card, CardSection, Input, Spinner } from './common';
 
 class LoginForm extends Component {
+  static navigationOptions = {
+    title: 'Inicio de Sesión',
+  };
+
   state = { email: '', password: '', error: '', loading: false };
 
   onLoginButtonPress() {
@@ -27,7 +31,7 @@ class LoginForm extends Component {
 }
 
   onSignupButtonPress() {
-    // Navegar hacia pantalla de registro de usuario
+    this.props.navigation.navigate('SignUp');
   }
 
   onLoginFail() {
@@ -41,6 +45,7 @@ class LoginForm extends Component {
       loading: false,
       error: ''
     });
+    this.props.navigation.navigate('Home');
   }
 
   renderLoginButton() {
@@ -58,6 +63,8 @@ class LoginForm extends Component {
   render() {
     return (
       <Card>
+      <Header headerText='Hospital Real San Lucas' />
+      
       <CardSection>
       <Image
         style={styles.imageStyle}

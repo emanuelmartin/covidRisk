@@ -3,9 +3,9 @@ import { Text } from 'react-native';
 import Parse from 'parse/react-native';
 import DatePicker from 'react-native-datepicker';
 import { RadioButton } from 'react-native-paper';
-import { Button, Card, CardSection, Input, Spinner } from './common';
+import { Header, Button, Card, CardSection, Input, Spinner } from './common';
 
-class SignupForm extends Component {
+class SignUpForm extends Component {
   state = { email: '', password: '', error: '', loading: false, checked: '' };
 
   onSignupButtonPress() {
@@ -67,7 +67,7 @@ class SignupForm extends Component {
     const { checked } = this.state;
     return (
       <Card>
-
+        <Header headerText='Hospital Real San Lucas' />
         <CardSection>
           <Input
             placeholder=""
@@ -121,7 +121,7 @@ class SignupForm extends Component {
             cancelBtnText="Cancelar"
             customStyles={{
               dateIcon: {
-                showIcon: false,
+                //showIcon: false, // Marca error al entrar en esta pantalla
                 position: 'absolute',
                 left: 0,
                 top: 4,
@@ -180,4 +180,4 @@ const styles = {
   }
 };
 
-export default SignupForm;
+export default SignUpForm;
