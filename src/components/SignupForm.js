@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Text, Image } from 'react-native';
-import { Button, Card, CardSection, Input, Spinner } from './common';
+import { Text } from 'react-native';
 import Parse from 'parse/react-native';
-import DatePicker from 'react-native-datepicker'
+import DatePicker from 'react-native-datepicker';
 import { RadioButton } from 'react-native-paper';
+import { Button, Card, CardSection, Input, Spinner } from './common';
 
 class SignupForm extends Component {
   state = { email: '', password: '', error: '', loading: false, checked: '' };
@@ -15,19 +15,19 @@ class SignupForm extends Component {
     this.setState({ error: '', loading: true });
     const user = new Parse.User();
 
-    user.set("username", username);
-    user.set("email", email);
-    user.set("password", password);
-    user.set("name", name);
-    user.set("lastName", lastName);
-    user.set("sex", sex);
-    user.set("birthday", birthday);
-    user.set("degree", degree);
+    user.set('username', username);
+    user.set('email', email);
+    user.set('password', password);
+    user.set('name', name);
+    user.set('lastName', lastName);
+    user.set('sex', sex);
+    user.set('birthday', birthday);
+    user.set('degree', degree);
 
     user.signUp()
       .then(this.onSignupSuccess.bind(this))
       .catch((error) => {
-      console.log('Error: ' + error.code + ' ' + error.message);
+      console.log(`Error: ${error.code} ${error.message}`);
       this.setState({ error: 'Error al registrarse', loading: false });
     });
 }
@@ -110,7 +110,7 @@ class SignupForm extends Component {
 
         <CardSection>
           <DatePicker
-            style={{width: 200}}
+            style={{ width: 200 }}
             date={this.state.birthday}
             mode="date"
             placeholder="Fecha de nacimiento"
@@ -131,7 +131,7 @@ class SignupForm extends Component {
                 marginLeft: 36
               }
             }}
-            onDateChange={(birthday) => {this.setState({birthday})}}
+            onDateChange={(birthday) => { this.setState({ birthday }); }}
           />
         </CardSection>
 

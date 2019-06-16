@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, Image } from 'react-native';
-import { Button, Card, CardSection, Input, Spinner } from './common';
 import Parse from 'parse/react-native';
+import { Button, Card, CardSection, Input, Spinner } from './common';
 
 class LoginForm extends Component {
   state = { email: '', password: '', error: '', loading: false };
@@ -13,16 +13,16 @@ class LoginForm extends Component {
     this.setState({ error: '', loading: true });
     const user = new Parse.User();
 
-  console.log("Usuario : " + username + ", Contraseña: " + password);
+  console.log(`Usuario : ${username}, Contraseña: ${password}`);
 
-    user.set("username", username);
-    user.set("email", email);
-    user.set("password", password);
+    user.set('username', username);
+    user.set('email', email);
+    user.set('password', password);
 
       user.logIn(username, password)
         .then(this.onLoginSuccess.bind(this))
         .catch((error) => {
-        console.log('Error: ' + error.code + ' ' + error.message);
+        console.log(`Error: ${error.code} ${error.message}`);
           });
 }
 
@@ -61,7 +61,7 @@ class LoginForm extends Component {
       <CardSection>
       <Image
         style={styles.imageStyle}
-        source={require('./LogoVerde.png')}
+        source={require('../image/LogoVerde.png')}
       />
       </CardSection>
 
