@@ -7,7 +7,7 @@ import {
   StyleSheet
 } from 'react-native';
 
-class AuthLoadingScreen extends Component {
+class LoadingScreen extends Component {
   constructor() {
     super();
     this.bootstrapAsync();
@@ -41,4 +41,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AuthLoadingScreen;
+export default LoadingScreen;

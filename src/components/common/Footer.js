@@ -3,12 +3,12 @@ import React from 'react';
 import { Text, View } from 'react-native';
 
 // Make a component
-const Header = (props) => {
+const Footer = (props) => {
   const { textStyle, viewStyle } = styles;
 
   return (
     <View style={viewStyle}>
-      <Text style={textStyle}>{props.headerText}</Text>
+      <Text style={textStyle}>{props.footerText}</Text>
     </View>
   );
 };
@@ -18,7 +18,7 @@ const styles = {
     backgroundColor: '#62BFB9',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 60,
+    height: 30,
     paddingTop: 1,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -27,10 +27,10 @@ const styles = {
     position: 'relative'
   },
   textStyle: {
-    fontSize: 20,
+    fontSize: 15,
     color: '#fff'
   }
 };
 
 // Make the component available to other parts of the app
-export { Header };
+export { Footer };

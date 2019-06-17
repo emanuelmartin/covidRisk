@@ -1,8 +1,8 @@
 //import React from 'react';
-import { createStackNavigator, createSwitchNavigator, createAppContainer } from 'react-navigation';
+import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 import LoginForm from './LoginForm';
 import SignUpForm from './SignUpForm';
-import AuthLoadingScreen from './AutoLoading';
+import LoadingScreen from './LoadingScreen';
 import HomeScreen from './HomeScreen';
 
 //const AppStack = createStackNavigator({ Home: HomeScreen, SignUp: SignUpForm });
@@ -10,7 +10,7 @@ import HomeScreen from './HomeScreen';
 
 const Nav = createAppContainer(createSwitchNavigator(
   {
-    AuthLoading: AuthLoadingScreen,
+    AuthLoading: LoadingScreen,
     Login: LoginForm,
     SignUp: SignUpForm,
     Home: HomeScreen

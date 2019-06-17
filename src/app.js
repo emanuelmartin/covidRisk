@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+//import { View } from 'react-native';
 import Parse from 'parse/react-native';
-import { Header, Button, Spinner } from './components/common';
-import SignupForm from './components/SignUpForm';
+import { Button, Spinner } from './components/common';
 import Nav from './components/navigator';
 
 const AsyncStorage = require('react-native').AsyncStorage;
@@ -32,6 +31,10 @@ Parse.User.currentAsync().then((user) => {
   renderContent() {
     switch (this.state.loggedIn) {
       case true:
+        return <Spinner size="large" />;
+      case false:
+        return <Nav />;
+      default:
         return (
           <Button
             onPress={() => {
@@ -42,16 +45,13 @@ Parse.User.currentAsync().then((user) => {
             Cerrar sesión
           </Button>
         );
-      case false:
-        return <SignupForm />;
-      default:
-        return <Spinner size="large" />;
+
     }
   }
 
   render() {
     return (
-      <Nav />
+      this.renderContent()
     );
   }
 }

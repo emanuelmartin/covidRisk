@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Text, Image } from 'react-native';
+import { Text, Image, View } from 'react-native';
 import Parse from 'parse/react-native';
-import { Header, Button, Card, CardSection, Input, Spinner } from './common';
+import { Header, Footer, Button, Input, Spinner, Form, FormSection } from './common';
 
 class LoginForm extends Component {
   static navigationOptions = {
@@ -17,7 +17,7 @@ class LoginForm extends Component {
     this.setState({ error: '', loading: true });
     const user = new Parse.User();
 
-  console.log(`Usuario : ${username}, Contraseña: ${password}`);
+    console.log(`Usuario : ${username}, Contraseña: ${password}`);
 
     user.set('username', username);
     user.set('email', email);
@@ -62,49 +62,56 @@ class LoginForm extends Component {
 
   render() {
     return (
-      <Card>
-      <Header headerText='Hospital Real San Lucas' />
-      
-      <CardSection>
-      <Image
-        style={styles.imageStyle}
-        source={require('../image/LogoVerde.png')}
-      />
-      </CardSection>
+      <Form>
+        <Header headerText='Hospital Real San Lucas' />
+        <View>
+          <FormSection>
+            <Image
+              style={styles.imageStyle}
+              source={require('../image/LogoVerde.png')}
+            />
+          </FormSection>
+        </View>
 
-        <CardSection>
-          <Input
-            placeholder="usuario@gmail.com"
-            label="Email"
-            value={this.state.email}
-            onChangeText={email => this.setState({ email })}
-          />
-        </CardSection>
+        <View>
+          <FormSection>
+            <Input
+              placeholder="usuario@gmail.com"
+              label="Email"
+              value={this.state.email}
+              onChangeText={email => this.setState({ email })}
+            />
+          </FormSection>
 
-        <CardSection>
-          <Input
-            secureTextEntry
-            placeholder="contraseña"
-            label="Contraseña"
-            value={this.state.password}
-            onChangeText={password => this.setState({ password })}
-          />
-        </CardSection>
+          <FormSection>
+            <Input
+              secureTextEntry
+              placeholder="contraseña"
+              label="Contraseña"
+              value={this.state.password}
+              onChangeText={password => this.setState({ password })}
+            />
+          </FormSection>
 
-        <Text style={styles.errorTextStyle}>
-          {this.state.error}
-        </Text>
+          <Text style={styles.errorTextStyle}>
+            {this.state.error}
+          </Text>
+        </View>
 
-        <CardSection>
-          {this.renderLoginButton()}
-        </CardSection>
+        <View>
+          <FormSection>
+            {this.renderLoginButton()}
+          </FormSection>
 
-        <CardSection>
-          <Button onPress={this.onSignupButtonPress.bind(this)}>
-            Registrarse
-            </Button>
-        </CardSection>
-      </Card>
+          <FormSection>
+            <Button onPress={this.onSignupButtonPress.bind(this)}>
+              Registrarse
+              </Button>
+          </FormSection>
+        </View>
+
+        <Footer footerText='Powered by Healtech' />
+      </Form>
     );
   }
 }
@@ -119,7 +126,7 @@ const styles = {
     height: 300,
     flex: 1,
     width: null
-  }
+  },
 };
 
 export default LoginForm;
