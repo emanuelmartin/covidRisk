@@ -16,7 +16,7 @@ const Button = ({ onPress, children }) => {
 const styles = {
   textStyle: {
     alignSelf: 'center',
-    color: '#48DACB',
+    color: '#007aff',
     fontSize: 16,
     fontWeight: '600',
     paddingTop: 10,
@@ -28,7 +28,7 @@ const styles = {
     backgroundColor: '#fff',
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: '#48DACB',
+    borderColor: '#007aff',
     marginLeft: 5,
     marginRight: 5
   }

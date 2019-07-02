@@ -1,117 +1,102 @@
 import React, { Component } from 'react';
-import { Text, Image, View } from 'react-native';
+import { connect } from 'react-redux';
+import { View, Text, Image } from 'react-native';
+import { Card, CardSection, Input, Button, Spinner } from './common';
+import { emailChanged, passwordChanged, loginUser, session } from '../actions';
 import Parse from 'parse/react-native';
-import { Header, Footer, Button, Input, Spinner, Form, FormSection } from './common';
 
 class LoginForm extends Component {
-  static navigationOptions = {
-    title: 'Inicio de Sesión',
-  };
+  componentWillMount() {
+    Parse.User.currentAsync().then((user) => {
+        console.log(user);
+        this.props.session(user);
+        });
+  }
 
-  state = { email: '', password: '', error: '', loading: false };
+  onEmailChange(text) {
+    this.props.emailChanged(text);
+  }
+
+  onPasswordChange(text) {
+    this.props.passwordChanged(text);
+  }
 
   onLoginButtonPress() {
-    const { email, password } = this.state;
-    const username = email;
+    const { email, password } = this.props;
 
-    this.setState({ error: '', loading: true });
-    const user = new Parse.User();
+    this.props.loginUser({ email, password });
+  }
 
-    console.log(`Usuario : ${username}, Contraseña: ${password}`);
-
-    user.set('username', username);
-    user.set('email', email);
-    user.set('password', password);
-
-      user.logIn(username, password)
-        .then(this.onLoginSuccess.bind(this))
-        .catch((error) => {
-        console.log(`Error: ${error.code} ${error.message}`);
-          });
+onSignupButtonPress() {
+  this.props.navigation.navigate('SignUp');
 }
 
-  onSignupButtonPress() {
-    this.props.navigation.navigate('SignUp');
-  }
-
-  onLoginFail() {
-    this.setState({ error: 'Error al iniciar sesión', loading: false });
-  }
-
-  onLoginSuccess() {
-    this.setState({
-      email: '',
-      password: '',
-      loading: false,
-      error: ''
-    });
-    this.props.navigation.navigate('Home');
-  }
-
-  renderLoginButton() {
-    if (this.state.loading) {
-      return <Spinner size="small" />;
+  renderButton() {
+    if (this.props.loading) {
+      return <Spinner size="large" />
     }
 
-    return (
+    return(
       <Button onPress={this.onLoginButtonPress.bind(this)}>
         Iniciar sesión
       </Button>
     );
   }
 
-  render() {
-    return (
-      <Form>
-        <Header headerText='Hospital Real San Lucas' />
-        <View>
-          <FormSection>
-            <Image
-              style={styles.imageStyle}
-              source={require('../image/LogoVerde.png')}
-            />
-          </FormSection>
-        </View>
-
-        <View>
-          <FormSection>
-            <Input
-              placeholder="usuario@gmail.com"
-              label="Email"
-              value={this.state.email}
-              onChangeText={email => this.setState({ email })}
-            />
-          </FormSection>
-
-          <FormSection>
-            <Input
-              secureTextEntry
-              placeholder="contraseña"
-              label="Contraseña"
-              value={this.state.password}
-              onChangeText={password => this.setState({ password })}
-            />
-          </FormSection>
-
+  renderError() {
+    if (this.props.error) {
+      console.log(this.props.error)
+      return (
+        <View style={{ backgroundColor: 'white' }}>
           <Text style={styles.errorTextStyle}>
-            {this.state.error}
+            {this.props.error}
           </Text>
         </View>
+      );
+    }
+  }
 
-        <View>
-          <FormSection>
-            {this.renderLoginButton()}
-          </FormSection>
+  render() {
+    if (this.props.loggedIn) {
+    this.props.navigation.navigate('Home');
+  }
+    return (
+      <Card>
+        <Image
+        source={(require('./img/LogoVerde.png'))}
+        style={{width: 400, height: 400}}
+        />
+        <CardSection>
+          <Input
+            label="Email"
+            placeholder="email@gmail.com"
+            onChangeText={this.onEmailChange.bind(this)}
+            value={this.props.email}
+          />
+        </CardSection>
 
-          <FormSection>
-            <Button onPress={this.onSignupButtonPress.bind(this)}>
-              Registrarse
-              </Button>
-          </FormSection>
-        </View>
+        <CardSection>
+          <Input
+            secureTextEntry
+            label="Contraseña"
+            placeholder="contraseña"
+            onChangeText={this.onPasswordChange.bind(this)}
+            value={this.props.password}
+          />
+        </CardSection>
 
-        <Footer footerText='Powered by Healtech' />
-      </Form>
+        {this.renderError()}
+
+        <CardSection>
+          {this.renderButton()}
+        </CardSection>
+
+        <CardSection>
+          <Button onPress={this.onSignupButtonPress.bind(this)}>
+            Registrarse
+          </Button>
+        </CardSection>
+      </Card>
     );
   }
 }
@@ -121,12 +106,14 @@ const styles = {
     fontSize: 20,
     alignSelf: 'center',
     color: 'red'
-  },
-  imageStyle: {
-    height: 300,
-    flex: 1,
-    width: null
-  },
+  }
 };
 
-export default LoginForm;
+const mapStateToProps = ({ auth }) => {
+ const { email, password, error, loading, loggedIn } = auth;
+ return { email, password, error, loading, loggedIn };
+};
+
+export default connect(mapStateToProps, {
+  emailChanged, passwordChanged, loginUser, session
+})(LoginForm);
