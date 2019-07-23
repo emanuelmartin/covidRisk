@@ -4,8 +4,8 @@ import styles from './SideMenu.style';
 import {NavigationActions} from 'react-navigation';
 import {ScrollView, Text, View} from 'react-native';
 import { StackNavigator } from 'react-navigation';
-
-
+import { logOut } from '../actions';
+import { connect } from 'react-redux';
 
 class SideMenu extends Component {
   navigateToScreen = (route) => () => {
@@ -13,6 +13,10 @@ class SideMenu extends Component {
       routeName: route
     });
     this.props.navigation.dispatch(navigateAction);
+  }
+
+  onLogoutButtonPress() {
+    this.props.logOut();
   }
 
   render () {
@@ -57,7 +61,7 @@ class SideMenu extends Component {
           </View>
         </ScrollView>
         <View style={styles.footerContainer}>
-          <Text onPress={this.navigateToScreen('Page4')}>Cerrar sesión</Text>
+          <Text onPress={this.onLogoutButtonPress.bind(this)}>Cerrar sesión</Text>
         </View>
       </View>
     );
@@ -68,4 +72,4 @@ SideMenu.propTypes = {
   navigation: PropTypes.object
 };
 
-export default SideMenu;
+export default connect(null, { logOut })(SideMenu);
