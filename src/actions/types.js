@@ -12,3 +12,8 @@ export const SIGNUPFORM_UPDATE = 'signupform_update';
 export const USER_CREATE = 'user_create';
 export const USER_CREATE_SUCCESS = 'user_create_success';
 export const USER_CREATE_FAIL = 'user_create_fail';
+
+export const PATIENTFORM_UPDATE = 'patientform_update';
+export const PATIENT_CREATE = 'patient_create';
+export const PATIENT_CREATE_SUCCESS = 'patient_create_success';
+export const PATIENT_CREATE_FAIL = 'patient_create_fail';

@@ -1,10 +1,10 @@
 import Parse from 'parse/react-native';
 
 import {
-  SIGNUPFORM_UPDATE,
-  USER_CREATE,
-  USER_CREATE_SUCCESS,
-  USER_CREATE_FAIL
+  PATIENTFORM_UPDATE,
+  PATIENT_CREATE,
+  PATIENT_CREATE_SUCCESS,
+  PATIENT_CREATE_FAIL
 } from './types';
 
 let val = '';
@@ -159,9 +159,10 @@ function formatPassword(value) {
   return obj;
 }
 
-const user = new Parse.User();
+const Patient = Parse.Object.extend('Patient');
+const patient = new Patient();
 
-export const signupUpdate = ({ prop, value, type, limit, edited }) => {
+export const patientUpdate = ({ prop, value, type, limit, edited }) => {
   switch (type) {
     case 'curp': obj = formatCurp(value); break;
     case 'oneWord': obj = formatOneWord(value); break;
@@ -179,26 +180,26 @@ export const signupUpdate = ({ prop, value, type, limit, edited }) => {
 
   return (dispatch) => {
   if (obj.valid) {
-    user.set(prop, obj.clean);
-    console.log(user);
+    patient.set(prop, obj.clean);
+    console.log(patient);
   }
 
-  dispatch({ type: SIGNUPFORM_UPDATE,
+  dispatch({ type: PATIENTFORM_UPDATE,
     field: prop,
     payload: { toShow: obj.formatted, toStore: obj.clean, valid: obj.valid, edited } });
   };
 };
 
-export const userCreate = () => {
+export const patientCreate = () => {
   return (dispatch) => {
-    dispatch({ type: USER_CREATE });
+    dispatch({ type: PATIENT_CREATE });
 
-  user.signUp()
-    .then(user => {
-      dispatch( { type: USER_CREATE_SUCCESS, payload: user })
+  patient.save()
+    .then(patient => {
+      dispatch( { type: PATIENT_CREATE_SUCCESS, payload: patient })
     })
     .catch(error => {
-      dispatch( { type: USER_CREATE_FAIL, payload: error })
+      dispatch( { type: PATIENT_CREATE_FAIL, payload: error })
     });
   };
 };

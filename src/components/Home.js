@@ -10,6 +10,10 @@ class Home extends Component {
     this.props.logOut();
   }
 
+  onAddPatientButtonPress() {
+    this.props.navigation.navigate('Patient');
+  }
+
   render() {
     if (!this.props.loggedIn) {
     this.props.navigation.navigate('Login');
@@ -19,6 +23,12 @@ class Home extends Component {
         <CardSection>
           <Button onPress={this.onLogoutButtonPress.bind(this)}>
             Cerrar sesión
+          </Button>
+        </CardSection>
+
+        <CardSection>
+          <Button onPress={this.onAddPatientButtonPress.bind(this)}>
+            Añadir paciente
           </Button>
         </CardSection>
       </Card>

@@ -1,11 +1,12 @@
 import {
-  SIGNUPFORM_UPDATE,
-  USER_CREATE,
-  USER_CREATE_SUCCESS,
-  USER_CREATE_FAIL
+  PATIENTFORM_UPDATE,
+  PATIENT_CREATE,
+  PATIENT_CREATE_SUCCESS,
+  PATIENT_CREATE_FAIL
 } from '../actions/types';
 
 const INITIAL_STATE = {
+  loading: false,
   lastName1: '',
   lastName2: '',
   names: '',
@@ -29,15 +30,15 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case SIGNUPFORM_UPDATE:
+    case PATIENTFORM_UPDATE:
       return { ...state, [action.field]: action.payload };
-    case USER_CREATE:
+    case PATIENT_CREATE:
         return { ...state, loading: true, error: '' };
     default:
       return state;
-    case USER_CREATE_SUCCESS:
+    case PATIENT_CREATE_SUCCESS:
       return { ...state, ...INITIAL_STATE, user: action.payload, loggedIn: true, loading: false };
-    case USER_CREATE_FAIL:
+    case PATIENT_CREATE_FAIL:
       return { ...state, error: 'Error al iniciar sesión', password: '', loading: false };
   }
 };
