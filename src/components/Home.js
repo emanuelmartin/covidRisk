@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { View, Text, Image } from 'react-native';
 import { Card, CardSection, Input, Button, Spinner } from './common';
 import { logOut } from '../actions';
+import Parse from 'parse/react-native';
+
 
 class Home extends Component {
 
@@ -17,28 +19,25 @@ class Home extends Component {
   render() {
     if (!this.props.loggedIn) {
     this.props.navigation.navigate('Login');
-  }
+    return null;
+
+  } else {
+
+
     return (
       <Card>
         <CardSection>
-          <Button onPress={this.onLogoutButtonPress.bind(this)}>
-            Cerrar sesión
-          </Button>
-        </CardSection>
-
-        <CardSection>
-          <Button onPress={this.onAddPatientButtonPress.bind(this)}>
-            Añadir paciente
-          </Button>
+          <Text> Bienvenido, { this.props.user.attributes.name }  </Text>
         </CardSection>
       </Card>
     );
   }
 }
+}
 
 const mapStateToProps = ({ auth }) => {
- const { loading, loggedIn } = auth;
- return { loading, loggedIn };
+ const { loading, loggedIn, user } = auth;
+ return { loading, loggedIn, user };
 };
 
 export default connect(mapStateToProps, {
