@@ -457,7 +457,7 @@ const styles = {
   pickerTextStyle: {
     fontSize: 18,
   }
-}
+};
 
 const mapStateToProps = (state) => {
   const { loading, curp, lastName1, lastName2, names, birthday, birthState, cedule, phone, nationality, sex, prof, username, password } = state.signupForm;

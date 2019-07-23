@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReduxThunk from 'redux-thunk'
+import ReduxThunk from 'redux-thunk';
 import Parse from 'parse/react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';

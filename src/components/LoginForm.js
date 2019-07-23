@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, Text, Image } from 'react-native';
+import Parse from 'parse/react-native';
 import { Card, CardSection, Input, Button, Spinner } from './common';
 import { emailChanged, passwordChanged, loginUser, session } from '../actions';
-import Parse from 'parse/react-native';
 
 class LoginForm extends Component {
   componentWillMount() {
@@ -36,7 +36,7 @@ onSignupButtonPress() {
       return <Spinner size="large" />
     }
 
-    return(
+    return (
       <Button onPress={this.onLoginButtonPress.bind(this)}>
         Iniciar sesión
       </Button>
@@ -45,7 +45,7 @@ onSignupButtonPress() {
 
   renderError() {
     if (this.props.error) {
-      console.log(this.props.error)
+      console.log(this.props.error);
       return (
         <View style={{ backgroundColor: 'white' }}>
           <Text style={styles.errorTextStyle}>
@@ -64,7 +64,7 @@ onSignupButtonPress() {
       <Card>
         <Image
         source={(require('./img/LogoVerde.png'))}
-        style={{width: 400, height: 400}}
+        style={{ width: 400, height: 400 }}
         />
         <CardSection>
           <Input

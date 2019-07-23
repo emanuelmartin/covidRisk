@@ -12,7 +12,7 @@ const Button = ({ onPress, children }) => {
     </TouchableOpacity>
   );
 };
-
+/*
 const styles = {
   textStyle: {
     alignSelf: 'center',
@@ -29,6 +29,27 @@ const styles = {
     borderRadius: 5,
     borderWidth: 1,
     borderColor: '#007aff',
+    marginLeft: 5,
+    marginRight: 5
+  }
+};
+*/
+const styles = {
+  textStyle: {
+    alignSelf: 'center',
+    color: '#63C0B9',
+    fontSize: 16,
+    fontWeight: '600',
+    paddingTop: 10,
+    paddingBottom: 10
+  },
+  buttonStyle: {
+    flex: 1,
+    alignSelf: 'stretch',
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#63C0B9',
     marginLeft: 5,
     marginRight: 5
   }

@@ -34,8 +34,8 @@ const styles = StyleSheet.create({
   inputContainer: {
     borderBottomWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.4)',
-    marginTop: 20,
-    height: 50,
+    marginTop: 10,
+    height: 60,
     flex: 1
   },
   valid: {
