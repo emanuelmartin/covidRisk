@@ -15,23 +15,19 @@ class Home extends Component {
   onAddPatientButtonPress() {
     this.props.navigation.navigate('Patient');
   }
-
+  // user.get('atributteName') si funciona
   render() {
-    if (!this.props.loggedIn) {
+  if (!this.props.loggedIn) {
     this.props.navigation.navigate('Login');
     return null;
-
-  } else {
-
-
-    return (
+  }
+  return (
       <Card>
         <CardSection>
-          <Text> Bienvenido, { this.props.user.attributes.name }  </Text>
+          <Text>Bienvenido, { this.props.user.get('names') }</Text>
         </CardSection>
       </Card>
     );
-  }
 }
 }
 

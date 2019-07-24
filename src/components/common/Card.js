@@ -13,9 +13,9 @@ const styles = {
   containerStyle: {
     borderBottomWidth: 1,
     borderColor: '#ddd',
-    marginLeft: 5,
-    marginRight: 5,
-    marginTop: 10
+    marginLeft: 3,
+    marginRight: 3,
+    marginTop: 3
   }
 };
 

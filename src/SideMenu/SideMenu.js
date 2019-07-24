@@ -1,13 +1,16 @@
 import PropTypes from 'prop-types';
-import React, {Component} from 'react';
-import styles from './SideMenu.style';
-import {NavigationActions} from 'react-navigation';
-import {ScrollView, Text, View} from 'react-native';
-import { StackNavigator } from 'react-navigation';
-import { logOut } from '../actions';
+import React, { Component } from 'react';
+import { NavigationActions } from 'react-navigation';
+import { ScrollView, Text, View } from 'react-native';
 import { connect } from 'react-redux';
+import styles from './SideMenu.style';
+import { logOut } from '../actions';
 
 class SideMenu extends Component {
+  onLogoutButtonPress() {
+    this.props.logOut();
+  }
+
   navigateToScreen = (route) => () => {
     const navigateAction = NavigationActions.navigate({
       routeName: route
@@ -15,11 +18,7 @@ class SideMenu extends Component {
     this.props.navigation.dispatch(navigateAction);
   }
 
-  onLogoutButtonPress() {
-    this.props.logOut();
-  }
-
-  render () {
+  render() {
     return (
       <View style={styles.container}>
         <ScrollView>
@@ -54,8 +53,17 @@ class SideMenu extends Component {
               Inventarios
             </Text>
             <View style={styles.navSectionStyle}>
-              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Page4')}>
+              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('AddItemScreen')}>
               Añadir producto
+              </Text>
+              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('InventoryScreen')}>
+              Inventario
+              </Text>
+              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('OutputItemScreen')}>
+              Venta producto
+              </Text>
+              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('UpdateItemScreen')}>
+              Entrada producto
               </Text>
             </View>
           </View>

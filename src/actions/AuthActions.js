@@ -61,9 +61,8 @@ export const session = (user) => {
 
 export const logOut = () => {
   return (dispatch) => {
-    dispatch({ type: LOGOUT_USER });
-
-  Parse.User.logOut()
-  .then(dispatch({ type: LOGOUT_USER_SUCCESS }));
-};
+    //dispatch({ type: LOGOUT_USER });
+    Parse.User.logOut()
+      .then(dispatch({ type: LOGOUT_USER_SUCCESS }));
+  };
 };

@@ -39,7 +39,9 @@ export default (state = INITIAL_STATE, action) => {
     case LOGOUT_USER:
       return { ...state, loading: true, error: '' };
     case LOGOUT_USER_SUCCESS:
-      return { ...state, loggedIn: false, loading: false };
+      return { ...state, loggedIn: false };
+    //case LOGOUT_USER_SUCCESS:
+      //return { ...state, loggedIn: false, loading: false };
     default:
       return state;
   }

@@ -3,10 +3,12 @@ import AuthReducer from './AuthReducer';
 import SignupFormReducer from './SignupFormReducer';
 import PatientFormReducer from './PatientFormReducer';
 import EmployeeReducer from './EmployeeReducer';
+import ItemReducer from './ItemReducer';
 
 export default combineReducers({
   auth: AuthReducer,
   signupForm: SignupFormReducer,
   employees: EmployeeReducer,
-  patientForm: PatientFormReducer
+  patientForm: PatientFormReducer,
+  item: ItemReducer,
 });

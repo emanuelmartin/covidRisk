@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, Text, Image } from 'react-native';
 import Parse from 'parse/react-native';
-import { Card, CardSection, Input, Button, Spinner } from './common';
+import { Card, CardSection, Input, Button, Spinner, Header } from './common';
 import { emailChanged, passwordChanged, loginUser, session } from '../actions';
 
 class LoginForm extends Component {
@@ -27,13 +27,13 @@ class LoginForm extends Component {
     this.props.loginUser({ email, password });
   }
 
-onSignupButtonPress() {
-  this.props.navigation.navigate('SignUp');
-}
+  onSignupButtonPress() {
+    this.props.navigation.navigate('SignUp');
+  }
 
   renderButton() {
     if (this.props.loading) {
-      return <Spinner size="large" />
+      return <Spinner size="large" />;
     }
 
     return (
@@ -58,18 +58,19 @@ onSignupButtonPress() {
 
   render() {
     if (this.props.loggedIn) {
-    this.props.navigation.navigate('Home');
-  }
+      this.props.navigation.navigate('Home');
+    }
     return (
       <Card>
+        <Header headerText="Hospital Real San Lucas" />
         <Image
         source={(require('./img/LogoVerde.png'))}
         style={{ width: 400, height: 400 }}
         />
         <CardSection>
           <Input
-            label="Email"
-            placeholder="email@gmail.com"
+            label="Usuario"
+            placeholder="usuario"
             onChangeText={this.onEmailChange.bind(this)}
             value={this.props.email}
           />
