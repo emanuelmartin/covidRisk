@@ -13,6 +13,10 @@ export default class PatientList extends React.Component {
     this.state = { isLoading: true, search: '' };
     this.arrayholder = [];
   }
+  static navigationOptions = {
+    title: 'Pacientes',
+  };
+
   componentDidMount() {
     return fetch('https://jsonplaceholder.typicode.com/posts')
       .then(response => response.json())
@@ -20,7 +24,7 @@ export default class PatientList extends React.Component {
         this.setState(
           {
             isLoading: false,
-            dataSource: responseJson,
+            dataSource: null,
           },
           function() {
             this.arrayholder = responseJson;
@@ -48,22 +52,18 @@ export default class PatientList extends React.Component {
   async SearchFilterFunction(text) {
     const Patient = Parse.Object.extend('Patient');
     const query = new Parse.Query(Patient);
-    query.equalTo('startsWith', text);
-    const data = await query.find();
-    console.log(data);
+    console.log(text);
+    query.startsWith('lastName1', text);
+    query.find().then((results) => {
+      console.log(results[0].attributes)
+      const json = [JSON.stringify(results[0].attributes)]
+      console.log(json);
+      this.setState({
+        dataSource: json,
+        search: text
+      })
+    });
     //passing the inserted text in textinput
-    const newData = this.arrayholder.filter(function(item) {
-      //applying filter for the inserted text in search bar
-      const itemData = item.title ? item.title.toUpperCase() : ''.toUpperCase();
-      const textData = text.toUpperCase();
-      return itemData.indexOf(textData) > -1;
-    });
-    this.setState({
-      //setting the filtered newData on datasource
-      //After setting the data it will automatically re-render the view
-      dataSource: newData,
-      search:text,
-    });
   }
   ListViewItemSeparator = () => {
     //Item sparator view
@@ -104,7 +104,7 @@ export default class PatientList extends React.Component {
           //Item Separator View
           renderItem={({ item }) => (
             // Single Comes here which will be repeatative for the FlatListItems
-            <Text style={styles.textStyle}>{item.title}</Text>
+            <Text style={styles.textStyle}>{item}</Text>
           )}
           enableEmptySections={true}
           style={{ marginTop: 10 }}
@@ -126,7 +126,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     backgroundColor:'white',
-    marginTop: Platform.OS == 'ios'? 30 : 0
   },
   textStyle: {
     padding: 10,
