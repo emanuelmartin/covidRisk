@@ -10,12 +10,14 @@ import InventoryScreen from './InventoryScreen.js';
 import UpdateItemScreen from './UpdateItemScreen.js';
 import OutputItemScreen from './OutputItemScreen.js';
 import AddItemScreen from './AddItemScreen.js';
+import PatientList from './Patients/PatientList'
 
 const AppStack = createStackNavigator(
   {
     Home,
     SignUp: SignupForm,
-    Patient: PatientForm,
+    PatientForm,
+    PatientList,
     InventoryScreen,
     AddItemScreen,
     UpdateItemScreen,

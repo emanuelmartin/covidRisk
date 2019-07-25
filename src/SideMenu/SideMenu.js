@@ -27,8 +27,8 @@ class SideMenu extends Component {
               Fichas personales
             </Text>
             <View style={styles.navSectionStyle}>
-              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Patient')}>
-              Añadir paciente
+              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('PatientList')}>
+              Pacientes
               </Text>
               <Text style={styles.navItemStyle} onPress={this.navigateToScreen('SignUp')}>
               Añadir usuario

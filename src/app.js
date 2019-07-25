@@ -4,7 +4,7 @@ import Parse from 'parse/react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import reducers from './reducers';
-import Nav from './components/Navigator';
+import Nav from './components/navigator';
 
 const AsyncStorage = require('react-native').AsyncStorage;
 
