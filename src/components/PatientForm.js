@@ -5,6 +5,10 @@ import { patientUpdate, patientCreate } from '../actions';
 import { Card, CardSection, Input, Button, Spinner } from './common';
 
 class PatientForm extends Component {
+  static navigationOptions = {
+    title: 'Nuevo Paciente',
+  };
+
   componentWillMount() {
     this.setState({ key: 'personal' });
   }

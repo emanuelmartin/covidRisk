@@ -4,6 +4,7 @@ import {
   CODE_CHANGED,
   NAME_CHANGED,
   PRESENTATION_CHANGED,
+  CONTENT_CHANGED,
   PUBLIC_PRICE_CHANGED,
   PACIENT_PRICE_CHANGED,
   ASSURANCE_PRICE_CHANGED,
@@ -21,6 +22,11 @@ export const codeChanged = (text) => ({
 
 export const nameChanged = (text) => ({
     type: NAME_CHANGED,
+    payload: text
+  });
+
+export const contentChanged = (text) => ({
+    type: CONTENT_CHANGED,
     payload: text
   });
 
@@ -48,6 +54,7 @@ export const addItem = ({
   code,
   name,
   presentation,
+  content,
   publicPrice,
   pacientPrice,
   assurancePrice
@@ -66,7 +73,7 @@ export const addItem = ({
     // Do something with the returned Parse.Object values
     for (let i = 0; i < results.length; i++) {
       const object = results[i];
-      if (object.get('presentation') === presentation) {
+      if (object.get('presentation') === presentation && object.get('content') === content) {
         dispatch({ type: ITEM_ALREADY_EXIST });
         exist = true;
       }
@@ -77,6 +84,7 @@ export const addItem = ({
       item.set('code', code);
       item.set('name', name);
       item.set('presentation', presentation);
+      item.set('content', content);
       item.set('publicPrice', publicPrice);
       item.set('pacientPrice', pacientPrice);
       item.set('assurancePrice', assurancePrice);

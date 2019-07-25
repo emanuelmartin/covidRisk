@@ -7,18 +7,13 @@ class UpdateItemScreen extends Component {
   };
 
   goHome() {
-    this.props.navigation.navigate('PharmacyScreen');
+    this.props.navigation.navigate('Home');
   }
 
   render() {
     return (
       <Card>
-
-        <CardSection>
-          <Button onPress={this.goHome.bind(this)}>
-            Farmacia
-          </Button>
-        </CardSection>
+        <CardSection />
       </Card>
     );
   }

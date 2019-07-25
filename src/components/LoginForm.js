@@ -58,7 +58,7 @@ class LoginForm extends Component {
 
   render() {
     if (this.props.loggedIn) {
-      this.props.navigation.navigate('Home');
+      this.props.navigation.navigate('Stack');
     }
     return (
       <Card>

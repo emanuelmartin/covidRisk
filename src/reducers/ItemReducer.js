@@ -2,6 +2,7 @@ import {
   CODE_CHANGED,
   NAME_CHANGED,
   PRESENTATION_CHANGED,
+  CONTENT_CHANGED,
   PUBLIC_PRICE_CHANGED,
   PACIENT_PRICE_CHANGED,
   ASSURANCE_PRICE_CHANGED,
@@ -15,6 +16,7 @@ const INITIAL_STATE = {
   code: '',
   name: '',
   presentation: '',
+  content: '',
   publicPrice: '',
   pacientPrice: '',
   assurancePrice: '',
@@ -32,6 +34,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, name: action.payload };
     case PRESENTATION_CHANGED:
       return { ...state, presentation: action.payload };
+    case CONTENT_CHANGED:
+      return { ...state, content: action.payload };
     case PUBLIC_PRICE_CHANGED:
       return { ...state, publicPrice: action.payload };
     case PACIENT_PRICE_CHANGED:

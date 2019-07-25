@@ -6,22 +6,38 @@ import SignupForm from './SignupForm';
 import Home from './Home';
 import PatientForm from './PatientForm';
 import SideMenu from '../SideMenu/SideMenu';
-import PharmacyScreen from './PharmacyScreen.js';
 import InventoryScreen from './InventoryScreen.js';
 import UpdateItemScreen from './UpdateItemScreen.js';
 import OutputItemScreen from './OutputItemScreen.js';
 import AddItemScreen from './AddItemScreen.js';
 
-const Drawer = createDrawerNavigator({
- //Login: LoginForm,
- Home,
- SignUp: SignupForm,
- Patient: PatientForm,
- PharmacyScreen,
- InventoryScreen,
- AddItemScreen,
- UpdateItemScreen,
- OutputItemScreen
+const AppStack = createStackNavigator(
+  {
+    Home,
+    SignUp: SignupForm,
+    Patient: PatientForm,
+    InventoryScreen,
+    AddItemScreen,
+    UpdateItemScreen,
+    OutputItemScreen
+  },
+  {
+    defaultNavigationOptions: {
+      /*headerStyle: {
+        backgroundColor: '#f4511e',
+      },*/
+      headerTintColor: '#63C0B9',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+    },
+  }
+
+);
+
+const Drawer = createDrawerNavigator(
+  {
+    Home: AppStack
   }, {
     contentComponent: SideMenu,
     drawerWidth: Dimensions.get('window').width - 120,
@@ -29,13 +45,9 @@ const Drawer = createDrawerNavigator({
 
 const AppSwitch = createSwitchNavigator({
   Login: LoginForm,
-  Home: Drawer
-});
-/*
-const AppStack = createStackNavigator({
   Stack: Drawer
 });
-*/
+
 const Nav = createAppContainer(AppSwitch);
 
 export default Nav;

@@ -3,21 +3,17 @@ import { Card, CardSection, Button } from './common';
 
 class OutputItemScreen extends Component {
   static navigationOptions = {
-    title: 'Salidas de Inventario',
+    title: 'Venta de Producto',
   };
 
   goHome() {
-    this.props.navigation.navigate('PharmacyScreen');
+    this.props.navigation.navigate('Home');
   }
 
   render() {
     return (
       <Card>
-        <CardSection>
-          <Button onPress={this.goHome.bind(this)}>
-            Farmacia
-          </Button>
-        </CardSection>
+        <CardSection />
       </Card>
     );
   }

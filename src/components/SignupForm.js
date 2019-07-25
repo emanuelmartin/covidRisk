@@ -5,6 +5,10 @@ import { signupUpdate, userCreate } from '../actions';
 import { Card, CardSection, Input, Button, Spinner } from './common';
 
 class SignupForm extends Component {
+  static navigationOptions = {
+    title: 'Nuevo Usuario',
+  };
+  
   componentWillMount() {
     this.setState({ key: 'personal' });
   }

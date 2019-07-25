@@ -7,6 +7,7 @@ import {
 	codeChanged,
 	nameChanged,
 	presentationChanged,
+	contentChanged,
 	publicPriceChanged,
 	pacientPriceChanged,
 	assurancePriceChanged,
@@ -15,7 +16,7 @@ import {
 
 class AddItemScreen extends Component {
 	static navigationOptions = {
-    title: 'Nuevo Artículo',
+    title: 'Nuevo Producto',
   };
 
 	onCodeChange(text) {
@@ -28,6 +29,10 @@ class AddItemScreen extends Component {
 
 	onPresentationChange(text) {
 		this.props.presentationChanged(text);
+	}
+
+	onContentChange(text) {
+		this.props.contentChanged(text);
 	}
 
 	onPublicPriceChange(text) {
@@ -47,9 +52,7 @@ class AddItemScreen extends Component {
 			code,
 			name,
 			presentation,
-			dose,
-			supplier,
-			buyPrice,
+			content,
 			publicPrice,
 			pacientPrice,
 			assurancePrice
@@ -59,9 +62,7 @@ class AddItemScreen extends Component {
 			code,
 			name,
 			presentation,
-			dose,
-			supplier,
-			buyPrice,
+			content,
 			publicPrice,
 			pacientPrice,
 			assurancePrice
@@ -99,7 +100,7 @@ class AddItemScreen extends Component {
   render() {
     return (
 			<KeyboardAwareScrollView>
-				<CardSection style={styles.cardSectionStyle}>
+				<CardSection>
 					<Input
             label="Código"
             placeholder="0xa422008"
@@ -108,25 +109,34 @@ class AddItemScreen extends Component {
 					/>
 				</CardSection>
 
-				<CardSection style={styles.cardSectionStyle}>
+				<CardSection>
 					<Input
-            label="Descripción"
+            label="Nombre Comercial"
             placeholder="Diclofenaco"
             onChangeText={this.onNameChange.bind(this)}
             value={this.props.name}
 					/>
 				</CardSection>
 
-				<CardSection style={styles.cardSectionStyle}>
+				<CardSection>
 					<Input
             label="Presentación"
-            placeholder="Jarabe 400ml"
+            placeholder="Jarabe"
             onChangeText={this.onPresentationChange.bind(this)}
             value={this.props.presentation}
 					/>
 				</CardSection>
 
-				<CardSection style={styles.cardSectionStyle}>
+				<CardSection>
+					<Input
+            label="Contenido"
+            placeholder="200 ml"
+            onChangeText={this.onContentChange.bind(this)}
+            value={this.props.content}
+					/>
+				</CardSection>
+
+				<CardSection>
 					<Input
             label="Precio Venta Público"
             placeholder="$ 350.00"
@@ -135,7 +145,7 @@ class AddItemScreen extends Component {
 					/>
 				</CardSection>
 
-				<CardSection style={styles.cardSectionStyle}>
+				<CardSection>
 					<Input
             label="Precio Venta Pacientes"
             placeholder="$ 250.00"
@@ -144,7 +154,7 @@ class AddItemScreen extends Component {
 					/>
 				</CardSection>
 
-				<CardSection style={styles.cardSectionStyle}>
+				<CardSection>
 					<Input
             label="Precio Venta Aseguradoras"
             placeholder="$ 500.00"
@@ -166,6 +176,7 @@ const mapStateToProps = state => {
     code: state.item.code,
     name: state.item.name,
     presentation: state.item.presentation,
+		content: state.item.content,
     publicPrice: state.item.publicPrice,
 		pacientPrice: state.item.pacientPrice,
 		assurancePrice: state.item.assurancePrice,
@@ -194,6 +205,7 @@ export default connect(mapStateToProps, {
 	codeChanged,
 	nameChanged,
 	presentationChanged,
+	contentChanged,
 	publicPriceChanged,
 	pacientPriceChanged,
 	assurancePriceChanged,
