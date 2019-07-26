@@ -55,11 +55,16 @@ export default class PatientList extends React.Component {
     console.log(text);
     query.startsWith('lastName1', text);
     query.find().then((results) => {
-      console.log(results[0].attributes)
-      const json = [JSON.stringify(results[0].attributes)]
-      console.log(json);
+      var jsonArray = [];
+
+        for(var i = 0; i < results.length; i++) {
+           jsonArray.push(results[i].toJSON());
+        }
+      console.log(jsonArray);
+      const json = [JSON.stringify(results[1].attributes.names)]
+      console.log(jsonArray);
       this.setState({
-        dataSource: json,
+        dataSource: jsonArray,
         search: text
       })
     });
@@ -104,7 +109,7 @@ export default class PatientList extends React.Component {
           //Item Separator View
           renderItem={({ item }) => (
             // Single Comes here which will be repeatative for the FlatListItems
-            <Text style={styles.textStyle}>{item}</Text>
+            <Text style={styles.textStyle}>{item.names} {item.lastName1} {item.lastName2}</Text>
           )}
           enableEmptySections={true}
           style={{ marginTop: 10 }}
