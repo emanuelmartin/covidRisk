@@ -61,8 +61,6 @@ export default class PatientList extends React.Component {
            jsonArray.push(results[i].toJSON());
         }
       console.log(jsonArray);
-      const json = [JSON.stringify(results[1].attributes.names)]
-      console.log(jsonArray);
       this.setState({
         dataSource: jsonArray,
         search: text
