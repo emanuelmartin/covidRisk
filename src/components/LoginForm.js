@@ -6,6 +6,10 @@ import { Card, CardSection, Input, Button, Spinner, Header } from './common';
 import { emailChanged, passwordChanged, loginUser, session } from '../actions';
 
 class LoginForm extends Component {
+  static navigationOptions = {
+    header: null //this will hide the header
+  };
+  
   componentWillMount() {
     Parse.User.currentAsync().then((user) => {
         console.log(user);

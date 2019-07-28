@@ -1,5 +1,10 @@
 import { Dimensions } from 'react-native';
-import { createStackNavigator, createSwitchNavigator, createAppContainer, createDrawerNavigator } from 'react-navigation';
+import {
+  createStackNavigator,
+  createSwitchNavigator,
+  createAppContainer,
+  createDrawerNavigator
+} from 'react-navigation';
 // import screens
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
@@ -10,7 +15,7 @@ import InventoryScreen from './InventoryScreen.js';
 import UpdateItemScreen from './UpdateItemScreen.js';
 import OutputItemScreen from './OutputItemScreen.js';
 import AddItemScreen from './AddItemScreen.js';
-import PatientList from './Patients/PatientList'
+import PatientList from './Patients/PatientList';
 
 const AppStack = createStackNavigator(
   {
@@ -25,16 +30,27 @@ const AppStack = createStackNavigator(
   },
   {
     defaultNavigationOptions: {
-      /*headerStyle: {
-        backgroundColor: '#f4511e',
-      },*/
       headerTintColor: '#63C0B9',
       headerTitleStyle: {
         fontWeight: 'bold',
       },
     },
   }
+);
 
+const LoginStack = createStackNavigator(
+  {
+    Login: LoginForm,
+    SignUp: SignupForm,
+  },
+  {
+    defaultNavigationOptions: {
+      headerTintColor: '#63C0B9',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+    },
+  }
 );
 
 const Drawer = createDrawerNavigator(
@@ -46,7 +62,7 @@ const Drawer = createDrawerNavigator(
 });
 
 const AppSwitch = createSwitchNavigator({
-  Login: LoginForm,
+  Login: LoginStack,
   Stack: Drawer
 });
 

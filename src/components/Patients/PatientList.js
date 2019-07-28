@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Parse from 'parse/react-native';
-import { Text, View, StyleSheet, FlatList, ActivityIndicator, Platform } from 'react-native';
+import { Text, View, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
 import { Button } from '../common';
@@ -26,7 +26,7 @@ export default class PatientList extends React.Component {
             isLoading: false,
             dataSource: null,
           },
-          function() {
+          function () {
             this.arrayholder = responseJson;
           }
         );
@@ -64,7 +64,7 @@ export default class PatientList extends React.Component {
       this.setState({
         dataSource: jsonArray,
         search: text
-      })
+      });
     });
     //passing the inserted text in textinput
   }
@@ -100,19 +100,19 @@ export default class PatientList extends React.Component {
           onClear={text => this.SearchFilterFunction('')}
           placeholder="Buscar..."
           value={this.state.search}
-          />
-          <FlatList
-          data={this.state.dataSource}
-          ItemSeparatorComponent={this.ListViewItemSeparator}
-          //Item Separator View
-          renderItem={({ item }) => (
-            // Single Comes here which will be repeatative for the FlatListItems
-            <Text style={styles.textStyle}>{item.names} {item.lastName1} {item.lastName2}</Text>
-          )}
-          enableEmptySections={true}
-          style={{ marginTop: 10 }}
-          keyExtractor={(item, index) => index.toString()}
         />
+          <FlatList
+            data={this.state.dataSource}
+            ItemSeparatorComponent={this.ListViewItemSeparator}
+            //Item Separator View
+            renderItem={({ item }) => (
+              // Single Comes here which will be repeatative for the FlatListItems
+              <Text style={styles.textStyle}>{item.names} {item.lastName1} {item.lastName2}</Text>
+            )}
+            enableEmptySections={true}
+            style={{ marginTop: 10 }}
+            keyExtractor={(item, index) => index.toString()}
+          />
         </View>
         <View>
         <Button onPress={this.navigateToScreen('PatientForm')}>
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   viewStyle: {
     justifyContent: 'center',
     flex: 1,
-    backgroundColor:'white',
+    backgroundColor: 'white',
   },
   textStyle: {
     padding: 10,

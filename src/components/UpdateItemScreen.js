@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardSection, Button } from './common';
+import { Card, CardSection } from './common';
 
 class UpdateItemScreen extends Component {
   static navigationOptions = {

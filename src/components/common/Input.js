@@ -2,7 +2,6 @@ import React from 'react';
 import { TextInput, View, Text, StyleSheet } from 'react-native';
 
 const Input = ({ label, value, onChangeText, placeholder, secureTextEntry, edited, valid }) => {
-
   const validationStyles = edited
     ? valid ? styles.valid : styles.invalid
     : null;
@@ -24,13 +23,13 @@ const Input = ({ label, value, onChangeText, placeholder, secureTextEntry, edite
 
 const styles = StyleSheet.create({
   inputStyle: {
-	    color: '#000',
-	    paddingRight: 5,
-	    paddingLeft: 5,
-	    fontSize: 18,
-	    lineHeight: 23,
-	    flex: 1
-	  },
+    color: '#000',
+    paddingRight: 5,
+    paddingLeft: 5,
+    fontSize: 18,
+    lineHeight: 23,
+    flex: 1
+  },
   inputContainer: {
     borderBottomWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.4)',

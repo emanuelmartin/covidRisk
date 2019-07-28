@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { View, Text, Image, TouchableHighlight } from 'react-native';
 import { Card, CardSection, Header } from './common';
 import { logOut } from '../actions';
-import Parse from 'parse/react-native';
-
 
 class Home extends Component {
 
@@ -20,7 +18,7 @@ class Home extends Component {
     this.props.navigation.navigate('Patient');
   }
 
-  onHeartPress(){
+  onHeartPress() {
     this.props.navigation.navigate('Patient');
   }
 
@@ -195,20 +193,6 @@ class Home extends Component {
     );
   }
 }
-
-const styles = {
-  imageStyle: {
-  //  alignItems: 'center',
-    marginTop: 1200,
-    paddingBottom: 30,
-    //position: 'absolute',
-    //justifyContent: 'center',
-  //  top: 100,
-   //bottom: 100,
-     //left: width/6+2
-  //  borderRadius: 5,
-  },
-};
 
 const mapStateToProps = ({ auth }) => {
  const { loading, loggedIn, user } = auth;

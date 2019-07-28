@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Picker, Text, ScrollView, View, TouchableWithoutFeedback, Alert } from 'react-native';
+import { Text, ScrollView, View, TouchableWithoutFeedback } from 'react-native';
 import { patientUpdate, patientCreate } from '../actions';
 import { Card, CardSection, Input, Button, Spinner } from './common';
 
@@ -414,8 +414,38 @@ const styles = {
 };
 
 const mapStateToProps = (state) => {
-  const { loading, curp, lastName1, lastName2, names, birthday, birthState, cedule, phone, nationality, sex, prof, username, password } = state.patientForm;
-  return { loading, curp, lastName1, lastName2, names, birthday, birthState, cedule, phone, nationality, sex, prof, username, password };
+  const {
+    loading,
+    curp,
+    lastName1,
+    lastName2,
+    names,
+    birthday,
+    birthState,
+    cedule,
+    phone,
+    nationality,
+    sex,
+    prof,
+    username,
+    password
+  } = state.patientForm;
+  return {
+    loading,
+    curp,
+    lastName1,
+    lastName2,
+    names,
+    birthday,
+    birthState,
+    cedule,
+    phone,
+    nationality,
+    sex,
+    prof,
+    username,
+    password
+  };
 };
 
 export default connect(mapStateToProps, { patientUpdate, patientCreate })(PatientForm);

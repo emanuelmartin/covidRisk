@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Picker, Text, ScrollView, View, TouchableWithoutFeedback, Alert } from 'react-native';
+import { Text, ScrollView, View, TouchableWithoutFeedback } from 'react-native';
 import { signupUpdate, userCreate } from '../actions';
 import { Card, CardSection, Input, Button, Spinner } from './common';
 
@@ -8,25 +8,13 @@ class SignupForm extends Component {
   static navigationOptions = {
     title: 'Nuevo Usuario',
   };
-  
+
   componentWillMount() {
     this.setState({ key: 'personal' });
   }
 
   onUserCreatePress() {
     this.props.userCreate(this.props.signupForm);
-  }
-
-  renderButton() {
-    if (this.props.loading) {
-      return <Spinner size="large" />;
-    }
-
-    return (
-      <Button onPress={this.onUserCreatePress.bind(this)}>
-        Crear usuario
-      </Button>
-    );
   }
 
   personal() {
@@ -366,6 +354,18 @@ class SignupForm extends Component {
     }
   }
 
+  renderButton() {
+    if (this.props.loading) {
+      return <Spinner size="large" />;
+    }
+
+    return (
+      <Button onPress={this.onUserCreatePress.bind(this)}>
+        Crear usuario
+      </Button>
+    );
+  }
+
   render() {
     return (
       <View style={{ flex: 1, paddingBottom: 20 }}>
@@ -464,8 +464,38 @@ const styles = {
 };
 
 const mapStateToProps = (state) => {
-  const { loading, curp, lastName1, lastName2, names, birthday, birthState, cedule, phone, nationality, sex, prof, username, password } = state.signupForm;
-  return { loading, curp, lastName1, lastName2, names, birthday, birthState, cedule, phone, nationality, sex, prof, username, password };
+  const {
+    loading,
+    curp,
+    lastName1,
+    lastName2,
+    names,
+    birthday,
+    birthState,
+    cedule,
+    phone,
+    nationality,
+    sex,
+    prof,
+    username,
+    password
+  } = state.signupForm;
+  return {
+    loading,
+    curp,
+    lastName1,
+    lastName2,
+    names,
+    birthday,
+    birthState,
+    cedule,
+    phone,
+    nationality,
+    sex,
+    prof,
+    username,
+    password
+  };
 };
 
 export default connect(mapStateToProps, { signupUpdate, userCreate })(SignupForm);
