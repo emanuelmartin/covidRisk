@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  FlatList,
+  ActivityIndicator,
+  TouchableWithoutFeedback
+} from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';

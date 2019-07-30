@@ -3,6 +3,7 @@ import Parse from 'parse/react-native';
 import {
   DB_QUERY,
   DB_QUERY_RESULTS,
+  DB_CLEAN
 } from './types';
 
 export const queryFunc = ({ type, object, variable, text }) => {
@@ -26,3 +27,7 @@ export const queryFunc = ({ type, object, variable, text }) => {
     }
   };
 };
+
+export const cleanFunc = () => ({
+  type: DB_CLEAN
+});
