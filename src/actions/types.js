@@ -33,3 +33,4 @@ export const INVENTORY_REQUEST = 'inventory_request';
 
 export const DB_QUERY = 'db_query';
 export const DB_QUERY_RESULTS = 'db_query_results';
+export const DB_CLEAN = 'db_clean';

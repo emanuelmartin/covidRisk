@@ -2,7 +2,8 @@ import Parse from 'parse/react-native';
 
 import {
   DB_QUERY,
-  DB_QUERY_RESULTS
+  DB_QUERY_RESULTS,
+  DB_CLEAN
 } from './types';
 
 export const queryFunc = ({ type, object, variable, text }) => {
@@ -15,11 +16,9 @@ export const queryFunc = ({ type, object, variable, text }) => {
     query[type](variable, text);
     query.find().then((results) => {
 
-
       if (text === '') {
         dispatch({ type: DB_QUERY_RESULTS, payload: '' });
-      }
-      else {
+      } else {
         for (let i = 0; i < results.length; i++) {
            jsonArray.push(results[i].toJSON());
         }
@@ -27,6 +26,9 @@ export const queryFunc = ({ type, object, variable, text }) => {
       dispatch({ type: DB_QUERY_RESULTS, payload: jsonArray });
     }
     });
+  };
+};
 
-  }
-}
+export const cleanFunc = () => ({
+  type: DB_CLEAN
+});

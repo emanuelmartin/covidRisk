@@ -1,12 +1,10 @@
 import * as React from 'react';
-import Parse from 'parse/react-native';
 import { Text, View, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import { SearchBar } from 'react-native-elements';
-import { NavigationActions } from 'react-navigation'
-import { Button } from '../common';
-import { queryFunc } from '../../actions';
+import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
-
+import { Button, CardSection } from '../common';
+import { queryFunc, cleanFunc } from '../../actions';
 
 class PatientList extends React.Component {
   constructor(props) {
@@ -20,6 +18,8 @@ class PatientList extends React.Component {
   };
 
   componentDidMount() {
+    this.props.queryFunc({ text: '' });
+    this.props.cleanFunc();
     return fetch('https://jsonplaceholder.typicode.com/posts')
       .then(response => response.json())
       .then(responseJson => {
@@ -131,4 +131,4 @@ const mapStateToProps = ({ query }) => {
  return { text, dataSource };
 };
 
-export default connect(mapStateToProps, { queryFunc })(PatientList);
+export default connect(mapStateToProps, { queryFunc, cleanFunc })(PatientList);

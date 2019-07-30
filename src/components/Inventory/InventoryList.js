@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Button, CardSection } from '../common';
 import { queryFunc, cleanFunc } from '../../actions';
 
-class UserList extends React.Component {
+class InventoryList extends React.Component {
   constructor(props) {
     super(props);
     //setting default state
@@ -14,7 +14,7 @@ class UserList extends React.Component {
     this.arrayholder = [];
   }
   static navigationOptions = {
-    title: 'Usuarios',
+    title: 'Inventario',
   };
 
   componentDidMount() {
@@ -37,9 +37,11 @@ class UserList extends React.Component {
         console.error(error);
       });
   }
+
   search = text => {
     console.log(text);
   };
+
   clear = () => {
     this.props.text.clear();
   };
@@ -62,6 +64,7 @@ class UserList extends React.Component {
       />
     );
   };
+
   render() {
     if (this.state.isLoading) {
       //Loading View while data is loading
@@ -79,9 +82,9 @@ class UserList extends React.Component {
           round
           lightTheme
           searchIcon={{ size: 24 }}
-          onChangeText={text => this.props.queryFunc({ type: 'startsWith', object: 'User', variable: 'lastName1', text })}
-          onClear={() => this.props.queryFunc({ text: '' })}
-          placeholder="Ingresa el primer apellido..."
+          onChangeText={text => this.props.queryFunc({ type: 'startsWith', object: 'Farmacia', variable: 'name', text })}
+          onClear={text => this.props.queryFunc({ text: '' })}
+          placeholder="Ingresa el nombre comercial..."
           value={this.props.text}
         />
           <FlatList
@@ -90,7 +93,7 @@ class UserList extends React.Component {
             //Item Separator View
             renderItem={({ item }) => (
               // Single Comes here which will be repeatative for the FlatListItems
-              <Text style={styles.textStyle}>{item.names} {item.lastName1} {item.lastName2}</Text>
+              <Text style={styles.textStyle}>{item.code}-{item.name} {item.presentation} {item.content}</Text>
             )}
             enableEmptySections
             style={{ marginTop: 10 }}
@@ -98,11 +101,11 @@ class UserList extends React.Component {
           />
         </View>
         <CardSection>
-        <Button onPress={this.navigateToScreen('SignUp')}>
-          Añadir Usuario
-        </Button>
-      </CardSection>
-      <CardSection />
+          <Button onPress={this.navigateToScreen('AddItemScreen')}>
+            Añadir Producto
+          </Button>
+        </CardSection>
+        <CardSection />
       </View>
     );
   }
@@ -128,4 +131,4 @@ const mapStateToProps = ({ query }) => {
  return { text, dataSource };
 };
 
-export default connect(mapStateToProps, { queryFunc, cleanFunc })(UserList);
+export default connect(mapStateToProps, { queryFunc, cleanFunc })(InventoryList);

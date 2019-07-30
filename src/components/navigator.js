@@ -10,9 +10,10 @@ import LoginForm from './LoginForm';
 import UserList from './Users/UserList';
 import Home from './Home';
 import PatientForm from './PatientForm';
-import SignupForm from './SignupForm'
+import SignupForm from './SignupForm';
 import SideMenu from '../SideMenu/SideMenu';
 import InventoryScreen from './InventoryScreen.js';
+import InventoryList from './Inventory/InventoryList';
 import UpdateItemScreen from './UpdateItemScreen.js';
 import OutputItemScreen from './OutputItemScreen.js';
 import AddItemScreen from './AddItemScreen.js';
@@ -26,6 +27,7 @@ const AppStack = createStackNavigator(
     PatientForm,
     PatientList,
     InventoryScreen,
+    InventoryList,
     AddItemScreen,
     UpdateItemScreen,
     OutputItemScreen
