@@ -5,15 +5,16 @@ import {
   DB_QUERY_RESULTS
 } from './types';
 
-export const queryFunc = ({ type, variable, text }) => {
+export const queryFunc = ({ type, object, variable, text }) => {
   return async (dispatch) => {
     dispatch({ type: DB_QUERY, payload: text })
 
-    const Patient = Parse.Object.extend('Patient');
-    const query = new Parse.Query(Patient);
+    const parseObject = Parse.Object.extend(object);
+    const query = new Parse.Query(parseObject);
+    let jsonArray = [];
     query[type](variable, text);
     query.find().then((results) => {
-      let jsonArray = [];
+
 
       if (text === '') {
         dispatch({ type: DB_QUERY_RESULTS, payload: '' });

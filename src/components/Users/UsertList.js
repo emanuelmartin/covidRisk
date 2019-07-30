@@ -8,7 +8,7 @@ import { queryFunc } from '../../actions';
 import { connect } from 'react-redux';
 
 
-class PatientList extends React.Component {
+class UsertList extends React.Component {
   constructor(props) {
     super(props);
     //setting default state
@@ -16,7 +16,7 @@ class PatientList extends React.Component {
     this.arrayholder = [];
   }
   static navigationOptions = {
-    title: 'Pacientes',
+    title: 'Usuarios',
   };
 
   componentDidMount() {
@@ -78,7 +78,7 @@ class PatientList extends React.Component {
         <SearchBar
           round
           searchIcon={{ size: 24 }}
-          onChangeText={text => this.props.queryFunc({ type: 'startsWith', object: 'Patient', variable: 'lastName1', text })}
+          onChangeText={text => this.props.queryFunc({ type: 'startsWith', object: 'Users', variable: 'lastName1', text })}
           onClear={text => this.props.queryFunc({ text: '' })}
           placeholder="Ingresa el primer apellido..."
           value={this.props.text}
