@@ -30,3 +30,6 @@ export const ADD_ITEM_FAIL = 'add_item_fail';
 export const ADD_ITEM = 'add_item';
 export const ITEM_ALREADY_EXIST = 'item_already_exist';
 export const INVENTORY_REQUEST = 'inventory_request';
+
+export const DB_QUERY = 'db_query';
+export const DB_QUERY_RESULTS = 'db_query_results';

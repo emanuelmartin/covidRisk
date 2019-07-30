@@ -30,8 +30,8 @@ class SideMenu extends Component {
               <Text style={styles.navItemStyle} onPress={this.navigateToScreen('PatientList')}>
               Pacientes
               </Text>
-              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('SignUp')}>
-              Añadir usuario
+              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('UserList')}>
+              Usuarios
               </Text>
             </View>
           </View>

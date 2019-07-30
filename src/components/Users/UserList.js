@@ -2,13 +2,13 @@ import * as React from 'react';
 import Parse from 'parse/react-native';
 import { Text, View, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import { SearchBar } from 'react-native-elements';
-import { NavigationActions } from 'react-navigation'
+import { NavigationActions } from 'react-navigation';
 import { Button } from '../common';
 import { queryFunc } from '../../actions';
 import { connect } from 'react-redux';
 
 
-class PatientList extends React.Component {
+class UserList extends React.Component {
   constructor(props) {
     super(props);
     //setting default state
@@ -16,7 +16,7 @@ class PatientList extends React.Component {
     this.arrayholder = [];
   }
   static navigationOptions = {
-    title: 'Pacientes',
+    title: 'Usuarios',
   };
 
   componentDidMount() {
@@ -37,11 +37,9 @@ class PatientList extends React.Component {
         console.error(error);
       });
   }
-
   search = text => {
     console.log(text);
   };
-
   clear = () => {
     this.props.text.clear();
   };
@@ -64,7 +62,6 @@ class PatientList extends React.Component {
       />
     );
   };
-
   render() {
     if (this.state.isLoading) {
       //Loading View while data is loading
@@ -80,9 +77,8 @@ class PatientList extends React.Component {
       <View style={styles.viewStyle}>
         <SearchBar
           round
-          lightTheme
           searchIcon={{ size: 24 }}
-          onChangeText={text => this.props.queryFunc({ type: 'startsWith', object: 'Patient', variable: 'lastName1', text })}
+          onChangeText={text => this.props.queryFunc({ type: 'startsWith', object: 'User', variable: 'lastName1', text })}
           onClear={text => this.props.queryFunc({ text: '' })}
           placeholder="Ingresa el primer apellido..."
           value={this.props.text}
@@ -100,12 +96,11 @@ class PatientList extends React.Component {
             keyExtractor={(item, index) => index.toString()}
           />
         </View>
-        <CardSection>
-          <Button onPress={this.navigateToScreen('PatientForm')}>
-            Añadir paciente
-          </Button>
-        </CardSection>
-        <CardSection />
+        <View>
+        <Button onPress={this.navigateToScreen('SignupForm')}>
+          Añadir paciente
+        </Button>
+      </View>
       </View>
     );
   }
@@ -131,4 +126,4 @@ const mapStateToProps = ({ query }) => {
  return { text, dataSource };
 };
 
-export default connect(mapStateToProps, { queryFunc })(PatientList);
+export default connect(mapStateToProps, { queryFunc })(UserList);

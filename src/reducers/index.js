@@ -4,6 +4,7 @@ import SignupFormReducer from './SignupFormReducer';
 import PatientFormReducer from './PatientFormReducer';
 import EmployeeReducer from './EmployeeReducer';
 import ItemReducer from './ItemReducer';
+import QueryReducer from './QueryReducer';
 
 export default combineReducers({
   auth: AuthReducer,
@@ -11,4 +12,5 @@ export default combineReducers({
   employees: EmployeeReducer,
   patientForm: PatientFormReducer,
   item: ItemReducer,
+  query: QueryReducer
 });

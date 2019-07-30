@@ -7,9 +7,10 @@ import {
 } from 'react-navigation';
 // import screens
 import LoginForm from './LoginForm';
-import SignupForm from './SignupForm';
+import UserList from './Users/UserList';
 import Home from './Home';
 import PatientForm from './PatientForm';
+import SignupForm from './SignupForm'
 import SideMenu from '../SideMenu/SideMenu';
 import InventoryScreen from './InventoryScreen.js';
 import UpdateItemScreen from './UpdateItemScreen.js';
@@ -21,6 +22,7 @@ const AppStack = createStackNavigator(
   {
     Home,
     SignUp: SignupForm,
+    UserList,
     PatientForm,
     PatientList,
     InventoryScreen,
