@@ -79,7 +79,7 @@ class PatientList extends React.Component {
           round
           searchIcon={{ size: 24 }}
           onChangeText={text => this.props.queryFunc({ type: 'startsWith', variable: 'lastName1', text })}
-          onClear={text => this.SearchFilterFunction('')}
+          onClear={text => this.props.queryFunc({ type: 'startsWith', variable: 'lastName1', text: '' })}
           placeholder="Ingresa el primer apellido..."
           value={this.props.text}
         />
