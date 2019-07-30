@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Parse from 'parse/react-native';
-import { Text, View, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import { Text, View, StyleSheet, FlatList, ActivityIndicator, TouchableWithoutFeedback } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
 import { Button } from '../common';
@@ -44,11 +44,12 @@ class PatientList extends React.Component {
     this.props.text.clear();
   };
 
-  navigateToScreen = (route) => () => {
+  navigateToScreen = (route, item ) => () => {
     const navigateAction = NavigationActions.navigate({
-      routeName: route
+      routeName: route,
+      item
     });
-    this.props.navigation.dispatch(navigateAction);
+    this.props.navigation.navigate(route, { item });
   }
   ListViewItemSeparator = () => {
     //Item sparator view
@@ -89,7 +90,10 @@ class PatientList extends React.Component {
             //Item Separator View
             renderItem={({ item }) => (
               // Single Comes here which will be repeatative for the FlatListItems
-              <Text style={styles.textStyle}>{item.names} {item.lastName1} {item.lastName2}</Text>
+              <TouchableWithoutFeedback
+              onPress={this.navigateToScreen('PatientDetail', item)} >
+              <Text style={styles.textStyle} >{item.names} {item.lastName1} {item.lastName2} </Text>
+              </TouchableWithoutFeedback>
             )}
             enableEmptySections
             style={{ marginTop: 10 }}
