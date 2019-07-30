@@ -4,9 +4,11 @@ import { Text, View, StyleSheet, FlatList, ActivityIndicator } from 'react-nativ
 import { SearchBar } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
 import { Button } from '../common';
+import { queryFunc } from '../../actions';
+import { connect } from 'react-redux';
 
 
-export default class PatientList extends React.Component {
+class PatientList extends React.Component {
   constructor(props) {
     super(props);
     //setting default state
@@ -39,7 +41,7 @@ export default class PatientList extends React.Component {
     console.log(text);
   };
   clear = () => {
-    this.search.clear();
+    this.props.text.clear();
   };
 
   navigateToScreen = (route) => () => {
@@ -47,26 +49,6 @@ export default class PatientList extends React.Component {
       routeName: route
     });
     this.props.navigation.dispatch(navigateAction);
-  }
-
-  async SearchFilterFunction(text) {
-    const Patient = Parse.Object.extend('Patient');
-    const query = new Parse.Query(Patient);
-    console.log(text);
-    query.startsWith('lastName1', text);
-    query.find().then((results) => {
-      var jsonArray = [];
-
-        for(var i = 0; i < results.length; i++) {
-           jsonArray.push(results[i].toJSON());
-        }
-      console.log(jsonArray);
-      this.setState({
-        dataSource: jsonArray,
-        search: text
-      });
-    });
-    //passing the inserted text in textinput
   }
   ListViewItemSeparator = () => {
     //Item sparator view
@@ -96,20 +78,20 @@ export default class PatientList extends React.Component {
         <SearchBar
           round
           searchIcon={{ size: 24 }}
-          onChangeText={text => this.SearchFilterFunction(text)}
+          onChangeText={text => this.props.queryFunc({ type: 'startsWith', variable: 'lastName1', text })}
           onClear={text => this.SearchFilterFunction('')}
           placeholder="Buscar..."
-          value={this.state.search}
+          value={this.props.text}
         />
           <FlatList
-            data={this.state.dataSource}
+            data={this.props.dataSource}
             ItemSeparatorComponent={this.ListViewItemSeparator}
             //Item Separator View
             renderItem={({ item }) => (
               // Single Comes here which will be repeatative for the FlatListItems
               <Text style={styles.textStyle}>{item.names} {item.lastName1} {item.lastName2}</Text>
             )}
-            enableEmptySections={true}
+            enableEmptySections
             style={{ marginTop: 10 }}
             keyExtractor={(item, index) => index.toString()}
           />
@@ -137,3 +119,11 @@ const styles = StyleSheet.create({
 
   }
 });
+
+const mapStateToProps = ({ query }) => {
+ const { text, dataSource } = query;
+ console.log(query);
+ return { text, dataSource };
+};
+
+export default connect(mapStateToProps, { queryFunc })(PatientList);
