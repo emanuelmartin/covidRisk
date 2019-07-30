@@ -3,7 +3,7 @@ import Parse from 'parse/react-native';
 import { Text, View, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
-import { Button } from '../common';
+import { CardSection, Button } from '../common';
 
 
 export default class PatientList extends React.Component {
@@ -35,9 +35,11 @@ export default class PatientList extends React.Component {
         console.error(error);
       });
   }
+
   search = text => {
     console.log(text);
   };
+
   clear = () => {
     this.search.clear();
   };
@@ -68,6 +70,7 @@ export default class PatientList extends React.Component {
     });
     //passing the inserted text in textinput
   }
+
   ListViewItemSeparator = () => {
     //Item sparator view
     return (
@@ -80,6 +83,7 @@ export default class PatientList extends React.Component {
       />
     );
   };
+
   render() {
     if (this.state.isLoading) {
       //Loading View while data is loading
@@ -92,15 +96,16 @@ export default class PatientList extends React.Component {
     return (
       //ListView to show with textinput used as search bar
       <View style={{ flex: 1 }}>
-      <View style={styles.viewStyle}>
-        <SearchBar
-          round
-          searchIcon={{ size: 24 }}
-          onChangeText={text => this.SearchFilterFunction(text)}
-          onClear={text => this.SearchFilterFunction('')}
-          placeholder="Buscar..."
-          value={this.state.search}
-        />
+        <View style={styles.viewStyle}>
+          <SearchBar
+            round
+            lightTheme
+            searchIcon={{ size: 24 }}
+            onChangeText={text => this.SearchFilterFunction(text)}
+            onClear={() => this.SearchFilterFunction('')}
+            placeholder="Buscar..."
+            value={this.state.search}
+          />
           <FlatList
             data={this.state.dataSource}
             ItemSeparatorComponent={this.ListViewItemSeparator}
@@ -114,11 +119,12 @@ export default class PatientList extends React.Component {
             keyExtractor={(item, index) => index.toString()}
           />
         </View>
-        <View>
-        <Button onPress={this.navigateToScreen('PatientForm')}>
-          Añadir paciente
-        </Button>
-      </View>
+        <CardSection>
+          <Button onPress={this.navigateToScreen('PatientForm')}>
+            Añadir paciente
+          </Button>
+        </CardSection>
+        <CardSection />
       </View>
     );
   }

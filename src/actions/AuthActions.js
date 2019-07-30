@@ -8,7 +8,7 @@ import {
   LOGIN_USER,
   ACTIVE_SESSION,
   NO_SESSION,
-  LOGOUT_USER,
+  // LOGOUT_USER,
   LOGOUT_USER_SUCCESS
 } from './types';
 
@@ -28,19 +28,19 @@ export const passwordChanged = (text) => {
 
 export const loginUser = ({ email, password }) => {
   const user = new Parse.User();
-  user.set("username", email);
-  user.set("password", password);
-  user.set("email", email);
+  user.set('username', email);
+  user.set('password', password);
+  user.set('email', email);
 
   return (dispatch) => {
     dispatch({ type: LOGIN_USER });
 
   user.logIn(email, password)
     .then(user => {
-      dispatch( { type: LOGIN_USER_SUCCESS, payload: user })
+      dispatch({ type: LOGIN_USER_SUCCESS, payload: user });
     })
     .catch(error => {
-      dispatch( { type: LOGIN_USER_FAIL, payload: error })
+      dispatch({ type: LOGIN_USER_FAIL, payload: error });
     });
   };
 };

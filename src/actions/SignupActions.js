@@ -195,10 +195,10 @@ export const userCreate = () => {
 
   user.signUp()
     .then(user => {
-      dispatch( { type: USER_CREATE_SUCCESS, payload: user })
+      dispatch({ type: USER_CREATE_SUCCESS, payload: user })
     })
     .catch(error => {
-      dispatch( { type: USER_CREATE_FAIL, payload: error })
+      dispatch({ type: USER_CREATE_FAIL, payload: error })
     });
   };
 };

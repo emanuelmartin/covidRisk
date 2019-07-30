@@ -319,7 +319,7 @@ class SignupForm extends Component {
         <View>
         <CardSection>
         <Input
-          label="Usario"
+          label="Usuario"
           placeholder="EmanuelMartin"
           value={this.props.username.toShow}
           valid={this.props.username.valid}

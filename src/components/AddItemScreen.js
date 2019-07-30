@@ -103,7 +103,7 @@ class AddItemScreen extends Component {
 				<CardSection>
 					<Input
             label="Código"
-            placeholder="0xa422008"
+            placeholder="422008"
             onChangeText={this.onCodeChange.bind(this)}
             value={this.props.code}
 					/>
