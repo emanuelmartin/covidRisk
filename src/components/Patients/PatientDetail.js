@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import { Text } from 'react-native';
+import { Text, ScrollView, View } from 'react-native';
+import { Card, CardSection} from '../common'
+import { mapValues} from 'lodash';
 
 
 export default class PatientDetail extends Component {
@@ -10,12 +12,34 @@ export default class PatientDetail extends Component {
   };
   };
 
+  renderItem(item) {
+    console.log(item);
+    const data = { key: item[0].toString(), value: item[1].toString() }
+    if (data.key !== 'createdAt' && data.key !== 'updatedAt' && data.key !== 'ACL' && data.key !== 'objectId' && data.key !== 'password') {
+    return (
+      <View>
+      <Card>
+        <CardSection>
+        <Text> {data.key}</Text>
+        </CardSection>
+        <CardSection>
+        <Text> {data.value}</Text>
+        </CardSection>
+      </Card>
+      </View>
+    );
+  }
+  }
+
   render() {
     const { navigation } = this.props;
-    const item = navigation.getParam('item');
-
-    return (
-      <Text>{JSON.stringify(item)}</Text>
-    )
-  }
+    let data = navigation.getParam('item');
+    const array = Object.entries(data);
+    console.log(array)
+      return(
+      <ScrollView>
+      {array.map(item => this.renderItem(item))}
+      </ScrollView>
+    );
+}
 }
