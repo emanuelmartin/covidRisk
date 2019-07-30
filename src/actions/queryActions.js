@@ -15,6 +15,10 @@ export const queryFunc = ({ type, variable, text }) => {
     query.find().then((results) => {
       let jsonArray = [];
 
+      if (!query.length) {
+        dispatch({ type: DB_QUERY_RESULTS, payload: '' });
+      }
+
         for (let i = 0; i < results.length; i++) {
            jsonArray.push(results[i].toJSON());
         }

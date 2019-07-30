@@ -80,7 +80,7 @@ class PatientList extends React.Component {
           searchIcon={{ size: 24 }}
           onChangeText={text => this.props.queryFunc({ type: 'startsWith', variable: 'lastName1', text })}
           onClear={text => this.SearchFilterFunction('')}
-          placeholder="Buscar..."
+          placeholder="Ingresa el primer apellido..."
           value={this.props.text}
         />
           <FlatList
