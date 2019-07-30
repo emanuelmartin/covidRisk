@@ -8,7 +8,7 @@ import { queryFunc } from '../../actions';
 import { connect } from 'react-redux';
 
 
-class UsertList extends React.Component {
+class UserList extends React.Component {
   constructor(props) {
     super(props);
     //setting default state
@@ -78,7 +78,7 @@ class UsertList extends React.Component {
         <SearchBar
           round
           searchIcon={{ size: 24 }}
-          onChangeText={text => this.props.queryFunc({ type: 'startsWith', object: 'Users', variable: 'lastName1', text })}
+          onChangeText={text => this.props.queryFunc({ type: 'startsWith', object: 'User', variable: 'lastName1', text })}
           onClear={text => this.props.queryFunc({ text: '' })}
           placeholder="Ingresa el primer apellido..."
           value={this.props.text}
@@ -97,7 +97,7 @@ class UsertList extends React.Component {
           />
         </View>
         <View>
-        <Button onPress={this.navigateToScreen('PatientForm')}>
+        <Button onPress={this.navigateToScreen('SignupForm')}>
           Añadir paciente
         </Button>
       </View>
@@ -126,4 +126,4 @@ const mapStateToProps = ({ query }) => {
  return { text, dataSource };
 };
 
-export default connect(mapStateToProps, { queryFunc })(PatientList);
+export default connect(mapStateToProps, { queryFunc })(UserList);
