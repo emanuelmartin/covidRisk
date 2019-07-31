@@ -1,7 +1,15 @@
 import React from 'react';
 import { TextInput, View, Text, StyleSheet } from 'react-native';
 
-const Input = ({ label, value, onChangeText, placeholder, secureTextEntry, edited, valid }) => {
+const Input = ({
+  label,
+  value,
+  onChangeText,
+  placeholder,
+  secureTextEntry,
+  keyboardType,
+  edited,
+  valid }) => {
   const validationStyles = edited
     ? valid ? styles.valid : styles.invalid
     : null;
@@ -16,6 +24,7 @@ const Input = ({ label, value, onChangeText, placeholder, secureTextEntry, edite
         style={styles.inputStyle}
         value={value}
         onChangeText={onChangeText}
+        keyboardType={keyboardType}
       />
     </View>
   );

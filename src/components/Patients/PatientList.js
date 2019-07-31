@@ -53,7 +53,7 @@ class PatientList extends React.Component {
     this.props.text.clear();
   };
 
-  navigateToScreen = (route, item ) => () => {
+  navigateToScreen = (route, item) => () => {
     const navigateAction = NavigationActions.navigate({
       routeName: route,
       item
@@ -61,7 +61,7 @@ class PatientList extends React.Component {
     this.props.navigation.navigate(route, { item });
   }
   ListViewItemSeparator = () => {
-    //Item sparator view
+    //Item separator view
     return (
       <View
         style={{
@@ -90,8 +90,12 @@ class PatientList extends React.Component {
           round
           lightTheme
           searchIcon={{ size: 24 }}
-          onChangeText={text => this.props.queryFunc({ type: 'startsWith', object: 'Patient', variable: 'lastName1', text })}
-          onClear={text => this.props.queryFunc({ text: '' })}
+          onChangeText={text => this.props.queryFunc({
+            type: 'startsWith',
+            object: 'Patient',
+            variable: 'lastName1',
+            text })}
+          onClear={() => this.props.queryFunc({ text: '' })}
           placeholder="Ingresa el primer apellido..."
           value={this.props.text}
         />
@@ -102,7 +106,8 @@ class PatientList extends React.Component {
             renderItem={({ item }) => (
               // Single Comes here which will be repeatative for the FlatListItems
               <TouchableWithoutFeedback
-              onPress={this.navigateToScreen('PatientDetail', item)} >
+              onPress={this.navigateToScreen('PatientDetail', item)}
+              >
               <Text style={styles.textStyle} >{item.names} {item.lastName1} {item.lastName2} </Text>
               </TouchableWithoutFeedback>
             )}

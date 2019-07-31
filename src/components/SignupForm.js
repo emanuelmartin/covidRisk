@@ -73,6 +73,7 @@ class SignupForm extends Component {
             value={this.props.birthday.toShow}
             valid={this.props.birthday.valid}
             edited={this.props.birthday.edited}
+            keyboardType="numeric"
             onChangeText={value => this.props.signupUpdate({ prop: 'birthday', value, type: 'date', edited: true })}
           />
         </CardSection>
@@ -160,6 +161,7 @@ class SignupForm extends Component {
           label="Código postal"
           placeholder="47600"
           value={this.props.CP}
+          keyboardType="numeric"
           onChangeText={value => this.props.signupUpdate({ prop: 'CP', value, type: 'numbers', limit: 8 })}
         />
         </CardSection>
@@ -241,6 +243,7 @@ class SignupForm extends Component {
             value={this.props.phone.toShow}
             valid={this.props.phone.valid}
             edited={this.props.phone.edited}
+            keyboardType="numeric"
             onChangeText={value => this.props.signupUpdate({ prop: 'phone', value, type: 'phone', edited: true })}
           />
           </CardSection>
@@ -250,6 +253,7 @@ class SignupForm extends Component {
             label="Email"
             placeholder="emanuel@healtech.com.mx"
             value={this.props.email}
+            keyboardType="email-address"
             onChangeText={value => this.props.signupUpdate({ prop: 'email', value })}
           />
           </CardSection>
@@ -306,6 +310,7 @@ class SignupForm extends Component {
           label="Teléfono"
           placeholder="378-098-92323"
           value={this.props.emergencyPhone}
+          keyboardType="numeric"
           onChangeText={value => this.props.signupUpdate({ prop: 'emergencyPhone', value })}
         />
         </CardSection>

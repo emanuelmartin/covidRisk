@@ -1,8 +1,11 @@
 import {
   CODE_CHANGED,
   NAME_CHANGED,
+  FORMULA_CHANGED,
+  LABORATORY_CHANGED,
   PRESENTATION_CHANGED,
   CONTENT_CHANGED,
+  STOCK_CHANGED,
   PUBLIC_PRICE_CHANGED,
   PACIENT_PRICE_CHANGED,
   ASSURANCE_PRICE_CHANGED,
@@ -15,8 +18,11 @@ import {
 const INITIAL_STATE = {
   code: '',
   name: '',
+  formula: '',
+  laboratory: '',
   presentation: '',
   content: '',
+  stock: '',
   publicPrice: '',
   pacientPrice: '',
   assurancePrice: '',
@@ -32,10 +38,16 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, code: action.payload };
     case NAME_CHANGED:
       return { ...state, name: action.payload };
+    case FORMULA_CHANGED:
+      return { ...state, formula: action.payload };
+    case LABORATORY_CHANGED:
+      return { ...state, laboratory: action.payload };
     case PRESENTATION_CHANGED:
       return { ...state, presentation: action.payload };
     case CONTENT_CHANGED:
       return { ...state, content: action.payload };
+    case STOCK_CHANGED:
+      return { ...state, stock: action.payload };
     case PUBLIC_PRICE_CHANGED:
       return { ...state, publicPrice: action.payload };
     case PACIENT_PRICE_CHANGED:

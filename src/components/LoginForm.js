@@ -9,7 +9,7 @@ class LoginForm extends Component {
   static navigationOptions = {
     header: null //this will hide the header
   };
-  
+
   componentWillMount() {
     Parse.User.currentAsync().then((user) => {
         console.log(user);
@@ -77,6 +77,7 @@ class LoginForm extends Component {
             placeholder="usuario"
             onChangeText={this.onEmailChange.bind(this)}
             value={this.props.email}
+            keyboardType="email-address"
           />
         </CardSection>
 

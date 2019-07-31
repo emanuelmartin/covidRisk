@@ -54,7 +54,7 @@ class SideMenu extends Component {
             </Text>
             <View style={styles.navSectionStyle}>
               <Text style={styles.navItemStyle} onPress={this.navigateToScreen('InventoryList')}>
-              Inventario
+              Consulta
               </Text>
               <Text style={styles.navItemStyle} onPress={this.navigateToScreen('OutputItemScreen')}>
               Venta producto

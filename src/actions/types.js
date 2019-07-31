@@ -20,8 +20,11 @@ export const PATIENT_CREATE_FAIL = 'patient_create_fail';
 
 export const CODE_CHANGED = 'code_changed';
 export const NAME_CHANGED = 'name_changed';
+export const FORMULA_CHANGED = 'formula_changed';
+export const LABORATORY_CHANGED = 'laboratory_changed';
 export const PRESENTATION_CHANGED = 'presentation_changed';
 export const CONTENT_CHANGED = 'content_changed';
+export const STOCK_CHANGED = 'stock_changed';
 export const PUBLIC_PRICE_CHANGED = 'public_price_changed';
 export const PACIENT_PRICE_CHANGED = 'pacient_price_changed';
 export const ASSURANCE_PRICE_CHANGED = 'assurance_price_changed';
