@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Parse from 'parse/react-native';
 import { Picker } from 'react-native';
+import { Dropdown } from 'react-native-material-dropdown';
 
 import {
   Text,
@@ -41,6 +42,21 @@ export default class ListaOcupacion extends React.Component {
   });
 }
 
+async query(value) {
+  this.setState({ Tipo: value, isLoading: true })
+  const parseObject = Parse.Object.extend('Ocupacion');
+  const query = new Parse.Query(parseObject);
+  let jsonArray = [];
+  query['startsWith']('Tipo', this.state.Tipo);
+  query.find().then((results) => {
+      for (let i = 0; i < results.length; i++) {
+         jsonArray.push(results[i].toJSON());
+      }
+      console.log(jsonArray)
+    this.setState({ isLoading: false, dataSource: jsonArray });
+});
+}
+
   setStyle(estado) {
     if (estado) { return ({
         padding: 10,
@@ -73,20 +89,23 @@ export default class ListaOcupacion extends React.Component {
   };
 
   render() {
+      let data = [{
+          value: 'Habitación',
+        }, {
+          value: 'Quirófano',
+        }];
+    this.query.bind(this);
     if (this.state.isLoading) {
       //Loading View while data is loading
       return (
         <View style={{ flex: 1, paddingTop: 20 }}>
         <CardSection>
-        <Picker
-          selectedValue={this.state.Tipo}
-          style={{ flex:1 }}
-          onValueChange={(itemValue, itemIndex) =>
-            this.setState({ Tipo: itemValue, isLoading: true })}
-        >
-          <Picker.Item label='Habitación' value='Habitación' />
-          <Picker.Item label='Quirófano' value='Quirófano' />
-        </Picker>
+        <Dropdown
+        containerStyle={{ flex: 1 }}
+        data={data}
+        value={this.state.Tipo}
+        onChangeText={value => this.setState({ Tipo: value, isLoading: true })}
+      />
         </CardSection>
           <ActivityIndicator />
         </View>
@@ -95,15 +114,12 @@ export default class ListaOcupacion extends React.Component {
     return (
       <View style={{ flex: 1 }}>
       <CardSection>
-      <Picker
-        selectedValue={this.state.Tipo}
-        style={{ flex:1 }}
-        onValueChange={(itemValue, itemIndex) =>
-          this.setState({ Tipo: itemValue, isLoading: true })}
-      >
-        <Picker.Item label='Habitación' value='Habitación' />
-        <Picker.Item label='Quirófano' value='Quirófano' />
-      </Picker>
+        <Dropdown
+        containerStyle={{ flex: 1 }}
+        data={data}
+        value={this.state.Tipo}
+        onChangeText={value => this.query(value)}
+      />
       </CardSection>
       <CardSection>
       <View style={styles.viewStyle}>
@@ -116,7 +132,7 @@ export default class ListaOcupacion extends React.Component {
               <TouchableWithoutFeedback
               onPress={this.navigateToScreen('PatientDetail', item)}
               >
-              <Text style={this.setStyle(item.Ocupada)} >Habitación {item.ID}</Text>
+              <Text style={this.setStyle(item.Ocupada)} >{item.Tipo} {item.ID}</Text>
               </TouchableWithoutFeedback>
             )}
             enableEmptySections
