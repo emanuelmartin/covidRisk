@@ -24,7 +24,17 @@ export default class PatientDetail extends Component {
       <View>
       <Card>
         <CardSection>
-        <Text> {data.key}</Text>
+        <Text
+        style={{
+          fontSize: 15,
+          fontWeight: 'bold',
+          marginTop: 15,
+          padding: 5,
+          color: '#000'
+        }}
+        >
+          {data.key}
+        </Text>
         </CardSection>
         <CardSection>
         <Text> {data.value}</Text>

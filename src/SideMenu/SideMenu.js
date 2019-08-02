@@ -40,6 +40,9 @@ class SideMenu extends Component {
               Ocupación
             </Text>
             <View style={styles.navSectionStyle}>
+            <Text style={styles.navItemStyle} onPress={this.navigateToScreen('ListaOcupacion')}>
+              Estado actual
+            </Text>
               <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Page2')}>
                 Ingresar paciente
               </Text>

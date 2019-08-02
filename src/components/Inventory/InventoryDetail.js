@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Text, ScrollView, View } from 'react-native';
 import { Card, CardSection } from '../common';
 
-export default class PatientDetail extends Component {
+export default class InventoryDetail extends Component {
 
   static navigationOptions = ({ navigation }) => {
     return {

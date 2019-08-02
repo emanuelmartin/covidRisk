@@ -19,6 +19,7 @@ import OutputItemScreen from './OutputItemScreen.js';
 import AddItemScreen from './AddItemScreen.js';
 import PatientList from './Patients/PatientList';
 import PatientDetail from './Patients/PatientDetail';
+import ListaOcupacion from './Ocupacion/ListaOcupacion';
 
 const AppStack = createStackNavigator(
   {
@@ -32,7 +33,8 @@ const AppStack = createStackNavigator(
     AddItemScreen,
     UpdateItemScreen,
     OutputItemScreen,
-    PatientDetail
+    PatientDetail,
+    ListaOcupacion
   },
   {
     defaultNavigationOptions: {
