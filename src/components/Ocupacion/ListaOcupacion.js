@@ -139,7 +139,7 @@ async query(value) {
       <ScrollView style={styles.viewStyle}>
       <CardSection>
           <FlatList
-            data={this.state.Ocupacion}
+            data={this.state.dataSource}
             ItemSeparatorComponent={this.ListViewItemSeparator}
             //Item Separator View
             renderItem={({ item }) => (
