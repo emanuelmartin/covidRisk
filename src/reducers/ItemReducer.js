@@ -12,7 +12,11 @@ import {
   ADD_ITEM_SUCCES,
   ADD_ITEM_FAIL,
   ADD_ITEM,
-  ITEM_ALREADY_EXIST
+  ITEM_ALREADY_EXIST,
+  UPDATE_ITEM,
+  UPDATE_ITEM_SUCCES,
+  UPDATE_ITEM_FAIL,
+  ITEM_NOT_EXIST
  } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -62,6 +66,14 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, loading: false, error: 'Intente de nuevo' };
     case ITEM_ALREADY_EXIST:
       return { ...state, loading: false, error: 'Producto ya existe' };
+    case UPDATE_ITEM:
+      return { ...state, loading: true, error: 'UPDATE_ITEM' };
+    case UPDATE_ITEM_SUCCES:
+      return { ...state, loading: false, error: 'UPDATE_ITEM_SUCCES' };
+    case UPDATE_ITEM_FAIL:
+      return { ...state, loading: false, error: 'Intente de nuevo' };
+    case ITEM_NOT_EXIST:
+      return { ...state, loading: false, error: 'Producto no existe' };
     default:
       return state;
   }

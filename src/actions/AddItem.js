@@ -15,7 +15,11 @@ import {
   ADD_ITEM_FAIL,
   ADD_ITEM,
   ITEM_ALREADY_EXIST,
-  INVENTORY_REQUEST
+  INVENTORY_REQUEST,
+  UPDATE_ITEM,
+  UPDATE_ITEM_SUCCES,
+  UPDATE_ITEM_FAIL,
+  ITEM_NOT_EXIST
 } from './types';
 
 export const codeChanged = (text) => ({
@@ -89,7 +93,6 @@ export const addItem = ({
     const checkItem = new Parse.Query(Item);
     checkItem.equalTo('name', name);
     const results = await checkItem.find();
-    //const results = checkItem.find();
 
     // Do something with the returned Parse.Object values
     for (let i = 0; i < results.length; i++) {
@@ -137,3 +140,44 @@ export const inventoryRequest = (data) => ({
     type: INVENTORY_REQUEST,
     payload: data
   });
+
+export const updateItem = ({ item, value }) => {
+  return async (dispatch) => {
+    dispatch({ type: UPDATE_ITEM });
+
+    let index = -1;
+
+    const Item = Parse.Object.extend('Farmacia');
+    const checkItem = new Parse.Query(Item);
+    checkItem.equalTo('name', item.name.toString());
+    const results = await checkItem.find();
+
+    // Do something with the returned Parse.Object values
+    for (let i = 0; i < results.length; i++) {
+      const object = results[i];
+      if (object.get('formula') === item.formula.toString() &&
+        object.get('laboratory') === item.laboratory.toString() &&
+        object.get('presentation') === item.presentation.toString() &&
+        object.get('content') === item.content.toString()) {
+        index = i;
+      }
+    }
+
+    if (index !== -1) {
+      results[index].set('stock', 10);
+      results[index].save()
+        .then(
+        (result) => {
+          dispatch({ type: UPDATE_ITEM_SUCCES });
+          console.log('Comment created', result);
+        },
+        (error) => {
+          dispatch({ type: UPDATE_ITEM_FAIL });
+          console.error('Error while creating Comment: ', error);
+        }
+      );
+    } else {
+      dispatch({ type: ITEM_NOT_EXIST });
+    }
+  };
+};

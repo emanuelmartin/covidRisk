@@ -90,19 +90,23 @@ class InventoryList extends React.Component {
           round
           lightTheme
           searchIcon={{ size: 24 }}
-          onChangeText={text => this.props.queryFunc({ type: 'startsWith', object: 'Farmacia', variable: 'name', text })}
+          onChangeText={text => this.props.queryFunc({
+            type: 'startsWith',
+            object: 'Farmacia',
+            variable: 'name',
+            text })}
           onClear={text => this.props.queryFunc({ text: '' })}
           placeholder="Ingresa el nombre comercial..."
           value={this.props.text}
         />
           <FlatList
-            data={this.props.dataSource}
+            data={this.props.Farmacia}
             ItemSeparatorComponent={this.ListViewItemSeparator}
             //Item Separator View
             renderItem={({ item }) => (
               // Single Comes here which will be repeatative for the FlatListItems
               <TouchableWithoutFeedback
-              onPress={this.navigateToScreen('PatientDetail', item)}
+              onPress={this.navigateToScreen('InventoryDetail', item)}
               >
               <Text style={styles.textStyle}>{item.laboratory} - {item.name} {item.presentation} {item.content}</Text>
               </TouchableWithoutFeedback>
@@ -138,9 +142,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ query }) => {
- const { text, dataSource } = query;
- console.log(query);
- return { text, dataSource };
+ const { text, Farmacia } = query;
+ return { text, Farmacia };
 };
 
 export default connect(mapStateToProps, { queryFunc, cleanFunc })(InventoryList);

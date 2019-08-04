@@ -14,6 +14,7 @@ import SignupForm from './SignupForm';
 import SideMenu from '../SideMenu/SideMenu';
 import InventoryScreen from './InventoryScreen.js';
 import InventoryList from './Inventory/InventoryList';
+import InventoryDetail from './Inventory/InventoryDetail';
 import UpdateItemScreen from './UpdateItemScreen.js';
 import OutputItemScreen from './OutputItemScreen.js';
 import AddItemScreen from './AddItemScreen.js';
@@ -34,6 +35,7 @@ const AppStack = createStackNavigator(
     PatientList,
     InventoryScreen,
     InventoryList,
+    InventoryDetail,
     AddItemScreen,
     UpdateItemScreen,
     OutputItemScreen,

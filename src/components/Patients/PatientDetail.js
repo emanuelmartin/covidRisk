@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Text, ScrollView, View } from 'react-native';
-//import { mapValues } from 'lodash';
 import { Card, CardSection } from '../common';
 
 export default class PatientDetail extends Component {
