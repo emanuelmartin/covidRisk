@@ -43,7 +43,7 @@ class SideMenu extends Component {
             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('ListaOcupacion')}>
               Estado actual
             </Text>
-              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Page2')}>
+              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('PatientSelect')}>
                 Ingresar paciente
               </Text>
               <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Page3')}>

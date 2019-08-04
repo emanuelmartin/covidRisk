@@ -100,7 +100,7 @@ class PatientList extends React.Component {
           value={this.props.text}
         />
           <FlatList
-            data={this.props.dataSource}
+            data={this.props.Patient}
             ItemSeparatorComponent={this.ListViewItemSeparator}
             //Item Separator View
             renderItem={({ item }) => (
@@ -142,9 +142,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ query }) => {
- const { text, dataSource } = query;
- console.log(query);
- return { text, dataSource };
+ const { text, Patient } = query;
+ return { text, Patient };
 };
 
 export default connect(mapStateToProps, { queryFunc, cleanFunc })(PatientList);

@@ -13,6 +13,11 @@ export default class PatientDetail extends Component {
 
   renderItem(item) {
     console.log(item);
+    if (item[0].toString() === 'Ocupada' && item[1] === true) item[1] = 'Ocupado';
+    if (item[0].toString() === 'Ocupada' && item[1] === false) item[1] = 'Disponible';
+    if (typeof item === 'object') {
+      console.log(item);
+    }
     const data = { key: item[0].toString(), value: item[1].toString() };
     if (
       data.key !== 'createdAt' &&

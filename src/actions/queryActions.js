@@ -22,7 +22,7 @@ export const queryFunc = ({ type, object, variable, text }) => {
            jsonArray.push(results[i].toJSON());
         }
       console.log(jsonArray);
-      dispatch({ type: DB_QUERY_RESULTS, payload: jsonArray });
+      dispatch({ type: DB_QUERY_RESULTS, payload: jsonArray, name: object });
           });
     }
   };

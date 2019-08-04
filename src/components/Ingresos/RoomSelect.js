@@ -39,7 +39,7 @@ export default class ListaOcupacion extends React.Component {
            jsonArray.push(results[i].toJSON());
         }
         console.log(jsonArray)
-      this.setState({ isLoading: false, Ocupacion: jsonArray });
+      this.setState({ isLoading: false, dataSource: jsonArray });
   });
 }
 
@@ -107,7 +107,7 @@ async query(value) {
         }, {
           value: 'Neonatos'
         }, {
-          value: 'Observación urgencias'
+          value: 'Urgencias'
         }];
     this.query.bind(this);
     if (this.state.isLoading) {
@@ -139,13 +139,13 @@ async query(value) {
       <ScrollView style={styles.viewStyle}>
       <CardSection>
           <FlatList
-            data={this.state.Ocupacion}
+            data={this.state.dataSource}
             ItemSeparatorComponent={this.ListViewItemSeparator}
             //Item Separator View
             renderItem={({ item }) => (
               // Single Comes here which will be repeatative for the FlatListItems
               <TouchableWithoutFeedback
-              onPress={this.navigateToScreen('PatientDetail', item)}
+              onPress={this.navigateToScreen('DetalleIngreso', item)}
               >
               <Text style={this.setStyle(item.Ocupada)} >{item.Tipo} {item.ID}</Text>
               </TouchableWithoutFeedback>

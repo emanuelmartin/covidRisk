@@ -20,6 +20,10 @@ import AddItemScreen from './AddItemScreen.js';
 import PatientList from './Patients/PatientList';
 import PatientDetail from './Patients/PatientDetail';
 import ListaOcupacion from './Ocupacion/ListaOcupacion';
+//import DetalleIngreso from './Ingresos/DetalleIngreso';
+//import IngresarPaciente from './Ingresos/IngresarPaciente';
+import PatientSelect from './Ingresos/PatientSelect';
+import RoomSelect from './Ingresos/RoomSelect';
 
 const AppStack = createStackNavigator(
   {
@@ -34,7 +38,11 @@ const AppStack = createStackNavigator(
     UpdateItemScreen,
     OutputItemScreen,
     PatientDetail,
-    ListaOcupacion
+    ListaOcupacion,
+    //DetalleIngreso,
+    //IngresarPaciente,
+    PatientSelect,
+    RoomSelect
   },
   {
     defaultNavigationOptions: {

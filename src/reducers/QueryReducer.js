@@ -15,9 +15,9 @@ export default (state = INITIAL_STATE, action) => {
     case DB_QUERY:
       return { ...state, text: action.payload };
     case DB_QUERY_RESULTS:
-      return { ...state, dataSource: action.payload };
+      return { ...state, [action.name]: action.payload };
     case DB_CLEAN:
-      return { ...state, dataSource: '' };
+      return { ...state, [action.name]: '' };
     default:
       return { state };
     }
