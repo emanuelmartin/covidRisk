@@ -74,27 +74,33 @@ class PatientSelect extends React.Component {
   );
 }
 
-  seleccionarHabitacion() {
-    if (!this.state.Habitacion.query) {
-    this.props.queryFunc({
-      type: 'startsWith',
-      object: 'Ocupacion',
-      variable: 'Tipo',
-      text: 'Habitación' });
-      this.setState({ Habitacion: { query: true } });
-    }
-    console.log(this.state)
+setStyle(estado) {
+  if (estado) { return ({
+      padding: 10,
+      backgroundColor: '#F55E64'
+    });}
+else { return ({
+  padding: 10,
+  backgroundColor: '#53E69D'
+});}
+}
 
-    return(
+  seleccionarHabitacion() {
+    return (
       <View>
         <Modal
         isVisible={this.state.seleccionarHabitacion}
         transparent={false}
+        onShow={() => this.props.queryFunc({
+          type: 'startsWith',
+          object: 'Ocupacion',
+          variable: 'Tipo',
+          text: 'Habitación' })}
         >
       <ScrollView style={styles.viewStyle}>
       <CardSection>
           <FlatList
-            data={this.state.Ocupacion}
+            data={this.props.Ocupacion}
             ItemSeparatorComponent={this.ListViewItemSeparator}
             //Item Separator View
             renderItem={({ item }) => (
@@ -166,7 +172,7 @@ updatePaciente(item) {
 }
 
 updateHabitacion(item) {
-  this.setState({ Habitacion: item, buscarHabitacion: false });
+  this.setState({ Habitacion: item, seleccionarHabitacion: false });
 }
 
   search = text => {
@@ -232,7 +238,7 @@ updateHabitacion(item) {
         {this.buscarPaciente()}
 
         <CardSection>
-          <Text>Selecciona un paciente</Text>
+          <Text>Selecciona una habitación</Text>
         </CardSection>
         <CardSection>
           <TouchableWithoutFeedback onPress={() => this.showModal('seleccionarHabitacion')}>
@@ -261,7 +267,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = ({ query }) => {
  const { text, Patient, Ocupacion } = query;
- 
+ console.log(query);
  return { text, Patient, Ocupacion };
 };
 
