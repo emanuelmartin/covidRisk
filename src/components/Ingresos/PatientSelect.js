@@ -16,6 +16,7 @@ import { queryFunc, cleanFunc } from '../../actions';
 import { Dropdown } from 'react-native-material-dropdown';
 import Modal from "react-native-modal";
 import { PatientList } from '../Patients/PatientList'
+import Parse from 'parse/react-native';
 
 class PatientSelect extends React.Component {
   constructor(props) {
@@ -175,6 +176,32 @@ updateHabitacion(item) {
   this.setState({ Habitacion: item, seleccionarHabitacion: false });
 }
 
+ingresarPaciente() {
+  console.log(this.state.Paciente.objectId)
+  console.log(this.state.Habitacion.objectId)
+  console.log(this.state.Tipo)
+
+  const Ingresos = Parse.Object.extend('Ingresos');
+  const ingresos = new Ingresos();
+
+  ingresos.set('Paciente', this.state.Paciente.objectId)
+  ingresos.set('Habitacion', this.state.Habitacion.objectId)
+  ingresos.set('Tipo', this.state.Tipo)
+
+  ingresos.save();
+
+  const Ocupacion = Parse.Object.extend('Ocupacion');
+  const ocupacion = new Parse.Query(Ocupacion);
+  ocupacion.get(this.state.Habitacion.objectId.toString())
+  .then((ocupado) => {
+    console.log(ocupado);
+
+    ocupado.set('Ocupada', true)
+
+    ocupado.save();
+  })
+}
+
   search = text => {
     console.log(text);
   };
@@ -246,6 +273,10 @@ updateHabitacion(item) {
           </TouchableWithoutFeedback>
         </CardSection>
         {this.seleccionarHabitacion()}
+
+        <CardSection>
+          <Button onPress={() => this.ingresarPaciente()}>Ingresar paciente</Button>
+        </CardSection>
 
       </View>
     );
