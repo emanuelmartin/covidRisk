@@ -164,11 +164,12 @@ export const updateItem = ({ item, value }) => {
     }
 
     if (index !== -1) {
-      results[index].set('stock', 10);
+      const val = parseInt('500', 10);
+      results[index].set('stock', val);
       results[index].save()
         .then(
         (result) => {
-          dispatch({ type: UPDATE_ITEM_SUCCES });
+          dispatch({ type: UPDATE_ITEM_SUCCES, print: value });
           console.log('Comment created', result);
         },
         (error) => {

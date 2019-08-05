@@ -25,15 +25,14 @@ class PatientList extends React.Component {
   };
 
   componentDidMount() {
-    this.props.queryFunc({ text: '' });
-    this.props.cleanFunc();
+    this.props.cleanFunc('Patient');
     return fetch('https://jsonplaceholder.typicode.com/posts')
       .then(response => response.json())
       .then(responseJson => {
         this.setState(
           {
             isLoading: false,
-            dataSource: null,
+            Patient: null,
           },
           function () {
             this.arrayholder = responseJson;

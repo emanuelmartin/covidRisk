@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, FlatList, ActivityIndicator, TouchableWithoutFeedback } from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  FlatList,
+  ActivityIndicator,
+  TouchableWithoutFeedback
+} from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -18,15 +25,14 @@ class UserList extends React.Component {
   };
 
   componentDidMount() {
-    this.props.queryFunc({ text: '' });
-    this.props.cleanFunc();
+    this.props.cleanFunc('User');
     return fetch('https://jsonplaceholder.typicode.com/posts')
       .then(response => response.json())
       .then(responseJson => {
         this.setState(
           {
             isLoading: false,
-            dataSource: null,
+            User: null,
           },
           function () {
             this.arrayholder = responseJson;
@@ -86,7 +92,7 @@ class UserList extends React.Component {
           value={this.props.text}
         />
           <FlatList
-            data={this.props.dataSource}
+            data={this.props.User}
             ItemSeparatorComponent={this.ListViewItemSeparator}
             //Item Separator View
             renderItem={({ item }) => (
@@ -126,9 +132,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ query }) => {
- const { text, dataSource } = query;
+ const { text, User } = query;
  console.log(query);
- return { text, dataSource };
+ return { text, User };
 };
 
 export default connect(mapStateToProps, { queryFunc, cleanFunc })(UserList);

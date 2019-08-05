@@ -33,7 +33,7 @@ class InventoryList extends React.Component {
         this.setState(
           {
             isLoading: false,
-            dataSource: null,
+            Farmacia: null,
           },
           function () {
             this.arrayholder = responseJson;

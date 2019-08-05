@@ -53,20 +53,29 @@ class SideMenu extends Component {
           </View>
           <View>
             <Text style={styles.sectionHeadingStyle}>
-              Inventarios
+              Farmacia
             </Text>
             <View style={styles.navSectionStyle}>
               <Text style={styles.navItemStyle} onPress={this.navigateToScreen('InventoryList')}>
-              Consulta
+              Inventario
               </Text>
               <Text style={styles.navItemStyle} onPress={this.navigateToScreen('OutputItemScreen')}>
-              Venta producto
-              </Text>
-              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('UpdateItemScreen')}>
-              Entrada producto
+              Ventas
               </Text>
             </View>
           </View>
+
+          <View>
+            <Text style={styles.sectionHeadingStyle}>
+              Control Financiero
+            </Text>
+            <View style={styles.navSectionStyle}>
+              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('PatientBill')}>
+              Cuenta de Paciente
+              </Text>
+            </View>
+          </View>
+
         </ScrollView>
         <View style={styles.footerContainer}>
           <Text onPress={this.onLogoutButtonPress.bind(this)}>Cerrar sesión</Text>
