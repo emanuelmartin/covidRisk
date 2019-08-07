@@ -71,7 +71,7 @@ class OutputItemScreen extends Component {
   }
 
   onBillPress() {
-    this.props.addBill({ patient: this.state.Paciente, bill: this.state.Medicamentos });
+    this.props.addBill({ patient: this.state.Paciente.objectId, bill: this.state.Medicamentos });
   }
 
   updatePaciente(item) {
