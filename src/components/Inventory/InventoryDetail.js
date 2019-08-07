@@ -32,7 +32,7 @@ class InventoryDetail extends Component {
 	}
 
   onUpdatePress() {
-    const { stock } = this.props;
+    const stock = this.props.stock;
     const item = this.item;
     this.props.updateItem({ item, stock });
   }

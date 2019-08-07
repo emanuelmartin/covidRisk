@@ -8,36 +8,28 @@ import {
   TouchableWithoutFeedback,
   ScrollView
 } from 'react-native';
+import Parse from 'parse/react-native';
 import { SearchBar } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
+import { Dropdown } from 'react-native-material-dropdown';
+import Modal from 'react-native-modal';
 import { Button, CardSection } from '../common';
 import { queryFunc, cleanFunc } from '../../actions';
-import { Dropdown } from 'react-native-material-dropdown';
-import Modal from "react-native-modal";
-import { PatientList } from '../Patients/PatientList'
-import Parse from 'parse/react-native';
 
 class PatientSelect extends React.Component {
-  constructor(props) {
-    super(props);
-    //setting default state
-    let Paciente={names: 'Paciente'}
-    let Habitacion={ID: 'Habitación', query: false}
-    this.state = { isLoading: false, search: '', Paciente, Habitacion };
-    this.arrayholder = [];
-}
   static navigationOptions = {
     title: 'Nuevo ingreso',
   };
 
-    showModal(prop) {
-      this.setState({ [prop]: true })
-    }
-
-    closeModal(prop) {
-      this.setState({ [prop]: false })
-    }
+  constructor(props) {
+    super(props);
+    //setting default state
+    let Paciente = { names: 'Paciente' };
+    let Habitacion = { ID: 'Habitación', query: false };
+    this.state = { isLoading: false, search: '', Paciente, Habitacion };
+    this.arrayholder = [];
+  }
 
     renderIt(item) {
       if (this.state.isLoading) {
@@ -46,45 +38,55 @@ class PatientSelect extends React.Component {
           <View style={{ flex: 1, paddingTop: 20 }}>
             <ActivityIndicator />
           </View>
-        );
-      }
-      return (
-      <TouchableWithoutFeedback
-      onPress={() => this.updatePaciente(item)}
-      >
-        <View>
-          <Text style={styles.textStyle} >{item.names} {item.lastName1} {item.lastName2} </Text>
-        </View>
-      </TouchableWithoutFeedback>
-    );
+          );
+        }
+        return (
+        <TouchableWithoutFeedback
+        onPress={() => this.updatePaciente(item)}
+        >
+          <View>
+            <Text style={styles.textStyle} >{item.names} {item.lastName1} {item.lastName2} </Text>
+          </View>
+        </TouchableWithoutFeedback>
+      );
     }
+
+  setStyle(estado) {
+    if (estado) {
+      return ({
+      padding: 10,
+      backgroundColor: '#F55E64'
+      });
+    }
+    return ({
+      padding: 10,
+      backgroundColor: '#53E69D'
+    });
+  }
+
+  showModal(prop) {
+    this.setState({ [prop]: true });
+  }
+
+  closeModal(prop) {
+    this.setState({ [prop]: false });
+  }
 
   lista() {
     return (
-    <FlatList
-      data={this.props.Patient}
-      ItemSeparatorComponent={this.ListViewItemSeparator}
-      //Item Separator View
-      renderItem={({ item }) => (
-        this.renderIt(item)
-      )}
-      enableEmptySections
-      style={{ marginTop: 10 }}
-      keyExtractor={(item) => item.curp}
-    />
-  );
-}
-
-setStyle(estado) {
-  if (estado) { return ({
-      padding: 10,
-      backgroundColor: '#F55E64'
-    });}
-else { return ({
-  padding: 10,
-  backgroundColor: '#53E69D'
-});}
-}
+      <FlatList
+        data={this.props.Patient}
+        ItemSeparatorComponent={this.ListViewItemSeparator}
+        //Item Separator View
+        renderItem={({ item }) => (
+          this.renderIt(item)
+        )}
+        enableEmptySections
+        style={{ marginTop: 10 }}
+        keyExtractor={(item) => item.curp}
+      />
+    );
+  }
 
   seleccionarHabitacion() {
     return (
@@ -168,39 +170,38 @@ else { return ({
     );
   }
 
-updatePaciente(item) {
-  this.setState({ Paciente: item, buscarPaciente: false });
-}
+  updatePaciente(item) {
+    this.setState({ Paciente: item, buscarPaciente: false });
+  }
 
-updateHabitacion(item) {
-  this.setState({ Habitacion: item, seleccionarHabitacion: false });
-}
+  updateHabitacion(item) {
+    this.setState({ Habitacion: item, seleccionarHabitacion: false });
+  }
 
-ingresarPaciente() {
-  console.log(this.state.Paciente.objectId)
-  console.log(this.state.Habitacion.objectId)
-  console.log(this.state.Tipo)
+  ingresarPaciente() {
+    console.log(this.state.Paciente.objectId);
+    console.log(this.state.Habitacion.objectId);
+    console.log(this.state.Tipo);
 
-  const Ingresos = Parse.Object.extend('Ingresos');
-  const ingresos = new Ingresos();
+    const Ingresos = Parse.Object.extend('Ingresos');
+    const ingresos = new Ingresos();
 
-  ingresos.set('Paciente', this.state.Paciente.objectId)
-  ingresos.set('Habitacion', this.state.Habitacion.objectId)
-  ingresos.set('Tipo', this.state.Tipo)
+    ingresos.set('Paciente', this.state.Paciente.objectId);
+    ingresos.set('Habitacion', this.state.Habitacion.objectId);
+    ingresos.set('Tipo', this.state.Tipo);
 
-  ingresos.save();
+    ingresos.save();
 
-  const Ocupacion = Parse.Object.extend('Ocupacion');
-  const ocupacion = new Parse.Query(Ocupacion);
-  ocupacion.get(this.state.Habitacion.objectId.toString())
-  .then((ocupado) => {
-    console.log(ocupado);
+    const Ocupacion = Parse.Object.extend('Ocupacion');
+    const ocupacion = new Parse.Query(Ocupacion);
+    ocupacion.get(this.state.Habitacion.objectId.toString())
+    .then((ocupado) => {
+      console.log(ocupado);
 
-    ocupado.set('Ocupada', true)
-
-    ocupado.save();
-  })
-}
+      ocupado.set('Ocupada', true);
+      ocupado.save();
+    });
+  }
 
   search = text => {
     console.log(text);
@@ -217,6 +218,7 @@ ingresarPaciente() {
     });
     this.props.navigation.navigate(route, { item });
   }
+
   ListViewItemSeparator = () => {
     //Item separator view
     return (
@@ -277,11 +279,10 @@ ingresarPaciente() {
         <CardSection>
           <Button onPress={() => this.ingresarPaciente()}>Ingresar paciente</Button>
         </CardSection>
-
       </View>
-    );
+      );
+    }
   }
-}
 
 const styles = StyleSheet.create({
   viewStyle: {

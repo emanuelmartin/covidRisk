@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, FlatList, ActivityIndicator, TouchableWithoutFeedback } from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  FlatList,
+  ActivityIndicator,
+  TouchableWithoutFeedback
+} from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -26,7 +33,7 @@ class UserList extends React.Component {
         this.setState(
           {
             isLoading: false,
-            dataSource: null,
+            User: null,
           },
           function () {
             this.arrayholder = responseJson;
@@ -40,6 +47,7 @@ class UserList extends React.Component {
   search = text => {
     console.log(text);
   };
+
   clear = () => {
     this.props.text.clear();
   };
@@ -63,6 +71,7 @@ class UserList extends React.Component {
       />
     );
   };
+
   render() {
     if (this.state.isLoading) {
       //Loading View while data is loading
@@ -80,18 +89,23 @@ class UserList extends React.Component {
           round
           lightTheme
           searchIcon={{ size: 24 }}
-          onChangeText={text => this.props.queryFunc({ type: 'startsWith', object: 'User', variable: 'lastName1', text })}
+          onChangeText={text => this.props.queryFunc({
+            type: 'startsWith',
+            object: 'User',
+            variable: 'lastName1',
+            text
+          })}
           onClear={() => this.props.queryFunc({ text: '' })}
           placeholder="Ingresa el primer apellido..."
           value={this.props.text}
         />
           <FlatList
-            data={this.props.dataSource}
+            data={this.props.User}
             ItemSeparatorComponent={this.ListViewItemSeparator}
             //Item Separator View
             renderItem={({ item }) => (
               <TouchableWithoutFeedback
-              onPress={this.navigateToScreen('PatientDetail', item)}
+              onPress={this.navigateToScreen('UserDetail', item)}
               >
               <Text style={styles.textStyle} >{item.names} {item.lastName1} {item.lastName2} </Text>
               </TouchableWithoutFeedback>)}
@@ -126,9 +140,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ query }) => {
- const { text, dataSource } = query;
+ const { text, User } = query;
  console.log(query);
- return { text, dataSource };
+ return { text, User };
 };
 
 export default connect(mapStateToProps, { queryFunc, cleanFunc })(UserList);

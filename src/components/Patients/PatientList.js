@@ -33,7 +33,7 @@ class PatientList extends React.Component {
         this.setState(
           {
             isLoading: false,
-            dataSource: null,
+            Patient: null,
           },
           function () {
             this.arrayholder = responseJson;
@@ -94,7 +94,8 @@ class PatientList extends React.Component {
             type: 'startsWith',
             object: 'Patient',
             variable: 'lastName1',
-            text })}
+            text
+          })}
           onClear={() => this.props.queryFunc({ text: '' })}
           placeholder="Ingresa el primer apellido..."
           value={this.props.text}

@@ -187,7 +187,6 @@ cuentaPaciente() {
         {this.ocupacion()}
         {this.farmacia()}
         {this.cobros()}
-
         </ScrollView>
         <View style={styles.footerContainer}>
           <Text onPress={this.onLogoutButtonPress.bind(this)}>Cerrar sesión</Text>

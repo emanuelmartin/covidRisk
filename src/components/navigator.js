@@ -8,6 +8,7 @@ import {
 // import screens
 import LoginForm from './LoginForm';
 import UserList from './Users/UserList';
+import UserDetail from './Users/UserDetail';
 import Home from './Home';
 import PatientForm from './PatientForm';
 import SignupForm from './SignupForm';
@@ -15,14 +16,12 @@ import SideMenu from '../SideMenu/SideMenu';
 import InventoryScreen from './InventoryScreen.js';
 import InventoryList from './Inventory/InventoryList';
 import InventoryDetail from './Inventory/InventoryDetail';
-import UpdateItemScreen from './UpdateItemScreen.js';
 import OutputItemScreen from './OutputItemScreen.js';
 import AddItemScreen from './AddItemScreen.js';
+import PatientBill from './Cuentas/PatientBill';
 import PatientList from './Patients/PatientList';
 import PatientDetail from './Patients/PatientDetail';
 import ListaOcupacion from './Ocupacion/ListaOcupacion';
-//import DetalleIngreso from './Ingresos/DetalleIngreso';
-//import IngresarPaciente from './Ingresos/IngresarPaciente';
 import PatientSelect from './Ingresos/PatientSelect';
 import RoomSelect from './Ingresos/RoomSelect';
 
@@ -31,18 +30,17 @@ const AppStack = createStackNavigator(
     Home,
     SignUp: SignupForm,
     UserList,
+    UserDetail,
     PatientForm,
     PatientList,
+    PatientBill,
     InventoryScreen,
     InventoryList,
     InventoryDetail,
     AddItemScreen,
-    UpdateItemScreen,
     OutputItemScreen,
     PatientDetail,
     ListaOcupacion,
-    //DetalleIngreso,
-    //IngresarPaciente,
     PatientSelect,
     RoomSelect
   },
