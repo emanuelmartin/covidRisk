@@ -8,6 +8,7 @@ import {
 // import screens
 import LoginForm from './LoginForm';
 import UserList from './Users/UserList';
+import UserDetail from './Users/UserDetail';
 import Home from './Home';
 import PatientForm from './PatientForm';
 import SignupForm from './SignupForm';
@@ -29,6 +30,7 @@ const AppStack = createStackNavigator(
     Home,
     SignUp: SignupForm,
     UserList,
+    UserDetail,
     PatientForm,
     PatientList,
     PatientBill,

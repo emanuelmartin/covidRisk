@@ -29,14 +29,15 @@ class PatientBill extends Component {
   }
 
   componentDidMount() {
-    this.props.cleanFunc('Patient');
+    this.props.queryFunc({ text: '' });
+    this.props.cleanFunc();
     return fetch('https://jsonplaceholder.typicode.com/posts')
       .then(response => response.json())
       .then(responseJson => {
         this.setState(
           {
             isLoading: false,
-            Patient: null,
+            Paciente: { names: '' },
           },
           function () {
             this.arrayholder = responseJson;

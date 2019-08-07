@@ -25,7 +25,8 @@ class UserList extends React.Component {
   };
 
   componentDidMount() {
-    this.props.cleanFunc('User');
+    this.props.queryFunc({ text: '' });
+    this.props.cleanFunc();
     return fetch('https://jsonplaceholder.typicode.com/posts')
       .then(response => response.json())
       .then(responseJson => {
@@ -46,6 +47,7 @@ class UserList extends React.Component {
   search = text => {
     console.log(text);
   };
+
   clear = () => {
     this.props.text.clear();
   };
@@ -69,6 +71,7 @@ class UserList extends React.Component {
       />
     );
   };
+
   render() {
     if (this.state.isLoading) {
       //Loading View while data is loading
@@ -86,7 +89,12 @@ class UserList extends React.Component {
           round
           lightTheme
           searchIcon={{ size: 24 }}
-          onChangeText={text => this.props.queryFunc({ type: 'startsWith', object: 'User', variable: 'lastName1', text })}
+          onChangeText={text => this.props.queryFunc({
+            type: 'startsWith',
+            object: 'User',
+            variable: 'lastName1',
+            text
+          })}
           onClear={() => this.props.queryFunc({ text: '' })}
           placeholder="Ingresa el primer apellido..."
           value={this.props.text}
@@ -97,7 +105,7 @@ class UserList extends React.Component {
             //Item Separator View
             renderItem={({ item }) => (
               <TouchableWithoutFeedback
-              onPress={this.navigateToScreen('PatientDetail', item)}
+              onPress={this.navigateToScreen('UserDetail', item)}
               >
               <Text style={styles.textStyle} >{item.names} {item.lastName1} {item.lastName2} </Text>
               </TouchableWithoutFeedback>)}

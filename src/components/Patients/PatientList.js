@@ -25,7 +25,8 @@ class PatientList extends React.Component {
   };
 
   componentDidMount() {
-    this.props.cleanFunc('Patient');
+    this.props.queryFunc({ text: '' });
+    this.props.cleanFunc();
     return fetch('https://jsonplaceholder.typicode.com/posts')
       .then(response => response.json())
       .then(responseJson => {
@@ -93,7 +94,8 @@ class PatientList extends React.Component {
             type: 'startsWith',
             object: 'Patient',
             variable: 'lastName1',
-            text })}
+            text
+          })}
           onClear={() => this.props.queryFunc({ text: '' })}
           placeholder="Ingresa el primer apellido..."
           value={this.props.text}

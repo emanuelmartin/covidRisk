@@ -28,7 +28,6 @@ export const queryFunc = ({ type, object, variable, text }) => {
   };
 };
 
-export const cleanFunc = ({ object }) => ({
-  type: DB_CLEAN,
-  name: object
+export const cleanFunc = () => ({
+  type: DB_CLEAN
 });

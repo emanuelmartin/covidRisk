@@ -96,7 +96,7 @@ class InventoryList extends React.Component {
             variable: 'name',
             text })}
           onClear={text => this.props.queryFunc({ text: '' })}
-          placeholder="Ingresa el nombre comercial..."
+          placeholder="Ingresa el nombre comercial"
           value={this.props.text}
         />
           <FlatList
