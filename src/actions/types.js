@@ -41,3 +41,5 @@ export const ITEM_NOT_EXIST = 'item_not_exist';
 export const DB_QUERY = 'db_query';
 export const DB_QUERY_RESULTS = 'db_query_results';
 export const DB_CLEAN = 'db_clean';
+
+export const ADD_BILL = 'add_bill';

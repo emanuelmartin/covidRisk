@@ -5,14 +5,15 @@ import {
   StyleSheet,
   FlatList,
   TouchableWithoutFeedback,
-  TextInput
+  TextInput,
+  ScrollView
 } from 'react-native';
 //import Parse from 'parse/react-native';
 import { SearchBar } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { CardSection, Button } from './common';
-import { queryFunc, cleanFunc } from '../actions';
+import { queryFunc, cleanFunc, addBill } from '../actions';
 
 class OutputItemScreen extends Component {
   static navigationOptions = {
@@ -56,6 +57,48 @@ class OutputItemScreen extends Component {
   onAddPress() {
     this.setState({ searchPharmacy: true });
   }
+
+  onEliminatePress() {
+    this.setState({ Medicamento: { name: '' }, Medicamentos: [], searchPharmacy: true });
+  }
+
+  onNewPatientPress() {
+    this.setState({ Paciente: { names: '' },
+    Medicamento: { name: '' },
+    Medicamentos: [],
+    searchPharmacy: true
+    });
+  }
+
+  onBillPress() {
+    this.props.addBill({ patient: this.state.Paciente, bill: this.state.Medicamentos });
+  }
+
+  updatePaciente(item) {
+    this.setState({ Paciente: item });
+    this.props.queryFunc({ text: '' });
+  }
+
+  updateMedicamento(item) {
+    item.cantidad = '1';
+    this.setState({ Medicamento: item, searchPharmacy: false });
+    this.props.queryFunc({ text: '' });
+  }
+
+  addMedicamento(item) {
+    this.updateMedicamento(item);
+    this.setState(state => ({
+    Medicamentos: [...state.Medicamentos, state.Medicamento]
+    }));
+  }
+
+  search = text => {
+    console.log(text);
+  };
+
+  clear = () => {
+    this.props.text.clear();
+  };
 
   listaMedicamento() {
     return (
@@ -151,9 +194,14 @@ class OutputItemScreen extends Component {
           <Button onPress={this.onAddPress.bind(this)}>
             Añadir Medicamento
           </Button>
-          <Button onPress={this.onButtonPress}>
+          <Button onPress={this.onEliminatePress.bind(this)}>
             Eliminar
           </Button>
+        </CardSection>
+          <Button onPress={this.onBillPress.bind(this)}>
+            Añadir a cuenta
+          </Button>
+        <CardSection>
         </CardSection>
       </View>
     );
@@ -189,7 +237,7 @@ class OutputItemScreen extends Component {
     return (
       <View style={{ flex: 1 }}>
         <CardSection>
-          <Button onPress={this.onButtonPress}>
+          <Button onPress={this.onNewPatientPress.bind(this)}>
             Buscar otro paciente
           </Button>
         </CardSection>
@@ -207,31 +255,6 @@ class OutputItemScreen extends Component {
       </View>
     );
   }
-
-  updatePaciente(item) {
-    this.setState({ Paciente: item });
-    this.props.queryFunc({ text: '' });
-  }
-
-  updateMedicamento(item) {
-    this.setState({ Medicamento: item, searchPharmacy: false });
-    this.props.queryFunc({ text: '' });
-  }
-
-  addMedicamento(item) {
-    this.updateMedicamento(item);
-    this.setState(state => ({
-    Medicamentos: [...state.Medicamentos, state.Medicamento]
-    }));
-  }
-
-  search = text => {
-    console.log(text);
-  };
-
-  clear = () => {
-    this.props.text.clear();
-  };
 
   navigateToScreen = (route, item) => () => {
     const navigateAction = NavigationActions.navigate({
@@ -276,7 +299,7 @@ class OutputItemScreen extends Component {
           </Text>
           <TextInput
             placeholder="0"
-            value='20'
+            value={item.cantidad}
             keyboardType="numeric"
             autoCorrect={false}
             style={styles.inputStyle}
@@ -302,7 +325,9 @@ class OutputItemScreen extends Component {
 
     return (
       <View style={{ flex: 1 }}>
-        {this.buscarPaciente()}
+        <ScrollView>
+          {this.buscarPaciente()}
+        </ScrollView>
       </View>
       );
     }
@@ -338,4 +363,4 @@ const mapStateToProps = ({ query }) => {
  return { text, Patient, Farmacia };
 };
 
-export default connect(mapStateToProps, { queryFunc, cleanFunc })(OutputItemScreen);
+export default connect(mapStateToProps, { queryFunc, cleanFunc, addBill })(OutputItemScreen);
