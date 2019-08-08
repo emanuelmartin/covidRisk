@@ -63,6 +63,7 @@ class OutputItemScreen extends Component {
   }
 
   onEliminatePress() {
+    this.props.cleanFunc();
     this.setState({ Medicamento: { name: '' }, Medicamentos: [], searchPharmacy: true });
   }
 
