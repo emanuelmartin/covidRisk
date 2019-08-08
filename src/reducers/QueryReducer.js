@@ -8,7 +8,8 @@ const INITIAL_STATE = {
   text: '',
   Patient: '',
   User: '',
-  Farmacia: ''
+  Farmacia: '',
+  Bill: ''
 };
 
 export default (state = INITIAL_STATE, action) => {

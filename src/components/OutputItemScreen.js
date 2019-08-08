@@ -201,10 +201,10 @@ class OutputItemScreen extends Component {
     return (
       <View style={{ flex: 1 }}>
         <CardSection>
-            <Text style={styles.enphasisTextStyle}>Medicamentos:</Text>
+            <Text style={styles.emphasisTextStyle}>Medicamentos:</Text>
           <View style={{ flex: 1 }}>
             <Text
-              style={[styles.enphasisTextStyle, { textAlign: 'right' }]}
+              style={[styles.emphasisTextStyle, { textAlign: 'right' }]}
             >
               Cantidad:
             </Text>
@@ -254,7 +254,7 @@ class OutputItemScreen extends Component {
           </Button>
         </CardSection>
         <CardSection>
-            <Text style={styles.enphasisTextStyle}>Paciente: </Text>
+            <Text style={styles.emphasisTextStyle}>Paciente: </Text>
             <View style={{ flex: 1 }}>
               <Text style={[styles.patientTextStyle, { textAlign: 'right' }]}>
                 {this.state.Paciente.names} {this.state.Paciente.lastName1} {this.state.Paciente.lastName2}
@@ -405,7 +405,7 @@ const styles = StyleSheet.create({
   patientTextStyle: {
     fontSize: 18,
   },
-  enphasisTextStyle: {
+  emphasisTextStyle: {
     fontSize: 18,
     color: '#000',
     fontWeight: 'bold'
