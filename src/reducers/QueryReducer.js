@@ -6,9 +6,9 @@ import {
 
 const INITIAL_STATE = {
   text: '',
-  Patient: {},
-  User: {},
-  Farmacia: {}
+  Patient: '',
+  User: '',
+  Farmacia: ''
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -19,7 +19,7 @@ export default (state = INITIAL_STATE, action) => {
     case DB_QUERY_RESULTS:
       return { ...state, [action.name]: action.payload };
     case DB_CLEAN:
-      return { ...state, INITIAL_STATE };
+      return { ...state, ...INITIAL_STATE };
     default:
       return { state };
     }

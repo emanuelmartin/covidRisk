@@ -12,8 +12,8 @@ import {
 import { SearchBar } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
-import { CardSection, Button } from './common';
-import { queryFunc, cleanFunc, addBill } from '../actions';
+import { CardSection, Button, Spinner } from './common';
+import { queryFunc, cleanFunc, addBill, clearBill } from '../actions';
 
 class OutputItemScreen extends Component {
   static navigationOptions = {
@@ -54,6 +54,10 @@ class OutputItemScreen extends Component {
       });
   }
 
+  componentWillUnmount() {
+    this.props.cleanFunc();
+  }
+
   onAddPress() {
     this.setState({ searchPharmacy: true });
   }
@@ -63,6 +67,7 @@ class OutputItemScreen extends Component {
   }
 
   onNewPatientPress() {
+    this.props.cleanFunc();
     this.setState({ Paciente: { names: '' },
     Medicamento: { name: '' },
     Medicamentos: [],
@@ -72,6 +77,17 @@ class OutputItemScreen extends Component {
 
   onBillPress() {
     this.props.addBill({ patient: this.state.Paciente.objectId, bill: this.state.Medicamentos });
+  }
+
+  onNewBillPress() {
+    this.setState({
+      searchPharmacy: true,
+      Paciente: { names: '' },
+      Medicamento: { name: '' },
+      Medicamentos: []
+    });
+    this.props.clearBill();
+    this.props.cleanFunc();
   }
 
   updatePaciente(item) {
@@ -90,6 +106,12 @@ class OutputItemScreen extends Component {
     this.setState(state => ({
     Medicamentos: [...state.Medicamentos, state.Medicamento]
     }));
+  }
+
+  updateQuantity(index, cantidad) {
+    const newMeds = this.state.Medicamentos;
+    newMeds[index].cantidad = cantidad;
+    this.setState({ Medicamentos: newMeds });
   }
 
   search = text => {
@@ -122,8 +144,8 @@ class OutputItemScreen extends Component {
         data={this.state.Medicamentos}
         ItemSeparatorComponent={this.ListViewItemSeparator}
         //Item Separator View
-        renderItem={({ item }) => (
-          this.renderMedicamentos(item)
+        renderItem={({ item, index }) => (
+          this.renderMedicamentos(item, index)
         )}
         enableEmptySections
         style={{ marginTop: 10 }}
@@ -190,19 +212,8 @@ class OutputItemScreen extends Component {
         <CardSection>
           {this.listaMedicamentoAnadido()}
         </CardSection>
-        <CardSection>
-          <Button onPress={this.onAddPress.bind(this)}>
-            Añadir Medicamento
-          </Button>
-          <Button onPress={this.onEliminatePress.bind(this)}>
-            Eliminar
-          </Button>
-        </CardSection>
-          <Button onPress={this.onBillPress.bind(this)}>
-            Añadir a cuenta
-          </Button>
-        <CardSection>
-        </CardSection>
+        {this.renderError()}
+        {this.renderButtons()}
       </View>
     );
   }
@@ -277,6 +288,37 @@ class OutputItemScreen extends Component {
     );
   };
 
+  renderError() {
+    if (this.props.error !== '') {
+      return (
+        <Text>{this.props.error}</Text>
+      );
+    }
+  }
+
+  renderButtons() {
+    if (this.props.loading === true) {
+      return <Spinner size="large" />;
+    }
+    return (
+      <View>
+        <CardSection>
+          <Button onPress={this.onAddPress.bind(this)}>
+            Añadir Medicamento
+          </Button>
+          <Button onPress={this.onEliminatePress.bind(this)}>
+            Borrar cuenta
+          </Button>
+        </CardSection>
+        <CardSection>
+          <Button onPress={this.onBillPress.bind(this)}>
+            Añadir a cuenta
+          </Button>
+        </CardSection>
+      </View>
+    );
+  }
+
   renderMedicamento(item) {
       return (
       <TouchableWithoutFeedback
@@ -291,18 +333,19 @@ class OutputItemScreen extends Component {
     );
   }
 
-  renderMedicamentos(item) {
+  renderMedicamentos(item, index) {
       return (
         <CardSection>
           <Text style={styles.patientTextStyle}>
             {item.laboratory} - {item.name} {item.presentation} {item.content}
           </Text>
           <TextInput
-            placeholder="0"
+            placeholder="1"
             value={item.cantidad}
             keyboardType="numeric"
             autoCorrect={false}
             style={styles.inputStyle}
+            onChangeText={cantidad => this.updateQuantity(index, cantidad)}
           />
         </CardSection>
     );
@@ -320,13 +363,30 @@ class OutputItemScreen extends Component {
     );
   }
 
+  renderDecide() {
+    if (this.props.succes) {
+      return (
+        <CardSection>
+          <Button onPress={this.onNewBillPress.bind(this)}>
+            Nueva cuenta
+          </Button>
+        </CardSection>
+      );
+    }
+    return (
+      <View>
+        {this.buscarPaciente()}
+      </View>
+    );
+  }
+
   render() {
       console.log(this.state);
 
     return (
       <View style={{ flex: 1 }}>
         <ScrollView>
-          {this.buscarPaciente()}
+          {this.renderDecide()}
         </ScrollView>
       </View>
       );
@@ -357,10 +417,13 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = ({ query }) => {
+const mapStateToProps = ({ query, bill }) => {
  const { text, Patient, Farmacia } = query;
+ const { loading, error, succes } = bill;
  console.log(query);
- return { text, Patient, Farmacia };
+ return { text, Patient, Farmacia, loading, error, succes };
 };
 
-export default connect(mapStateToProps, { queryFunc, cleanFunc, addBill })(OutputItemScreen);
+export default connect(
+  mapStateToProps,
+  { queryFunc, cleanFunc, addBill, clearBill })(OutputItemScreen);

@@ -45,6 +45,10 @@ class PatientList extends React.Component {
       });
   }
 
+  componentWillUnmount() {
+    this.props.cleanFunc();
+  }
+
   search = text => {
     console.log(text);
   };

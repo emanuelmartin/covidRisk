@@ -43,3 +43,6 @@ export const DB_QUERY_RESULTS = 'db_query_results';
 export const DB_CLEAN = 'db_clean';
 
 export const ADD_BILL = 'add_bill';
+export const ADD_BILL_SUCCES = 'add_bill_succes';
+export const ADD_BILL_FAIL = 'add_bill_fail';
+export const ADD_RESTART_STATE = 'add_restart_state';

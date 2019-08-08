@@ -25,16 +25,17 @@ fichasPersonales() {
       this.props.userType === 'enfermeria' ||
       this.props.userType === 'medico') {
     return (
-    <View>
-      <Text style={styles.sectionHeadingStyle}>
-        Fichas personales
-      </Text>
-      <View style={styles.navSectionStyle}>
-      {this.detallePacientes()}
-      {this.detalleUsuarios()}
+      <View>
+        <Text style={styles.sectionHeadingStyle}>
+          Fichas personales
+        </Text>
+        <View style={styles.navSectionStyle}>
+        {this.detallePacientes()}
+        {this.detalleUsuarios()}
+        </View>
       </View>
-    </View>
-  ); }
+    );
+  }
 }
 
 detallePacientes() {
@@ -42,14 +43,15 @@ detallePacientes() {
       this.props.userType === 'recepcion' ||
       this.props.userType === 'enfermeria' ||
       this.props.userType === 'medico') {
-        return (
-  <View >
-    <Text style={styles.navItemStyle} onPress={this.navigateToScreen('PatientList')}>
-    Pacientes
-    </Text>
-    </View>
-); }
-}
+      return (
+        <View >
+          <Text style={styles.navItemStyle} onPress={this.navigateToScreen('PatientList')}>
+          Pacientes
+          </Text>
+        </View>
+      );
+    }
+  }
 
 detalleUsuarios() {
   if (this.props.userType === 'admin' ||

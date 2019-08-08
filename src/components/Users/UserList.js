@@ -44,6 +44,11 @@ class UserList extends React.Component {
         console.error(error);
       });
   }
+
+  componentWillUnmount() {
+    this.props.cleanFunc();
+  }
+  
   search = text => {
     console.log(text);
   };
