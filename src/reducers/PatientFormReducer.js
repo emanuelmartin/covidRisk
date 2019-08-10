@@ -25,7 +25,10 @@ const INITIAL_STATE = {
   password: '',
   religion: '',
   etnia: '',
-  idioma: 'Español'
+  idioma: 'Español',
+  aseguradora: '',
+  tipoSeguro: '',
+  vigenciaSeguro: ''
 };
 
 export default (state = INITIAL_STATE, action) => {

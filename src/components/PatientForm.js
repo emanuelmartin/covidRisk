@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Text, ScrollView, View, TouchableWithoutFeedback } from 'react-native';
 import { patientUpdate, patientCreate } from '../actions';
+import { SearchBar, CheckBox } from 'react-native-elements';
 import { Card, CardSection, Input, Button, Spinner } from './common';
 
 class PatientForm extends Component {
@@ -10,7 +11,7 @@ class PatientForm extends Component {
   };
 
   componentWillMount() {
-    this.setState({ key: 'personal' });
+    this.setState({ key: 'personal', asegurado: false });
   }
 
   onPatientCreatePress() {
@@ -268,6 +269,64 @@ class PatientForm extends Component {
         );
       }
     }
+
+    seguro() {
+      if (this.state.key === 'seguro') {
+        return (
+          <View>
+          <CardSection>
+          <CheckBox
+            title='Paciente asegurado'
+            checked={this.state.asegurado}
+            onPress={() => this.setState({ asegurado: !this.state.asegurado })}
+            />
+            </CardSection>
+            {this.datosSeguro()}
+          </View>
+          );
+        }
+      }
+
+      datosSeguro() {
+        if (this.state.asegurado) {
+          return (
+        <View>
+        <CardSection>
+        <Input
+          label="Aseguradora"
+          placeholder="GNP"
+          value={this.props.aseguradora.toShow}
+          valid={this.props.aseguradora.valid}
+          edited={this.props.aseguradora.edited}
+          onChangeText={value => this.props.patientUpdate({ prop: 'aseguradora', value, type: 'oneWord', edited: true })}
+        />
+        </CardSection>
+
+        <CardSection>
+        <Input
+          label="Tipo de seguro"
+          placeholder="Cobertura amplia"
+          value={this.props.tipoSeguro.toShow}
+          valid={this.props.tipoSeguro.valid}
+          edited={this.props.tipoSeguro.edited}
+          onChangeText={value => this.props.patientUpdate({ prop: 'tipoSeguro', value, type: '', edited: true })}
+        />
+        </CardSection>
+
+        <CardSection>
+        <Input
+          label="Vigencia"
+          placeholder="10/12/2024"
+          value={this.props.vigenciaSeguro.toShow}
+          valid={this.props.vigenciaSeguro.valid}
+          edited={this.props.vigenciaSeguro.edited}
+          onChangeText={value => this.props.patientUpdate({ prop: 'vigenciaSeguro', value, type: 'date', edited: true })}
+          />
+        </CardSection>
+        </View>
+      ); }
+      }
+
   emergencia() {
     if (this.state.key === 'emergencia') {
       return (
@@ -411,6 +470,19 @@ class PatientForm extends Component {
 
       <Card>
         <TouchableWithoutFeedback
+          onPress={() => this.setState({ key: 'seguro' })}
+        >
+          <View>
+       <CardSection>
+          <Text style={styles.pickerTextStyle}>Aseguradora</Text>
+        </CardSection>
+      </View>
+      </TouchableWithoutFeedback>
+        {this.seguro()}
+      </Card>
+
+      <Card>
+        <TouchableWithoutFeedback
           onPress={() => this.setState({ key: 'emergencia' })}
         >
           <View>
@@ -467,7 +539,10 @@ const mapStateToProps = (state) => {
     password,
     religion,
     idioma,
-    etnia
+    etnia,
+    aseguradora,
+    tipoSeguro,
+    vigenciaSeguro
   } = state.patientForm;
   return {
     loading,
@@ -486,7 +561,10 @@ const mapStateToProps = (state) => {
     password,
     religion,
     idioma,
-    etnia
+    etnia,
+    aseguradora,
+    tipoSeguro,
+    vigenciaSeguro
   };
 };
 

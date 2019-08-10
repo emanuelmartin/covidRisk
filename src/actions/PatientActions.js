@@ -64,7 +64,7 @@ function formatDate(value) {
   val = value;
 
   if (value.length === 2 || value.length === 5) {
-    val = value + '-';
+    val = value + '/';
   }
   val = val.substring(0, 10)
     .trim();
