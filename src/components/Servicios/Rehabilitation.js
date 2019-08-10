@@ -12,22 +12,22 @@ import {
 import { SearchBar } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
-import { CardSection, Button, Spinner } from './common';
-import { queryFunc, cleanFunc, addBill, clearBill } from '../actions';
+import { CardSection, Button, Spinner } from '../common';
+import { queryFunc, cleanFunc, addBill, clearBill } from '../../actions';
 
-class OutputItemScreen extends Component {
+class Rehabilitation extends Component {
   static navigationOptions = {
-    title: 'Ventas',
+    title: 'Rehabilitación',
   };
 
   constructor(props) {
     super(props);
     //setting default state
     const Paciente = { names: '' };
-    const Medicamento = { name: '' };
-    const Medicamentos = [];
+    const Terapia = { name: '' };
+    const Terapias = [];
 
-    this.state = { searchItem: true, Paciente, Medicamento, Medicamentos };
+    this.state = { searchItem: true, Paciente, Terapia, Terapias };
     this.arrayholder = [];
   }
 
@@ -41,8 +41,8 @@ class OutputItemScreen extends Component {
           {
             searchItem: true,
             Paciente: { names: '' },
-            Medicamento: { name: '' },
-            Medicamentos: []
+            Terapia: { name: '' },
+            Terapias: []
           },
           function () {
             this.arrayholder = responseJson;
@@ -65,14 +65,14 @@ class OutputItemScreen extends Component {
 
   onEliminatePress() {
     this.props.cleanFunc();
-    this.setState({ Medicamento: { name: '' }, Medicamentos: [], searchItem: true });
+    this.setState({ Terapia: { name: '' }, Terapias: [], searchItem: true });
   }
 
   onNewPatientPress() {
     this.props.cleanFunc();
     this.setState({ Paciente: { names: '' },
-    Medicamento: { name: '' },
-    Medicamentos: [],
+    Terapia: { name: '' },
+    Terapias: [],
     searchItem: true
     });
   }
@@ -80,15 +80,16 @@ class OutputItemScreen extends Component {
   onBillPress() {
     this.props.addBill({
       patient: this.state.Paciente.objectId,
-      bill: ['Farmacia', this.state.Medicamentos] });
+      bill: ['Rehabilitacion', this.state.Terapias]
+    });
   }
 
   onNewBillPress() {
     this.setState({
       searchItem: true,
       Paciente: { names: '' },
-      Medicamento: { name: '' },
-      Medicamentos: []
+      Terapia: { name: '' },
+      Terapias: []
     });
     this.props.clearBill();
     this.props.cleanFunc();
@@ -99,23 +100,23 @@ class OutputItemScreen extends Component {
     this.props.queryFunc({ text: '' });
   }
 
-  updateMedicamento(item) {
+  updateTerapia(item) {
     item.cantidad = '1';
-    this.setState({ Medicamento: item, searchItem: false });
+    this.setState({ Terapia: item, searchItem: false });
     this.props.queryFunc({ text: '' });
   }
 
-  addMedicamento(item) {
-    this.updateMedicamento(item);
+  addTerapia(item) {
+    this.updateTerapia(item);
     this.setState(state => ({
-    Medicamentos: [...state.Medicamentos, state.Medicamento]
+    Terapias: [...state.Terapias, state.Terapia]
     }));
   }
 
   updateQuantity(index, cantidad) {
-    const newMeds = this.state.Medicamentos;
+    const newMeds = this.state.Terapias;
     newMeds[index].cantidad = cantidad;
-    this.setState({ Medicamentos: newMeds });
+    this.setState({ Terapias: newMeds });
   }
 
   search = text => {
@@ -126,14 +127,14 @@ class OutputItemScreen extends Component {
     this.props.text.clear();
   };
 
-  listaMedicamento() {
+  listaTerapia() {
     return (
       <FlatList
-        data={this.props.Farmacia}
+        data={this.props.Rehabilitacion}
         ItemSeparatorComponent={this.ListViewItemSeparator}
         //Item Separator View
         renderItem={({ item }) => (
-          this.renderMedicamento(item)
+          this.renderTerapia(item)
         )}
         enableEmptySections
         style={{ marginTop: 10 }}
@@ -142,14 +143,14 @@ class OutputItemScreen extends Component {
     );
   }
 
-  listaMedicamentoAnadido() {
+  listaTerapiaAnadido() {
     return (
       <FlatList
-        data={this.state.Medicamentos}
+        data={this.state.Terapias}
         ItemSeparatorComponent={this.ListViewItemSeparator}
         //Item Separator View
         renderItem={({ item, index }) => (
-          this.renderMedicamentos(item, index)
+          this.renderTerapias(item, index)
         )}
         enableEmptySections
         style={{ marginTop: 10 }}
@@ -174,7 +175,7 @@ class OutputItemScreen extends Component {
     );
   }
 
-  buscarMedicamento() {
+  buscarTerapia() {
     if (this.state.searchItem === true) {
       return (
         <View style={{ flex: 1 }}>
@@ -187,16 +188,16 @@ class OutputItemScreen extends Component {
               imputStyle={{ backgroundColor: 'white', marginTop: 0, marginBottom: 0 }}
               onChangeText={text => this.props.queryFunc({
                 type: 'startsWith',
-                object: 'Farmacia',
-                variable: 'name',
+                object: 'Rehabilitacion',
+                variable: 'Concepto',
                 text })}
               onClear={() => this.props.queryFunc({ text: '' })}
-              placeholder="Nombre del medicamento"
+              placeholder="Nombre de la terapia"
               value={this.props.text}
             />
             </CardSection>
           <CardSection>
-            {this.listaMedicamento()}
+            {this.listaTerapia()}
           </CardSection>
         </View>
       );
@@ -204,7 +205,7 @@ class OutputItemScreen extends Component {
     return (
       <View style={{ flex: 1 }}>
         <CardSection>
-            <Text style={styles.emphasisTextStyle}>Medicamentos:</Text>
+            <Text style={styles.emphasisTextStyle}>Terapias:</Text>
           <View style={{ flex: 1 }}>
             <Text
               style={[styles.emphasisTextStyle, { textAlign: 'right' }]}
@@ -214,7 +215,7 @@ class OutputItemScreen extends Component {
           </View>
         </CardSection>
         <CardSection>
-          {this.listaMedicamentoAnadido()}
+          {this.listaTerapiaAnadido()}
         </CardSection>
         {this.renderError()}
         {this.renderButtons()}
@@ -265,7 +266,7 @@ class OutputItemScreen extends Component {
             </View>
         </CardSection>
         <CardSection>
-          {this.buscarMedicamento()}
+          {this.buscarTerapia()}
         </CardSection>
       </View>
     );
@@ -308,7 +309,7 @@ class OutputItemScreen extends Component {
       <View>
         <CardSection>
           <Button onPress={this.onAddPress.bind(this)}>
-            Añadir Medicamento
+            Añadir Terapia
           </Button>
           <Button onPress={this.onEliminatePress.bind(this)}>
             Borrar cuenta
@@ -323,25 +324,25 @@ class OutputItemScreen extends Component {
     );
   }
 
-  renderMedicamento(item) {
+  renderTerapia(item) {
       return (
       <TouchableWithoutFeedback
-      onPress={() => this.addMedicamento(item)}
+      onPress={() => this.addTerapia(item)}
       >
         <View>
           <Text style={styles.textStyle} >
-            {item.laboratory} - {item.name} {item.presentation} {item.content}
+            {item.Concepto}
           </Text>
         </View>
       </TouchableWithoutFeedback>
     );
   }
 
-  renderMedicamentos(item, index) {
+  renderTerapias(item, index) {
       return (
         <CardSection>
           <Text style={styles.patientTextStyle}>
-            {item.laboratory} - {item.name} {item.presentation} {item.content}
+            {item.Concepto}
           </Text>
           <TextInput
             placeholder="1"
@@ -422,12 +423,12 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ query, bill }) => {
- const { text, Patient, Farmacia } = query;
+ const { text, Patient, Rehabilitacion } = query;
  const { loading, error, succes } = bill;
  console.log(query);
- return { text, Patient, Farmacia, loading, error, succes };
+ return { text, Patient, Rehabilitacion, loading, error, succes };
 };
 
 export default connect(
   mapStateToProps,
-  { queryFunc, cleanFunc, addBill, clearBill })(OutputItemScreen);
+  { queryFunc, cleanFunc, addBill, clearBill })(Rehabilitation);

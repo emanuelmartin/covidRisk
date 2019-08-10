@@ -9,7 +9,13 @@ const INITIAL_STATE = {
   Patient: '',
   User: '',
   Farmacia: '',
-  Bill: ''
+  Bill: '',
+  BancoSangre: '',
+  Cafeteria: '',
+  Laboratory: '',
+  Rehabilitacion: '',
+  Tomografia: '',
+  RayosX: ''
 };
 
 export default (state = INITIAL_STATE, action) => {

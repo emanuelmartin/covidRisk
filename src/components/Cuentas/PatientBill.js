@@ -24,8 +24,7 @@ class PatientBill extends Component {
     super(props);
     //setting default state
     let Paciente = { names: '' };
-    let Habitacion = '';
-    this.state = { isLoading: false, search: '', Paciente, Habitacion };
+    this.state = { isLoading: false, search: '', Paciente };
     this.arrayholder = [];
   }
 
@@ -105,18 +104,35 @@ class PatientBill extends Component {
   }
 
   listaConsumo(array) {
-    return (
-      <FlatList
-        data={array}
-        //Item Separator View
-        renderItem={({ item }) => (
-          this.renderConsumo(item)
-        )}
-        enableEmptySections
-        style={{ marginTop: 10 }}
-        keyExtractor={(item) => item.code}
-      />
-    );
+    if (array[0] === 'Farmacia') {
+      return (
+        <FlatList
+          data={array[1]}
+          //Item Separator View
+          renderItem={({ item }) => (
+            this.renderConsumo(item)
+          )}
+          enableEmptySections
+          style={{ marginTop: 10 }}
+          keyExtractor={(item) => item.code}
+        />
+      );
+    } else if (array[0] === 'Rehabilitacion' || array[0] === 'BancoSangre' ||
+              array[0] === 'RayosX' || array[0] === 'Laboratorio' ||
+              array[0] === 'Tomografia' || array[0] === 'Cafeteria') {
+      return (
+        <FlatList
+          data={array[1]}
+          //Item Separator View
+          renderItem={({ item }) => (
+            this.renderConsumo1(item)
+          )}
+          enableEmptySections
+          style={{ marginTop: 10 }}
+          keyExtractor={(item) => item.code}
+        />
+      );
+    }
   }
 
   buscarPaciente() {
@@ -236,9 +252,18 @@ class PatientBill extends Component {
 
   renderCuenta(item) {
     let totalPrice = 0;
-    item.Cuenta.forEach((aux) => {
-      totalPrice += parseFloat(aux.cantidad) * parseFloat(aux.publicPrice);
-    });
+    if (item.Cuenta[0] === 'Farmacia') {
+      item.Cuenta[1].forEach((aux) => {
+        totalPrice += parseFloat(aux.cantidad) * parseFloat(aux.publicPrice);
+      });
+    } else if (item.Cuenta[0] === 'Rehabilitacion' || item.Cuenta[0] === 'BancoSangre' ||
+              item.Cuenta[0] === 'RayosX' || item.Cuenta[0] === 'Laboratorio' ||
+              item.Cuenta[0] === 'Tomografia' || item.Cuenta[0] === 'Cafeteria') {
+      item.Cuenta[1].forEach((aux) => {
+        totalPrice += aux.cantidad * aux.Precio;
+      });
+    }
+
 
     return (
       <View>
@@ -294,22 +319,50 @@ class PatientBill extends Component {
       <View>
         <CardSection>
           <View style={{ flex: 1 }}>
-            <Text style={[styles.textStyle, { textAlign: 'left', fontSize: 14}]}>
+            <Text style={[styles.textStyle, { textAlign: 'left', fontSize: 14 }]}>
               {item.name} - {item.presentation} {item.content}
             </Text>
           </View>
           <View style={{ flex: 1 }}>
             <Text
-              style={[styles.textStyle, { textAlign: 'center', fontSize: 14}]}
+              style={[styles.textStyle, { textAlign: 'center', fontSize: 14 }]}
             >
               {item.cantidad}
             </Text>
           </View>
           <View style={{ flex: 1 }}>
             <Text
-              style={[styles.textStyle, { textAlign: 'right', fontSize: 14}]}
+              style={[styles.textStyle, { textAlign: 'right', fontSize: 14 }]}
             >
               {item.publicPrice}
+            </Text>
+          </View>
+        </CardSection>
+      </View>
+    );
+  }
+
+  renderConsumo1(item) {
+    return (
+      <View>
+        <CardSection>
+          <View style={{ flex: 1 }}>
+            <Text style={[styles.textStyle, { textAlign: 'left', fontSize: 14 }]}>
+              {item.Concepto}
+            </Text>
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text
+              style={[styles.textStyle, { textAlign: 'center', fontSize: 14 }]}
+            >
+              {item.cantidad}
+            </Text>
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text
+              style={[styles.textStyle, { textAlign: 'right', fontSize: 14 }]}
+            >
+              {item.Precio}
             </Text>
           </View>
         </CardSection>

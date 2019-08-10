@@ -13,7 +13,6 @@ import Home from './Home';
 import PatientForm from './PatientForm';
 import SignupForm from './SignupForm';
 import SideMenu from '../SideMenu/SideMenu';
-import InventoryScreen from './InventoryScreen.js';
 import InventoryList from './Inventory/InventoryList';
 import InventoryDetail from './Inventory/InventoryDetail';
 import OutputItemScreen from './OutputItemScreen.js';
@@ -24,7 +23,16 @@ import PatientDetail from './Patients/PatientDetail';
 import ListaOcupacion from './Ocupacion/ListaOcupacion';
 import PatientSelect from './Ingresos/PatientSelect';
 import RoomSelect from './Ingresos/RoomSelect';
-import ListaMedicos from './Medicos/ListaMedicos'
+import ListaMedicos from './Medicos/ListaMedicos';
+import {
+  BloodBank,
+  Cafe,
+  Lab,
+  Rehabilitation,
+  Tomography,
+  XRay
+} from './Servicios';
+
 
 const AppStack = createStackNavigator(
   {
@@ -35,7 +43,6 @@ const AppStack = createStackNavigator(
     PatientForm,
     PatientList,
     PatientBill,
-    InventoryScreen,
     InventoryList,
     InventoryDetail,
     AddItemScreen,
@@ -44,7 +51,13 @@ const AppStack = createStackNavigator(
     ListaOcupacion,
     PatientSelect,
     RoomSelect,
-    ListaMedicos
+    ListaMedicos,
+    BloodBank,
+    Cafe,
+    Lab,
+    Rehabilitation,
+    Tomography,
+    XRay
   },
   {
     defaultNavigationOptions: {

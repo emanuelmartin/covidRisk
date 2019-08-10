@@ -148,22 +148,54 @@ farmacia() {
       this.props.userType === 'enfermeria') {
     return (
       <View>
-           <Text style={styles.sectionHeadingStyle}>
-             Farmacia
+         <Text style={styles.sectionHeadingStyle}>
+           Farmacia
+         </Text>
+         <View style={styles.navSectionStyle}>
+           <Text style={styles.navItemStyle} onPress={this.navigateToScreen('InventoryList')}>
+           Inventario
            </Text>
-           <View style={styles.navSectionStyle}>
-             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('InventoryList')}>
-             Inventario
-             </Text>
-             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('OutputItemScreen')}>
-             Ventas
-             </Text>
-           </View>
+           <Text style={styles.navItemStyle} onPress={this.navigateToScreen('OutputItemScreen')}>
+           Ventas
+           </Text>
          </View>
+       </View>
     );
   }
 }
 
+
+servicios() {
+  if (this.props.userType === 'admin') {
+    return (
+      <View>
+         <Text style={styles.sectionHeadingStyle}>
+           Servicios
+         </Text>
+         <View style={styles.navSectionStyle}>
+           <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Cafe')}>
+           Cafetería
+           </Text>
+           <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Lab')}>
+           Laboratorio
+           </Text>
+           <Text style={styles.navItemStyle} onPress={this.navigateToScreen('XRay')}>
+           Rayos X
+           </Text>
+           <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Tomography')}>
+           Tomografía
+           </Text>
+           <Text style={styles.navItemStyle} onPress={this.navigateToScreen('BloodBank')}>
+           Banco de Sangre
+           </Text>
+           <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Rehabilitation')}>
+           Rehabilitación
+           </Text>
+         </View>
+       </View>
+    );
+  }
+}
 cobros() {
   if (this.props.userType === 'admin' ||
       this.props.userType === 'farmacia' ||
@@ -202,10 +234,16 @@ cuentaPaciente() {
         {this.fichasPersonales()}
         {this.ocupacion()}
         {this.farmacia()}
+        {this.servicios()}
         {this.cobros()}
         </ScrollView>
         <View style={styles.footerContainer}>
-          <Text onPress={this.onLogoutButtonPress.bind(this)}>Cerrar sesión</Text>
+          <Text
+            onPress={this.onLogoutButtonPress.bind(this)}
+            style={{ fontSize: 17, alignSelf: 'center', fontWeight: 'bold' }}
+          >
+            Cerrar sesión
+          </Text>
         </View>
       </View>
     );
