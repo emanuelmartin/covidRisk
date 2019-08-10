@@ -24,6 +24,7 @@ import PatientDetail from './Patients/PatientDetail';
 import ListaOcupacion from './Ocupacion/ListaOcupacion';
 import PatientSelect from './Ingresos/PatientSelect';
 import RoomSelect from './Ingresos/RoomSelect';
+import ListaMedicos from './Medicos/ListaMedicos'
 
 const AppStack = createStackNavigator(
   {
@@ -42,7 +43,8 @@ const AppStack = createStackNavigator(
     PatientDetail,
     ListaOcupacion,
     PatientSelect,
-    RoomSelect
+    RoomSelect,
+    ListaMedicos
   },
   {
     defaultNavigationOptions: {

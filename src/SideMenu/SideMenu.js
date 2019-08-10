@@ -32,6 +32,7 @@ fichasPersonales() {
         <View style={styles.navSectionStyle}>
         {this.detallePacientes()}
         {this.detalleUsuarios()}
+        {this.detalleMedicos()}
         </View>
       </View>
     );
@@ -60,6 +61,19 @@ detalleUsuarios() {
   <View>
     <Text style={styles.navItemStyle} onPress={this.navigateToScreen('UserList')}>
     Usuarios
+    </Text>
+  </View>
+); }
+}
+
+detalleMedicos() {
+  if (this.props.userType === 'admin' ||
+      this.props.userType === 'recursosHumanos' ||
+          this.props.userType === 'recepcion') {
+    return (
+  <View>
+    <Text style={styles.navItemStyle} onPress={this.navigateToScreen('ListaMedicos')}>
+    Médicos
     </Text>
   </View>
 ); }
