@@ -22,7 +22,10 @@ const INITIAL_STATE = {
   edited: false,
   valid: false,
   username: '',
-  password: ''
+  password: '',
+  religion: '',
+  etnia: '',
+  idioma: 'Español'
 };
 
 export default (state = INITIAL_STATE, action) => {

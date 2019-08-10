@@ -9,7 +9,7 @@ import {
   ScrollView
 } from 'react-native';
 import Parse from 'parse/react-native';
-import { SearchBar } from 'react-native-elements';
+import { SearchBar, CheckBox } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { Dropdown } from 'react-native-material-dropdown';
@@ -25,13 +25,14 @@ class PatientSelect extends React.Component {
   constructor(props) {
     super(props);
     //setting default state
-    let Paciente = { names: 'Paciente' };
+    let Patient = { names: 'Paciente' };
+    let User = { names: 'Médico' };
     let Habitacion = { ID: 'Habitación', query: false };
-    this.state = { isLoading: false, search: '', Paciente, Habitacion };
+    this.state = { isLoading: false, search: '', Habitacion, Patient, User, pacienteAnonimo: false };
     this.arrayholder = [];
   }
 
-    renderIt(item) {
+    renderIt(item, tipo, busqueda) {
       if (this.state.isLoading) {
         //Loading View while data is loading
         return (
@@ -42,7 +43,7 @@ class PatientSelect extends React.Component {
         }
         return (
         <TouchableWithoutFeedback
-        onPress={() => this.updatePaciente(item)}
+        onPress={() => this.updateField(item, tipo, busqueda)}
         >
           <View>
             <Text style={styles.textStyle} >{item.names} {item.lastName1} {item.lastName2} </Text>
@@ -72,14 +73,14 @@ class PatientSelect extends React.Component {
     this.setState({ [prop]: false });
   }
 
-  lista() {
+  lista(objeto, busqueda) {
     return (
       <FlatList
-        data={this.props.Patient}
+        data={this.props[objeto]}
         ItemSeparatorComponent={this.ListViewItemSeparator}
         //Item Separator View
         renderItem={({ item }) => (
-          this.renderIt(item)
+          this.renderIt(item, objeto, busqueda)
         )}
         enableEmptySections
         style={{ marginTop: 10 }}
@@ -89,7 +90,19 @@ class PatientSelect extends React.Component {
   }
 
   seleccionarHabitacion() {
+    if (this.state.Tipo === 'Hospitalización' ||
+        this.state.Tipo === 'Cirugía mayor') {
     return (
+      <View>
+      <CardSection>
+        <Text>Selecciona una habitación</Text>
+      </CardSection>
+      <CardSection>
+        <TouchableWithoutFeedback onPress={() => this.showModal('seleccionarHabitacion')}>
+          <Text>{this.state.Habitacion.ID}</Text>
+        </TouchableWithoutFeedback>
+      </CardSection>
+
       <View>
         <Modal
         isVisible={this.state.seleccionarHabitacion}
@@ -120,13 +133,45 @@ class PatientSelect extends React.Component {
           />
           </CardSection>
         </ScrollView>
+        <CardSection>
+          <Button onPress={() => this.closeModal('seleccionarHabitacion')}>
+            Cancelar
+          </Button>
+        </CardSection>
         </Modal>
+      </View>
+      </View>
+    );}
+  }
+
+pacienteAnonimo() {
+  if (this.state.Tipo === 'Urgencias') {
+    return (
+      <View>
+        <CardSection>
+          <CheckBox
+            title='Paciente anónimo'
+            checked={this.state.pacienteAnonimo}
+            onPress={() => this.setState({ pacienteAnonimo: !this.state.pacienteAnonimo })}
+            />
+        </CardSection>
       </View>
     );
   }
+}
 
   buscarPaciente() {
-    return (
+    if (!this.state.pacienteAnonimo) {
+      return (
+    <View>
+    <CardSection>
+      <Text>Selecciona un paciente</Text>
+    </CardSection>
+    <CardSection>
+      <TouchableWithoutFeedback onPress={() => this.showModal('buscarPaciente')}>
+        <Text>{this.state.Patient.names}</Text>
+      </TouchableWithoutFeedback>
+    </CardSection>
       <View style={{ paddingTop: 50 }}>
         <TouchableWithoutFeedback onPress={() => this.setState({ buscarPaciente: false })}>
         <View>
@@ -154,11 +199,16 @@ class PatientSelect extends React.Component {
               />
               </CardSection>
             <CardSection>
-              {this.lista()}
+              {this.lista('Patient', 'buscarPaciente')}
             </CardSection>
             <CardSection>
               <Button onPress={() => this.navigateToScreen('PatientForm')}>
                 Añadir paciente
+              </Button>
+            </CardSection>
+            <CardSection>
+              <Button onPress={() => this.closeModal('buscarPaciente')}>
+                Cancelar
               </Button>
             </CardSection>
             </View>
@@ -167,11 +217,135 @@ class PatientSelect extends React.Component {
         </View>
       </TouchableWithoutFeedback>
     </View>
-    );
+    </View>
+  ); }
   }
 
-  updatePaciente(item) {
-    this.setState({ Paciente: item, buscarPaciente: false });
+  seleccionarMedicoTitular() {
+    if (this.state.Tipo === 'Hospitalización' ||
+        this.state.Tipo === 'Cirugía mayor' ||
+        this.state.Tipo === 'Cirugía ambulatoria') {
+    return (
+    <View>
+    <CardSection>
+      <Text>Selecciona un médico titular</Text>
+    </CardSection>
+    <CardSection>
+      <TouchableWithoutFeedback onPress={() => this.showModal('seleccionarMedicoTitular')}>
+        <Text>{this.state.User.names}</Text>
+      </TouchableWithoutFeedback>
+    </CardSection>
+      <View style={{ paddingTop: 50 }}>
+        <TouchableWithoutFeedback onPress={() => this.setState({ seleccionarMedicoTitular: false })}>
+        <View>
+          <Modal
+          isVisible={this.state.seleccionarMedicoTitular}
+          transparent={false}
+          >
+          <TouchableWithoutFeedback>
+          <View style={{ flex: 1 }}>
+            <CardSection>
+              <SearchBar
+                containerStyle={{ flex: 1, backgroundColor: 'white' }}
+                imputStyle={{ backgroundColor: 'white', marginTop: 0, marginBottom: 0 }}
+                round
+                searchIcon={{ size: 24 }}
+                onChangeText={text => this.props.queryFunc({
+                  type: 'startsWith',
+                  object: 'User',
+                  variable: 'lastName1',
+                  text })}
+                onClear={() => this.props.queryFunc({ text: '' })}
+                placeholder="Ingresa el primer apellido..."
+                value={this.props.text}
+              />
+              </CardSection>
+            <CardSection>
+              {this.lista('User', 'seleccionarMedicoTitular')}
+            </CardSection>
+            <CardSection>
+              <Button onPress={() => this.navigateToScreen('SignupForm')}>
+                Añadir médico
+              </Button>
+            </CardSection>
+            <CardSection>
+              <Button onPress={() => this.closeModal('seleccionarMedicoTitular')}>
+                Cancelar
+              </Button>
+            </CardSection>
+            </View>
+          </TouchableWithoutFeedback>
+          </Modal>
+        </View>
+      </TouchableWithoutFeedback>
+    </View>
+    </View>
+  );
+}
+  }
+
+  seleccionarMedicoGuardia() {
+    if (this.state.Tipo === 'Urgencias') {
+    return (
+    <View>
+    <CardSection>
+      <Text>Selecciona un médico de guardia</Text>
+    </CardSection>
+    <CardSection>
+      <TouchableWithoutFeedback onPress={() => this.showModal('seleccionarMedicoGuardia')}>
+        <Text>{this.state.User.names}</Text>
+      </TouchableWithoutFeedback>
+    </CardSection>
+      <View style={{ paddingTop: 50 }}>
+        <TouchableWithoutFeedback onPress={() => this.setState({ seleccionarMedicoGuardia: false })}>
+        <View>
+          <Modal
+          isVisible={this.state.seleccionarMedicoGuardia}
+          transparent={false}
+          >
+          <TouchableWithoutFeedback>
+          <View style={{ flex: 1 }}>
+            <CardSection>
+              <SearchBar
+                containerStyle={{ flex: 1, backgroundColor: 'white' }}
+                imputStyle={{ backgroundColor: 'white', marginTop: 0, marginBottom: 0 }}
+                round
+                searchIcon={{ size: 24 }}
+                onChangeText={text => this.props.queryFunc({
+                  type: 'startsWith',
+                  object: 'User',
+                  variable: 'lastName1',
+                  text })}
+                onClear={() => this.props.queryFunc({ text: '' })}
+                placeholder="Ingresa el primer apellido..."
+                value={this.props.text}
+              />
+              </CardSection>
+            <CardSection>
+              {this.lista('User', 'seleccionarMedicoGuardia')}
+            </CardSection>
+            <CardSection>
+              <Button onPress={() => this.navigateToScreen('SignupForm')}>
+                Añadir médico
+              </Button>
+            </CardSection>
+            <CardSection>
+              <Button onPress={() => this.closeModal('seleccionarMedicoGuardia')}>
+                Cancelar
+              </Button>
+            </CardSection>
+            </View>
+          </TouchableWithoutFeedback>
+          </Modal>
+        </View>
+      </TouchableWithoutFeedback>
+    </View>
+    </View>
+  );
+}
+  }
+  updateField(item, tipo, busqueda) {
+    this.setState({ [tipo]: item, [busqueda]: false });
   }
 
   updateHabitacion(item) {
@@ -241,7 +415,7 @@ class PatientSelect extends React.Component {
       }, {
         value: 'Urgencias'
       }, {
-        value: 'Consulta'
+        value: 'Hospitalización'
       }];
 
     return (
@@ -251,30 +425,16 @@ class PatientSelect extends React.Component {
           containerStyle={{ flex: 1 }}
           data={data}
           value={this.state.Tipo}
-          onChangeText={value => this.setState({ Tipo: value })}
+          onChangeText={value => this.setState({ Tipo: value, pacienteAnonimo: false })}
           placeholder={'Selecciona el tipo de ingreso'}
           />
         </CardSection>
 
-        <CardSection>
-          <Text>Selecciona un paciente</Text>
-        </CardSection>
-        <CardSection>
-          <TouchableWithoutFeedback onPress={() => this.showModal('buscarPaciente')}>
-            <Text>{this.state.Paciente.names}</Text>
-          </TouchableWithoutFeedback>
-        </CardSection>
+        {this.pacienteAnonimo()}
         {this.buscarPaciente()}
-
-        <CardSection>
-          <Text>Selecciona una habitación</Text>
-        </CardSection>
-        <CardSection>
-          <TouchableWithoutFeedback onPress={() => this.showModal('seleccionarHabitacion')}>
-            <Text>{this.state.Habitacion.ID}</Text>
-          </TouchableWithoutFeedback>
-        </CardSection>
+        {this.seleccionarMedicoTitular()}
         {this.seleccionarHabitacion()}
+        {this.seleccionarMedicoGuardia()}
 
         <CardSection>
           <Button onPress={() => this.ingresarPaciente()}>Ingresar paciente</Button>
@@ -298,9 +458,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ query }) => {
- const { text, Patient, Ocupacion } = query;
+ const { text, Patient, Ocupacion, User } = query;
  console.log(query);
- return { text, Patient, Ocupacion };
+ return { text, Patient, Ocupacion, User };
 };
 
 export default connect(mapStateToProps, { queryFunc, cleanFunc })(PatientSelect);

@@ -121,6 +121,42 @@ class PatientForm extends Component {
             onChangeText={value => this.props.patientUpdate({ prop: 'birthState', value, type: 'oneWord', edited: true })}
           />
         </CardSection>
+
+        <CardSection>
+          <Input
+            required
+            label="Religión"
+            placeholder="Religión"
+            value={this.props.religion.toShow}
+            valid={this.props.religion.valid}
+            edited={this.props.religion.edited}
+            onChangeText={value => this.props.patientUpdate({ prop: 'religion', value, type: 'oneWord', edited: true })}
+          />
+        </CardSection>
+
+        <CardSection>
+          <Input
+            required
+            label="Etnia indígena"
+            placeholder="Taraumara"
+            value={this.props.etnia.toShow}
+            valid={this.props.etnia.valid}
+            edited={this.props.etnia.edited}
+            onChangeText={value => this.props.patientUpdate({ prop: 'etnia', value, type: 'oneWord', edited: true })}
+          />
+        </CardSection>
+
+        <CardSection>
+          <Input
+            required
+            label="Idioma principal"
+            placeholder="Español"
+            value={this.props.idioma.toShow}
+            valid={this.props.idioma.valid}
+            edited={this.props.idioma.edited}
+            onChangeText={value => this.props.patientUpdate({ prop: 'idioma', value, type: 'oneWord', edited: true })}
+          />
+        </CardSection>
         </View>
         );
       }
@@ -294,7 +330,7 @@ class PatientForm extends Component {
         <View>
         <CardSection>
         <Input
-          label="Usario"
+          label="Usuario"
           placeholder="EmanuelMartin"
           value={this.props.username.toShow}
           valid={this.props.username.valid}
@@ -428,7 +464,10 @@ const mapStateToProps = (state) => {
     sex,
     prof,
     username,
-    password
+    password,
+    religion,
+    idioma,
+    etnia
   } = state.patientForm;
   return {
     loading,
@@ -444,7 +483,10 @@ const mapStateToProps = (state) => {
     sex,
     prof,
     username,
-    password
+    password,
+    religion,
+    idioma,
+    etnia
   };
 };
 
