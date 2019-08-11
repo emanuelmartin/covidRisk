@@ -25,11 +25,14 @@ class AdminQuirofano extends React.Component {
   constructor(props) {
     super(props);
     //setting default state
-    let Patient = { names: 'Paciente' };
-    let Medico = { names: 'Médico' };
-    let tipoCirugia = { name: 'Tipo de cirugía' };
-    let Habitacion = { ID: 'Habitación', query: false };
-    this.state = { isLoading: false, search: '', Habitacion, Patient, Medico, tipoCirugia, pacienteAnonimo: false };
+    let Patient = { names: 'Selecciona un paciente' };
+    let Medico = { names: 'Selecciona un médico' };
+    let tipoCirugia = { name: 'Selecciona un tipo de cirugía' };
+    let Insumos = { names: 'Añade los insumos correspondientes' };
+    let rentaEquipos = { names: 'Añade la renta de equipos' };
+    let extras = { names: 'Añade los extras' };
+    let sangre = { names: 'Añade las unidades de sangre' }
+    this.state = { isLoading: false, search: '', Patient, Medico, tipoCirugia, Insumos, rentaEquipos, extras, sangre, pacienteAnonimo: false };
     this.arrayholder = [];
   }
 
@@ -96,7 +99,7 @@ class AdminQuirofano extends React.Component {
       return (
     <View>
     <CardSection>
-      <Text>Selecciona un paciente</Text>
+      <Text>Paciente</Text>
     </CardSection>
     <CardSection>
       <TouchableWithoutFeedback onPress={() => this.showModal('buscarPaciente')}>
@@ -156,18 +159,16 @@ class AdminQuirofano extends React.Component {
     return (
     <View>
     <CardSection>
-      <Text>Selecciona un médico titular</Text>
+      <Text>Equipo médico</Text>
     </CardSection>
     <CardSection>
-      <TouchableWithoutFeedback onPress={() => this.showModal('seleccionarMedicoTitular')}>
-        <Text>{this.state.Medico.names}</Text>
-      </TouchableWithoutFeedback>
+        <Button onPress={() => this.showModal('seleccionarMedicos')}>Agregar médico</Button>
     </CardSection>
       <View style={{ paddingTop: 50 }}>
-        <TouchableWithoutFeedback onPress={() => this.setState({ seleccionarMedicoTitular: false })}>
+        <TouchableWithoutFeedback onPress={() => this.setState({ seleccionarMedicos: false })}>
         <View>
           <Modal
-          isVisible={this.state.seleccionarMedicoTitular}
+          isVisible={this.state.seleccionarMedicos}
           transparent={false}
           >
           <TouchableWithoutFeedback>
@@ -189,7 +190,7 @@ class AdminQuirofano extends React.Component {
               />
               </CardSection>
             <CardSection>
-              {this.lista('Medico', 'seleccionarMedicoTitular')}
+              {this.lista('Medico', 'seleccionarMedicos')}
             </CardSection>
             <CardSection>
               <Button onPress={() => this.navigateToScreen('SignupForm')}>
@@ -197,7 +198,7 @@ class AdminQuirofano extends React.Component {
               </Button>
             </CardSection>
             <CardSection>
-              <Button onPress={() => this.closeModal('seleccionarMedicoTitular')}>
+              <Button onPress={() => this.closeModal('seleccionarMedicos')}>
                 Cancelar
               </Button>
             </CardSection>
@@ -211,12 +212,225 @@ class AdminQuirofano extends React.Component {
   );
 }
 
+agregarInsumos() {
+  return (
+  <View>
+  <CardSection>
+    <Text>Insumos</Text>
+  </CardSection>
+  <CardSection>
+      <Button onPress={() => this.showModal('agregarInsumos')}>Agregar insumos</Button>
+  </CardSection>
+    <View style={{ paddingTop: 50 }}>
+      <TouchableWithoutFeedback onPress={() => this.setState({ agregarInsumos: false })}>
+      <View>
+        <Modal
+        isVisible={this.state.agregarInsumos}
+        transparent={false}
+        >
+        <TouchableWithoutFeedback>
+        <View style={{ flex: 1 }}>
+          <CardSection>
+            <SearchBar
+              containerStyle={{ flex: 1, backgroundColor: 'white' }}
+              imputStyle={{ backgroundColor: 'white', marginTop: 0, marginBottom: 0 }}
+              round
+              searchIcon={{ size: 24 }}
+              onChangeText={text => this.props.queryFunc({
+                type: 'startsWith',
+                object: 'Farmacia',
+                variable: 'name',
+                text })}
+              onClear={() => this.props.queryFunc({ text: '' })}
+              placeholder="Ingresa el nombre comercial..."
+              value={this.props.text}
+            />
+            </CardSection>
+          <CardSection>
+            {this.lista('Farmacia', 'agregarInsumos')}
+          </CardSection>
+          <CardSection>
+            <Button onPress={() => this.closeModal('agregarInsumos')}>
+              Cancelar
+            </Button>
+          </CardSection>
+          </View>
+        </TouchableWithoutFeedback>
+        </Modal>
+      </View>
+    </TouchableWithoutFeedback>
+  </View>
+  </View>
+);
+}
+
+agregarSangre() {
+  return (
+  <View>
+  <CardSection>
+    <Text>Unidades de sangre</Text>
+  </CardSection>
+  <CardSection>
+    <TouchableWithoutFeedback onPress={() => this.showModal('agregarSangre')}>
+      <Text>{this.state.sangre.names}</Text>
+    </TouchableWithoutFeedback>
+  </CardSection>
+    <View style={{ paddingTop: 50 }}>
+      <TouchableWithoutFeedback onPress={() => this.setState({ agregarSangre: false })}>
+      <View>
+        <Modal
+        isVisible={this.state.agregarSangre}
+        transparent={false}
+        >
+        <TouchableWithoutFeedback>
+        <View style={{ flex: 1 }}>
+          <CardSection>
+            <SearchBar
+              containerStyle={{ flex: 1, backgroundColor: 'white' }}
+              imputStyle={{ backgroundColor: 'white', marginTop: 0, marginBottom: 0 }}
+              round
+              searchIcon={{ size: 24 }}
+              onChangeText={text => this.props.queryFunc({
+                type: 'startsWith',
+                object: 'Medico',
+                variable: 'lastName1',
+                text })}
+              onClear={() => this.props.queryFunc({ text: '' })}
+              placeholder="Ingresa el primer apellido..."
+              value={this.props.text}
+            />
+            </CardSection>
+          <CardSection>
+            {this.lista('Medico', 'agregarSangre')}
+          </CardSection>
+          <CardSection>
+            <Button onPress={() => this.closeModal('agregarSangre')}>
+              Cancelar
+            </Button>
+          </CardSection>
+          </View>
+        </TouchableWithoutFeedback>
+        </Modal>
+      </View>
+    </TouchableWithoutFeedback>
+  </View>
+  </View>
+);
+}
+
+rentaEquipos() {
+  return (
+  <View>
+  <CardSection>
+    <Text>Renta de equipos</Text>
+  </CardSection>
+  <CardSection>
+    <TouchableWithoutFeedback onPress={() => this.showModal('rentaEquipos')}>
+      <Text>{this.state.rentaEquipos.names}</Text>
+    </TouchableWithoutFeedback>
+  </CardSection>
+    <View style={{ paddingTop: 50 }}>
+      <TouchableWithoutFeedback onPress={() => this.setState({ rentaEquipos: false })}>
+      <View>
+        <Modal
+        isVisible={this.state.rentaEquipos}
+        transparent={false}
+        >
+        <TouchableWithoutFeedback>
+        <View style={{ flex: 1 }}>
+          <CardSection>
+            <SearchBar
+              containerStyle={{ flex: 1, backgroundColor: 'white' }}
+              imputStyle={{ backgroundColor: 'white', marginTop: 0, marginBottom: 0 }}
+              round
+              searchIcon={{ size: 24 }}
+              onChangeText={text => this.props.queryFunc({
+                type: 'startsWith',
+                object: 'Medico',
+                variable: 'lastName1',
+                text })}
+              onClear={() => this.props.queryFunc({ text: '' })}
+              placeholder="Ingresa el primer apellido..."
+              value={this.props.text}
+            />
+            </CardSection>
+          <CardSection>
+            {this.lista('Medico', 'rentaEquipos')}
+          </CardSection>
+          <CardSection>
+            <Button onPress={() => this.closeModal('rentaEquipos')}>
+              Cancelar
+            </Button>
+          </CardSection>
+          </View>
+        </TouchableWithoutFeedback>
+        </Modal>
+      </View>
+    </TouchableWithoutFeedback>
+  </View>
+  </View>
+);
+}
+
+extras() {
+  return (
+  <View>
+  <CardSection>
+    <Text>Extras</Text>
+  </CardSection>
+  <CardSection>
+    <TouchableWithoutFeedback onPress={() => this.showModal('extras')}>
+      <Text>{this.state.extras.names}</Text>
+    </TouchableWithoutFeedback>
+  </CardSection>
+    <View style={{ paddingTop: 50 }}>
+      <TouchableWithoutFeedback onPress={() => this.setState({ extras: false })}>
+      <View>
+        <Modal
+        isVisible={this.state.extras}
+        transparent={false}
+        >
+        <TouchableWithoutFeedback>
+        <View style={{ flex: 1 }}>
+          <CardSection>
+            <SearchBar
+              containerStyle={{ flex: 1, backgroundColor: 'white' }}
+              imputStyle={{ backgroundColor: 'white', marginTop: 0, marginBottom: 0 }}
+              round
+              searchIcon={{ size: 24 }}
+              onChangeText={text => this.props.queryFunc({
+                type: 'startsWith',
+                object: 'Medico',
+                variable: 'lastName1',
+                text })}
+              onClear={() => this.props.queryFunc({ text: '' })}
+              placeholder="Ingresa el primer apellido..."
+              value={this.props.text}
+            />
+            </CardSection>
+          <CardSection>
+            {this.lista('Medico', 'extras')}
+          </CardSection>
+          <CardSection>
+            <Button onPress={() => this.closeModal('extras')}>
+              Cancelar
+            </Button>
+          </CardSection>
+          </View>
+        </TouchableWithoutFeedback>
+        </Modal>
+      </View>
+    </TouchableWithoutFeedback>
+  </View>
+  </View>
+);
+}
 
   seleccionarTipoCirugia() {
     return (
     <View>
     <CardSection>
-      <Text>Selecciona un tipo de cirugía</Text>
+      <Text>Tipo de cirugía</Text>
     </CardSection>
     <CardSection>
       <TouchableWithoutFeedback onPress={() => this.showModal('seleccionarTipoCirugia')}>
@@ -271,9 +485,6 @@ class AdminQuirofano extends React.Component {
     this.setState({ [tipo]: item, [busqueda]: false, text: '' });
   }
 
-  updateHabitacion(item) {
-    this.setState({ Habitacion: item, seleccionarHabitacion: false });
-  }
 
   ingresarPaciente() {
     console.log(this.state.Patient);
@@ -376,15 +587,20 @@ class AdminQuirofano extends React.Component {
       console.log(this.state);
 
     return (
-      <View style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1 }}>
 
         {this.buscarPaciente()}
         {this.seleccionarTipoCirugia()}
+        {this.seleccionarMedicos()}
+        {this.agregarInsumos()}
+        {this.agregarSangre()}
+        {this.rentaEquipos()}
+        {this.extras()}
 
         <CardSection>
-          <Button onPress={() => this.ingresarPaciente()}>Ingresar paciente</Button>
+          <Button onPress={() => this.ingresarPaciente()}>Agregar cirugía</Button>
         </CardSection>
-      </View>
+      </ScrollView>
       );
     }
   }
