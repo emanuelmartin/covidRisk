@@ -80,7 +80,7 @@ class XRay extends Component {
   onBillPress() {
     this.props.addBill({
       patient: this.state.Paciente.objectId,
-      bill: ['RayosX', this.state.Estudios]
+      bill: { Type: 'RayosX', List: this.state.Estudios }
     });
   }
 

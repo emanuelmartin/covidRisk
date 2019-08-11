@@ -80,7 +80,7 @@ class Rehabilitation extends Component {
   onBillPress() {
     this.props.addBill({
       patient: this.state.Paciente.objectId,
-      bill: ['Rehabilitacion', this.state.Terapias]
+      bill: { Type: 'Rehabilitacion', List: this.state.Terapias }
     });
   }
 

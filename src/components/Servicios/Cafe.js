@@ -80,7 +80,7 @@ class Cafe extends Component {
   onBillPress() {
     this.props.addBill({
       patient: this.state.Paciente.objectId,
-      bill: ['Cafeteria', this.state.Alimentos]
+      bill: { Type: 'Cafeteria', List: this.state.Alimentos }
     });
   }
 

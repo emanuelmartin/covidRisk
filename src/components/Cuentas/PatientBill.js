@@ -6,7 +6,7 @@ import {
   FlatList,
   ActivityIndicator,
   TouchableWithoutFeedback,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 //import Parse from 'parse/react-native';
 import { SearchBar } from 'react-native-elements';
@@ -24,7 +24,11 @@ class PatientBill extends Component {
     super(props);
     //setting default state
     let Paciente = { names: '' };
-    this.state = { isLoading: false, search: '', Paciente };
+    let Insumos = false;
+    let Estudios = false;
+    let Otros = false;
+
+    this.state = { isLoading: false, search: '', Paciente, Insumos, Estudios, Otros };
     this.arrayholder = [];
   }
 
@@ -49,19 +53,6 @@ class PatientBill extends Component {
       });
   }
 
-  setStyle(estado) {
-    if (estado) {
-      return ({
-      padding: 10,
-      backgroundColor: '#F55E64'
-      });
-    }
-    return ({
-      padding: 10,
-      backgroundColor: '#53E69D'
-    });
-  }
-
   onOtherBillPress() {
     this.setState({ Paciente: { names: '' } });
     this.props.cleanFunc();
@@ -71,12 +62,131 @@ class PatientBill extends Component {
 
   }
 
+  newLista() {
+    if (this.props.Bill !== '') {
+      let totalInsumos = 0;
+      let totalEstudios = 0;
+      let totalOtros = 0;
+
+      let Insumos = [];
+      let Estudios = [];
+      let Otros = [];
+
+      this.props.Bill.forEach((bill) => {
+        if (bill.Cuenta.Type === 'Farmacia') {
+          bill.Cuenta.List.forEach((desglose) => {
+            totalInsumos += parseFloat(desglose.publicPrice) * parseFloat(desglose.cantidad);
+            Insumos.push(desglose);
+          });
+        } else if (bill.Cuenta.Type === 'Tomografia' || bill.Cuenta.Type === 'RayosX' ||
+        bill.Cuenta.Type === 'Laboratorio') {
+          bill.Cuenta.List.forEach((desglose) => {
+            totalEstudios += desglose.Precio * parseFloat(desglose.cantidad);
+            Estudios.push(desglose);
+          });
+        } else if (bill.Cuenta.Type === 'Cafeteria' || bill.Cuenta.Type === 'Rehabilitacion' ||
+        bill.Cuenta.Type === 'BancoSangre') {
+          bill.Cuenta.List.forEach((desglose) => {
+            totalOtros += desglose.Precio * parseFloat(desglose.cantidad);
+            Otros.push(desglose);
+          });
+        }
+      });
+      return (
+        <View>
+          {this.show('Insumos', 'objectId', Insumos, totalInsumos, this.renderInsumos)}
+          {this.show('Estudios', 'objectId', Estudios, totalEstudios, this.renderEstudios)}
+          {this.show('Otros', 'objectId', Otros, totalOtros, this.renderEstudios)}
+          <CardSection>
+            <View style={{ flex: 1 }}>
+              <Button onPress={this.onPayPress.bind(this)}>
+                Pagar
+              </Button>
+            </View>
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+              <Text style={styles.emphasisTextStyle}> Total</Text>
+              <Text style={styles.emphasisTextStyle}> ${totalInsumos + totalEstudios + totalOtros}</Text>
+            </View>
+          </CardSection>
+        </View>
+      );
+    }
+  }
+
+  show(name, key, array, total, renderFunction) {
+    if (total > 0) {
+      return (
+        <View>
+          <CardSection>
+            <TouchableWithoutFeedback
+              onPress={() => this.setState(state => ({
+              [name]: !state[name]
+              }))}
+            >
+            <View style={{ flex: 1, flexDirection: 'row' }}>
+              <Text style={styles.emphasisTextStyle}>{name}</Text>
+              <View style={{ flex: 1 }}>
+                <Text
+                  style={[styles.emphasisTextStyle, { textAlign: 'right' }]}
+                >
+                  ${total}
+                </Text>
+              </View>
+            </View>
+            </TouchableWithoutFeedback>
+          </CardSection>
+          {this.listaObjetos(this.state[name], array, key, renderFunction)}
+        </View>
+      );
+    }
+  }
+
+  listaObjetos(boolean, array, key, renderFunction) {
+    if (boolean) {
+      return (
+        <View>
+          <CardSection>
+            <View style={{ flex: 1 }}>
+              <Text style={[styles.emphasisTextStyle, { textAlign: 'left', fontSize: 16 }]}>
+                Descripción
+              </Text>
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text
+                style={[styles.emphasisTextStyle, { textAlign: 'center', fontSize: 16 }]}
+              >
+                Cantidad
+              </Text>
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text
+                style={[styles.emphasisTextStyle, { textAlign: 'right', fontSize: 16 }]}
+              >
+                Precio
+              </Text>
+            </View>
+          </CardSection>
+          <CardSection>
+            <FlatList
+              data={array}
+              ItemSeparatorComponent={this.ListViewItemSeparator}
+              //Item Separator View
+              renderItem={({ item }) => (
+                renderFunction(item)
+              )}
+              enableEmptySections
+              style={{ marginTop: 10 }}
+              keyExtractor={(item) => item[key]}
+            />
+          </CardSection>
+        </View>
+      );
+    }
+  }
   lista() {
     return (
       <FlatList
         data={this.props.Patient}
-        ItemSeparatorComponent={this.ListViewItemSeparator}
-        //Item Separator View
         renderItem={({ item }) => (
           this.renderIt(item)
         )}
@@ -85,54 +195,6 @@ class PatientBill extends Component {
         keyExtractor={(item) => item.curp}
       />
     );
-  }
-
-  listaCuenta() {
-    return (
-      <FlatList
-        data={this.props.Bill}
-        ItemSeparatorComponent={this.ListViewItemSeparator}
-        //Item Separator View
-        renderItem={({ item }) => (
-          this.renderCuenta(item)
-        )}
-        enableEmptySections
-        style={{ marginTop: 10 }}
-        keyExtractor={(item) => item.objectId}
-      />
-    );
-  }
-
-  listaConsumo(array) {
-    if (array[0] === 'Farmacia') {
-      return (
-        <FlatList
-          data={array[1]}
-          //Item Separator View
-          renderItem={({ item }) => (
-            this.renderConsumo(item)
-          )}
-          enableEmptySections
-          style={{ marginTop: 10 }}
-          keyExtractor={(item) => item.code}
-        />
-      );
-    } else if (array[0] === 'Rehabilitacion' || array[0] === 'BancoSangre' ||
-              array[0] === 'RayosX' || array[0] === 'Laboratorio' ||
-              array[0] === 'Tomografia' || array[0] === 'Cafeteria') {
-      return (
-        <FlatList
-          data={array[1]}
-          //Item Separator View
-          renderItem={({ item }) => (
-            this.renderConsumo1(item)
-          )}
-          enableEmptySections
-          style={{ marginTop: 10 }}
-          keyExtractor={(item) => item.code}
-        />
-      );
-    }
   }
 
   buscarPaciente() {
@@ -186,8 +248,7 @@ class PatientBill extends Component {
             backgroundColor: '#080808',
           }}
         />
-        {this.listaCuenta()}
-
+        {this.newLista()}
       </View>
     );
   }
@@ -230,6 +291,58 @@ class PatientBill extends Component {
     );
   };
 
+  renderInsumos(item) {
+    return (
+      <CardSection>
+        <View style={{ flex: 1 }}>
+          <Text style={[styles.textStyle, { textAlign: 'left', fontSize: 14 }]}>
+            {item.name} - {item.presentation} {item.content}
+          </Text>
+        </View>
+        <View style={{ flex: 1 }}>
+          <Text
+            style={[styles.textStyle, { textAlign: 'center', fontSize: 14 }]}
+          >
+            {item.cantidad}
+          </Text>
+        </View>
+        <View style={{ flex: 1 }}>
+          <Text
+            style={[styles.textStyle, { textAlign: 'right', fontSize: 14 }]}
+          >
+            {item.publicPrice}
+          </Text>
+        </View>
+      </CardSection>
+    );
+  }
+
+  renderEstudios(item) {
+    return (
+      <CardSection>
+        <View style={{ flex: 1 }}>
+          <Text style={[styles.textStyle, { textAlign: 'left', fontSize: 14 }]}>
+            {item.Concepto}
+          </Text>
+        </View>
+        <View style={{ flex: 1 }}>
+          <Text
+            style={[styles.textStyle, { textAlign: 'center', fontSize: 14 }]}
+          >
+            {item.cantidad}
+          </Text>
+        </View>
+        <View style={{ flex: 1 }}>
+          <Text
+            style={[styles.textStyle, { textAlign: 'right', fontSize: 14 }]}
+          >
+            {item.Precio}
+          </Text>
+        </View>
+      </CardSection>
+    );
+  }
+
   renderIt(item) {
     if (this.state.isLoading) {
       //Loading View while data is loading
@@ -247,126 +360,6 @@ class PatientBill extends Component {
           <Text style={styles.textStyle} >{item.names} {item.lastName1} {item.lastName2} </Text>
         </View>
       </TouchableWithoutFeedback>
-    );
-  }
-
-  renderCuenta(item) {
-    let totalPrice = 0;
-    if (item.Cuenta[0] === 'Farmacia') {
-      item.Cuenta[1].forEach((aux) => {
-        totalPrice += parseFloat(aux.cantidad) * parseFloat(aux.publicPrice);
-      });
-    } else if (item.Cuenta[0] === 'Rehabilitacion' || item.Cuenta[0] === 'BancoSangre' ||
-              item.Cuenta[0] === 'RayosX' || item.Cuenta[0] === 'Laboratorio' ||
-              item.Cuenta[0] === 'Tomografia' || item.Cuenta[0] === 'Cafeteria') {
-      item.Cuenta[1].forEach((aux) => {
-        totalPrice += aux.cantidad * aux.Precio;
-      });
-    }
-
-
-    return (
-      <View>
-        <CardSection>
-            <Text style={styles.emphasisTextStyle}>Cuenta: </Text>
-          <View style={{ flex: 1 }}>
-            <Text
-              style={[styles.patientTextStyle, { textAlign: 'right' }]}
-            >
-              {item.objectId}
-            </Text>
-          </View>
-        </CardSection>
-        <CardSection>
-          <View style={{ flex: 1 }}>
-            <Text style={[styles.emphasisTextStyle, { textAlign: 'left', fontSize: 16}]}>
-              Descripción
-            </Text>
-          </View>
-          <View style={{ flex: 1 }}>
-            <Text
-              style={[styles.emphasisTextStyle, { textAlign: 'center', fontSize: 16}]}
-            >
-              Cantidad
-            </Text>
-          </View>
-          <View style={{ flex: 1 }}>
-            <Text
-              style={[styles.emphasisTextStyle, { textAlign: 'right', fontSize: 16}]}
-            >
-              Precio
-            </Text>
-          </View>
-        </CardSection>
-        {this.listaConsumo(item.Cuenta)}
-        <CardSection>
-          <View style={{ flex: 1 }}>
-            <Button onPress={this.onPayPress.bind(this)}>
-              Pagar
-            </Button>
-          </View>
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text style={styles.emphasisTextStyle}> Total</Text>
-            <Text style={styles.emphasisTextStyle}> ${totalPrice.toString()}</Text>
-          </View>
-        </CardSection>
-      </View>
-    );
-  }
-
-  renderConsumo(item) {
-    return (
-      <View>
-        <CardSection>
-          <View style={{ flex: 1 }}>
-            <Text style={[styles.textStyle, { textAlign: 'left', fontSize: 14 }]}>
-              {item.name} - {item.presentation} {item.content}
-            </Text>
-          </View>
-          <View style={{ flex: 1 }}>
-            <Text
-              style={[styles.textStyle, { textAlign: 'center', fontSize: 14 }]}
-            >
-              {item.cantidad}
-            </Text>
-          </View>
-          <View style={{ flex: 1 }}>
-            <Text
-              style={[styles.textStyle, { textAlign: 'right', fontSize: 14 }]}
-            >
-              {item.publicPrice}
-            </Text>
-          </View>
-        </CardSection>
-      </View>
-    );
-  }
-
-  renderConsumo1(item) {
-    return (
-      <View>
-        <CardSection>
-          <View style={{ flex: 1 }}>
-            <Text style={[styles.textStyle, { textAlign: 'left', fontSize: 14 }]}>
-              {item.Concepto}
-            </Text>
-          </View>
-          <View style={{ flex: 1 }}>
-            <Text
-              style={[styles.textStyle, { textAlign: 'center', fontSize: 14 }]}
-            >
-              {item.cantidad}
-            </Text>
-          </View>
-          <View style={{ flex: 1 }}>
-            <Text
-              style={[styles.textStyle, { textAlign: 'right', fontSize: 14 }]}
-            >
-              {item.Precio}
-            </Text>
-          </View>
-        </CardSection>
-      </View>
     );
   }
 

@@ -80,7 +80,7 @@ class Lab extends Component {
   onBillPress() {
     this.props.addBill({
       patient: this.state.Paciente.objectId,
-      bill: ['Laboratorio', this.state.Estudios]
+      bill: { Type: 'Laboratorio', List: this.state.Estudios }
     });
   }
 

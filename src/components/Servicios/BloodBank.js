@@ -80,7 +80,7 @@ class BloodBank extends Component {
   onBillPress() {
     this.props.addBill({
       patient: this.state.Paciente.objectId,
-      bill: ['BancoSangre', this.state.Paquetes]
+      bill: { Type: 'BancoSangre', List: this.state.Paquetes }
     });
   }
 

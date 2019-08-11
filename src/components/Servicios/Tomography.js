@@ -80,7 +80,7 @@ class Tomography extends Component {
   onBillPress() {
     this.props.addBill({
       patient: this.state.Paciente.objectId,
-      bill: ['Tomografia', this.state.Estudios]
+      bill: { Type: 'Tomografia', List: this.state.Estudios }
     });
   }
 
