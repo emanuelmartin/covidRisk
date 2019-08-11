@@ -91,12 +91,25 @@ ocupacion() {
         Ocupación
       </Text>
       <View style={styles.navSectionStyle}>
+      {this.pacientesActivos()}
       {this.ocupacionActual()}
       {this.ingresarPaciente()}
       {this.altaPaciente()}
       </View>
     </View>
   ); }
+}
+
+pacientesActivos() {
+  if (this.props.userType === 'admin') {
+    return (
+      <View>
+      <Text style={styles.navItemStyle} onPress={this.navigateToScreen('PacientesActivos')}>
+        Pacientes activos
+      </Text>
+      </View>
+    );
+  }
 }
 
 ocupacionActual() {
