@@ -204,6 +204,9 @@ servicios() {
            <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Rehabilitation')}>
            Rehabilitación
            </Text>
+           <Text style={styles.navItemStyle} onPress={this.navigateToScreen('AdminQuirofano')}>
+           Quirófanos
+           </Text>
          </View>
        </View>
     );
@@ -253,7 +256,7 @@ cuentaPaciente() {
         <View style={styles.footerContainer}>
           <Text
             onPress={this.onLogoutButtonPress.bind(this)}
-            style={{ fontSize: 17, alignSelf: 'center', fontWeight: 'bold' }}
+            style={{ fontSize: 17, alignSelf: 'center', fontWeight: 'bold', color: 'white' }}
           >
             Cerrar sesión
           </Text>

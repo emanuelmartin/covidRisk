@@ -24,7 +24,8 @@ import ListaOcupacion from './Ocupacion/ListaOcupacion';
 import PatientSelect from './Ingresos/PatientSelect';
 import RoomSelect from './Ingresos/RoomSelect';
 import ListaMedicos from './Medicos/ListaMedicos';
-import PacientesActivos from './Patients/PacientesActivos'
+import PacientesActivos from './Patients/PacientesActivos';
+import AdminQuirofano from './Quirofano/AdminQuirofano';
 import {
   BloodBank,
   Cafe,
@@ -59,7 +60,8 @@ const AppStack = createStackNavigator(
     Rehabilitation,
     Tomography,
     XRay,
-    PacientesActivos
+    PacientesActivos,
+    AdminQuirofano
   },
   {
     defaultNavigationOptions: {
