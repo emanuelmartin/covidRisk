@@ -19,7 +19,7 @@ import { queryFunc, cleanFunc } from '../../actions';
 
 class AdminQuirofano extends React.Component {
   static navigationOptions = {
-    title: 'Añadir cirugía',
+    title: 'Añadir cirugía'
   };
 
   constructor(props) {
@@ -152,7 +152,8 @@ class AdminQuirofano extends React.Component {
       </TouchableWithoutFeedback>
     </View>
     </View>
-  ); }
+  );
+}
   }
 
   seleccionarMedicos() {

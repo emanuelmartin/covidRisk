@@ -34,7 +34,7 @@ import {
   Tomography,
   XRay
 } from './Servicios';
-
+import PruebaImpresion from './PruebaImpresion';
 
 const AppStack = createStackNavigator(
   {
@@ -61,7 +61,8 @@ const AppStack = createStackNavigator(
     Tomography,
     XRay,
     PacientesActivos,
-    AdminQuirofano
+    AdminQuirofano,
+    PruebaImpresion
   },
   {
     defaultNavigationOptions: {

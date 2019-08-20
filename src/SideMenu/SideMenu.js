@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { NavigationActions } from 'react-navigation';
 import { ScrollView, Text, View } from 'react-native';
+import { Button } from '../components/common'
 import { connect } from 'react-redux';
 import styles from './SideMenu.style';
 import { session, logOut } from '../actions';
@@ -252,6 +253,9 @@ cuentaPaciente() {
         {this.farmacia()}
         {this.servicios()}
         {this.cobros()}
+        <Button onPress={this.navigateToScreen('PruebaImpresion')} >
+          Prueba de impresión
+        </Button>
         </ScrollView>
         <View style={styles.footerContainer}>
           <Text
