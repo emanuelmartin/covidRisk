@@ -2,6 +2,7 @@ import * as React from 'react';
 import Parse from 'parse/react-native';
 import { Picker } from 'react-native';
 import { Dropdown } from 'react-native-material-dropdown';
+import { ComponenteHabitacion } from '../Listas'
 
 import {
   Text,
@@ -147,7 +148,9 @@ async query(value) {
               <TouchableWithoutFeedback
               onPress={this.navigateToScreen('DetalleIngreso', item)}
               >
-              <Text style={this.setStyle(item.Ocupada)} >{item.Tipo} {item.ID}</Text>
+              <View style={this.setStyle(item.Ocupada)}>
+                <ComponenteHabitacion item={item} />
+              </View>
               </TouchableWithoutFeedback>
             )}
             enableEmptySections

@@ -12,6 +12,8 @@ import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { Button, CardSection } from '../common';
 import { queryFunc, cleanFunc } from '../../actions';
+import { ComponenteEmpleado } from '../Listas'
+
 
 class UserList extends React.Component {
   constructor(props) {
@@ -21,7 +23,7 @@ class UserList extends React.Component {
     this.arrayholder = [];
   }
   static navigationOptions = {
-    title: 'Usuarios',
+    title: 'Empleados',
   };
 
   componentDidMount() {
@@ -48,7 +50,7 @@ class UserList extends React.Component {
   componentWillUnmount() {
     this.props.cleanFunc();
   }
-  
+
   search = text => {
     console.log(text);
   };
@@ -112,7 +114,9 @@ class UserList extends React.Component {
               <TouchableWithoutFeedback
               onPress={this.navigateToScreen('UserDetail', item)}
               >
-              <Text style={styles.textStyle} >{item.names} {item.lastName1} {item.lastName2} </Text>
+              <View>
+                <ComponenteEmpleado item={item} />
+              </View>
               </TouchableWithoutFeedback>)}
             enableEmptySections
             style={{ marginTop: 10 }}
@@ -121,7 +125,7 @@ class UserList extends React.Component {
         </View>
         <CardSection>
         <Button onPress={this.navigateToScreen('SignUp')}>
-          Añadir Usuario
+          Añadir Empleado
         </Button>
       </CardSection>
       <CardSection />

@@ -12,6 +12,8 @@ import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { Button, CardSection } from '../common';
 import { queryFunc, cleanFunc } from '../../actions';
+import { ComponentePaciente } from '../Listas';
+
 
 class PatientList extends React.Component {
   constructor(props) {
@@ -113,7 +115,9 @@ class PatientList extends React.Component {
               <TouchableWithoutFeedback
               onPress={this.navigateToScreen('PatientDetail', item)}
               >
-              <Text style={styles.textStyle} >{item.names} {item.lastName1} {item.lastName2} </Text>
+              <View>
+                <ComponentePaciente item={item} />
+              </View>
               </TouchableWithoutFeedback>
             )}
             enableEmptySections

@@ -61,7 +61,7 @@ detalleUsuarios() {
     return (
   <View>
     <Text style={styles.navItemStyle} onPress={this.navigateToScreen('UserList')}>
-    Usuarios
+    Empleados
     </Text>
   </View>
 ); }

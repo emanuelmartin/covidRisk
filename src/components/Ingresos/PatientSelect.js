@@ -15,7 +15,8 @@ import { connect } from 'react-redux';
 import { Dropdown } from 'react-native-material-dropdown';
 import Modal from 'react-native-modal';
 import { Button, CardSection } from '../common';
-import { queryFunc, cleanFunc } from '../../actions';
+import { queryFunc, cleanFunc, session } from '../../actions';
+import { ComponentePaciente, ComponenteMedico, ComponenteHabitacion, ComponenteEspecialidad } from '../Listas';
 
 class PatientSelect extends React.Component {
   static navigationOptions = {
@@ -25,10 +26,10 @@ class PatientSelect extends React.Component {
   constructor(props) {
     super(props);
     //setting default state
-    let Patient = { names: 'Paciente' };
-    let Medico = { names: 'Médico' };
-    let Especialidad = { name: 'Especialidad' };
-    let Habitacion = { ID: 'Habitación', query: false };
+    let Patient = { names: '' };
+    let Medico = { names: '' };
+    let Especialidad = { name: '' };
+    let Habitacion = { ID: '', query: false };
     this.state = { isLoading: false, search: '', Habitacion, Patient, Medico, Especialidad, pacienteAnonimo: false };
     this.arrayholder = [];
   }
@@ -42,15 +43,49 @@ class PatientSelect extends React.Component {
           </View>
           );
         }
+        if (tipo === 'Patient') {
         return (
         <TouchableWithoutFeedback
         onPress={() => this.updateField(item, tipo, busqueda)}
         >
           <View>
-            <Text style={styles.textStyle} >{item.name} {item.names} {item.lastName1} {item.lastName2} </Text>
+              <ComponentePaciente item={item}/>
           </View>
         </TouchableWithoutFeedback>
-      );
+      ); }
+
+      if (tipo === 'Medico') {
+      return (
+      <TouchableWithoutFeedback
+      onPress={() => this.updateField(item, tipo, busqueda)}
+      >
+        <View>
+            <ComponenteMedico item={item}/>
+        </View>
+      </TouchableWithoutFeedback>
+    ); }
+
+    if (tipo === 'Especialidad') {
+    return (
+    <TouchableWithoutFeedback
+    onPress={() => this.updateField(item, tipo, busqueda)}
+    >
+      <View>
+          <ComponenteEspecialidad item={item}/>
+      </View>
+    </TouchableWithoutFeedback>
+  ); }
+
+  if (tipo === 'Habitacion') {
+  return (
+  <TouchableWithoutFeedback
+  onPress={() => this.updateField(item, tipo, busqueda)}
+  >
+    <View>
+        <ComponenteHabitacion item={item}/>
+    </View>
+  </TouchableWithoutFeedback>
+); }
     }
 
   setStyle(estado) {
@@ -71,6 +106,7 @@ class PatientSelect extends React.Component {
   }
 
   closeModal(prop) {
+    this.props.queryFunc({ text: '' });
     this.setState({ [prop]: false });
   }
 
@@ -96,11 +132,13 @@ class PatientSelect extends React.Component {
     return (
       <View>
       <CardSection>
-        <Text>Selecciona una habitación</Text>
+        <Text>Habitación</Text>
       </CardSection>
       <CardSection>
         <TouchableWithoutFeedback onPress={() => this.showModal('seleccionarHabitacion')}>
-          <Text>{this.state.Habitacion.ID}</Text>
+        <View>
+          <ComponenteHabitacion item={this.state.Habitacion}/ >
+        </View>
         </TouchableWithoutFeedback>
       </CardSection>
 
@@ -153,7 +191,7 @@ pacienteAnonimo() {
           <CheckBox
             title='Paciente anónimo'
             checked={this.state.pacienteAnonimo}
-            onPress={() => this.setState({ pacienteAnonimo: !this.state.pacienteAnonimo, Patient: { objectId: 'Anónimo' } })}
+            onPress={() => this.setState({ pacienteAnonimo: !this.state.pacienteAnonimo, Patient: { objectId: 'Anónimo', names: 'Anónimo' } })}
             />
         </CardSection>
       </View>
@@ -166,11 +204,13 @@ pacienteAnonimo() {
       return (
     <View>
     <CardSection>
-      <Text>Selecciona un paciente</Text>
+      <Text>Paciente</Text>
     </CardSection>
     <CardSection>
       <TouchableWithoutFeedback onPress={() => this.showModal('buscarPaciente')}>
-        <Text>{this.state.Patient.names}</Text>
+      <View>
+        <ComponentePaciente item={this.state.Patient}/>
+        </View>
       </TouchableWithoutFeedback>
     </CardSection>
       <View style={{ paddingTop: 50 }}>
@@ -229,11 +269,13 @@ pacienteAnonimo() {
     return (
     <View>
     <CardSection>
-      <Text>Selecciona un médico titular</Text>
+      <Text>Médico titular</Text>
     </CardSection>
     <CardSection>
       <TouchableWithoutFeedback onPress={() => this.showModal('seleccionarMedicoTitular')}>
-        <Text>{this.state.Medico.names}</Text>
+        <View>
+          <ComponenteMedico item={this.state.Medico} />
+        </View>
       </TouchableWithoutFeedback>
     </CardSection>
       <View style={{ paddingTop: 50 }}>
@@ -290,11 +332,13 @@ pacienteAnonimo() {
     return (
     <View>
     <CardSection>
-      <Text>Selecciona un médico de guardia</Text>
+      <Text>Médico de guardia</Text>
     </CardSection>
     <CardSection>
       <TouchableWithoutFeedback onPress={() => this.showModal('seleccionarMedicoGuardia')}>
-        <Text>{this.state.Medico.names}</Text>
+      <View>
+        <ComponenteMedico item={this.state.Medico} />
+      </View>
       </TouchableWithoutFeedback>
     </CardSection>
       <View style={{ paddingTop: 50 }}>
@@ -353,11 +397,13 @@ pacienteAnonimo() {
     return (
     <View>
     <CardSection>
-      <Text>Selecciona una especialidad</Text>
+      <Text>Especialidad</Text>
     </CardSection>
     <CardSection>
       <TouchableWithoutFeedback onPress={() => this.showModal('seleccionarEspecialidad')}>
-        <Text>{this.state.Especialidad.name}</Text>
+      <View>
+        <ComponenteEspecialidad item={this.state.Especialidad} />
+      </View>
       </TouchableWithoutFeedback>
     </CardSection>
       <View style={{ paddingTop: 50 }}>
@@ -410,14 +456,10 @@ pacienteAnonimo() {
   }
 
   updateHabitacion(item) {
-    this.setState({ Habitacion: item, seleccionarHabitacion: false });
+    this.setState({ Habitacion: item, seleccionarHabitacion: false, text: '' });
   }
 
   ingresarPaciente() {
-    console.log(this.state.Patient);
-    console.log(this.state.Habitacion);
-    console.log(this.state.Tipo);
-    console.log(this.state.Medico);
 
 
     const Ingresos = Parse.Object.extend('Ingresos');
@@ -429,20 +471,33 @@ pacienteAnonimo() {
     const Paciente = Parse.Object.extend('Patient');
     const paciente = new Parse.Query(Paciente);
 
-    const date = new Date().getDate(); //Current Date
-    const month = new Date().getMonth() + 1; //Current Month
-    const year = new Date().getFullYear(); //Current Year
-    const hours = new Date().getHours(); //Current Hours
-    const min = new Date().getMinutes(); //Current Minutes
-    const sec = new Date().getSeconds(); //Current Seconds
+    const pacientePointer = {
+    __type: 'Pointer',
+   className: 'Patient',
+   objectId: this.state.Patient.objectId
+    }
 
-    const fecha = `${date}/${month}/${year}`;
-    const hora = `${hours}:${min}:${sec}`;
+    const medicoPointer = {
+    __type: 'Pointer',
+   className: 'Medico',
+   objectId: this.state.Medico.objectId
+    }
+
+  const ocupacionPointer = {
+  __type: 'Pointer',
+  className: 'Ocupacion',
+  objectId: this.state.Habitacion.objectId
+  }
+
+  const usuarioPointer = {
+  __type: 'Pointer',
+  className: '_User',
+  objectId: this.props.user.id
+  }
 
     ingresos.set('Tipo', this.state.Tipo);
-    ingresos.set('Paciente', this.state.Patient.objectId);
-    ingresos.set('Fecha', fecha);
-    ingresos.set('Hora', hora);
+    ingresos.set('paciente', pacientePointer);
+    ingresos.set('ingresadoPor', usuarioPointer)
 
     paciente.get(this.state.Patient.objectId.toString())
     .then((ingresado) => {
@@ -450,30 +505,35 @@ pacienteAnonimo() {
       ingresado.save();
     });
 
+
     function actualizarOcupacion(habitacionID) {
       ocupacion.get(habitacionID)
       .then((ocupado) => {
         ocupado.set('Ocupada', true);
-        ocupado.set('OcupadaPor', true);
+        ocupado.set('OcupadaPor', pacientePointer);
         ocupado.save();
       });
     }
 
     switch (this.state.Tipo) {
       case 'Cirugía ambulatoria':
-        ingresos.set('MedicoTitular', this.state.Medico.objectId);
+        ingresos.set('medicoTitular', medicoPointer);
+        ingresos.set('Alta', false);
         break;
       case 'Cirugía mayor':
-        ingresos.set('MedicoTitular', this.state.Medico.objectId);
-        ingresos.set('Habitacion', this.state.Habitacion.objectId);
+        ingresos.set('medicoTitular', medicoPointer);
+        ingresos.set('habitacion', ocupacionPointer);
+        ingresos.set('Alta', false);
         actualizarOcupacion(this.state.Habitacion.objectId.toString());
         break;
       case 'Urgencias':
-        ingresos.set('MedicoGuardia', this.state.Medico.objectId);
+      ingresos.set('Alta', false);
+        ingresos.set('medicoGuardia', medicoPointer);
         break;
       case 'Hospitalización':
-        ingresos.set('MedicoTitular', this.state.Medico.objectId);
-        ingresos.set('Habitacion', this.state.Habitacion.objectId);
+      ingresos.set('Alta', false);
+        ingresos.set('medicoTitular', medicoPointer);
+        ingresos.set('habitacion', ocupacionPointer);
         actualizarOcupacion(this.state.Habitacion.objectId.toString());
         break;
       default:
@@ -562,10 +622,12 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = ({ query }) => {
+const mapStateToProps = ({ query, auth }) => {
  const { text, Patient, Ocupacion, Medico, Especialidad } = query;
+ const { user } = auth;
  console.log(query);
- return { text, Patient, Ocupacion, Medico, Especialidad };
+ console.log(auth);
+ return { text, Patient, Ocupacion, Medico, Especialidad, user };
 };
 
-export default connect(mapStateToProps, { queryFunc, cleanFunc })(PatientSelect);
+export default connect(mapStateToProps, { queryFunc, cleanFunc, session })(PatientSelect);

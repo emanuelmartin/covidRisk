@@ -12,6 +12,7 @@ import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { Button, CardSection } from '../common';
 import { queryFunc, cleanFunc } from '../../actions';
+import { ComponenteMedico } from '../Listas'
 
 class ListaMedicos extends React.Component {
   constructor(props) {
@@ -112,7 +113,9 @@ class ListaMedicos extends React.Component {
               <TouchableWithoutFeedback
               onPress={this.navigateToScreen('UserDetail', item)}
               >
-              <Text style={styles.textStyle} >{item.names} {item.lastName1} {item.lastName2} </Text>
+              <View>
+                <ComponenteMedico item={item} />
+              </View>
               </TouchableWithoutFeedback>)}
             enableEmptySections
             style={{ marginTop: 10 }}

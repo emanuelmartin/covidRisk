@@ -22,6 +22,7 @@ export const queryFunc = ({ type, object, variable, text }) => {
         for (let i = 0; i < results.length; i++) {
            jsonArray.push(results[i].toJSON());
         }
+      if (text === 'Habitación') text = '';
       console.log(jsonArray);
       dispatch({ type: DB_QUERY_RESULTS, payload: jsonArray, name: object });
           });

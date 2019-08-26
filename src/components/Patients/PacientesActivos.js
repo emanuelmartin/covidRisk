@@ -2,6 +2,7 @@ import * as React from 'react';
 import Parse from 'parse/react-native';
 import { Picker } from 'react-native';
 import { Dropdown } from 'react-native-material-dropdown';
+import { ComponentePaciente } from '../Listas';
 
 import {
   Text,
@@ -28,42 +29,39 @@ export default class PacientesActivos extends React.Component {
     title: 'Pacientes activos',
   };
 
-  componentDidMount() {
+  loadData() {
+    console.log('Carga de información')
     const Ingresos = Parse.Object.extend('Ingresos');
     const ingresos = new Parse.Query(Ingresos);
+    ingresos.include('paciente');
+    ingresos.include('habitacion');
+    ingresos.include('medicoTitular');
 
     let jsonArray = [];
-    let ingreso = [];
-    const Paciente = Parse.Object.extend('Patient');
-    const paciente = new Parse.Query(Paciente);
 
-    const Habitacion = Parse.Object.extend('Ocupacion');
-    const habitacion = new Parse.Query(Habitacion);
-
-    const Medico = Parse.Object.extend('Medico');
-    const medico = new Parse.Query(Medico);
-    let tipoMedico = 'MedicoTitular'
-
-    ingresos['equalTo']('Alta', false);
+    ingresos.equalTo('Alta', false);
     ingresos.find().then((results) => {
         for (let i = 0; i < results.length; i++) {
 
-          console.log(results[i])
+          const ingreso = [];
+          const obj = results[i];
+          console.log(obj)
 
-          ingreso.info = results[i].attributes;
-          if (results[i].attributes.Tipo === 'Urgencias') { tipoMedico = 'MedicoGuardia'}
+          if (obj.attributes.Tipo === 'Urgencias') { tipoMedico = 'MedicoGuardia'}
 
-          let pacienteID = results[i].attributes.Paciente
-          paciente.get(pacienteID).then((nombrePaciente) => { ingreso.paciente = nombrePaciente.attributes; });
+          let pacientee = obj.get('paciente');
+          let medicoo = obj.get('medicoTitular');
+          let habitacionn = obj.get('habitacion');
 
-          let habitacionID = results[i].attributes.Habitacion
-          habitacion.get(habitacionID).then((nombreHabitacion) => { ingreso.habitacion = nombreHabitacion.attributes; });
 
-            let medicoID = results[i].attributes[tipoMedico];
-            console.log(medicoID)
-            medico.get(medicoID).then((nombreMedico) => { console.log(nombreMedico); ingreso.medico = nombreMedico.attributes; });
+          ingreso.alta = results[i].attributes.Alta;
+          ingreso.fecha = results[i].attributes.Fecha;
+          ingreso.tipo = results[i].attributes.Tipo;
+          ingreso.paciente = pacientee.attributes;
+          ingreso.medico = medicoo.attributes;
+          ingreso.habitacion = habitacionn.attributes;
 
-             jsonArray.push(ingreso);
+          jsonArray.push(ingreso);
         }
         console.log(jsonArray)
       this.setState({ isLoading: false, pacientesActivos: jsonArray });
@@ -122,6 +120,7 @@ async query() {
       return (
         <View style={{ flex: 1, paddingTop: 20 }}>
           <ActivityIndicator />
+          {this.loadData()}
         </View>
       );
     }
@@ -138,8 +137,9 @@ async query() {
               <TouchableWithoutFeedback
               onPress={this.navigateToScreen('PatientDetail', item)}
               >
-              {console.log(item)}
-              <Text> {item.paciente.names} {item.habitacion.Tipo}: {item.habitacion.ID} </Text>
+              <View>
+                  <ComponentePaciente item={item.paciente}/>
+              </View>
               </TouchableWithoutFeedback>
             )}
             enableEmptySections
