@@ -88,18 +88,6 @@ class PatientSelect extends React.Component {
 ); }
     }
 
-  setStyle(estado) {
-    if (estado) {
-      return ({
-      padding: 10,
-      backgroundColor: '#F55E64'
-      });
-    }
-    return ({
-      padding: 10,
-      backgroundColor: '#53E69D'
-    });
-  }
 
   showModal(prop) {
     this.setState({ [prop]: true });
@@ -136,8 +124,8 @@ class PatientSelect extends React.Component {
       </CardSection>
       <CardSection>
         <TouchableWithoutFeedback onPress={() => this.showModal('seleccionarHabitacion')}>
-        <View>
-          <ComponenteHabitacion item={this.state.Habitacion}/ >
+        <View >
+          <ComponenteHabitacion item={this.state.Habitacion} tipo={'ingreso'} / >
         </View>
         </TouchableWithoutFeedback>
       </CardSection>
@@ -163,7 +151,9 @@ class PatientSelect extends React.Component {
               <TouchableWithoutFeedback
               onPress={() => this.updateHabitacion(item)}
               >
-              <Text style={this.setStyle(item.Ocupada)} >{item.Tipo} {item.ID}</Text>
+              <View>
+                  <ComponenteHabitacion item={item} tipo={'ingreso'}/>
+              </View>
               </TouchableWithoutFeedback>
             )}
             enableEmptySections
@@ -502,7 +492,7 @@ pacienteAnonimo() {
     paciente.get(this.state.Patient.objectId.toString())
     .then((ingresado) => {
       ingresado.set('ingresado', true);
-      ingresado.save();
+      ingresado.save()
     });
 
 

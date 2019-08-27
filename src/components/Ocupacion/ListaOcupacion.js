@@ -2,6 +2,8 @@ import * as React from 'react';
 import Parse from 'parse/react-native';
 import { Picker } from 'react-native';
 import { Dropdown } from 'react-native-material-dropdown';
+import { ComponenteHabitacion } from '../Listas';
+
 
 import {
   Text,
@@ -32,11 +34,14 @@ export default class ListaOcupacion extends React.Component {
     console.log(this.state.Tipo);
     const parseObject = Parse.Object.extend('Ocupacion');
     const query = new Parse.Query(parseObject);
+    query.include('OcupadaPor');
     let jsonArray = [];
-    query['startsWith']('Tipo', this.state.Tipo);
+    query.startsWith('Tipo', this.state.Tipo);
     query.find().then((results) => {
         for (let i = 0; i < results.length; i++) {
-           jsonArray.push(results[i].toJSON());
+          const obj = results[i];
+          obj.get('OcupadaPor');
+           jsonArray.push(obj.toJSON());
         }
         console.log(jsonArray)
       this.setState({ isLoading: false, Ocupacion: jsonArray });
@@ -48,7 +53,7 @@ async query(value) {
   const parseObject = Parse.Object.extend('Ocupacion');
   const query = new Parse.Query(parseObject);
   let jsonArray = [];
-  query['startsWith']('Tipo', this.state.Tipo);
+  query.startsWith('Tipo', this.state.Tipo);
   query.find().then((results) => {
       for (let i = 0; i < results.length; i++) {
          jsonArray.push(results[i].toJSON());
@@ -59,14 +64,16 @@ async query(value) {
 }
 
   setStyle(estado) {
-    if (estado) { return ({
+    if (estado) {
+ return ({
         padding: 10,
         backgroundColor: '#F55E64'
-      });}
-  else { return ({
+      });
+}
+ return ({
     padding: 10,
     backgroundColor: '#53E69D'
-  });}
+  });
 }
 
   navigateToScreen = (route, item) => () => {
@@ -147,7 +154,9 @@ async query(value) {
               <TouchableWithoutFeedback
               onPress={this.navigateToScreen('PatientDetail', item)}
               >
-              <Text style={this.setStyle(item.Ocupada)} >{item.Tipo} {item.ID}</Text>
+              <View style={this.setStyle(item.Ocupada)}>
+                  <ComponenteHabitacion item={item} tipo={'ocupacion'}/>
+              </View>
               </TouchableWithoutFeedback>
             )}
             enableEmptySections
