@@ -138,7 +138,7 @@ async query() {
               onPress={this.navigateToScreen('PatientDetail', item)}
               >
               <View>
-                  <ComponentePaciente item={item.paciente}/>
+                  <ComponentePaciente item={item} tipo={'activos'}/>
               </View>
               </TouchableWithoutFeedback>
             )}

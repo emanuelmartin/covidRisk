@@ -37,6 +37,7 @@ class AdminQuirofano extends React.Component {
   }
 
     renderIt(item, tipo, busqueda) {
+      console.log(item)
       if (this.state.isLoading) {
         //Loading View while data is loading
         return (
@@ -50,7 +51,7 @@ class AdminQuirofano extends React.Component {
         onPress={() => this.updateField(item, tipo, busqueda)}
         >
           <View>
-            <Text style={styles.textStyle} >{item.name} {item.names} {item.lastName1} {item.lastName2} </Text>
+            <Text style={styles.textStyle} >{item.name} {item.Tipo} {item.createdAt} {item.names} {item.lastName1} {item.lastName2} </Text>
           </View>
         </TouchableWithoutFeedback>
       );
@@ -293,16 +294,16 @@ agregarSangre() {
               searchIcon={{ size: 24 }}
               onChangeText={text => this.props.queryFunc({
                 type: 'startsWith',
-                object: 'Medico',
-                variable: 'lastName1',
+                object: 'UnidadesSangre',
+                variable: 'ID',
                 text })}
               onClear={() => this.props.queryFunc({ text: '' })}
-              placeholder="Ingresa el primer apellido..."
+              placeholder="Ingresa el folio de la unidad..."
               value={this.props.text}
             />
             </CardSection>
           <CardSection>
-            {this.lista('Medico', 'agregarSangre')}
+            {this.lista('UnidadesSangre', 'agregarSangre')}
           </CardSection>
           <CardSection>
             <Button onPress={() => this.closeModal('agregarSangre')}>
@@ -620,9 +621,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ query }) => {
- const { text, Patient, Ocupacion, Medico, Especialidad, tipoCirugia } = query;
+ const { text, Patient, Ocupacion, Medico, Especialidad, tipoCirugia, UnidadesSangre } = query;
  console.log(query);
- return { text, Patient, Ocupacion, Medico, Especialidad, tipoCirugia };
+ return { text, Patient, Ocupacion, Medico, Especialidad, tipoCirugia, UnidadesSangre };
 };
 
 export default connect(mapStateToProps, { queryFunc, cleanFunc })(AdminQuirofano);

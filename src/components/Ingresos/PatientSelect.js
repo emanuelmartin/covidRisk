@@ -150,6 +150,7 @@ class PatientSelect extends React.Component {
               // Single Comes here which will be repeatative for the FlatListItems
               <TouchableWithoutFeedback
               onPress={() => this.updateHabitacion(item)}
+              disabled={item.Ocupada}
               >
               <View>
                   <ComponenteHabitacion item={item} tipo={'ingreso'}/>
