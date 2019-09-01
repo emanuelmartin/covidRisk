@@ -450,8 +450,6 @@ pacienteAnonimo() {
   }
 
   ingresarPaciente() {
-
-
     const Ingresos = Parse.Object.extend('Ingresos');
     const ingresos = new Ingresos();
 
