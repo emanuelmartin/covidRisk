@@ -14,8 +14,9 @@ import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { Dropdown } from 'react-native-material-dropdown';
 import Modal from 'react-native-modal';
-import { Button, CardSection } from '../common';
+import { Button, CardSection, Input } from '../common';
 import { queryFunc, cleanFunc } from '../../actions';
+import { ComponentePaciente } from '../Listas';
 
 class AdminQuirofano extends React.Component {
   static navigationOptions = {
@@ -25,14 +26,19 @@ class AdminQuirofano extends React.Component {
   constructor(props) {
     super(props);
     //setting default state
+    let horaInicio = '';
+    let horaFin = '';
     let Patient = { names: 'Selecciona un paciente' };
     let Medico = { names: 'Selecciona un médico' };
+    let equipoMedico = []
+    let unidadesSangre = [];
     let tipoCirugia = { name: 'Selecciona un tipo de cirugía' };
-    let Insumos = { names: 'Añade los insumos correspondientes' };
-    let rentaEquipos = { names: 'Añade la renta de equipos' };
-    let extras = { names: 'Añade los extras' };
+    let Insumos = [];
+    let rentaEquipos = [];
+    let extra = [ {name: 'sad'} ];
+    let listaExtra = [];
     let sangre = { names: 'Añade las unidades de sangre' }
-    this.state = { isLoading: false, search: '', Patient, Medico, tipoCirugia, Insumos, rentaEquipos, extras, sangre, pacienteAnonimo: false };
+    this.state = { isLoading: false, search: '', Patient, Medico, tipoCirugia, Insumos, rentaEquipos, extra, sangre, pacienteAnonimo: false, seleccionarMedicos: false, seleccionarEquipos: false, extras: false, equipoMedico, unidadesSangre, listaExtra };
     this.arrayholder = [];
   }
 
@@ -51,7 +57,7 @@ class AdminQuirofano extends React.Component {
         onPress={() => this.updateField(item, tipo, busqueda)}
         >
           <View>
-            <Text style={styles.textStyle} >{item.name} {item.Tipo} {item.createdAt} {item.names} {item.lastName1} {item.lastName2} </Text>
+            <Text style={styles.textStyle} >{item.name} {item.Tipo} {item.names} {item.lastName1} {item.lastName2} {item.lastName2} {item.costo} </Text>
           </View>
         </TouchableWithoutFeedback>
       );
@@ -94,6 +100,23 @@ class AdminQuirofano extends React.Component {
     );
   }
 
+  lista2(objeto, busqueda) {
+    return (
+      <FlatList
+        data={this.state[objeto]}
+        ItemSeparatorComponent={this.ListViewItemSeparator}
+        //Item Separator View
+        renderItem={({ item }) => (
+          this.renderIt(item, objeto, busqueda)
+        )}
+        enableEmptySections
+        style={{ marginTop: 10 }}
+        keyExtractor={(item) => item.curp}
+      />
+    );
+  }
+
+
 
   buscarPaciente() {
     if (!this.state.pacienteAnonimo) {
@@ -104,7 +127,9 @@ class AdminQuirofano extends React.Component {
     </CardSection>
     <CardSection>
       <TouchableWithoutFeedback onPress={() => this.showModal('buscarPaciente')}>
-        <Text>{this.state.Patient.names}</Text>
+      <View>
+          <ComponentePaciente item={this.state.Patient} tipo={'activos'}/>
+      </View>
       </TouchableWithoutFeedback>
     </CardSection>
       <View style={{ paddingTop: 50 }}>
@@ -164,6 +189,9 @@ class AdminQuirofano extends React.Component {
       <Text>Equipo médico</Text>
     </CardSection>
     <CardSection>
+      {this.lista2('equipoMedico')}
+    </CardSection>
+    <CardSection>
         <Button onPress={() => this.showModal('seleccionarMedicos')}>Agregar médico</Button>
     </CardSection>
       <View style={{ paddingTop: 50 }}>
@@ -221,6 +249,9 @@ agregarInsumos() {
     <Text>Insumos</Text>
   </CardSection>
   <CardSection>
+    {this.lista2('Insumos')}
+  </CardSection>
+  <CardSection>
       <Button onPress={() => this.showModal('agregarInsumos')}>Agregar insumos</Button>
   </CardSection>
     <View style={{ paddingTop: 50 }}>
@@ -273,9 +304,12 @@ agregarSangre() {
     <Text>Unidades de sangre</Text>
   </CardSection>
   <CardSection>
-    <TouchableWithoutFeedback onPress={() => this.showModal('agregarSangre')}>
-      <Text>{this.state.sangre.names}</Text>
-    </TouchableWithoutFeedback>
+  {this.lista2('unidadesSangre')}
+  </CardSection>
+  <CardSection>
+    <Button onPress={() => this.showModal('agregarSangre')}>
+    Agregar unidades de sangre
+    </Button>
   </CardSection>
     <View style={{ paddingTop: 50 }}>
       <TouchableWithoutFeedback onPress={() => this.setState({ agregarSangre: false })}>
@@ -327,15 +361,18 @@ rentaEquipos() {
     <Text>Renta de equipos</Text>
   </CardSection>
   <CardSection>
-    <TouchableWithoutFeedback onPress={() => this.showModal('rentaEquipos')}>
-      <Text>{this.state.rentaEquipos.names}</Text>
-    </TouchableWithoutFeedback>
+  {this.lista2('rentaEquipos')}
+  </CardSection>
+  <CardSection>
+    <Button onPress={() => this.showModal('seleccionarEquipos')}>
+      Añadir equipos
+    </Button>
   </CardSection>
     <View style={{ paddingTop: 50 }}>
-      <TouchableWithoutFeedback onPress={() => this.setState({ rentaEquipos: false })}>
+      <TouchableWithoutFeedback onPress={() => this.setState({ seleccionarEquipos: false })}>
       <View>
         <Modal
-        isVisible={this.state.rentaEquipos}
+        isVisible={this.state.seleccionarEquipos}
         transparent={false}
         >
         <TouchableWithoutFeedback>
@@ -348,8 +385,8 @@ rentaEquipos() {
               searchIcon={{ size: 24 }}
               onChangeText={text => this.props.queryFunc({
                 type: 'startsWith',
-                object: 'Medico',
-                variable: 'lastName1',
+                object: 'EquipoRentable',
+                variable: 'name',
                 text })}
               onClear={() => this.props.queryFunc({ text: '' })}
               placeholder="Ingresa el primer apellido..."
@@ -357,10 +394,10 @@ rentaEquipos() {
             />
             </CardSection>
           <CardSection>
-            {this.lista('Medico', 'rentaEquipos')}
+            {this.lista('EquipoRentable', 'seleccionarEquipos')}
           </CardSection>
           <CardSection>
-            <Button onPress={() => this.closeModal('rentaEquipos')}>
+            <Button onPress={() => this.closeModal('seleccionarEquipos')}>
               Cancelar
             </Button>
           </CardSection>
@@ -381,9 +418,12 @@ extras() {
     <Text>Extras</Text>
   </CardSection>
   <CardSection>
-    <TouchableWithoutFeedback onPress={() => this.showModal('extras')}>
-      <Text>{this.state.extras.names}</Text>
-    </TouchableWithoutFeedback>
+  {this.lista2('listaExtra')}
+  </CardSection>
+  <CardSection>
+    <Button onPress={() => this.showModal('extras')}>
+      Agregar extras
+    </Button>
   </CardSection>
     <View style={{ paddingTop: 50 }}>
       <TouchableWithoutFeedback onPress={() => this.setState({ extras: false })}>
@@ -395,24 +435,26 @@ extras() {
         <TouchableWithoutFeedback>
         <View style={{ flex: 1 }}>
           <CardSection>
-            <SearchBar
-              containerStyle={{ flex: 1, backgroundColor: 'white' }}
-              imputStyle={{ backgroundColor: 'white', marginTop: 0, marginBottom: 0 }}
-              round
-              searchIcon={{ size: 24 }}
-              onChangeText={text => this.props.queryFunc({
-                type: 'startsWith',
-                object: 'Medico',
-                variable: 'lastName1',
-                text })}
-              onClear={() => this.props.queryFunc({ text: '' })}
-              placeholder="Ingresa el primer apellido..."
-              value={this.props.text}
-            />
-            </CardSection>
-          <CardSection>
-            {this.lista('Medico', 'extras')}
+          <Input
+            label="Concepto"
+            placeholder="Prótesis"
+            value={this.state.extraConcepto}
+            onChangeText={value => this.setState({ extraConcepto: value })}
+          />
           </CardSection>
+          <CardSection>
+          <Input
+            label="Costo"
+            placeholder="$500"
+            value={this.state.extraCosto}
+            onChangeText={value => this.setState({ extraCosto: value })}
+          />
+          </CardSection>
+          <CardSection>
+            <Button onPress={() => this.añadirExtra()}>
+              Aceptar
+            </Button>
+            </CardSection>
           <CardSection>
             <Button onPress={() => this.closeModal('extras')}>
               Cancelar
@@ -426,6 +468,12 @@ extras() {
   </View>
   </View>
 );
+}
+
+añadirExtra() {
+  const item = { name: this.state.extraConcepto, costo: this.state.extraCosto }
+  this.updateField(item, 'extra');
+  this.closeModal('extras')
 }
 
   seleccionarTipoCirugia() {
@@ -484,6 +532,32 @@ extras() {
 
   updateField(item, tipo, busqueda) {
     this.props.text = '';
+
+    if (tipo === 'Medico') {
+      this.state.equipoMedico.push(item);
+      console.log(this.state.equipoMedico)
+    }
+
+    if (tipo === 'Farmacia') {
+      this.state.Insumos.push(item);
+      console.log(this.state.Insumos)
+    }
+
+    if (tipo === 'UnidadesSangre') {
+      this.state.unidadesSangre.push(item);
+      console.log(this.state.unidadesSangre)
+    }
+
+    if (tipo === 'EquipoRentable') {
+      this.state.rentaEquipos.push(item);
+      console.log(this.state.rentaEquipos)
+    }
+
+    if (tipo === 'extra') {
+      this.state.listaExtra.push(item);
+      console.log(this.state.listaExtra)
+    }
+
     this.setState({ [tipo]: item, [busqueda]: false, text: '' });
   }
 
@@ -621,9 +695,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ query }) => {
- const { text, Patient, Ocupacion, Medico, Especialidad, tipoCirugia, UnidadesSangre } = query;
+ const { text, Patient, Ocupacion, Medico, Especialidad, tipoCirugia, UnidadesSangre, Farmacia, rentaEquipos, EquipoRentable, equipoMedico, extra } = query;
  console.log(query);
- return { text, Patient, Ocupacion, Medico, Especialidad, tipoCirugia, UnidadesSangre };
+ return { text, Patient, Ocupacion, Medico, Especialidad, tipoCirugia, UnidadesSangre, Farmacia, rentaEquipos, EquipoRentable, equipoMedico, extra };
 };
 
 export default connect(mapStateToProps, { queryFunc, cleanFunc })(AdminQuirofano);
