@@ -4,6 +4,87 @@ import { View, Text } from 'react-native';
 const ComponentePaciente = (props) => {
 
 function seleccionarPaciente() {
+  switch (props.tipo) {
+    case 'activos': {
+          console.log(props.item)
+
+          const { paciente, medico, habitacion, tipo, tipoMedico, estadoActual } = props.item;
+
+        switch (estadoActual) {
+          case 'Urgencias': {
+            return (
+              <View>
+              <View>
+                <Text> {estadoActual} </Text>
+              </View>
+                <View>
+                  <Text> {paciente.names} </Text>
+                </View>
+                <View>
+                  <Text> {tipoMedico}: {medico.names} </Text>
+                </View>
+              </View>
+            );
+          } break;
+
+          case 'Cirugía mayor': {
+            return (
+              <View>
+              <View>
+                <Text> {estadoActual} </Text>
+              </View>
+                <View>
+                  <Text> {paciente.names} </Text>
+                </View>
+                <View>
+                  <Text> {tipoMedico}: {medico.names} </Text>
+                </View>
+                <View>
+                  <Text> {'Habitación'}: {habitacion.ID} </Text>
+                </View>
+              </View>
+            );
+          } break;
+
+          case 'Cirugía ambulatoria': {
+            return (
+              <View>
+              <View>
+                <Text> {estadoActual} </Text>
+              </View>
+                <View>
+                  <Text> {paciente.names} </Text>
+                </View>
+                <View>
+                  <Text> {tipoMedico}: {medico.names} </Text>
+                </View>
+              </View>
+            );
+          } break;
+
+          case 'Hospitalización': {
+            return (
+              <View>
+              <View>
+                <Text> {estadoActual} </Text>
+              </View>
+                <View>
+                  <Text> {paciente.names} </Text>
+                </View>
+                <View>
+                  <Text> {tipoMedico}: {medico.names} </Text>
+                </View>
+                <View>
+                  <Text> {'Habitación'}: {habitacion.ID} </Text>
+                </View>
+              </View>
+            );
+          } break;
+
+        }
+      } break;
+    default:
+  }
   if (props.item.names === '') {
     return (
       <Text> {'Seleciona un paciente'} </Text>

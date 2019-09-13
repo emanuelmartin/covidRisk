@@ -30,7 +30,7 @@ export default class ListaOcupacion extends React.Component {
     title: 'Ocupación',
   };
 
-  componentDidMount() {
+  componentWillMount() {
     console.log(this.state.Tipo);
     const parseObject = Parse.Object.extend('Ocupacion');
     const query = new Parse.Query(parseObject);

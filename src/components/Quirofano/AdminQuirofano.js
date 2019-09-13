@@ -17,6 +17,7 @@ import Modal from 'react-native-modal';
 import { Button, CardSection, Input } from '../common';
 import { queryFunc, cleanFunc } from '../../actions';
 import { ComponentePaciente } from '../Listas';
+import update from 'react-addons-update';
 
 class AdminQuirofano extends React.Component {
   static navigationOptions = {
@@ -95,7 +96,6 @@ class AdminQuirofano extends React.Component {
         )}
         enableEmptySections
         style={{ marginTop: 10 }}
-        keyExtractor={(item) => item.curp}
       />
     );
   }
@@ -107,7 +107,7 @@ class AdminQuirofano extends React.Component {
         ItemSeparatorComponent={this.ListViewItemSeparator}
         //Item Separator View
         renderItem={({ item }) => (
-          this.renderIt(item, objeto, busqueda)
+          this.renderIt2(item, objeto, busqueda)
         )}
         enableEmptySections
         style={{ marginTop: 10 }}
@@ -116,7 +116,53 @@ class AdminQuirofano extends React.Component {
     );
   }
 
-
+  renderIt2(item, tipo, busqueda) {
+    console.log(item)
+    switch (tipo) {
+      case 'equipoMedico': {
+        return (
+          <View>
+            <View>
+              <Text style={styles.textStyle} > {item.names} {item.lastName1} {item.lastName2} </Text>
+            </View>
+            <View>
+              <Input
+                label="Cargo"
+                placeholder="Circulante"
+                value={this.state.equipoMedico[item.key].cargo}
+                onChangeText={value =>
+                  this.setState({
+                    equipoMedico: update(this.state.equipoMedico, {[item.key]: {cargo: {$set: value}}})
+                  })}
+              />
+            </View>
+            <View>
+              <Input
+                label="Honorarios"
+                placeholder="$ 5,000.00"
+                value={this.state.equipoMedico[item.key].honorarios}
+                onChangeText={value =>
+                  this.setState({
+                    equipoMedico: update(this.state.equipoMedico, {[item.key]: {honorarios: {$set: value}}})
+                  })}
+              />
+            </View>
+          </View>
+        );}
+      case 'Insumos': {
+        return (
+          <View>
+            <Text style={styles.textStyle} >{item.name} </Text>
+          </View>
+        );
+      }
+    }
+      return (
+        <View>
+          <Text style={styles.textStyle} >{item.name} {item.Tipo} {item.names} {item.lastName1} {item.lastName2} {item.lastName2} {item.costo} </Text>
+        </View>
+    );
+  }
 
   buscarPaciente() {
     if (!this.state.pacienteAnonimo) {
@@ -534,11 +580,15 @@ añadirExtra() {
     this.props.text = '';
 
     if (tipo === 'Medico') {
+      item.cargo = '';
+      item.honorarios = '';
+      item.key = this.state.equipoMedico.length;
       this.state.equipoMedico.push(item);
       console.log(this.state.equipoMedico)
     }
 
     if (tipo === 'Farmacia') {
+      item.cargo = ''
       this.state.Insumos.push(item);
       console.log(this.state.Insumos)
     }

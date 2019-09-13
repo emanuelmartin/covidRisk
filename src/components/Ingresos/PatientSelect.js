@@ -16,7 +16,7 @@ import { Dropdown } from 'react-native-material-dropdown';
 import Modal from 'react-native-modal';
 import { Button, CardSection } from '../common';
 import { queryFunc, cleanFunc, session } from '../../actions';
-import { ComponentePaciente, ComponenteMedico, ComponenteHabitacion, ComponenteEspecialidad } from '../Listas';
+import { ComponentePaciente, ComponenteMedico, ComponenteHabitacion, ComponenteEspecialidad, ComponenteConsultorio } from '../Listas';
 
 class PatientSelect extends React.Component {
   static navigationOptions = {
@@ -29,8 +29,9 @@ class PatientSelect extends React.Component {
     let Patient = { names: '' };
     let Medico = { names: '' };
     let Especialidad = { name: '' };
+    let Consultorio = { ID: '' };
     let Habitacion = { ID: '', query: false };
-    this.state = { isLoading: false, search: '', Habitacion, Patient, Medico, Especialidad, pacienteAnonimo: false };
+    this.state = { isLoading: false, search: '', Habitacion, Patient, Medico, Especialidad, Consultorio, pacienteAnonimo: false };
     this.arrayholder = [];
   }
 
@@ -84,8 +85,21 @@ class PatientSelect extends React.Component {
     <View>
         <ComponenteHabitacion item={item}/>
     </View>
+      </TouchableWithoutFeedback>
+  );
+}
+
+  if (tipo === 'Consultorio') {
+    return (
+    <TouchableWithoutFeedback
+    onPress={() => this.updateField(item, tipo, busqueda)}
+    >
+      <View>
+          <ComponenteConsultorio item={item}/>
+      </View>
   </TouchableWithoutFeedback>
-); }
+);
+}
     }
 
 
@@ -165,6 +179,47 @@ class PatientSelect extends React.Component {
         </ScrollView>
         <CardSection>
           <Button onPress={() => this.closeModal('seleccionarHabitacion')}>
+            Cancelar
+          </Button>
+        </CardSection>
+        </Modal>
+      </View>
+      </View>
+    );}
+  }
+
+  seleccionarConsultorio() {
+    if (this.state.Tipo === 'Consultorio') {
+    return (
+      <View>
+      <CardSection>
+        <Text>Consultorio</Text>
+      </CardSection>
+      <CardSection>
+        <TouchableWithoutFeedback onPress={() => this.showModal('seleccionarConsultorio')}>
+        <View >
+          <ComponenteConsultorio item={this.state.Consultorio} / >
+        </View>
+        </TouchableWithoutFeedback>
+      </CardSection>
+
+      <View>
+        <Modal
+        isVisible={this.state.seleccionarConsultorio}
+        transparent={false}
+        onShow={() => this.props.queryFunc({
+          type: 'startsWith',
+          object: 'Ocupacion',
+          variable: 'Tipo',
+          text: 'Consultorio' })}
+        >
+      <ScrollView style={styles.viewStyle}>
+      <CardSection>
+          {this.lista('Ocupacion', 'seleccionarConsultorio')}
+          </CardSection>
+        </ScrollView>
+        <CardSection>
+          <Button onPress={() => this.closeModal('seleccionarConsultorio')}>
             Cancelar
           </Button>
         </CardSection>
@@ -256,7 +311,8 @@ pacienteAnonimo() {
   seleccionarMedicoTitular() {
     if (this.state.Tipo === 'Hospitalización' ||
         this.state.Tipo === 'Cirugía mayor' ||
-        this.state.Tipo === 'Cirugía ambulatoria') {
+        this.state.Tipo === 'Cirugía ambulatoria' ||
+        this.state.Tipo === 'Consulta') {
     return (
     <View>
     <CardSection>
@@ -451,14 +507,15 @@ pacienteAnonimo() {
   }
 
   ingresarPaciente() {
-    const Ingresos = Parse.Object.extend('Ingresos');
-    const ingresos = new Ingresos();
+    const IngresosActivos = Parse.Object.extend('IngresosActivos');
+    const ingresos = new IngresosActivos();
 
     const Ocupacion = Parse.Object.extend('Ocupacion');
     const ocupacion = new Parse.Query(Ocupacion);
 
     const Paciente = Parse.Object.extend('Patient');
     const paciente = new Parse.Query(Paciente);
+    const pacienteAnonimo = this.state.pacienteAnonimo;
 
     const pacientePointer = {
     __type: 'Pointer',
@@ -485,8 +542,10 @@ pacienteAnonimo() {
   }
 
     ingresos.set('Tipo', this.state.Tipo);
+    ingresos.set('estadoActual', this.state.Tipo);
     ingresos.set('paciente', pacientePointer);
     ingresos.set('ingresadoPor', usuarioPointer)
+    ingresos.set('pacienteAnonimo', pacienteAnonimo)
 
     paciente.get(this.state.Patient.objectId.toString())
     .then((ingresado) => {
@@ -569,6 +628,8 @@ pacienteAnonimo() {
         value: 'Urgencias'
       }, {
         value: 'Hospitalización'
+      }, {
+        value: 'Consulta'
       }];
 
     return (
@@ -612,11 +673,11 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ query, auth }) => {
- const { text, Patient, Ocupacion, Medico, Especialidad } = query;
+ const { text, Patient, Ocupacion, Medico, Especialidad, Consultorio } = query;
  const { user } = auth;
  console.log(query);
  console.log(auth);
- return { text, Patient, Ocupacion, Medico, Especialidad, user };
+ return { text, Patient, Ocupacion, Medico, Especialidad, user, Consultorio };
 };
 
 export default connect(mapStateToProps, { queryFunc, cleanFunc, session })(PatientSelect);

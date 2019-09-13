@@ -31,15 +31,16 @@ export default class PacientesActivos extends React.Component {
 
   loadData() {
     console.log('Carga de información')
-    const Ingresos = Parse.Object.extend('Ingresos');
+    const Ingresos = Parse.Object.extend('IngresosActivos');
     const ingresos = new Parse.Query(Ingresos);
     ingresos.include('paciente');
     ingresos.include('habitacion');
     ingresos.include('medicoTitular');
+    ingresos.include('pacienteAnonimo');
 
     let jsonArray = [];
 
-    ingresos.equalTo('Alta', false);
+   ingresos.ascending('createdAt')
     ingresos.find().then((results) => {
         for (let i = 0; i < results.length; i++) {
 
@@ -47,19 +48,54 @@ export default class PacientesActivos extends React.Component {
           const obj = results[i];
           console.log(obj)
 
-          if (obj.attributes.Tipo === 'Urgencias') { tipoMedico = 'MedicoGuardia'}
-
-          let pacientee = obj.get('paciente');
-          let medicoo = obj.get('medicoTitular');
-          let habitacionn = obj.get('habitacion');
-
-
-          ingreso.alta = results[i].attributes.Alta;
-          ingreso.fecha = results[i].attributes.Fecha;
           ingreso.tipo = results[i].attributes.Tipo;
-          ingreso.paciente = pacientee.attributes;
-          ingreso.medico = medicoo.attributes;
-          ingreso.habitacion = habitacionn.attributes;
+          ingreso.estadoActual = results[i].attributes.estadoActual;
+          ingreso.tipoMedico = 'Médico titular'
+          switch (ingreso.estadoActual) {
+            case 'Urgencias': {
+              ingreso.tipoMedico = 'Médico de guardia';
+              const medico = obj.get('medicoGuardia');
+              ingreso.medico = medico.attributes;
+
+              const pacienteAnonimo = obj.get('pacienteAnonimo');
+              if (pacienteAnonimo) {
+                ingreso.paciente = { names: 'Paciente nónimo', pacienteAnonimo: true }
+              } else {
+              const paciente = obj.get('paciente');
+              ingreso.paciente = paciente.attributes;
+            }
+            } break;
+
+            case 'Cirugía mayor': {
+              const medico = obj.get('medicoTitular');
+              ingreso.medico = medico.attributes;
+
+              const paciente = obj.get('paciente');
+              ingreso.paciente = paciente.attributes;
+
+              const habitacion = obj.get('habitacion');
+              ingreso.habitacion = habitacion.attributes;
+            } break;
+
+            case 'Cirugía ambulatoria': {
+              const medico = obj.get('medicoTitular');
+              ingreso.medico = medico.attributes;
+
+              const paciente = obj.get('paciente');
+              ingreso.paciente = paciente.attributes;
+            } break;
+
+            case 'Hospitalización': {
+              const medico = obj.get('medicoTitular');
+              ingreso.medico = medico.attributes;
+
+              const paciente = obj.get('paciente');
+              ingreso.paciente = paciente.attributes;
+
+              const habitacion = obj.get('habitacion');
+              ingreso.habitacion = habitacion.attributes;
+            } break;
+          }
 
           jsonArray.push(ingreso);
         }
@@ -70,10 +106,10 @@ export default class PacientesActivos extends React.Component {
 
 async query() {
   this.setState({ isLoading: true })
-  const parseObject = Parse.Object.extend('Patient');
+  const parseObject = Parse.Object.extend('IngresosActivos');
   const query = new Parse.Query(parseObject);
   let jsonArray = [];
-  query['equalTo']('ingresado', true);
+  query.ascending('createdAt');
   query.find().then((results) => {
       for (let i = 0; i < results.length; i++) {
          jsonArray.push(results[i].toJSON());
@@ -115,6 +151,7 @@ async query() {
   };
 
   render() {
+    console.log(this.state)
     if (this.state.isLoading) {
       //Loading View while data is loading
       return (
@@ -135,7 +172,7 @@ async query() {
             renderItem={({ item }) => (
               // Single Comes here which will be repeatative for the FlatListItems
               <TouchableWithoutFeedback
-              onPress={this.navigateToScreen('PatientDetail', item)}
+              onPress={this.navigateToScreen('DetalleActivos', item)}
               >
               <View>
                   <ComponentePaciente item={item} tipo={'activos'}/>

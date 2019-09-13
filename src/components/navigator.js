@@ -25,6 +25,7 @@ import PatientSelect from './Ingresos/PatientSelect';
 import RoomSelect from './Ingresos/RoomSelect';
 import ListaMedicos from './Medicos/ListaMedicos';
 import PacientesActivos from './Patients/PacientesActivos';
+import DetalleActivos from './Patients/DetalleActivos';
 import AdminQuirofano from './Quirofano/AdminQuirofano';
 import {
   BloodBank,
@@ -62,7 +63,8 @@ const AppStack = createStackNavigator(
     XRay,
     PacientesActivos,
     AdminQuirofano,
-    PruebaImpresion
+    PruebaImpresion,
+    DetalleActivos
   },
   {
     defaultNavigationOptions: {
