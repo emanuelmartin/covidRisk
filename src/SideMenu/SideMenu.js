@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { NavigationActions } from 'react-navigation';
 import { ScrollView, Text, View } from 'react-native';
-import { Button } from '../components/common'
 import { connect } from 'react-redux';
+import { Button } from '../components/common';
 import styles from './SideMenu.style';
 import { session, logOut } from '../actions';
 
@@ -98,7 +98,8 @@ ocupacion() {
       {this.altaPaciente()}
       </View>
     </View>
-  ); }
+  );
+}
 }
 
 pacientesActivos() {

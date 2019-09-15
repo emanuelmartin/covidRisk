@@ -98,15 +98,15 @@ class PatientBill extends Component {
           {this.show('Estudios', 'objectId', Estudios, totalEstudios, this.renderEstudios)}
           {this.show('Otros', 'objectId', Otros, totalOtros, this.renderEstudios)}
           <CardSection>
-            <View style={{ flex: 1 }}>
-              <Button onPress={this.onPayPress.bind(this)}>
-                Pagar
-              </Button>
-            </View>
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center' }}>
               <Text style={styles.emphasisTextStyle}> Total</Text>
               <Text style={styles.emphasisTextStyle}> ${totalInsumos + totalEstudios + totalOtros}</Text>
             </View>
+          </CardSection>
+          <CardSection>
+            <Button onPress={this.onPayPress.bind(this)}>
+              Liquidar
+            </Button>
           </CardSection>
         </View>
       );
