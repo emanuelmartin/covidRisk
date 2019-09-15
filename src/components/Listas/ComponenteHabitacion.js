@@ -17,9 +17,9 @@ const ComponenteHabitacion = (props) => {
   }
 
   function paciente(item) {
-    if (item.Ocupada) {
+    if (item.ocupadaPor) {
       return (
-      <Text> {props.item.OcupadaPor.names } {props.item.OcupadaPor.lastName1 } {props.item.OcupadaPor.lastName2 } </Text>
+      <Text> {props.item.ocupadaPor.names } {props.item.ocupadaPor.lastName1 } {props.item.OcupadaPor.lastName2 } </Text>
     );
 }
   }

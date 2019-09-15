@@ -15,8 +15,8 @@ import { connect } from 'react-redux';
 import { Dropdown } from 'react-native-material-dropdown';
 import Modal from 'react-native-modal';
 import { Button, CardSection } from '../common';
-import { queryFunc, cleanFunc, session } from '../../actions';
 import { ComponentePaciente, ComponenteMedico, ComponenteHabitacion, ComponenteEspecialidad, ComponenteConsultorio } from '../Listas';
+import { queryFunc, cleanFunc, session } from '../../actions';
 
 class PatientSelect extends React.Component {
   static navigationOptions = {
