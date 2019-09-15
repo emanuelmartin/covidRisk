@@ -7,8 +7,18 @@ export const addBill = ({ patient, bill }) => {
 
       const parseObject = Parse.Object.extend('Bill');
       const cuenta = new parseObject();
-      cuenta.set('Paciente', patient);
+
+      const pacientPointer = {
+        __type: 'Pointer',
+        className: 'Patient',
+        objectId: patient
+      };
+
+      cuenta.set('Paciente', pacientPointer);
       cuenta.set('Cuenta', bill);
+      cuenta.set('Pagada', false);
+      cuenta.set('Abono', 0);
+      
       cuenta.save().then(
         (result) => {
           dispatch({ type: ADD_BILL_SUCCES });
