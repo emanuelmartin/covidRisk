@@ -3,6 +3,7 @@ package com.hrsl;
 import android.support.multidex.MultiDexApplication;
 
 import com.facebook.react.ReactApplication;
+import org.reactnative.camera.RNCameraPackage;
 import com.christopherdro.htmltopdf.RNHTMLtoPDFPackage;
 import com.christopherdro.RNPrint.RNPrintPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
@@ -27,10 +28,11 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNHTMLtoPDFPackage(),
-            new RNPrintPackage(),
-            new RNGestureHandlerPackage(),
-            new VectorIconsPackage()
+          new RNCameraPackage(),
+          new RNHTMLtoPDFPackage(),
+          new RNPrintPackage(),
+          new RNGestureHandlerPackage(),
+          new VectorIconsPackage()
       );
     }
 

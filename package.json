@@ -16,6 +16,7 @@
     "react-addons": "^0.9.1-deprecated",
     "react-addons-update": "^15.6.2",
     "react-native": "^0.59.9",
+    "react-native-camera": "^3.4.0",
     "react-native-datepicker": "^1.7.2",
     "react-native-drawer": "^2.5.1",
     "react-native-drop-down-item": "^1.0.5",

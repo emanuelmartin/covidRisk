@@ -27,6 +27,8 @@ import ListaMedicos from './Medicos/ListaMedicos';
 import PacientesActivos from './Patients/PacientesActivos';
 import DetalleActivos from './Patients/DetalleActivos';
 import AdminQuirofano from './Quirofano/AdminQuirofano';
+import BarCodeScanner from './BarCodeScanner';
+
 import {
   BloodBank,
   Cafe,
@@ -64,7 +66,8 @@ const AppStack = createStackNavigator(
     PacientesActivos,
     AdminQuirofano,
     PruebaImpresion,
-    DetalleActivos
+    DetalleActivos,
+    BarCodeScanner
   },
   {
     defaultNavigationOptions: {

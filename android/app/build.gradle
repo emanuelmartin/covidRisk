@@ -108,6 +108,7 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
+        missingDimensionStrategy 'react-native-camera', 'general'
     }
     splits {
         abi {
@@ -139,6 +140,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-camera')
     implementation project(':react-native-html-to-pdf')
     implementation project(':react-native-print')
     implementation project(':react-native-gesture-handler')
