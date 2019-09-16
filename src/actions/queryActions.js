@@ -4,7 +4,9 @@ import {
   DB_QUERY,
   DB_QUERY_RESULTS,
   DB_CLEAN,
-  SEARCHING
+  SEARCHING,
+  WRITE_SUCCESS,
+  DELETE_SUCCESS
 } from './types';
 
 export const queryFunc = ({ type, object, variable, text }) => {
@@ -29,6 +31,48 @@ export const queryFunc = ({ type, object, variable, text }) => {
     }
   };
 };
+
+export const writeFunc = (clase, tipo, propiedadConsulta, consulta, propiedadAgregar, valor) => {
+  return async (dispatch) => {
+    const parseObject = Parse.Object.extend(clase);
+    const query = new Parse.Query(parseObject);
+    if (tipo === 'get') {
+      query.get(consulta.toString()).then((query) => {
+        query.set(propiedadAgregar, valor)
+        query.save().then(() => dispatch({ type: WRITE_SUCCESS, action: clase }));
+    });
+} else {
+    query[tipo](propiedadConsulta, consulta.toString());
+    const results = await query.find();
+    console.log(results)
+    query.get(results[0].id.toString()).then((query) => {
+      query.set(propiedadAgregar, valor)
+      query.save().then(() => dispatch({ type: WRITE_SUCCESS, action: clase }));
+      console.log(clase, tipo, propiedadConsulta, consulta, propiedadAgregar, valor);
+  }); }
+  }
+}
+
+export const deleteFunc = (clase, tipo, propiedadConsulta, consulta, propiedadEliminar) => {
+return async (dispatch) => {
+  const parseObject = Parse.Object.extend(clase);
+  const query = new Parse.Query(parseObject);
+  if (tipo === 'get') {
+    query.get(consulta).then((query) => {
+      query.unset(propiedadEliminar)
+      query.save().then(() => dispatch({ type: DELETE_SUCCESS, action: clase }));
+  });
+} else {
+  query[tipo](propiedadConsulta, consulta.toString());
+  const results = await query.find();
+  console.log(results)
+  query.get(results[0].id.toString()).then((query) => {
+    query.unset(propiedadEliminar)
+    query.save().then(() => dispatch({ type: DELETE_SUCCESS, action: clase }));
+    console.log(clase, tipo, propiedadConsulta, consulta, propiedadEliminar);
+  }); }
+}
+}
 
 export const cleanFunc = () => ({
   type: DB_CLEAN

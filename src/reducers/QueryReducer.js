@@ -1,7 +1,9 @@
 import {
   DB_QUERY,
   DB_QUERY_RESULTS,
-  DB_CLEAN
+  DB_CLEAN,
+  WRITE_SUCCESS,
+  DELETE_SUCCESS
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -27,6 +29,12 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, [action.name]: action.payload };
     case DB_CLEAN:
       return { ...state, ...INITIAL_STATE };
+    case WRITE_SUCCESS: {
+      console.log(action)
+      return { ...state }; }
+      case DELETE_SUCCESS: {
+        console.log(action)
+        return { ...state }; }
     default:
       return { state };
     }

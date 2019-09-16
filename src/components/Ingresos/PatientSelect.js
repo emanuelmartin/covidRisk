@@ -164,7 +164,7 @@ class PatientSelect extends React.Component {
               // Single Comes here which will be repeatative for the FlatListItems
               <TouchableWithoutFeedback
               onPress={() => this.updateHabitacion(item)}
-              disabled={item.Ocupada}
+              disabled={item.ocupadaPor}
               >
               <View>
                   <ComponenteHabitacion item={item} tipo={'ingreso'}/>
@@ -557,8 +557,7 @@ pacienteAnonimo() {
     function actualizarOcupacion(habitacionID) {
       ocupacion.get(habitacionID)
       .then((ocupado) => {
-        ocupado.set('Ocupada', true);
-        ocupado.set('OcupadaPor', pacientePointer);
+        ocupado.set('ocupadaPor', pacientePointer);
         ocupado.save();
       });
     }

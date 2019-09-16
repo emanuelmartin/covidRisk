@@ -45,18 +45,20 @@ export default class PacientesActivos extends React.Component {
         for (let i = 0; i < results.length; i++) {
 
           const ingreso = [];
+          const ids = [];
           const obj = results[i];
           console.log(obj)
 
-          ingreso.tipo = results[i].attributes.Tipo;
-          ingreso.estadoActual = results[i].attributes.estadoActual;
+          ids.ingreso = obj.id;
+          ingreso.tipo = obj.attributes.Tipo;
+          ingreso.estadoActual = obj.attributes.estadoActual;
           ingreso.tipoMedico = 'Médico titular'
           switch (ingreso.estadoActual) {
             case 'Urgencias': {
               ingreso.tipoMedico = 'Médico de guardia';
               const medico = obj.get('medicoGuardia');
               ingreso.medico = medico.attributes;
-              ingreso.medico.id = medico.id;
+              ids.medico = medico.id;
 
               const pacienteAnonimo = obj.get('pacienteAnonimo');
               if (pacienteAnonimo) {
@@ -64,48 +66,50 @@ export default class PacientesActivos extends React.Component {
               } else {
               const paciente = obj.get('paciente');
               ingreso.paciente = paciente.attributes;
-              ingreso.paciente.id = paciente.id;
+              ids.paciente = paciente.id;
             }
             } break;
 
             case 'Cirugía mayor': {
               const medico = obj.get('medicoTitular');
               ingreso.medico = medico.attributes;
-              ingreso.medico.id = medico.id;
+              ids.medico = medico.id;
 
               const paciente = obj.get('paciente');
               ingreso.paciente = paciente.attributes;
-              ingreso.paciente.id = paciente.id;
+              ids.paciente = paciente.id;
 
               const habitacion = obj.get('habitacion');
               ingreso.habitacion = habitacion.attributes;
-              ingreso.habitacion.id = habitacion.id;
+              ids.habitacion = habitacion.id;
+              console.log(ingreso)
             } break;
 
             case 'Cirugía ambulatoria': {
               const medico = obj.get('medicoTitular');
               ingreso.medico = medico.attributes;
-              ingreso.medico.id = medico.id;
+              ids.medico = medico.id;
 
               const paciente = obj.get('paciente');
               ingreso.paciente = paciente.attributes;
-              ingreso.paciente.id = paciente.id;
+              ids.paciente = paciente.id;
             } break;
 
             case 'Hospitalización': {
               const medico = obj.get('medicoTitular');
               ingreso.medico = medico.attributes;
-              ingreso.medico.id = medico.id;
+              ids.medico = medico.id;
 
               const paciente = obj.get('paciente');
               ingreso.paciente = paciente.attributes;
-              ingreso.paciente.id = paciente.id;
+              ids.paciente = paciente.id;
 
               const habitacion = obj.get('habitacion');
               ingreso.habitacion = habitacion.attributes;
-              ingreso.habitacion.id = habitacion.id;
+              ids.habitacion = habitacion.id;
             } break;
           }
+          ingreso.ids = ids;
           console.log(ingreso)
           jsonArray.push(ingreso);
         }

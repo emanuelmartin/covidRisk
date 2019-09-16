@@ -28,7 +28,7 @@ function seleccionarHabitacion() {
   switch (props.tipo) {
     case 'ocupacion':
       return (
-        <View style={setStyle(props.item.Ocupada)}>
+        <View style={setStyle(props.item.ocupadaPor)}>
           <Text> {props.item.Tipo} {props.item.ID} </Text>
           {paciente(props.item)}
           </View>
@@ -40,7 +40,7 @@ function seleccionarHabitacion() {
           );
         } else if (props.item.ID !== '') {
           return (
-            <View style={setStyle(props.item.Ocupada)}>
+            <View style={setStyle(props.item.ocupadaPor)}>
               <Text> {props.item.ID} </Text>
               <Text> {props.item.tipoHabitacion} </Text>
               <Text> {'$' }{props.item.costoHabitacion} </Text>

@@ -3,7 +3,7 @@ import { Text, ScrollView, View, StyleSheet, FlatList, TouchableWithoutFeedback 
 import { Card, CardSection, Button } from '../common';
 import { ComponenteHabitacion } from '../Listas/ComponenteHabitacion'
 import Modal from 'react-native-modal';
-import { queryFunc, cleanFunc, session } from '../../actions';
+import { queryFunc, cleanFunc, writeFunc, deleteFunc, session } from '../../actions';
 import { connect } from 'react-redux';
 import Parse from 'parse/react-native';
 
@@ -20,7 +20,7 @@ class DetalleActivo extends Component {
     const { navigation } = this.props;
     let data = navigation.getParam('item');
     console.log(data);
-    const { tipo, paciente, tipoMedico, medico, habitacion, estadoActual } = data;
+    const { tipo, paciente, tipoMedico, medico, habitacion, estadoActual, ids } = data;
 
 
   this.setState({ añadirConsulta: false,
@@ -31,7 +31,8 @@ class DetalleActivo extends Component {
                     darDeAlta: false,
                     asignarHabitacion: true,
                     asignarRecuperacion: false,
-                    tipo, paciente, tipoMedico, medico, habitacion, estadoActual });
+                    HabitacionPrevia: habitacion,
+                    tipo, paciente, tipoMedico, medico, estadoActual, ids });
 }
 
   renderItem(item) {
@@ -39,6 +40,7 @@ class DetalleActivo extends Component {
   }
 
   showModal(prop) {
+    console.log(this.state)
     this.setState({ [prop]: true });
   }
 
@@ -115,7 +117,7 @@ class DetalleActivo extends Component {
   }
 
   updateHabitacion(item) {
-    this.setState({ HabitacionPrevia: this.state.habitacion, HabitacionTemporal: item, asignarHabitacion: false, text: '', confirmarHabitacion: true });
+    this.setState({ HabitacionActual: item, asignarHabitacion: false, text: '', confirmarHabitacion: true });
   }
 
   async eliminarEntrada(clase, tipo, propiedadConsulta, consulta, propiedadEliminar) {
@@ -123,8 +125,9 @@ class DetalleActivo extends Component {
     const query = new Parse.Query(parseObject);
     if (tipo === 'get') {
       query.get(consulta).then((query) => {
-        query.unset(eliminar)
+        query.unset(propiedadEliminar)
         query.save();
+        console.log('Entrada eliminada')
     });
 } else {
     query[tipo](propiedadConsulta, consulta.toString());
@@ -133,6 +136,7 @@ class DetalleActivo extends Component {
     query.get(results[0].id.toString()).then((query) => {
       query.unset(propiedadEliminar)
       query.save();
+      console.log('Entrada eliminada')
     }); }
   }
 
@@ -143,6 +147,7 @@ class DetalleActivo extends Component {
       query.get(propiedadConsulta).then((query) => {
         query.set(propiedadAgregar)
         query.save();
+        console.log('Entrada agregada')
     });
 } else {
     query[tipo](propiedadConsulta, consulta.toString());
@@ -151,28 +156,60 @@ class DetalleActivo extends Component {
     query.get(results[0].id.toString()).then((query) => {
       query.set(propiedadAgregar, valor)
       query.save();
+      console.log('Entrada agregada')
   });
 }
 }
 
-    confirmHabitacion() {
-     this.eliminarEntrada('Ocupacion', 'startsWith', 'ID', this.state.HabitacionPrevia.ID, 'ocupadaPor')
+async modificarEntrada(clase, tipo, propiedadConsulta, consulta, propiedadModificar, valor) {
+  const parseObject = Parse.Object.extend(clase);
+  const query = new Parse.Query(parseObject);
+  if (tipo === 'get') {
+    query.get(consulta).then((query) => {
+      query.set(propiedadModificar, valor)
+      query.save();
+      console.log('Entrada modificada')
+  });
+} else {
+  query[tipo](propiedadConsulta, consulta.toString());
+  const results = await query.find();
+  console.log(results)
+  query.get(results[0].id.toString()).then((query) => {
+    query.unset(propiedadModificar, valor)
+    query.save();
+    console.log('Entrada modificada')
+  }); }
+}
 
-     const pacientePointer = {
+    confirmHabitacion() {
+      console.log(this.state)
+     this.props.deleteFunc('Ocupacion', 'startsWith', 'ID', this.state.HabitacionPrevia.ID, 'ocupadaPor')
+
+     const pointerPaciente = {
      __type: 'Pointer',
     className: 'Patient',
-    objectId: this.state.paciente.objectId
+    objectId: this.state.ids.paciente
      }
 
-     this.agregarEntrada('Ocupacion', 'startsWith', 'ID', this.state.HabitacionPrevia.ID, 'ocupadaPor', pacientePointer)
-     console.log(this.state)
+     this.props.writeFunc('Ocupacion', 'startsWith', 'ID', this.state.HabitacionActual.ID, 'ocupadaPor', pointerPaciente)
 
+
+     const pointerHabitacion = {
+     __type: 'Pointer',
+    className: 'Ocupacion',
+    objectId: this.state.HabitacionActual.objectId
+     }
+
+     this.props.writeFunc('IngresosActivos', 'get', null, this.state.ids.ingreso, 'habitacion', pointerHabitacion)
+
+     this.state.HabitacionPrevia = this.state.HabitacionActual;
 
     this.closeModal('confirmarHabitacion');
+    console.log(this.state)
   }
 
   confirmarHabitacion(habitacion) {
-    if (habitacion) {
+    if (this.state.HabitacionPrevia) {
       return (
         <Modal
         isVisible={this.state.confirmarHabitacion}
@@ -183,7 +220,7 @@ class DetalleActivo extends Component {
         <Text>{'Habitación previa'}</Text>
         </View>
         <View>
-        <ComponenteHabitacion item={habitacion} tipo={'ingreso'}/>
+        <ComponenteHabitacion item={this.state.HabitacionPrevia} tipo={'ingreso'}/>
         </View>
         </CardSection>
         <CardSection>
@@ -192,11 +229,11 @@ class DetalleActivo extends Component {
         <Text>{'Nueva habitación'}</Text>
         </View>
         <View>
-        <ComponenteHabitacion item={this.state.HabitacionTemporal} tipo={'ingreso'}/>
+        <ComponenteHabitacion item={this.state.HabitacionActual} tipo={'ingreso'}/>
         </View></CardSection>
         </CardSection>
         <CardSection>
-          <Button onPress={() => this.confirmHabitacion(this.state.HabitacionTemporal) }>
+          <Button onPress={() => this.confirmHabitacion(this.state.HabitacionActual) }>
             Confirmar
           </Button>
           <Button onPress={() => this.closeModal('confirmarHabitacion')}>
@@ -213,11 +250,11 @@ class DetalleActivo extends Component {
     >
   <CardSection>
     <CardSection>
-    <ComponenteHabitacion item={this.state.HabitacionTemporal} tipo={'ingreso'}/>
+    <ComponenteHabitacion item={this.state.HabitacionActual} tipo={'ingreso'}/>
     </CardSection>
     </CardSection>
     <CardSection>
-      <Button onPress={() => this.confirmHabitacion(this.state.HabitacionTemporal) }>
+      <Button onPress={() => this.confirmHabitacion(this.state.HabitacionActual) }>
         Confirmar
       </Button>
       <Button onPress={() => this.closeModal('confirmarHabitacion')}>
@@ -228,7 +265,7 @@ class DetalleActivo extends Component {
   );
   }
 
-  asignanrRecuperacion() {
+  asignarRecuperacion() {
 
   }
 
@@ -282,7 +319,7 @@ class DetalleActivo extends Component {
               <Text> {tipoMedico}: {medico.names} </Text>
             </View>
             <View>
-              <Text> {'Habitación'}: {habitacion.ID} </Text>
+              <Text> {'Habitación'}: {this.state.HabitacionPrevia.ID} </Text>
             </View>
             <View>
             <CardSection>
@@ -396,4 +433,4 @@ const mapStateToProps = ({ query, auth }) => {
  return { text, Patient, Ocupacion, Medico, Especialidad, user, Consultorio };
 };
 
-export default connect(mapStateToProps, { queryFunc, cleanFunc, session })(DetalleActivo);
+export default connect(mapStateToProps, { queryFunc, cleanFunc, writeFunc, deleteFunc, session })(DetalleActivo);
