@@ -120,70 +120,9 @@ class DetalleActivo extends Component {
     this.setState({ HabitacionActual: item, asignarHabitacion: false, text: '', confirmarHabitacion: true });
   }
 
-  async eliminarEntrada(clase, tipo, propiedadConsulta, consulta, propiedadEliminar) {
-    const parseObject = Parse.Object.extend(clase);
-    const query = new Parse.Query(parseObject);
-    if (tipo === 'get') {
-      query.get(consulta).then((query) => {
-        query.unset(propiedadEliminar)
-        query.save();
-        console.log('Entrada eliminada')
-    });
-} else {
-    query[tipo](propiedadConsulta, consulta.toString());
-    const results = await query.find();
-    console.log(results)
-    query.get(results[0].id.toString()).then((query) => {
-      query.unset(propiedadEliminar)
-      query.save();
-      console.log('Entrada eliminada')
-    }); }
-  }
-
-  async agregarEntrada(clase, tipo, propiedadConsulta, consulta, propiedadAgregar, valor) {
-    const parseObject = Parse.Object.extend(clase);
-    const query = new Parse.Query(parseObject);
-    if (tipo === 'get') {
-      query.get(propiedadConsulta).then((query) => {
-        query.set(propiedadAgregar)
-        query.save();
-        console.log('Entrada agregada')
-    });
-} else {
-    query[tipo](propiedadConsulta, consulta.toString());
-    const results = await query.find();
-    console.log(results)
-    query.get(results[0].id.toString()).then((query) => {
-      query.set(propiedadAgregar, valor)
-      query.save();
-      console.log('Entrada agregada')
-  });
-}
-}
-
-async modificarEntrada(clase, tipo, propiedadConsulta, consulta, propiedadModificar, valor) {
-  const parseObject = Parse.Object.extend(clase);
-  const query = new Parse.Query(parseObject);
-  if (tipo === 'get') {
-    query.get(consulta).then((query) => {
-      query.set(propiedadModificar, valor)
-      query.save();
-      console.log('Entrada modificada')
-  });
-} else {
-  query[tipo](propiedadConsulta, consulta.toString());
-  const results = await query.find();
-  console.log(results)
-  query.get(results[0].id.toString()).then((query) => {
-    query.unset(propiedadModificar, valor)
-    query.save();
-    console.log('Entrada modificada')
-  }); }
-}
-
     confirmHabitacion() {
       console.log(this.state)
-     this.props.deleteFunc('Ocupacion', 'startsWith', 'ID', this.state.HabitacionPrevia.ID, 'ocupadaPor')
+     this.props.deleteFunc('Ocupacion', 'startsWith', 'ID', this.state.HabitacionPrevia.ID, 'ocupadaPor', this.props.user)
 
      const pointerPaciente = {
      __type: 'Pointer',
@@ -191,7 +130,7 @@ async modificarEntrada(clase, tipo, propiedadConsulta, consulta, propiedadModifi
     objectId: this.state.ids.paciente
      }
 
-     this.props.writeFunc('Ocupacion', 'startsWith', 'ID', this.state.HabitacionActual.ID, 'ocupadaPor', pointerPaciente)
+     this.props.writeFunc('Ocupacion', 'startsWith', 'ID', this.state.HabitacionActual.ID, 'ocupadaPor', pointerPaciente, this.props.user)
 
 
      const pointerHabitacion = {
@@ -200,7 +139,8 @@ async modificarEntrada(clase, tipo, propiedadConsulta, consulta, propiedadModifi
     objectId: this.state.HabitacionActual.objectId
      }
 
-     this.props.writeFunc('IngresosActivos', 'get', null, this.state.ids.ingreso, 'habitacion', pointerHabitacion)
+     this.props.writeFunc('IngresosActivos', 'get', null, this.state.ids.ingreso, 'habitacion', pointerHabitacion, this.props.user)
+     this.props.writeFunc('IngresosActivos', 'get', null, this.state.ids.ingreso, 'historico', pointerHabitacion, this.props.user)
 
      this.state.HabitacionPrevia = this.state.HabitacionActual;
 

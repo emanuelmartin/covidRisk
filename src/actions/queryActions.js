@@ -32,7 +32,7 @@ export const queryFunc = ({ type, object, variable, text }) => {
   };
 };
 
-export const writeFunc = (clase, tipo, propiedadConsulta, consulta, propiedadAgregar, valor) => {
+export const writeFunc = (clase, tipo, propiedadConsulta, consulta, propiedadAgregar, valor, user) => {
   return async (dispatch) => {
     const parseObject = Parse.Object.extend(clase);
     const query = new Parse.Query(parseObject);
@@ -50,13 +50,26 @@ export const writeFunc = (clase, tipo, propiedadConsulta, consulta, propiedadAgr
       query.save().then(() => dispatch({ type: WRITE_SUCCESS, action: clase }));
       console.log(clase, tipo, propiedadConsulta, consulta, propiedadAgregar, valor);
   }); }
+
+  const pointerUsuario = {
+  __type: 'Pointer',
+ className: '_User',
+ objectId: user.id
+  }
+
+  const DataLog = Parse.Object.extend('dataLog')
+  const dataLog = new DataLog();
+  dataLog.set('tipo', 'escritura')
+  dataLog.set('usuario', pointerUsuario)
+  dataLog.save();
   }
 }
 
-export const deleteFunc = (clase, tipo, propiedadConsulta, consulta, propiedadEliminar) => {
+export const deleteFunc = (clase, tipo, propiedadConsulta, consulta, propiedadEliminar, user) => {
 return async (dispatch) => {
   const parseObject = Parse.Object.extend(clase);
   const query = new Parse.Query(parseObject);
+
   if (tipo === 'get') {
     query.get(consulta).then((query) => {
       query.unset(propiedadEliminar)
@@ -68,9 +81,31 @@ return async (dispatch) => {
   console.log(results)
   query.get(results[0].id.toString()).then((query) => {
     query.unset(propiedadEliminar)
+    query.save()
     query.save().then(() => dispatch({ type: DELETE_SUCCESS, action: clase }));
+    console.log(query.id)
     console.log(clase, tipo, propiedadConsulta, consulta, propiedadEliminar);
   }); }
+
+  const pointerUsuario = {
+  __type: 'Pointer',
+ className: '_User',
+ objectId: user.id
+  }
+
+  const pointerObjeto = {
+  __type: 'Pointer',
+ className: clase,
+ objectId: this.state.queryID
+  }
+
+  const DataLog = Parse.Object.extend('dataLog')
+  const dataLog = new DataLog();
+  dataLog.set('tipo', 'eliminar')
+  dataLog.set('usuario', pointerUsuario)
+  dataLog.set('objeto', pointerObjeto)
+  dataLog.save();
+
 }
 }
 
