@@ -257,6 +257,9 @@ cuentaPaciente() {
         <Button onPress={this.navigateToScreen('PruebaImpresion')} >
           Prueba de impresión
         </Button>
+        <Button onPress={this.navigateToScreen('VoiceNative')} >
+          Prueba de dictado
+        </Button>
         </ScrollView>
         <View style={styles.footerContainer}>
           <Text
