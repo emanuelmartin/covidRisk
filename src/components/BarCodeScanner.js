@@ -67,8 +67,8 @@ export default class BarCodeScanner extends Component {
               style={styles.cameraIcon}
               source={
                 this.state.torchOn === true
-                  ? require('./images/torch_off.png')
-                  : require('./images/torch_on.png')
+                  ? require('./img/torch_off.png')
+                  : require('./img/torch_on.png')
               }
             />
           </TouchableOpacity>

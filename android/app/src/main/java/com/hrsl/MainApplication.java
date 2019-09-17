@@ -1,6 +1,6 @@
 package com.hrsl;
 
-import android.support.multidex.MultiDexApplication;
+import androidx.multidex.MultiDexApplication;
 
 import com.facebook.react.ReactApplication;
 import org.reactnative.camera.RNCameraPackage;
