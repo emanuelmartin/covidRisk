@@ -254,6 +254,9 @@ cuentaPaciente() {
         {this.farmacia()}
         {this.servicios()}
         {this.cobros()}
+        <Button onPress={this.navigateToScreen('BarCodeScanner')} >
+          Escaner
+        </Button>
         <Button onPress={this.navigateToScreen('PruebaImpresion')} >
           Prueba de impresión
         </Button>
