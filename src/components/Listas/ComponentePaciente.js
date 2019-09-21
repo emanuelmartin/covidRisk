@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 
 const ComponentePaciente = (props) => {
 
-function seleccionarPaciente() {
+function seleccionarPaciente(props) {
   switch (props.tipo) {
     case 'activos': {
           console.log(props.item)
@@ -83,6 +83,18 @@ function seleccionarPaciente() {
 
         }
       } break;
+      case 'busqueda': {
+        return (
+          <View>
+            <View>
+              <Text> {paciente.names} </Text>
+            </View>
+            <View>
+              <Text> {paciente.birthday} </Text>
+            </View>
+          </View>
+        );
+      }
     default:
   }
   if (props.item.names === '') {
@@ -109,7 +121,7 @@ function seleccionarPaciente() {
 
   return (
     <View>
-    {seleccionarPaciente()}
+    {seleccionarPaciente(props)}
     </View>
   )
 }

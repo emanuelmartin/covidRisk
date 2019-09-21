@@ -35,7 +35,7 @@ export default class PacientesActivos extends React.Component {
     const ingresos = new Parse.Query(Ingresos);
     ingresos.include('paciente');
     ingresos.include('habitacion');
-    ingresos.include('medicoTitular');
+    ingresos.include('medico');
     ingresos.include('pacienteAnonimo');
 
     let jsonArray = [];
@@ -96,8 +96,8 @@ export default class PacientesActivos extends React.Component {
             } break;
 
             case 'Hospitalización': {
-              const medico = obj.get('medicoTitular');
-              ingreso.medico = medico.attributes;
+              const medico = obj.get('medico');
+              ingreso.medico = medico;
               ids.medico = medico.id;
 
               const paciente = obj.get('paciente');

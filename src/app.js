@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import ReduxThunk from 'redux-thunk';
 import Parse from 'parse/react-native';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import reducers from './reducers';
 import Nav from './components/navigator';
+import store from './store';
 
 const AsyncStorage = require('react-native').AsyncStorage;
 
@@ -19,8 +18,7 @@ export default class MyComponent extends Component {
 
 
   render() {
-    const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
-
+    const state = store.getState();
     return (
       <Provider store={store}>
         <Nav />

@@ -1,4 +1,5 @@
 import Parse from 'parse/react-native';
+import Alert from 'react-native'
 
 import {
   SIGNUPFORM_UPDATE,
@@ -195,9 +196,11 @@ export const userCreate = () => {
 
   user.signUp()
     .then(user => {
+      Alert.alert('Usuario creado correctamente')
       dispatch({ type: USER_CREATE_SUCCESS, payload: user })
     })
     .catch(error => {
+      Alert.alert('Error creando el usuario')
       dispatch({ type: USER_CREATE_FAIL, payload: error })
     });
   };

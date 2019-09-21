@@ -17,25 +17,26 @@ const INITIAL_STATE = {
   Laboratory: '',
   Rehabilitacion: '',
   Tomografia: '',
-  RayosX: ''
+  RayosX: '',
+  loading: true
 };
 
 export default (state = INITIAL_STATE, action) => {
   console.log(action);
   switch (action.type) {
     case DB_QUERY:
-      return { ...state, text: action.payload };
+      return { ...state, text: action.payload, loading: true };
     case DB_QUERY_RESULTS:
-      return { ...state, [action.name]: action.payload };
+      return { ...state, [action.name]: action.payload, loading: false };
     case DB_CLEAN:
       return { ...state, ...INITIAL_STATE };
     case WRITE_SUCCESS: {
-      console.log(action)
-      return { ...state }; }
+      console.log(action.payload)
+      return { ...state, [action.name]: action.payload }; }
       case DELETE_SUCCESS: {
         console.log(action)
         return { ...state }; }
     default:
-      return { state };
+      return { ...state, ...INITIAL_STATE };
     }
   };

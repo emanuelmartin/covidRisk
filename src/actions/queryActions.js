@@ -9,7 +9,7 @@ import {
   DELETE_SUCCESS
 } from './types';
 
-export const queryFunc = ({ type, object, variable, text }) => {
+export const queryFunc = ({ type, object, variable, text, include }) => {
   return async (dispatch) => {
     dispatch({ type: DB_QUERY, payload: text });
 
@@ -19,7 +19,13 @@ export const queryFunc = ({ type, object, variable, text }) => {
     const parseObject = Parse.Object.extend(object);
     const query = new Parse.Query(parseObject);
     let jsonArray = [];
-    query[type](variable, text);
+    if (include) {
+    include.map((item) => query.include(item)) }
+    
+    if (type === 'get') {
+      query.get(text);
+    } else {
+    query[type](variable, text); }
     query.find().then((results) => {
         for (let i = 0; i < results.length; i++) {
            jsonArray.push(results[i].toJSON());
@@ -39,7 +45,7 @@ export const writeFunc = (clase, tipo, propiedadConsulta, consulta, propiedadAgr
     if (tipo === 'get') {
       query.get(consulta.toString()).then((query) => {
         query.set(propiedadAgregar, valor)
-        query.save().then(() => dispatch({ type: WRITE_SUCCESS, action: clase }));
+        query.save().then((query) => dispatch({ type: WRITE_SUCCESS, name: clase, payload: query }));
     });
 } else {
     query[tipo](propiedadConsulta, consulta.toString());
@@ -47,7 +53,7 @@ export const writeFunc = (clase, tipo, propiedadConsulta, consulta, propiedadAgr
     console.log(results)
     query.get(results[0].id.toString()).then((query) => {
       query.set(propiedadAgregar, valor)
-      query.save().then(() => dispatch({ type: WRITE_SUCCESS, action: clase }));
+      query.save().then((query) => dispatch({ type: WRITE_SUCCESS, name: clase, payload: query }));
       console.log(clase, tipo, propiedadConsulta, consulta, propiedadAgregar, valor);
   }); }
 

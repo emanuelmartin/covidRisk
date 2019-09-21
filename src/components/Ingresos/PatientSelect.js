@@ -564,22 +564,26 @@ pacienteAnonimo() {
 
     switch (this.state.Tipo) {
       case 'Cirugía ambulatoria':
-        ingresos.set('medicoTitular', medicoPointer);
+        ingresos.set('medico', medicoPointer);
+        ingresos.set('tipoMedico', 'Médico titular')
         ingresos.set('Alta', false);
         break;
       case 'Cirugía mayor':
-        ingresos.set('medicoTitular', medicoPointer);
+        ingresos.set('medico', medicoPointer);
+        ingresos.set('tipoMedico', 'Médico titular')
         ingresos.set('habitacion', ocupacionPointer);
         ingresos.set('Alta', false);
         actualizarOcupacion(this.state.Habitacion.objectId.toString());
         break;
       case 'Urgencias':
       ingresos.set('Alta', false);
-        ingresos.set('medicoGuardia', medicoPointer);
+        ingresos.set('medico', medicoPointer);
+        ingresos.set('tipoMedico', 'Médico de guardia')
         break;
       case 'Hospitalización':
       ingresos.set('Alta', false);
-        ingresos.set('medicoTitular', medicoPointer);
+        ingresos.set('medico', medicoPointer);
+        ingresos.set('tipoMedico', 'Médico titular')
         ingresos.set('habitacion', ocupacionPointer);
         actualizarOcupacion(this.state.Habitacion.objectId.toString());
         break;
