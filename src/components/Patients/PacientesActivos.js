@@ -56,7 +56,7 @@ export default class PacientesActivos extends React.Component {
           switch (ingreso.estadoActual) {
             case 'Urgencias': {
               ingreso.tipoMedico = 'Médico de guardia';
-              const medico = obj.get('medicoGuardia');
+              const medico = obj.get('medico');
               ingreso.medico = medico.attributes;
               ids.medico = medico.id;
 
@@ -71,7 +71,7 @@ export default class PacientesActivos extends React.Component {
             } break;
 
             case 'Cirugía mayor': {
-              const medico = obj.get('medicoTitular');
+              const medico = obj.get('medico');
               ingreso.medico = medico.attributes;
               ids.medico = medico.id;
 
@@ -86,7 +86,7 @@ export default class PacientesActivos extends React.Component {
             } break;
 
             case 'Cirugía ambulatoria': {
-              const medico = obj.get('medicoTitular');
+              const medico = obj.get('medico');
               ingreso.medico = medico.attributes;
               ids.medico = medico.id;
 
@@ -97,7 +97,7 @@ export default class PacientesActivos extends React.Component {
 
             case 'Hospitalización': {
               const medico = obj.get('medico');
-              ingreso.medico = medico;
+              ingreso.medico = medico.attributes;
               ids.medico = medico.id;
 
               const paciente = obj.get('paciente');

@@ -66,7 +66,6 @@ class DetalleActivo extends Component {
   }
 
   closeModal(prop) {
-    this.props.queryFunc({ text: '' });
     this.setState({ [prop]: false });
   }
 

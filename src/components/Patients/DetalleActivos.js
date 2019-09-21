@@ -194,7 +194,6 @@ class DetalleActivo extends Component {
 
    this.props.writeFunc('IngresosActivos', 'get', null, IngresosActivos[0].objectId, 'habitacion', pointerHabitacion, user)
    this.props.writeFunc('IngresosActivos', 'get', null, IngresosActivos[0].objectId, 'estadoActual', 'Hospitalización', user)
-   this.props.writeFunc('IngresosActivos', 'get', null, IngresosActivos[0].objectId, 'historico', pointerHabitacion, user)
 
   this.closeModal('confirmarHabitacion');
 
