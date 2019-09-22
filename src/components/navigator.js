@@ -31,8 +31,8 @@ import AdminQuirofano from './Quirofano/AdminQuirofano';
 import VoiceNative from './dictar';
 import BarCodeScanner from './BarCodeScanner';
 import qrGen from './qrGenerator';
-import ListaProvedores from './Provedores/ListaProvedores'
-import AgregarProvedor from './Provedores/AgregarProvedor'
+import ListaProvedores from './Provedores/ListaProvedores';
+import AgregarProvedor from './Provedores/AgregarProvedor';
 
 import {
   BloodBank,
@@ -72,12 +72,9 @@ const AppStack = createStackNavigator(
     PruebaImpresion,
     DetalleActivos,
     VoiceNative,
-<<<<<<< HEAD
-    qrGen
-=======
+    qrGen,
     ListaProvedores,
     AgregarProvedor
->>>>>>> 5ec5981bdd9c7686ae069aabb1fc4a6a07cb3eee
   },
   {
     defaultNavigationOptions: {
