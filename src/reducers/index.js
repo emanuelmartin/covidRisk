@@ -7,6 +7,7 @@ import ItemReducer from './ItemReducer';
 import QueryReducer from './QueryReducer';
 import BillReducer from './BillReducer';
 import BarCodeReducer from './BarCodeReducer';
+import ProviderReducer from './ProviderReducer';
 
 export default combineReducers({
   auth: AuthReducer,
@@ -16,5 +17,6 @@ export default combineReducers({
   item: ItemReducer,
   query: QueryReducer,
   bill: BillReducer,
-  barCodeReader: BarCodeReducer
+  barCodeReader: BarCodeReducer,
+  providerForm: ProviderReducer
 });

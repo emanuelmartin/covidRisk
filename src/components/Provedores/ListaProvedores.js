@@ -15,7 +15,7 @@ import { queryFunc, cleanFunc } from '../../actions';
 import { ComponentePaciente } from '../Listas';
 
 
-class PatientList extends React.Component {
+class ListaProvedores extends React.Component {
   constructor(props) {
     super(props);
     //setting default state
@@ -35,7 +35,7 @@ class PatientList extends React.Component {
         this.setState(
           {
             isLoading: false,
-            Patient: null,
+            Provedor: null,
           },
           function () {
             this.arrayholder = responseJson;
@@ -98,16 +98,16 @@ class PatientList extends React.Component {
           searchIcon={{ size: 24 }}
           onChangeText={text => this.props.queryFunc({
             type: 'startsWith',
-            object: 'Patient',
-            variable: 'lastName1',
+            object: 'Provedor',
+            variable: 'nombre',
             text
           })}
           onClear={() => this.props.queryFunc({ text: '' })}
-          placeholder="Ingresa el primer apellido..."
+          placeholder="Ingresa el nombre de la empresa..."
           value={this.props.text}
         />
           <FlatList
-            data={this.props.Patient}
+            data={this.props.Provedor}
             ItemSeparatorComponent={this.ListViewItemSeparator}
             //Item Separator View
             renderItem={({ item }) => (
@@ -126,8 +126,8 @@ class PatientList extends React.Component {
           />
         </View>
         <CardSection>
-          <Button onPress={this.navigateToScreen('PatientForm')}>
-            Añadir paciente
+          <Button onPress={this.navigateToScreen('AgregarProvedor')}>
+            Añadir provedor
           </Button>
         </CardSection>
         <CardSection />
@@ -151,8 +151,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ query }) => {
- const { text, Patient } = query;
- return { text, Patient };
+ const { text, Provedor } = query;
+ return { text, Provedor };
 };
 
-export default connect(mapStateToProps, { queryFunc, cleanFunc })(PatientList);
+export default connect(mapStateToProps, { queryFunc, cleanFunc })(ListaProvedores);

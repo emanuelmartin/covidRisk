@@ -58,3 +58,8 @@ export const PAYMENT_FAIL = 'payment_fail';
 
 export const UPDATE_BAR_CODE = 'update_bar_code';
 export const CLEAN_BAR_CODE = 'clean_bar_code';
+
+export const PROVIDERFORM_UPDATE = 'providerform_update';
+export const PROVIDER_CREATE = 'provider_create';
+export const PROVIDER_CREATE_SUCCESS = 'provider_create_success';
+export const PROVIDER_CREATE_FAIL = 'provider_create_fail';
