@@ -54,37 +54,46 @@ class InventoryDetail extends Component {
   onUpdateStock() {
     const stock = this.props.stock;
     const item = this.item;
+    this.setState({ key: 'stock' });
     this.props.updateItem({ item, variable: 'stock', value: stock });
+    item.stock = stock;
   }
 
   onUpdatePublicPrice() {
     const publicPrice = this.props.publicPrice;
     const item = this.item;
+    this.setState({ key: 'publicPrice' });
     this.props.updateItem({ item, variable: 'publicPrice', value: publicPrice });
+    item.publicPrice = publicPrice;
   }
 
   onUpdatePacientPrice() {
     const pacientPrice = this.props.pacientPrice;
     const item = this.item;
+    this.setState({ key: 'pacientPrice' });
     this.props.updateItem({ item, variable: 'pacientPrice', value: pacientPrice });
+    item.pacientPrice = pacientPrice;
   }
 
   onUpdateAssurancePrice() {
     const assurancePrice = this.props.assurancePrice;
     const item = this.item;
+    this.setState({ key: 'assurancePrice' });
     this.props.updateItem({ item, variable: 'assurancePrice', value: assurancePrice });
+    item.assurancePrice = assurancePrice;
   }
 
   renderButton(item, checkValue, onPressFunction) {
     const data = { key: item[0].toString(), value: item[1].toString() };
 
-    if (this.props.loading) {
+    if (this.props.loading && checkValue === this.state.key) {
       return <Spinner size="small" />;
     } else if (data.value !== this.props[checkValue]) {
       return (
         <Icon
           name='sync'
           type='antdesign'
+          color='#63C0B9'
           onPress={onPressFunction.bind(this)}
         />
       );

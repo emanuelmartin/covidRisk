@@ -176,7 +176,7 @@ export const updateItem = ({ item, variable, value }) => {
       results[index].save()
         .then(
         (result) => {
-          dispatch({ type: UPDATE_ITEM_SUCCES, print: value });
+          dispatch({ type: UPDATE_ITEM_SUCCES });
           console.log('Comment created', result);
         },
         (error) => {

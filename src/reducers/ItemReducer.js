@@ -75,7 +75,7 @@ export default (state = INITIAL_STATE, action) => {
     case UPDATE_ITEM:
       return { ...state, loading: true, error: 'UPDATE_ITEM' };
     case UPDATE_ITEM_SUCCES:
-      return { ...state, loading: false, error: action.print };
+      return { ...state, loading: false };
     case UPDATE_ITEM_FAIL:
       return { ...state, loading: false, error: 'Intente de nuevo' };
     case ITEM_NOT_EXIST:
