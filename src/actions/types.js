@@ -52,6 +52,9 @@ export const ADD_BILL = 'add_bill';
 export const ADD_BILL_SUCCES = 'add_bill_succes';
 export const ADD_BILL_FAIL = 'add_bill_fail';
 export const ADD_RESTART_STATE = 'add_restart_state';
+export const PAYMENT = 'payment';
+export const PAYMENT_SUCCES = 'payment_success';
+export const PAYMENT_FAIL = 'payment_fail';
 
 export const UPDATE_BAR_CODE = 'update_bar_code';
 export const CLEAN_BAR_CODE = 'clean_bar_code';

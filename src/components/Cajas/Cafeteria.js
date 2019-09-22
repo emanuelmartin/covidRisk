@@ -8,12 +8,12 @@ import {
   TextInput,
   ScrollView
 } from 'react-native';
-//import Parse from 'parse/react-native';
-import { SearchBar } from 'react-native-elements';
-import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
+import { SearchBar, Icon } from 'react-native-elements';
+import { Dropdown } from 'react-native-material-dropdown';
 import { CardSection, Button, Spinner } from '../common';
-import { queryFunc, cleanFunc, addBill, clearBill } from '../../actions';
+import { queryFunc, cleanFunc, addBill, clearBill, payment } from '../../actions';
 
 class Cafe extends Component {
   static navigationOptions = {
@@ -27,7 +27,7 @@ class Cafe extends Component {
     const Alimento = { name: '' };
     const Alimentos = [];
 
-    this.state = { searchItem: true, Paciente, Alimento, Alimentos };
+    this.state = { searchItem: true, Paciente, Alimento, Alimentos, sellType: '' };
     this.arrayholder = [];
   }
 
@@ -84,12 +84,21 @@ class Cafe extends Component {
     });
   }
 
+  onPayPress() {
+    let total = 0;
+    this.state.Alimentos.forEach((bill) => {
+        total += parseFloat(bill.Precio) * parseFloat(bill.cantidad);
+      });
+    this.props.payment('cafeteriaIngresos', this.state.Alimentos, total);
+  }
+
   onNewBillPress() {
     this.setState({
       searchItem: true,
       Paciente: { names: '' },
       Alimento: { name: '' },
-      Alimentos: []
+      Alimentos: [],
+      sellType: ''
     });
     this.props.clearBill();
     this.props.cleanFunc();
@@ -165,6 +174,21 @@ class Cafe extends Component {
     );
   }
 
+  totalAnadido() {
+    let total = 0;
+    this.state.Alimentos.forEach((bill) => {
+        total += parseFloat(bill.Precio) * parseFloat(bill.cantidad);
+      });
+    return (
+      <CardSection>
+        <View style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center' }}>
+          <Text style={styles.emphasisTextStyle}> Total</Text>
+          <Text style={styles.emphasisTextStyle}> ${total}</Text>
+        </View>
+      </CardSection>
+    );
+  }
+
   listaPaciente() {
     let dataList = null;
     if (Array.isArray(this.props.Patient)) {
@@ -195,9 +219,13 @@ class Cafe extends Component {
             <SearchBar
               round
               lightTheme
-              searchIcon={{ size: 24 }}
               containerStyle={{ flex: 1, backgroundColor: 'white' }}
-              imputStyle={{ backgroundColor: 'white', marginTop: 0, marginBottom: 0 }}
+              searchIcon={
+                <Icon
+                  name='camera'
+                  type='material-community'
+                  onPress={this.navigateToScreen('BarCodeScanner', { updateCode: false })}
+                />}
               onChangeText={text => this.props.queryFunc({
                 type: 'startsWith',
                 object: 'Cafeteria',
@@ -229,6 +257,7 @@ class Cafe extends Component {
         <CardSection>
           {this.listaAlimentoAnadido()}
         </CardSection>
+        {this.totalAnadido()}
         {this.renderError()}
         {this.renderButtons()}
       </View>
@@ -236,7 +265,7 @@ class Cafe extends Component {
   }
 
   buscarPaciente() {
-    if (this.state.Paciente.names === '') {
+    if (this.state.Paciente.names === '' && this.state.sellType === 'Cuenta Paciente') {
       return (
         <View style={{ flex: 1 }}>
           <CardSection>
@@ -260,6 +289,12 @@ class Cafe extends Component {
             {this.listaPaciente()}
           </CardSection>
         </View>
+      );
+    } else if (this.state.sellType === 'Venta al público') {
+      return (
+        <CardSection>
+          {this.buscarAlimento()}
+        </CardSection>
       );
     }
     return (
@@ -313,6 +348,25 @@ class Cafe extends Component {
     }
   }
 
+  renderFinalButton() {
+    if (this.state.sellType === 'Venta al público') {
+      return (
+        <CardSection>
+          <Button onPress={this.onPayPress.bind(this)}>
+            Cobrar
+          </Button>
+        </CardSection>
+      );
+    }
+    return (
+      <CardSection>
+        <Button onPress={this.onBillPress.bind(this)}>
+          Añadir a cuenta
+        </Button>
+      </CardSection>
+    );
+  }
+
   renderButtons() {
     if (this.props.loading === true) {
       return <Spinner size="large" />;
@@ -327,11 +381,7 @@ class Cafe extends Component {
             Borrar cuenta
           </Button>
         </CardSection>
-        <CardSection>
-          <Button onPress={this.onBillPress.bind(this)}>
-            Añadir a cuenta
-          </Button>
-        </CardSection>
+        {this.renderFinalButton()}
       </View>
     );
   }
@@ -381,7 +431,7 @@ class Cafe extends Component {
   }
 
   renderDecide() {
-    if (this.props.succes) {
+    if (this.props.succesBill || this.props.succesPay) {
       return (
         <CardSection>
           <Button onPress={this.onNewBillPress.bind(this)}>
@@ -389,20 +439,40 @@ class Cafe extends Component {
           </Button>
         </CardSection>
       );
+    } else if (this.state.sellType === 'Cuenta Paciente') {
+      return (
+        <View>
+          {this.buscarPaciente()}
+        </View>
+      );
+    } else if (this.state.sellType === 'Venta al público') {
+      return (
+        <View>
+          {this.buscarPaciente()}
+        </View>
+      );
     }
-    return (
-      <View>
-        {this.buscarPaciente()}
-      </View>
-    );
   }
 
   render() {
-      console.log(this.state);
-
+    console.log(this.state);
+    const data = [{
+        value: 'Venta al público',
+      }, {
+        value: 'Cuenta Paciente'
+      }];
     return (
       <View style={{ flex: 1 }}>
         <ScrollView>
+          <CardSection>
+            <Dropdown
+            containerStyle={{ flex: 1 }}
+            data={data}
+            value={this.state.sellType}
+            onChangeText={value => this.setState({ sellType: value })}
+            placeholder={'Selecciona el tipo de venta'}
+            />
+          </CardSection>
           {this.renderDecide()}
         </ScrollView>
       </View>
@@ -436,11 +506,10 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = ({ query, bill }) => {
  const { text, Patient, Cafeteria } = query;
- const { loading, error, succes } = bill;
- console.log(query);
- return { text, Patient, Cafeteria, loading, error, succes };
+ const { loading, error, succesBill, succesPay } = bill;
+ return { text, Patient, Cafeteria, loading, error, succesBill, succesPay };
 };
 
 export default connect(
   mapStateToProps,
-  { queryFunc, cleanFunc, addBill, clearBill })(Cafe);
+  { queryFunc, cleanFunc, addBill, clearBill, payment })(Cafe);

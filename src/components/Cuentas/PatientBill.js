@@ -106,7 +106,9 @@ class PatientBill extends Component {
           <CardSection>
             <View style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center' }}>
               <Text style={styles.emphasisTextStyle}> Total</Text>
-              <Text style={styles.emphasisTextStyle}> ${totalInsumos + totalEstudios + totalOtros}</Text>
+              <Text style={styles.emphasisTextStyle}>
+                ${totalInsumos + totalEstudios + totalOtros}
+              </Text>
             </View>
           </CardSection>
           <CardSection>
