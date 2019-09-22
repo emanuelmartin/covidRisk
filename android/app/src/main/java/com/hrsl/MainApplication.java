@@ -3,6 +3,7 @@ package com.hrsl;
 import androidx.multidex.MultiDexApplication;
 
 import com.facebook.react.ReactApplication;
+import com.horcrux.svg.SvgPackage;
 import com.wenkesj.voice.VoicePackage;
 import org.reactnative.camera.RNCameraPackage;
 import com.christopherdro.htmltopdf.RNHTMLtoPDFPackage;
@@ -29,6 +30,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new SvgPackage(),
           new VoicePackage(),
           new RNCameraPackage(),
           new RNHTMLtoPDFPackage(),
