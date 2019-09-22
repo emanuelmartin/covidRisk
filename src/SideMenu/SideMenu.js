@@ -170,15 +170,31 @@ farmacia() {
            <Text style={styles.navItemStyle} onPress={this.navigateToScreen('InventoryList')}>
            Inventario
            </Text>
-           <Text style={styles.navItemStyle} onPress={this.navigateToScreen('OutputItemScreen')}>
-           Ventas
-           </Text>
          </View>
        </View>
     );
   }
 }
 
+ventas() {
+  if (this.props.userType === 'admin') {
+    return (
+      <View>
+         <Text style={styles.sectionHeadingStyle}>
+           Ventas
+         </Text>
+         <View style={styles.navSectionStyle}>
+           <Text style={styles.navItemStyle} onPress={this.navigateToScreen('CajaPrincipal')}>
+           Caja Principal
+           </Text>
+           <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Cafe')}>
+           Cafetería
+           </Text>
+         </View>
+       </View>
+    );
+  }
+}
 
 servicios() {
   if (this.props.userType === 'admin') {
@@ -188,9 +204,6 @@ servicios() {
            Servicios
          </Text>
          <View style={styles.navSectionStyle}>
-           <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Cafe')}>
-           Cafetería
-           </Text>
            <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Lab')}>
            Laboratorio
            </Text>
@@ -252,11 +265,9 @@ cuentaPaciente() {
         {this.fichasPersonales()}
         {this.ocupacion()}
         {this.farmacia()}
+        {this.ventas()}
         {this.servicios()}
         {this.cobros()}
-        <Button onPress={this.navigateToScreen('BarCodeScanner')} >
-          Escaner
-        </Button>
         <Button onPress={this.navigateToScreen('PruebaImpresion')} >
           Prueba de impresión
         </Button>

@@ -4,3 +4,4 @@ export * from './PatientActions';
 export * from './AddItem';
 export * from './queryActions';
 export * from './BillActions';
+export * from './BarCodeActions';

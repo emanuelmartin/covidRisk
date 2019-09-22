@@ -12,10 +12,10 @@ import {
 import { SearchBar } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
-import { CardSection, Button, Spinner } from './common';
-import { queryFunc, cleanFunc, addBill, clearBill } from '../actions';
+import { CardSection, Button, Spinner } from '../common';
+import { queryFunc, cleanFunc, addBill, clearBill } from '../../actions';
 
-class OutputItemScreen extends Component {
+class CajaPrincipal extends Component {
   static navigationOptions = {
     title: 'Ventas',
   };
@@ -128,9 +128,15 @@ class OutputItemScreen extends Component {
   };
 
   listaMedicamento() {
+    let dataList = null;
+    if (Array.isArray(this.props.Farmacia)) {
+      dataList = this.props.Farmacia;
+    } else {
+      dataList = [this.props.Farmacia];
+    }
     return (
       <FlatList
-        data={this.props.Farmacia}
+        data={dataList}
         ItemSeparatorComponent={this.ListViewItemSeparator}
         //Item Separator View
         renderItem={({ item }) => (
@@ -160,9 +166,15 @@ class OutputItemScreen extends Component {
   }
 
   listaPaciente() {
+    let dataList = null;
+    if (Array.isArray(this.props.Patient)) {
+      dataList = this.props.Patient;
+    } else {
+      dataList = [this.props.Patient];
+    }
     return (
       <FlatList
-        data={this.props.Patient}
+        data={dataList}
         ItemSeparatorComponent={this.ListViewItemSeparator}
         //Item Separator View
         renderItem={({ item }) => (
@@ -431,4 +443,4 @@ const mapStateToProps = ({ query, bill }) => {
 
 export default connect(
   mapStateToProps,
-  { queryFunc, cleanFunc, addBill, clearBill })(OutputItemScreen);
+  { queryFunc, cleanFunc, addBill, clearBill })(CajaPrincipal);

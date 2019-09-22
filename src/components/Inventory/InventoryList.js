@@ -5,24 +5,32 @@ import {
   StyleSheet,
   FlatList,
   ActivityIndicator,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Alert
 } from 'react-native';
-import { SearchBar } from 'react-native-elements';
+import { SearchBar, Icon } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { Button, CardSection } from '../common';
-import { queryFunc, cleanFunc } from '../../actions';
+import { queryFunc, cleanFunc, cleanBarCode, setItemCode } from '../../actions';
 
 class InventoryList extends React.Component {
   constructor(props) {
     super(props);
     //setting default state
-    this.state = { isLoading: true, search: '' };
+    this.state = { isLoading: true, search: '', barCodeCharged: false, barCode: '', barType: '' };
     this.arrayholder = [];
   }
   static navigationOptions = {
     title: 'Inventario',
   };
+
+  navigateToScreen = (route) => () => {
+    const navigateAction = NavigationActions.navigate({
+      routeName: route
+    });
+    this.props.navigation.dispatch(navigateAction);
+  }
 
   componentDidMount() {
     this.props.queryFunc({ text: '' });
@@ -62,8 +70,9 @@ class InventoryList extends React.Component {
       routeName: route,
       item
     });
-    this.props.navigation.navigate(route, { item });
+    this.props.navigation.navigate(route, item);
   }
+
   ListViewItemSeparator = () => {
     //Item sparator view
     return (
@@ -77,13 +86,55 @@ class InventoryList extends React.Component {
     );
   };
 
+  onAcceptPress() {
+    this.props.navigation.navigate('AddItemScreen');
+    this.props.setItemCode(this.state.barCode, this.state.barType);
+  }
+
+  onCancelPress() {
+    this.setState({ barCodeCharged: false, barCode: '', barType: '' });
+  }
+
   render() {
+    let dataList = null;
+    if (Array.isArray(this.props.Farmacia)) {
+      dataList = this.props.Farmacia;
+    } else {
+      dataList = [this.props.Farmacia];
+    }
+    if (this.props.barCode !== '') {
+      this.props.queryFunc({
+        type: 'startsWith',
+        object: 'Farmacia',
+        variable: 'barCode',
+        text: this.props.barCode });
+      this.setState({
+        barCodeCharged: true,
+        barCode: this.props.barCode,
+        barType: this.props.barType
+      });
+      this.props.cleanBarCode();
+    }
     if (this.state.isLoading) {
       //Loading View while data is loading
       return (
         <View style={{ flex: 1, paddingTop: 20 }}>
           <ActivityIndicator />
         </View>
+      );
+    }
+    if (this.state.barCodeCharged && this.props.Farmacia === 'Failed') {
+      Alert.alert(
+        'Error: Producto no encontrado',
+        '¿Desea agregarlo? ',
+        [
+          { text: 'Si', onPress: () => this.onAcceptPress() },
+          { text: 'No', onPress: () => this.onCancelPress(), style: 'cancel' },
+        ],
+        { cancelable: false }
+      );
+      return (
+        <View />
       );
     }
     return (
@@ -93,7 +144,12 @@ class InventoryList extends React.Component {
         <SearchBar
           round
           lightTheme
-          searchIcon={{ size: 24 }}
+          searchIcon={
+            <Icon
+              name='camera'
+              type='material-community'
+              onPress={this.navigateToScreen('BarCodeScanner', { updateCode: false })}
+            />}
           onChangeText={text => this.props.queryFunc({
             type: 'startsWith',
             object: 'Farmacia',
@@ -104,13 +160,13 @@ class InventoryList extends React.Component {
           value={this.props.text}
         />
           <FlatList
-            data={this.props.Farmacia}
+            data={dataList}
             ItemSeparatorComponent={this.ListViewItemSeparator}
             //Item Separator View
             renderItem={({ item }) => (
               // Single Comes here which will be repeatative for the FlatListItems
               <TouchableWithoutFeedback
-              onPress={this.navigateToScreen('InventoryDetail', item)}
+              onPress={this.navigateToScreen('InventoryDetail', { item })}
               >
               <Text style={styles.textStyle}>{item.laboratory} - {item.name} {item.presentation} {item.content}</Text>
               </TouchableWithoutFeedback>
@@ -145,9 +201,11 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = ({ query }) => {
+const mapStateToProps = ({ query, barCodeReader }) => {
  const { text, Farmacia } = query;
- return { text, Farmacia };
+ const { barCode, barType } = barCodeReader;
+ return { text, Farmacia, barCode, barType };
 };
 
-export default connect(mapStateToProps, { queryFunc, cleanFunc })(InventoryList);
+export default connect(mapStateToProps,
+  { queryFunc, cleanFunc, cleanBarCode, setItemCode })(InventoryList);

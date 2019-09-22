@@ -16,11 +16,13 @@ import {
   UPDATE_ITEM,
   UPDATE_ITEM_SUCCES,
   UPDATE_ITEM_FAIL,
-  ITEM_NOT_EXIST
+  ITEM_NOT_EXIST,
+  SET_ITEM_CODE
  } from '../actions/types';
 
 const INITIAL_STATE = {
   code: '',
+  codeType: '',
   name: '',
   formula: '',
   laboratory: '',
@@ -74,6 +76,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, loading: false, error: 'Intente de nuevo' };
     case ITEM_NOT_EXIST:
       return { ...state, loading: false, error: 'Producto no existe' };
+    case SET_ITEM_CODE:
+      return { ...state, code: action.payload.codeBar, codeType: action.payload.codeType };
     default:
       return state;
   }

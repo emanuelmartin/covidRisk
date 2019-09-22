@@ -15,7 +15,8 @@ import SignupForm from './SignupForm';
 import SideMenu from '../SideMenu/SideMenu';
 import InventoryList from './Inventory/InventoryList';
 import InventoryDetail from './Inventory/InventoryDetail';
-import OutputItemScreen from './OutputItemScreen.js';
+import CajaPrincipal from './Cajas/Principal.js';
+import Cafe from './Cajas/Cafeteria.js';
 import AddItemScreen from './AddItemScreen.js';
 import PatientBill from './Cuentas/PatientBill';
 import PatientList from './Patients/PatientList';
@@ -27,12 +28,11 @@ import ListaMedicos from './Medicos/ListaMedicos';
 import PacientesActivos from './Patients/PacientesActivos';
 import DetalleActivos from './Patients/DetalleActivos';
 import AdminQuirofano from './Quirofano/AdminQuirofano';
-import VoiceNative from './dictar'
+import VoiceNative from './dictar';
 import BarCodeScanner from './BarCodeScanner';
 
 import {
   BloodBank,
-  Cafe,
   Lab,
   Rehabilitation,
   Tomography,
@@ -52,7 +52,7 @@ const AppStack = createStackNavigator(
     InventoryList,
     InventoryDetail,
     AddItemScreen,
-    OutputItemScreen,
+    CajaPrincipal,
     PatientDetail,
     ListaOcupacion,
     PatientSelect,
@@ -68,8 +68,7 @@ const AppStack = createStackNavigator(
     AdminQuirofano,
     PruebaImpresion,
     DetalleActivos,
-    VoiceNative,
-    BarCodeScanner
+    VoiceNative
   },
   {
     defaultNavigationOptions: {
@@ -98,7 +97,8 @@ const LoginStack = createStackNavigator(
 
 const Drawer = createDrawerNavigator(
   {
-    Home: AppStack
+    Home: AppStack,
+    BarCodeScanner
   }, {
     contentComponent: SideMenu,
     drawerWidth: Dimensions.get('window').width - 120,

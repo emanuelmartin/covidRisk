@@ -128,9 +128,15 @@ class Cafe extends Component {
   };
 
   listaAlimento() {
+    let dataList = null;
+    if (Array.isArray(this.props.Cafeteria)) {
+      dataList = this.props.Cafeteria;
+    } else {
+      dataList = [this.props.Cafeteria];
+    }
     return (
       <FlatList
-        data={this.props.Cafeteria}
+        data={dataList}
         ItemSeparatorComponent={this.ListViewItemSeparator}
         //Item Separator View
         renderItem={({ item }) => (
@@ -160,9 +166,15 @@ class Cafe extends Component {
   }
 
   listaPaciente() {
+    let dataList = null;
+    if (Array.isArray(this.props.Patient)) {
+      dataList = this.props.Patient;
+    } else {
+      dataList = [this.props.Patient];
+    }
     return (
       <FlatList
-        data={this.props.Patient}
+        data={dataList}
         ItemSeparatorComponent={this.ListViewItemSeparator}
         //Item Separator View
         renderItem={({ item }) => (

@@ -37,9 +37,11 @@ export const UPDATE_ITEM = 'update_item';
 export const UPDATE_ITEM_SUCCES = 'update_item_succes';
 export const UPDATE_ITEM_FAIL = 'update_item_fail';
 export const ITEM_NOT_EXIST = 'item_not_exist';
+export const SET_ITEM_CODE = 'set_item_code';
 
 export const DB_QUERY = 'db_query';
 export const DB_QUERY_RESULTS = 'db_query_results';
+export const DB_QUERY_NO_RESULTS = 'db_query_no_results';
 export const DB_CLEAN = 'db_clean';
 
 export const WRITE_SUCCESS = 'write_success';
@@ -49,3 +51,6 @@ export const ADD_BILL = 'add_bill';
 export const ADD_BILL_SUCCES = 'add_bill_succes';
 export const ADD_BILL_FAIL = 'add_bill_fail';
 export const ADD_RESTART_STATE = 'add_restart_state';
+
+export const UPDATE_BAR_CODE = 'update_bar_code';
+export const CLEAN_BAR_CODE = 'clean_bar_code';

@@ -63,6 +63,12 @@ class PatientBill extends Component {
   }
 
   newLista() {
+    let dataList = null;
+    if (Array.isArray(this.props.Bill)) {
+      dataList = this.props.Bill;
+    } else {
+      dataList = [this.props.Bill];
+    }
     if (this.props.Bill !== '') {
       let totalInsumos = 0;
       let totalEstudios = 0;
@@ -72,7 +78,7 @@ class PatientBill extends Component {
       let Estudios = [];
       let Otros = [];
 
-      this.props.Bill.forEach((bill) => {
+      dataList.forEach((bill) => {
         if (bill.Cuenta.Type === 'Farmacia') {
           bill.Cuenta.List.forEach((desglose) => {
             totalInsumos += parseFloat(desglose.publicPrice) * parseFloat(desglose.cantidad);

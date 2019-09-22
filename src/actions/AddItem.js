@@ -19,7 +19,8 @@ import {
   UPDATE_ITEM,
   UPDATE_ITEM_SUCCES,
   UPDATE_ITEM_FAIL,
-  ITEM_NOT_EXIST
+  ITEM_NOT_EXIST,
+  SET_ITEM_CODE
 } from './types';
 
 export const codeChanged = (text) => ({
@@ -70,6 +71,11 @@ export const pacientPriceChanged = (text) => ({
 export const assurancePriceChanged = (text) => ({
     type: ASSURANCE_PRICE_CHANGED,
     payload: text
+  });
+
+export const setItemCode = (codeBar, codeType) => ({
+    type: SET_ITEM_CODE,
+    payload: { codeBar, codeType }
   });
 
 export const addItem = ({

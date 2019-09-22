@@ -3,10 +3,11 @@ import Parse from 'parse/react-native';
 import {
   DB_QUERY,
   DB_QUERY_RESULTS,
+  DB_QUERY_NO_RESULTS,
   DB_CLEAN,
   SEARCHING,
   WRITE_SUCCESS,
-  DELETE_SUCCESS
+  DELETE_SUCCESS,
 } from './types';
 
 export const queryFunc = ({ type, object, variable, text, include }) => {
@@ -20,7 +21,7 @@ export const queryFunc = ({ type, object, variable, text, include }) => {
     const query = new Parse.Query(parseObject);
     let jsonArray = [];
     if (include) {
-    include.map((item) => query.include(item)) }
+    include.map((item) => query.include(item))}
 
     if (type === 'get') {
       query.get(text);
@@ -31,14 +32,18 @@ export const queryFunc = ({ type, object, variable, text, include }) => {
            jsonArray.push(results[i].toJSON());
         }
       if (text === 'Habitación') text = '';
-      if (jsonArray.length === 1) {
-        const array = jsonArray;
-        jsonArray = array[0];
-      }
-      console.log(jsonArray);
-      dispatch({ type: DB_QUERY_RESULTS, payload: jsonArray, name: object });
-          });
+      if (jsonArray.length > 0){
+        if (jsonArray.length === 1) {
+          const array = jsonArray;
+          jsonArray = array[0];
         }
+        console.log(jsonArray);
+        dispatch({ type: DB_QUERY_RESULTS, payload: jsonArray, name: object });
+      } else {
+        dispatch({ type: DB_QUERY_NO_RESULTS, name: object });
+      }
+      });
+    }
   };
 };
 

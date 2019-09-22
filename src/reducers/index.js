@@ -6,6 +6,7 @@ import EmployeeReducer from './EmployeeReducer';
 import ItemReducer from './ItemReducer';
 import QueryReducer from './QueryReducer';
 import BillReducer from './BillReducer';
+import BarCodeReducer from './BarCodeReducer';
 
 export default combineReducers({
   auth: AuthReducer,
@@ -14,5 +15,6 @@ export default combineReducers({
   patientForm: PatientFormReducer,
   item: ItemReducer,
   query: QueryReducer,
-  bill: BillReducer
+  bill: BillReducer,
+  barCodeReader: BarCodeReducer
 });

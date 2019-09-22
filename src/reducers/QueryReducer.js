@@ -1,6 +1,7 @@
 import {
   DB_QUERY,
   DB_QUERY_RESULTS,
+  DB_QUERY_NO_RESULTS,
   DB_CLEAN,
   WRITE_SUCCESS,
   DELETE_SUCCESS
@@ -28,6 +29,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, text: action.payload, loading: true };
     case DB_QUERY_RESULTS:
       return { ...state, [action.name]: action.payload, loading: false };
+    case DB_QUERY_NO_RESULTS:
+      return { ...state, [action.name]: 'Failed', loading: false };
     case DB_CLEAN:
       return { ...state, ...INITIAL_STATE };
     case WRITE_SUCCESS: {
