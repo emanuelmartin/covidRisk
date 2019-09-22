@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Text } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Dropdown } from 'react-native-material-dropdown';
@@ -17,7 +17,8 @@ import {
 	pacientPriceChanged,
 	assurancePriceChanged,
 	addItem,
-	cleanBarCode
+	cleanBarCode,
+	acceptItemAded
 } from '../actions';
 
 class AddItemScreen extends Component {
@@ -28,7 +29,7 @@ class AddItemScreen extends Component {
 	constructor(props) {
     super(props);
     //setting default state
-    this.state = { type: '' };
+		this.state = { type: '' };
   }
 
 	onCodeChange(text) {
@@ -74,6 +75,7 @@ class AddItemScreen extends Component {
 	onButtonPress() {
     const {
 			code,
+			codeType,
 			name,
 			formula,
 			laboratory,
@@ -87,6 +89,7 @@ class AddItemScreen extends Component {
 
     this.props.addItem({
 			code,
+			codeType,
 			name,
 			formula,
 			laboratory,
@@ -96,12 +99,16 @@ class AddItemScreen extends Component {
 			publicPrice,
 			pacientPrice,
 			assurancePrice,
-			type: this.state.type
+			type: this.state.type,
 		});
   }
 
 	onCameraPress() {
 		this.props.navigation.navigate('BarCodeScanner', { updateCode: true });
+	}
+
+	onOkPress() {
+		this.props.acceptItemAded();
 	}
 
 	goHome() {
@@ -292,7 +299,17 @@ class AddItemScreen extends Component {
       }, {
         value: 'Insumo'
       }];
-
+		if (this.props.success) {
+			Alert.alert(
+        'Producto Agregado con éxito',
+        '',
+				[{ text: 'Ok', onPress: () => this.onOkPress() }],
+        { cancelable: false }
+      );
+      return (
+        <View />
+      );
+		}
     return (
 			<KeyboardAwareScrollView>
 				<CardSection>
@@ -324,6 +341,7 @@ const mapStateToProps = state => {
 		pacientPrice: state.item.pacientPrice,
 		assurancePrice: state.item.assurancePrice,
 		error: state.item.error,
+		success: state.item.success,
     loading: state.item.loading
   };
 };
@@ -356,5 +374,6 @@ export default connect(mapStateToProps, {
 	pacientPriceChanged,
 	assurancePriceChanged,
 	addItem,
+	acceptItemAded,
 	cleanBarCode
 })(AddItemScreen);

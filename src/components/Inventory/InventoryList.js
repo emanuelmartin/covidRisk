@@ -104,9 +104,9 @@ class InventoryList extends React.Component {
     }
     if (this.props.barCode !== '') {
       this.props.queryFunc({
-        type: 'startsWith',
+        type: 'equalTo',
         object: 'Farmacia',
-        variable: 'barCode',
+        variable: 'code',
         text: this.props.barCode });
       this.setState({
         barCodeCharged: true,

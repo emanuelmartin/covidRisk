@@ -20,7 +20,8 @@ import {
   UPDATE_ITEM_SUCCES,
   UPDATE_ITEM_FAIL,
   ITEM_NOT_EXIST,
-  SET_ITEM_CODE
+  SET_ITEM_CODE,
+  ACCEPT_ITEM_ADDED
 } from './types';
 
 export const codeChanged = (text) => ({
@@ -80,6 +81,7 @@ export const setItemCode = (codeBar, codeType) => ({
 
 export const addItem = ({
   code,
+  codeType,
   name,
   formula,
   laboratory,
@@ -88,7 +90,8 @@ export const addItem = ({
   stock,
   publicPrice,
   pacientPrice,
-  assurancePrice
+  assurancePrice,
+  type
 }) => {
   return async (dispatch) => {
     dispatch({ type: ADD_ITEM });
@@ -97,16 +100,13 @@ export const addItem = ({
 
     const Item = Parse.Object.extend('Farmacia');
     const checkItem = new Parse.Query(Item);
-    checkItem.equalTo('name', name);
+    checkItem.equalTo('code', code);
     const results = await checkItem.find();
 
     // Do something with the returned Parse.Object values
     for (let i = 0; i < results.length; i++) {
       const object = results[i];
-      if (object.get('formula') === formula &&
-        object.get('laboratory') === laboratory &&
-        object.get('presentation') === presentation &&
-        object.get('content') === content) {
+      if (object.get('codeType') === codeType) {
         dispatch({ type: ITEM_ALREADY_EXIST });
         exist = true;
       }
@@ -122,11 +122,12 @@ export const addItem = ({
       item.set('content', content);
       if (stock === '') {
         item.set('0');
-      } else { item.set('stock', stock); }
-      item.set('publicPrice', publicPrice);
-      item.set('pacientPrice', pacientPrice);
-      item.set('assurancePrice', assurancePrice);
-      item.set('stock', 0);
+      } else { item.set('stock', parseInt(stock, 10)); }
+      item.set('publicPrice', parseInt(publicPrice, 10));
+      item.set('pacientPrice', parseInt(pacientPrice, 10));
+      item.set('assurancePrice', parseInt(assurancePrice, 10));
+      item.set('codeType', codeType);
+      item.set('type', type);
       item.save()
         .then(
         (result) => {
@@ -142,12 +143,16 @@ export const addItem = ({
   };
 };
 
+export const acceptItemAded = () => ({
+  type: ACCEPT_ITEM_ADDED
+});
+
 export const inventoryRequest = (data) => ({
     type: INVENTORY_REQUEST,
     payload: data
   });
 
-export const updateItem = ({ item, value }) => {
+export const updateItem = ({ item, variable, value }) => {
   return async (dispatch) => {
     dispatch({ type: UPDATE_ITEM });
 
@@ -155,23 +160,19 @@ export const updateItem = ({ item, value }) => {
 
     const Item = Parse.Object.extend('Farmacia');
     const checkItem = new Parse.Query(Item);
-    checkItem.equalTo('name', item.name.toString());
+    checkItem.equalTo('code', item.code.toString());
     const results = await checkItem.find();
 
     // Do something with the returned Parse.Object values
     for (let i = 0; i < results.length; i++) {
       const object = results[i];
-      if (object.get('formula') === item.formula.toString() &&
-        object.get('laboratory') === item.laboratory.toString() &&
-        object.get('presentation') === item.presentation.toString() &&
-        object.get('content') === item.content.toString()) {
+      if (object.get('codeType') === item.codeType.toString()) {
         index = i;
       }
     }
 
     if (index !== -1) {
-      const val = parseInt('500', 10);
-      results[index].set('stock', val);
+      results[index].set(variable, parseInt(value, 10));
       results[index].save()
         .then(
         (result) => {

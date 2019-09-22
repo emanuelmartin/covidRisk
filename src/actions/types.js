@@ -38,6 +38,7 @@ export const UPDATE_ITEM_SUCCES = 'update_item_succes';
 export const UPDATE_ITEM_FAIL = 'update_item_fail';
 export const ITEM_NOT_EXIST = 'item_not_exist';
 export const SET_ITEM_CODE = 'set_item_code';
+export const ACCEPT_ITEM_ADDED = 'accept_item_added';
 
 export const DB_QUERY = 'db_query';
 export const DB_QUERY_RESULTS = 'db_query_results';

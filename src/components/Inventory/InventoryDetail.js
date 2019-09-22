@@ -2,13 +2,17 @@ import React, { Component } from 'react';
 import {
   Text,
   ScrollView,
-  View,
-  TouchableHighlight,
-  Image
+  View
 } from 'react-native';
+import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Card, CardSection, Input, Spinner } from '../common';
-import { stockChanged, updateItem } from '../../actions';
+import {
+  stockChanged,
+  publicPriceChanged,
+	pacientPriceChanged,
+	assurancePriceChanged,
+  updateItem } from '../../actions';
 
 class InventoryDetail extends Component {
 
@@ -21,56 +25,137 @@ class InventoryDetail extends Component {
   constructor(props) {
     super(props);
     this.item = props.navigation.getParam('item');
+    this.state = { key: '' };
   }
 
   componentWillMount() {
     this.props.stockChanged(this.item.stock.toString());
+    this.props.publicPriceChanged(this.item.publicPrice.toString());
+    this.props.pacientPriceChanged(this.item.pacientPrice.toString());
+    this.props.assurancePriceChanged(this.item.assurancePrice.toString());
   }
 
   onStockChange(text) {
 		this.props.stockChanged(text);
 	}
 
-  onUpdatePress() {
-    const stock = this.props.stock;
-    const item = this.item;
-    this.props.updateItem({ item, stock });
+  onPublicPriceChange(text) {
+    this.props.publicPriceChanged(text);
   }
 
-  renderButton(item) {
+  onPacientPriceChange(text) {
+    this.props.pacientPriceChanged(text);
+  }
+
+  onAssurancePriceChange(text) {
+    this.props.assurancePriceChanged(text);
+  }
+
+  onUpdateStock() {
+    const stock = this.props.stock;
+    const item = this.item;
+    this.props.updateItem({ item, variable: 'stock', value: stock });
+  }
+
+  onUpdatePublicPrice() {
+    const publicPrice = this.props.publicPrice;
+    const item = this.item;
+    this.props.updateItem({ item, variable: 'publicPrice', value: publicPrice });
+  }
+
+  onUpdatePacientPrice() {
+    const pacientPrice = this.props.pacientPrice;
+    const item = this.item;
+    this.props.updateItem({ item, variable: 'pacientPrice', value: pacientPrice });
+  }
+
+  onUpdateAssurancePrice() {
+    const assurancePrice = this.props.assurancePrice;
+    const item = this.item;
+    this.props.updateItem({ item, variable: 'assurancePrice', value: assurancePrice });
+  }
+
+  renderButton(item, checkValue, onPressFunction) {
     const data = { key: item[0].toString(), value: item[1].toString() };
 
     if (this.props.loading) {
       return <Spinner size="small" />;
-    } else if (data.value !== this.props.stock) {
+    } else if (data.value !== this.props[checkValue]) {
       return (
-        <TouchableHighlight onPress={this.onUpdatePress.bind(this)}>
-          <Image
-            source={require('.././img/icons/update.png')}
-            style={{ width: 50, height: 50 }}
-          />
-        </TouchableHighlight>
+        <Icon
+          name='sync'
+          type='antdesign'
+          onPress={onPressFunction.bind(this)}
+        />
       );
     }
     return null;
   }
 
-  renderError() {
-    if (this.props.error) {
-      return (
-        <View style={{ backgroundColor: 'white' }}>
-          <Text style={styles.errorTextStyle}>
-            {this.props.error}
-          </Text>
-        </View>
-      );
-    }
-  }
-
   renderItem(item) {
     console.log(item);
     const data = { key: item[0].toString(), value: item[1].toString() };
-    if (
+    if (data.key === 'stock') {
+      return (
+        <View>
+          <CardSection>
+            <Input
+              style={{ flex: 2 }}
+              label={data.key}
+              placeholder=""
+              onChangeText={this.onStockChange.bind(this)}
+              value={this.props.stock}
+            />
+          {this.renderButton(item, data.key, this.onUpdateStock)}
+          </CardSection>
+        </View>
+      );
+    } else if (data.key === 'publicPrice') {
+      return (
+        <View>
+          <CardSection>
+            <Input
+              style={{ flex: 2 }}
+              label={data.key}
+              placeholder=""
+              onChangeText={this.onPublicPriceChange.bind(this)}
+              value={this.props.publicPrice}
+            />
+          {this.renderButton(item, data.key, this.onUpdatePublicPrice)}
+          </CardSection>
+        </View>
+      );
+    } else if (data.key === 'pacientPrice') {
+      return (
+        <View>
+          <CardSection>
+            <Input
+              style={{ flex: 2 }}
+              label={data.key}
+              placeholder=""
+              onChangeText={this.onPacientPriceChange.bind(this)}
+              value={this.props.pacientPrice}
+            />
+          {this.renderButton(item, data.key, this.onUpdatePacientPrice)}
+          </CardSection>
+        </View>
+      );
+    } else if (data.key === 'assurancePrice') {
+      return (
+        <View>
+          <CardSection>
+            <Input
+              style={{ flex: 2 }}
+              label={data.key}
+              placeholder=""
+              onChangeText={this.onAssurancePriceChange.bind(this)}
+              value={this.props.assurancePrice}
+            />
+          {this.renderButton(item, data.key, this.onUpdateAssurancePrice)}
+          </CardSection>
+        </View>
+      );
+    } else if (
       data.key !== 'stock' &&
       data.key !== 'createdAt' &&
       data.key !== 'updatedAt' &&
@@ -97,22 +182,6 @@ class InventoryDetail extends Component {
           </Card>
         </View>
       );
-    } else if (data.key === 'stock') {
-      return (
-        <View>
-          <CardSection>
-            <Input
-              style={{ flex: 2 }}
-              label={data.key}
-              placeholder=""
-              onChangeText={this.onStockChange.bind(this)}
-              value={this.props.stock}
-            />
-            {this.renderButton(item)}
-          </CardSection>
-          {this.renderError()}
-        </View>
-      );
     }
   }
 
@@ -133,6 +202,9 @@ class InventoryDetail extends Component {
 const mapStateToProps = state => {
   return {
     stock: state.item.stock,
+    publicPrice: state.item.publicPrice,
+    pacientPrice: state.item.pacientPrice,
+    assurancePrice: state.item.assurancePrice,
     error: state.item.error,
     loading: state.item.loading
   };
@@ -146,4 +218,9 @@ const styles = {
     },
 };
 
-export default connect(mapStateToProps, { stockChanged, updateItem })(InventoryDetail);
+export default connect(mapStateToProps,
+  { stockChanged,
+    publicPriceChanged,
+    pacientPriceChanged,
+    assurancePriceChanged,
+    updateItem })(InventoryDetail);

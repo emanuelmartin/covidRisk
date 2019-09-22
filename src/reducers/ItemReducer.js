@@ -17,7 +17,8 @@ import {
   UPDATE_ITEM_SUCCES,
   UPDATE_ITEM_FAIL,
   ITEM_NOT_EXIST,
-  SET_ITEM_CODE
+  SET_ITEM_CODE,
+  ACCEPT_ITEM_ADDED
  } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -33,6 +34,7 @@ const INITIAL_STATE = {
   pacientPrice: '',
   assurancePrice: '',
   error: '',
+  success: false,
   loading: false
 };
 
@@ -63,11 +65,13 @@ export default (state = INITIAL_STATE, action) => {
     case ADD_ITEM:
       return { ...state, ...INITIAL_STATE, loading: true };
     case ADD_ITEM_SUCCES:
-      return { ...state, ...INITIAL_STATE, loading: false };
+      return { ...state, ...INITIAL_STATE, loading: false, success: true };
+    case ACCEPT_ITEM_ADDED:
+      return { ...state, success: false };
     case ADD_ITEM_FAIL:
       return { ...state, loading: false, error: 'Intente de nuevo' };
     case ITEM_ALREADY_EXIST:
-      return { ...state, loading: false, error: 'Producto ya existe' };
+      return { ...state, loading: false, error: 'Código duplicado' };
     case UPDATE_ITEM:
       return { ...state, loading: true, error: 'UPDATE_ITEM' };
     case UPDATE_ITEM_SUCCES:
