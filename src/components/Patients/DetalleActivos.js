@@ -167,7 +167,7 @@ class DetalleActivo extends Component {
   }
 
   updateHabitacion() {
-    const { paciente, habitacion } = this.props.IngresosActivos[0];
+    const { paciente, habitacion } = this.props.IngresosActivos;
     const { user, IngresosActivos } = this.props;
     const { nuevaHabitacion } = this.state;
 
@@ -192,8 +192,8 @@ class DetalleActivo extends Component {
   objectId: nuevaHabitacion.objectId
    }
 
-   this.props.writeFunc('IngresosActivos', 'get', null, IngresosActivos[0].objectId, 'habitacion', pointerHabitacion, user)
-   this.props.writeFunc('IngresosActivos', 'get', null, IngresosActivos[0].objectId, 'estadoActual', 'Hospitalización', user)
+   this.props.writeFunc('IngresosActivos', 'get', null, IngresosActivos.objectId, 'habitacion', pointerHabitacion, user)
+   this.props.writeFunc('IngresosActivos', 'get', null, IngresosActivos.objectId, 'estadoActual', 'Hospitalización', user)
 
   this.closeModal('confirmarHabitacion');
 
@@ -210,7 +210,7 @@ class DetalleActivo extends Component {
         <ActivityIndicator />
       );
     } else {
-    const { estadoActual, paciente, tipoMedico, medico, habitacion } = this.props.IngresosActivos[0]
+    const { estadoActual, paciente, tipoMedico, medico, habitacion } = this.props.IngresosActivos
     switch (estadoActual) {
       case 'Urgencias': {
         return (

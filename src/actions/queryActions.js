@@ -21,7 +21,7 @@ export const queryFunc = ({ type, object, variable, text, include }) => {
     let jsonArray = [];
     if (include) {
     include.map((item) => query.include(item)) }
-    
+
     if (type === 'get') {
       query.get(text);
     } else {
@@ -31,21 +31,29 @@ export const queryFunc = ({ type, object, variable, text, include }) => {
            jsonArray.push(results[i].toJSON());
         }
       if (text === 'Habitación') text = '';
+      if (jsonArray.length === 1) {
+        const array = jsonArray;
+        jsonArray = array[0];
+      }
       console.log(jsonArray);
       dispatch({ type: DB_QUERY_RESULTS, payload: jsonArray, name: object });
           });
-    }
+        }
   };
 };
 
 export const writeFunc = (clase, tipo, propiedadConsulta, consulta, propiedadAgregar, valor, user) => {
+  let jsonArray = [];
   return async (dispatch) => {
     const parseObject = Parse.Object.extend(clase);
     const query = new Parse.Query(parseObject);
     if (tipo === 'get') {
       query.get(consulta.toString()).then((query) => {
         query.set(propiedadAgregar, valor)
-        query.save().then((query) => dispatch({ type: WRITE_SUCCESS, name: clase, payload: query }));
+        query.save().then((results) =>   {
+        jsonArray = results.toJSON()
+          dispatch({ type: WRITE_SUCCESS, name: clase, payload: jsonArray })
+        });
     });
 } else {
     query[tipo](propiedadConsulta, consulta.toString());
@@ -53,7 +61,10 @@ export const writeFunc = (clase, tipo, propiedadConsulta, consulta, propiedadAgr
     console.log(results)
     query.get(results[0].id.toString()).then((query) => {
       query.set(propiedadAgregar, valor)
-      query.save().then((query) => dispatch({ type: WRITE_SUCCESS, name: clase, payload: query }));
+      query.save().then((results) => {
+        jsonArray = results.toJSON()
+        dispatch({ type: WRITE_SUCCESS, name: clase, payload: jsonArray })
+      });
       console.log(clase, tipo, propiedadConsulta, consulta, propiedadAgregar, valor);
   }); }
 
