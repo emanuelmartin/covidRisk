@@ -1,4 +1,4 @@
-PROVIDERimport Parse from 'parse/react-native';
+import Parse from 'parse/react-native';
 
 import {
   PROVIDERFORM_UPDATE,
@@ -159,8 +159,8 @@ function formatPassword(value) {
   return obj;
 }
 
-const Provedor = Parse.Object.extend('Provedor');
-const provedor = new Provedor();
+const Proveedor = Parse.Object.extend('Proveedor');
+const proveedor = new Proveedor();
 
 export const providerUpdate = ({ prop, value, type, limit, edited }) => {
   switch (type) {
@@ -175,13 +175,13 @@ export const providerUpdate = ({ prop, value, type, limit, edited }) => {
     case 'string': obj = formatString(value); break;
     case 'username': obj = formatUsername(value); break;
     case 'password': obj = formatPassword(value); break;
-    default: obj = { val: value };
+    default: obj = { val: value, clean: value, valid: value, formatted: value };
   }
 
   return (dispatch) => {
-  if (obj.valid) {
-    PROVIDER.set(prop, obj.clean);
-    console.log(provedor);
+  if (true) {
+    proveedor.set(prop, obj.clean);
+    console.log(proveedor);
   }
 
   dispatch({ type: PROVIDERFORM_UPDATE,
@@ -194,9 +194,9 @@ export const providerCreate = () => {
   return (dispatch) => {
     dispatch({ type: PROVIDER_CREATE });
 
-  provedor.save()
-    .then(provedor => {
-      dispatch( { type: PROVIDER_CREATE_SUCCESS, payload: provedor })
+  proveedor.save()
+    .then(proveedor => {
+      dispatch( { type: PROVIDER_CREATE_SUCCESS, payload: proveedor })
     })
     .catch(error => {
       dispatch( { type: PROVIDER_CREATE_FAIL, payload: error })

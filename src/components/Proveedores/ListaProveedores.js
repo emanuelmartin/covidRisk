@@ -15,7 +15,7 @@ import { queryFunc, cleanFunc } from '../../actions';
 import { ComponentePaciente } from '../Listas';
 
 
-class ListaProvedores extends React.Component {
+class ListaProveedores extends React.Component {
   constructor(props) {
     super(props);
     //setting default state
@@ -23,7 +23,7 @@ class ListaProvedores extends React.Component {
     this.arrayholder = [];
   }
   static navigationOptions = {
-    title: 'Pacientes',
+    title: 'Proveedores',
   };
 
   componentDidMount() {
@@ -35,7 +35,7 @@ class ListaProvedores extends React.Component {
         this.setState(
           {
             isLoading: false,
-            Provedor: null,
+            Proveedor: null,
           },
           function () {
             this.arrayholder = responseJson;
@@ -80,6 +80,14 @@ class ListaProvedores extends React.Component {
   };
 
   render() {
+    let dataList = null;
+    if (Array.isArray(this.props.Proveedor)) {
+      dataList = this.props.Proveedor;
+    } else {
+      dataList = [this.props.Proveedor];
+    }
+
+    console.log(dataList)
     if (this.state.isLoading) {
       //Loading View while data is loading
       return (
@@ -98,7 +106,7 @@ class ListaProvedores extends React.Component {
           searchIcon={{ size: 24 }}
           onChangeText={text => this.props.queryFunc({
             type: 'startsWith',
-            object: 'Provedor',
+            object: 'Proveedor',
             variable: 'nombre',
             text
           })}
@@ -107,7 +115,7 @@ class ListaProvedores extends React.Component {
           value={this.props.text}
         />
           <FlatList
-            data={this.props.Provedor}
+            data={dataList}
             ItemSeparatorComponent={this.ListViewItemSeparator}
             //Item Separator View
             renderItem={({ item }) => (
@@ -116,7 +124,7 @@ class ListaProvedores extends React.Component {
               onPress={this.navigateToScreen('PatientDetail', item)}
               >
               <View>
-                <ComponentePaciente item={item} />
+                <Text> {item.nombre} </Text>
               </View>
               </TouchableWithoutFeedback>
             )}
@@ -126,8 +134,8 @@ class ListaProvedores extends React.Component {
           />
         </View>
         <CardSection>
-          <Button onPress={this.navigateToScreen('AgregarProvedor')}>
-            Añadir provedor
+          <Button onPress={this.navigateToScreen('AgregarProveedor')}>
+            Añadir proveedor
           </Button>
         </CardSection>
         <CardSection />
@@ -151,8 +159,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ query }) => {
- const { text, Provedor } = query;
- return { text, Provedor };
+ const { text, Proveedor } = query;
+ return { text, Proveedor };
 };
 
-export default connect(mapStateToProps, { queryFunc, cleanFunc })(ListaProvedores);
+export default connect(mapStateToProps, { queryFunc, cleanFunc })(ListaProveedores);

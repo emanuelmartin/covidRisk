@@ -5,3 +5,4 @@ export * from './AddItem';
 export * from './queryActions';
 export * from './BillActions';
 export * from './BarCodeActions';
+export * from './ProviderActions';

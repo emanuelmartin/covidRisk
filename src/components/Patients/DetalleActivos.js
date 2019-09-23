@@ -25,7 +25,8 @@ class DetalleActivo extends Component {
                     darDeAlta: false,
                     asignarHabitacion: false,
                     asignarRecuperacion: false,
-                    asignarPaciente: false
+                    asignarPaciente: false,
+                    tipoRecuperacion: 'Recuperación ambulatoria'
                   };
   }
 
@@ -39,7 +40,7 @@ class DetalleActivo extends Component {
       object: 'IngresosActivos',
       variable: null,
       text: data.ids.ingreso,
-      include: ['paciente', 'medico', 'tipoMedico', 'habitacion']
+      include: ['paciente', 'medico', 'tipoMedico', 'habitacion', 'recuperacion']
     });
 
     console.log(this.props)
@@ -166,6 +167,92 @@ class DetalleActivo extends Component {
   );
   }
 
+  asignarRecuperacion() {
+    let data = [{
+        value: 'Habitación',
+      }, {
+        value: 'Quirófano',
+      }, {
+        value: 'Sala de shock'
+      }, {
+        value: 'Recuperación quirúrgica'
+      }, {
+        value: 'Sala de procedimientos'
+      }, {
+        value: 'Recuperación procedimientos'
+      }, {
+        value: 'Recuperación ambulatoria'
+      }, {
+        value: 'Neonatos'
+      }, {
+        value: 'Observación urgencias'
+      }];
+    return (
+      <Modal
+      isVisible={this.state.asignarRecuperacion}
+      transparent={false}
+      onShow={() => this.props.queryFunc({
+        type: 'startsWith',
+        object: 'Ocupacion',
+        variable: 'Tipo',
+        text: 'Recuperación ambulatoria' })}
+      >
+    <ScrollView style={styles.viewStyle}>
+    <CardSection>
+        <FlatList
+          data={this.props.Ocupacion}
+          ItemSeparatorComponent={this.ListViewItemSeparator}
+          //Item Separator View
+          renderItem={({ item }) => (
+            // Single Comes here which will be repeatative for the FlatListItems
+            <TouchableWithoutFeedback
+            onPress={() => this.changeModal('asignarRecuperacion', 'confirmarRecuperacion', 'posicionRecuperacion', item)}
+            disabled={item.Ocupada}
+            >
+            <View>
+                <ComponenteHabitacion item={item} tipo={'ingreso'}/>
+            </View>
+            </TouchableWithoutFeedback>
+          )}
+          enableEmptySections
+          style={{ marginTop: 10 }}
+          keyExtractor={(item, index) => index.toString()}
+        />
+        </CardSection>
+      </ScrollView>
+      <CardSection>
+        <Button onPress={() => this.closeModal('asignarRecuperacion')}>
+          Cancelar
+        </Button>
+      </CardSection>
+      </Modal>
+  );
+}
+
+  confirmarRecuperacion() {
+    const { posicionRecuperacion } = this.state;
+    return (
+    <Modal
+    isVisible={this.state.confirmarRecuperacion}
+    transparent={false}
+    >
+  <CardSection>
+    <CardSection>
+    <ComponenteHabitacion item={posicionRecuperacion} tipo={'ingreso'}/>
+    </CardSection>
+    </CardSection>
+    <CardSection>
+      <Button onPress={() => this.updateRecuperacion() }>
+        Confirmar
+      </Button>
+      <Button onPress={() => this.closeModal('confirmarRecuperacion')}>
+        Cancelar
+      </Button>
+    </CardSection>
+    </Modal>
+  );
+  }
+
   updateHabitacion() {
     const { paciente, habitacion } = this.props.IngresosActivos;
     const { user, IngresosActivos } = this.props;
@@ -196,8 +283,31 @@ class DetalleActivo extends Component {
    this.props.writeFunc('IngresosActivos', 'get', null, IngresosActivos.objectId, 'estadoActual', 'Hospitalización', user)
 
   this.closeModal('confirmarHabitacion');
+}
 
-  this.componentDidMount()
+updateRecuperacion() {
+  const { paciente } = this.props.IngresosActivos;
+  const { user, IngresosActivos } = this.props;
+  const { posicionRecuperacion } = this.state;
+
+ const pointerPaciente = {
+ __type: 'Pointer',
+className: 'Patient',
+objectId: paciente.objectId
+ }
+
+ this.props.writeFunc('Ocupacion', 'get', null, posicionRecuperacion.objectId, 'ocupadaPor', pointerPaciente, user)
+
+
+ const pointerRecuperacion = {
+ __type: 'Pointer',
+className: 'Ocupacion',
+objectId: posicionRecuperacion.objectId
+ }
+
+ this.props.writeFunc('IngresosActivos', 'get', null, IngresosActivos.objectId, 'recuperacion', pointerRecuperacion, user)
+
+this.closeModal('confirmarHabitacion');
 }
 
   render() {
@@ -210,7 +320,7 @@ class DetalleActivo extends Component {
         <ActivityIndicator />
       );
     } else {
-    const { estadoActual, paciente, tipoMedico, medico, habitacion } = this.props.IngresosActivos
+    const { estadoActual, paciente, tipoMedico, medico, habitacion, recuperacion } = this.props.IngresosActivos
     switch (estadoActual) {
       case 'Urgencias': {
         return (
@@ -296,6 +406,9 @@ class DetalleActivo extends Component {
               <Text> {tipoMedico}: {medico.names} </Text>
             </View>
             <View>
+              <Text> Posición de recuperación: {recuperacion.ID} </Text>
+            </View>
+            <View>
             <CardSection>
               <Button onPress={() => this.showModal('añadirConsulta')}>Añadir consulta</Button>
               <Button onPress={() => this.showModal('enviarShock')}>Enviar a sala de shock</Button>
@@ -311,6 +424,8 @@ class DetalleActivo extends Component {
             <CardSection>
               <Button onPress={() => this.showModal('asignarRecuperacion')}>Asignar posición de recuperación</Button>
             </CardSection>
+            {this.asignarRecuperacion()}
+            {this.confirmarRecuperacion()}
             </View>
           </View>
         );

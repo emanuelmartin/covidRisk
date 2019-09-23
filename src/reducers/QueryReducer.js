@@ -10,6 +10,7 @@ import {
 const INITIAL_STATE = {
   text: '',
   Patient: '',
+  Proveedor: '',
   User: '',
   Farmacia: '',
   Bill: '',
