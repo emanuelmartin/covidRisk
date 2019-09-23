@@ -30,7 +30,7 @@ class SideMenu extends Component {
             Fichas personales
           </Text>
           <View style={styles.navSectionStyle}>
-            {this.detalleProvedores()}
+            {this.detalleProveedores()}
             {this.detallePacientes()}
             {this.detalleUsuarios()}
             {this.detalleMedicos()}
@@ -82,15 +82,15 @@ class SideMenu extends Component {
     }
   }
 
-  detalleProvedores() {
+  detalleProveedores() {
     if (this.props.userType === 'admin' ||
         this.props.userType === 'recepcion' ||
         this.props.userType === 'enfermeria' ||
         this.props.userType === 'medico') {
         return (
           <View >
-            <Text style={styles.navItemStyle} onPress={this.navigateToScreen('ListaProvedores')}>
-            Provedores
+            <Text style={styles.navItemStyle} onPress={this.navigateToScreen('ListaProveedores')}>
+            Proveedores
             </Text>
           </View>
         );
