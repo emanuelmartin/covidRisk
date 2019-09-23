@@ -5,6 +5,7 @@ import { queryFunc, cleanFunc, writeFunc, deleteFunc, session } from '../../acti
 import { connect } from 'react-redux';
 import { ComponenteHabitacion, ComponentePaciente } from '../Listas/ComponenteHabitacion'
 import Modal from 'react-native-modal';
+import { DateTime } from 'luxon';
 
 class DetalleActivo extends Component {
 
@@ -108,10 +109,10 @@ class DetalleActivo extends Component {
   }
 
   confirmarHabitacion() {
-    const { habitacion } = this.props;
+    const { habitacion } = this.props.IngresosActivos;
     const { nuevaHabitacion } = this.state;
-
-    if (this.state.HabitacionPrevia) {
+    console.log(this.props)
+    if (habitacion) {
       return (
         <Modal
         isVisible={this.state.confirmarHabitacion}
@@ -135,7 +136,7 @@ class DetalleActivo extends Component {
         </View></CardSection>
         </CardSection>
         <CardSection>
-          <Button onPress={() => this.confirmHabitacion(nuevaHabitacion) }>
+          <Button onPress={() => this.updateHabitacion() }>
             Confirmar
           </Button>
           <Button onPress={() => this.closeModal('confirmarHabitacion')}>
@@ -168,25 +169,6 @@ class DetalleActivo extends Component {
   }
 
   asignarRecuperacion() {
-    let data = [{
-        value: 'Habitación',
-      }, {
-        value: 'Quirófano',
-      }, {
-        value: 'Sala de shock'
-      }, {
-        value: 'Recuperación quirúrgica'
-      }, {
-        value: 'Sala de procedimientos'
-      }, {
-        value: 'Recuperación procedimientos'
-      }, {
-        value: 'Recuperación ambulatoria'
-      }, {
-        value: 'Neonatos'
-      }, {
-        value: 'Observación urgencias'
-      }];
     return (
       <Modal
       isVisible={this.state.asignarRecuperacion}
@@ -253,6 +235,22 @@ class DetalleActivo extends Component {
   );
   }
 
+  añadirConsulta() {
+
+  }
+
+  enviarShock() {
+
+  }
+
+  enviarUTI() {
+
+  }
+
+  darDeAlta() {
+
+  }
+
   updateHabitacion() {
     const { paciente, habitacion } = this.props.IngresosActivos;
     const { user, IngresosActivos } = this.props;
@@ -261,7 +259,7 @@ class DetalleActivo extends Component {
     console.log(paciente, user, habitacion, nuevaHabitacion)
 
     if( habitacion) {
-   this.props.deleteFunc('Ocupacion', 'get', null, habitacion.objectId, 'ocupadaPor', this.props.user)
+   this.props.deleteFunc('Ocupacion', 'get', null, habitacion.objectId, 'set', 'ocupadaPor', this.props.user)
  }
 
    const pointerPaciente = {
@@ -270,7 +268,7 @@ class DetalleActivo extends Component {
   objectId: paciente.objectId
    }
 
-   this.props.writeFunc('Ocupacion', 'get', null, nuevaHabitacion.objectId, 'ocupadaPor', pointerPaciente, user)
+   this.props.writeFunc('Ocupacion', 'get', null, nuevaHabitacion.objectId, 'set', 'ocupadaPor', pointerPaciente, user)
 
 
    const pointerHabitacion = {
@@ -278,10 +276,15 @@ class DetalleActivo extends Component {
   className: 'Ocupacion',
   objectId: nuevaHabitacion.objectId
    }
+const dateTime = DateTime.local().toISO();
+   const array = { Tipo: 'ubicacion',
+                  Ubicacion: nuevaHabitacion,
+                  Momento: dateTime,
+                  modificadoPor: user }
 
-   this.props.writeFunc('IngresosActivos', 'get', null, IngresosActivos.objectId, 'habitacion', pointerHabitacion, user)
-   this.props.writeFunc('IngresosActivos', 'get', null, IngresosActivos.objectId, 'estadoActual', 'Hospitalización', user)
-
+   this.props.writeFunc('IngresosActivos', 'get', null, IngresosActivos.objectId, 'set', 'habitacion', pointerHabitacion, user)
+   this.props.writeFunc('IngresosActivos', 'get', null, IngresosActivos.objectId, 'set', 'estadoActual', 'Hospitalización', user)
+   this.props.writeFunc('IngresosActivos', 'get', null, IngresosActivos.objectId, 'add', 'historico', array, user.toJSON())
   this.closeModal('confirmarHabitacion');
 }
 
@@ -296,7 +299,7 @@ className: 'Patient',
 objectId: paciente.objectId
  }
 
- this.props.writeFunc('Ocupacion', 'get', null, posicionRecuperacion.objectId, 'ocupadaPor', pointerPaciente, user)
+ this.props.writeFunc('Ocupacion', 'get', null, posicionRecuperacion.objectId, 'set', 'ocupadaPor', pointerPaciente, user)
 
 
  const pointerRecuperacion = {
@@ -305,7 +308,7 @@ className: 'Ocupacion',
 objectId: posicionRecuperacion.objectId
  }
 
- this.props.writeFunc('IngresosActivos', 'get', null, IngresosActivos.objectId, 'recuperacion', pointerRecuperacion, user)
+ this.props.writeFunc('IngresosActivos', 'get', null, IngresosActivos.objectId, 'set', 'recuperacion', pointerRecuperacion, user)
 
 this.closeModal('confirmarHabitacion');
 }
@@ -354,6 +357,10 @@ this.closeModal('confirmarHabitacion');
             <View>
             {this.asignarHabitacion()}
             {this.confirmarHabitacion()}
+            {this.añadirConsulta()}
+            {this.enviarShock()}
+            {this.enviarUTI()}
+            {this.darDeAlta()}
             </View>
             </View>
           </View>
@@ -388,6 +395,11 @@ this.closeModal('confirmarHabitacion');
               <Button onPress={() => this.showModal('asignarHabitacion')}>Cambiar habitación</Button>
               <Button onPress={() => this.showModal('darDeAlta')}>Dar de alta</Button>
             </CardSection>
+            {this.asignarHabitacion()}
+            {this.confirmarHabitacion()}
+            {this.añadirConsulta()}
+            {this.enviarUTI()}
+              {this.darDeAlta()}
             </View>
           </View>
         );
@@ -426,6 +438,12 @@ this.closeModal('confirmarHabitacion');
             </CardSection>
             {this.asignarRecuperacion()}
             {this.confirmarRecuperacion()}
+            {this.asignarHabitacion()}
+            {this.confirmarHabitacion()}
+            {this.añadirConsulta()}
+            {this.enviarShock()}
+            {this.enviarUTI()}
+              {this.darDeAlta()}
             </View>
           </View>
         );
@@ -460,6 +478,12 @@ this.closeModal('confirmarHabitacion');
               <Button onPress={() => this.showModal('darDeAlta')}>Dar de alta</Button>
             </CardSection>
             </CardSection>
+            {this.asignarHabitacion()}
+            {this.confirmarHabitacion()}
+            {this.añadirConsulta()}
+            {this.enviarShock()}
+            {this.enviarUTI()}
+              {this.darDeAlta()}
           </View>
         );
       } break;

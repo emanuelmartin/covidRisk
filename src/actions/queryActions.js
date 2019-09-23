@@ -38,7 +38,7 @@ export const queryFunc = ({ type, object, variable, text, include }) => {
           jsonArray = array[0];
         }
         console.log(jsonArray);
-        dispatch({ type: DB_QUERY_RESULTS, payload: jsonArray, name: object });
+        dispatch({ type: DB_QUERY_RESULTS, payload: jsonArray, name: object, loading: false });
       } else {
         dispatch({ type: DB_QUERY_NO_RESULTS, name: object });
       }
@@ -47,14 +47,14 @@ export const queryFunc = ({ type, object, variable, text, include }) => {
   };
 };
 
-export const writeFunc = (clase, tipo, propiedadConsulta, consulta, propiedadAgregar, valor, user) => {
+export const writeFunc = (clase, tipo, propiedadConsulta, consulta, accion, propiedadAgregar, valor, user) => {
   let jsonArray = [];
   return async (dispatch) => {
     const parseObject = Parse.Object.extend(clase);
     const query = new Parse.Query(parseObject);
     if (tipo === 'get') {
       query.get(consulta.toString()).then((query) => {
-        query.set(propiedadAgregar, valor)
+        query[accion](propiedadAgregar, valor)
         query.save().then((results) =>   {
         jsonArray = results.toJSON()
           dispatch({ type: WRITE_SUCCESS, name: clase, payload: jsonArray })
@@ -65,7 +65,7 @@ export const writeFunc = (clase, tipo, propiedadConsulta, consulta, propiedadAgr
     const results = await query.find();
     console.log(results)
     query.get(results[0].id.toString()).then((query) => {
-      query.set(propiedadAgregar, valor)
+      query[accion](propiedadAgregar, valor)
       query.save().then((results) => {
         jsonArray = results.toJSON()
         dispatch({ type: WRITE_SUCCESS, name: clase, payload: jsonArray })
