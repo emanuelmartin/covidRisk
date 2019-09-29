@@ -8,12 +8,12 @@ import {
   TextInput,
   ScrollView
 } from 'react-native';
-//import Parse from 'parse/react-native';
+import { connect } from 'react-redux';
 import { SearchBar } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
-import { connect } from 'react-redux';
+import { Dropdown } from 'react-native-material-dropdown';
 import { CardSection, Button, Spinner } from '../common';
-import { queryFunc, cleanFunc, addBill, clearBill } from '../../actions';
+import { queryFunc, multiQuery, cleanFunc, addBill, clearBill } from '../../actions';
 
 class CajaPrincipal extends Component {
   static navigationOptions = {
@@ -24,10 +24,10 @@ class CajaPrincipal extends Component {
     super(props);
     //setting default state
     const Paciente = { names: '' };
-    const Medicamento = { name: '' };
-    const Medicamentos = [];
+    const Producto = { name: '' };
+    const Productos = [];
 
-    this.state = { searchItem: true, Paciente, Medicamento, Medicamentos };
+    this.state = { searchItem: true, Paciente, Producto, Productos, sellType: '' };
     this.arrayholder = [];
   }
 
@@ -41,8 +41,8 @@ class CajaPrincipal extends Component {
           {
             searchItem: true,
             Paciente: { names: '' },
-            Medicamento: { name: '' },
-            Medicamentos: []
+            Producto: { name: '' },
+            Productos: []
           },
           function () {
             this.arrayholder = responseJson;
@@ -65,14 +65,14 @@ class CajaPrincipal extends Component {
 
   onEliminatePress() {
     this.props.cleanFunc();
-    this.setState({ Medicamento: { name: '' }, Medicamentos: [], searchItem: true });
+    this.setState({ Producto: { name: '' }, Productos: [], searchItem: true });
   }
 
   onNewPatientPress() {
     this.props.cleanFunc();
     this.setState({ Paciente: { names: '' },
-    Medicamento: { name: '' },
-    Medicamentos: [],
+    Producto: { name: '' },
+    Productos: [],
     searchItem: true
     });
   }
@@ -80,16 +80,25 @@ class CajaPrincipal extends Component {
   onBillPress() {
     this.props.addBill({
       patient: this.state.Paciente.objectId,
-      bill: { Type: 'Farmacia', List: this.state.Medicamentos }
+      bill: { Type: 'Varios', List: this.state.Productos }
     });
+  }
+
+  /* Check bill.Precio and bill.cantidad for differents types of data */
+  onPayPress() {
+    let total = 0;
+    this.state.Productos.forEach((bill) => {
+        total += parseFloat(bill.Precio) * parseFloat(bill.cantidad);
+      });
+    this.props.payment('cajaPrincipalIngresos', this.state.Productos, total);
   }
 
   onNewBillPress() {
     this.setState({
       searchItem: true,
       Paciente: { names: '' },
-      Medicamento: { name: '' },
-      Medicamentos: []
+      Producto: { name: '' },
+      Productos: []
     });
     this.props.clearBill();
     this.props.cleanFunc();
@@ -100,23 +109,23 @@ class CajaPrincipal extends Component {
     this.props.queryFunc({ text: '' });
   }
 
-  updateMedicamento(item) {
+  updateProducto(item) {
     item.cantidad = '1';
-    this.setState({ Medicamento: item, searchItem: false });
+    this.setState({ Producto: item, searchItem: false });
     this.props.queryFunc({ text: '' });
   }
 
-  addMedicamento(item) {
-    this.updateMedicamento(item);
+  addProducto(item) {
+    this.updateProducto(item);
     this.setState(state => ({
-    Medicamentos: [...state.Medicamentos, state.Medicamento]
+    Productos: [...state.Productos, state.Producto]
     }));
   }
 
   updateQuantity(index, cantidad) {
-    const newMeds = this.state.Medicamentos;
+    const newMeds = this.state.Productos;
     newMeds[index].cantidad = cantidad;
-    this.setState({ Medicamentos: newMeds });
+    this.setState({ Productos: newMeds });
   }
 
   search = text => {
@@ -127,12 +136,12 @@ class CajaPrincipal extends Component {
     this.props.text.clear();
   };
 
-  listaMedicamento() {
+  listaProducto() {
     let dataList = null;
-    if (Array.isArray(this.props.Farmacia)) {
-      dataList = this.props.Farmacia;
+    if (Array.isArray(this.props.multiQry)) {
+      dataList = this.props.multiQry;
     } else {
-      dataList = [this.props.Farmacia];
+      dataList = [this.props.multiQry];
     }
     return (
       <FlatList
@@ -140,7 +149,7 @@ class CajaPrincipal extends Component {
         ItemSeparatorComponent={this.ListViewItemSeparator}
         //Item Separator View
         renderItem={({ item }) => (
-          this.renderMedicamento(item)
+          this.renderProducto(item)
         )}
         enableEmptySections
         style={{ marginTop: 10 }}
@@ -149,14 +158,14 @@ class CajaPrincipal extends Component {
     );
   }
 
-  listaMedicamentoAnadido() {
+  listaProductoAnadido() {
     return (
       <FlatList
-        data={this.state.Medicamentos}
+        data={this.state.Productos}
         ItemSeparatorComponent={this.ListViewItemSeparator}
         //Item Separator View
         renderItem={({ item, index }) => (
-          this.renderMedicamentos(item, index)
+          this.renderProductos(item, index)
         )}
         enableEmptySections
         style={{ marginTop: 10 }}
@@ -187,7 +196,16 @@ class CajaPrincipal extends Component {
     );
   }
 
-  buscarMedicamento() {
+  buscarProducto() {
+    const queryArray =
+    [{ type: 'startsWith', object: 'Farmacia', variable: 'name' },
+     { type: 'startsWith', object: 'Cafeteria', variable: 'Concepto' },
+     { type: 'startsWith', object: 'Laboratory', variable: 'Concepto' },
+     { type: 'startsWith', object: 'RayosX', variable: 'Concepto' },
+     { type: 'startsWith', object: 'Rehabilitacion', variable: 'Concepto' },
+     { type: 'startsWith', object: 'Tomografia', variable: 'Concepto' }
+   ];
+
     if (this.state.searchItem === true) {
       return (
         <View style={{ flex: 1 }}>
@@ -198,18 +216,14 @@ class CajaPrincipal extends Component {
               searchIcon={{ size: 24 }}
               containerStyle={{ flex: 1, backgroundColor: 'white' }}
               imputStyle={{ backgroundColor: 'white', marginTop: 0, marginBottom: 0 }}
-              onChangeText={text => this.props.queryFunc({
-                type: 'startsWith',
-                object: 'Farmacia',
-                variable: 'name',
-                text })}
+              onChangeText={text => this.props.multiQuery(queryArray, text)}
               onClear={() => this.props.queryFunc({ text: '' })}
-              placeholder="Nombre del medicamento"
+              placeholder="Concepto"
               value={this.props.text}
             />
             </CardSection>
           <CardSection>
-            {this.listaMedicamento()}
+            {this.listaProducto()}
           </CardSection>
         </View>
       );
@@ -217,7 +231,7 @@ class CajaPrincipal extends Component {
     return (
       <View style={{ flex: 1 }}>
         <CardSection>
-            <Text style={styles.emphasisTextStyle}>Medicamentos:</Text>
+            <Text style={styles.emphasisTextStyle}>Productos:</Text>
           <View style={{ flex: 1 }}>
             <Text
               style={[styles.emphasisTextStyle, { textAlign: 'right' }]}
@@ -227,7 +241,7 @@ class CajaPrincipal extends Component {
           </View>
         </CardSection>
         <CardSection>
-          {this.listaMedicamentoAnadido()}
+          {this.listaProductoAnadido()}
         </CardSection>
         {this.renderError()}
         {this.renderButtons()}
@@ -278,7 +292,7 @@ class CajaPrincipal extends Component {
             </View>
         </CardSection>
         <CardSection>
-          {this.buscarMedicamento()}
+          {this.buscarProducto()}
         </CardSection>
       </View>
     );
@@ -305,6 +319,16 @@ class CajaPrincipal extends Component {
     );
   };
 
+  renderLog() {
+    if (typeof this.props.multiQry === 'string') {
+      return (
+        <View>
+          <Text>{this.props.multiQry}</Text>
+        </View>
+      );
+    }
+  }
+
   renderError() {
     if (this.props.error !== '') {
       return (
@@ -321,7 +345,7 @@ class CajaPrincipal extends Component {
       <View>
         <CardSection>
           <Button onPress={this.onAddPress.bind(this)}>
-            Añadir Medicamento
+            Añadir Producto
           </Button>
           <Button onPress={this.onEliminatePress.bind(this)}>
             Borrar cuenta
@@ -336,21 +360,35 @@ class CajaPrincipal extends Component {
     );
   }
 
-  renderMedicamento(item) {
+  renderProducto(item) {
+
+    if (item.type === 'Farmacia') {
       return (
+        <TouchableWithoutFeedback
+        onPress={() => this.addProducto(item)}
+        >
+          <View>
+            <Text style={styles.textStyle} >
+              {item.laboratory} - {item.name} {item.presentation} {item.content}
+            </Text>
+          </View>
+        </TouchableWithoutFeedback>
+      );
+    }
+    return (
       <TouchableWithoutFeedback
-      onPress={() => this.addMedicamento(item)}
+      onPress={() => this.addProducto(item)}
       >
         <View>
           <Text style={styles.textStyle} >
-            {item.laboratory} - {item.name} {item.presentation} {item.content}
+            {item.Concepto}
           </Text>
         </View>
       </TouchableWithoutFeedback>
     );
   }
 
-  renderMedicamentos(item, index) {
+  renderProductos(item, index) {
       return (
         <CardSection>
           <Text style={styles.patientTextStyle}>
@@ -403,6 +441,7 @@ class CajaPrincipal extends Component {
     return (
       <View style={{ flex: 1 }}>
         <ScrollView>
+          {this.renderLog()}
           {this.renderDecide()}
         </ScrollView>
       </View>
@@ -435,12 +474,13 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ query, bill }) => {
- const { text, Patient, Farmacia } = query;
+ const { text, Patient, multiQry } = query;
  const { loading, error, succes } = bill;
+ const load = query.loading;
  console.log(query);
- return { text, Patient, Farmacia, loading, error, succes };
+ return { text, Patient, multiQry, loading, error, succes, load };
 };
 
 export default connect(
   mapStateToProps,
-  { queryFunc, cleanFunc, addBill, clearBill })(CajaPrincipal);
+  { queryFunc, multiQuery, cleanFunc, addBill, clearBill })(CajaPrincipal);

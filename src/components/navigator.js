@@ -15,8 +15,7 @@ import SignupForm from './SignupForm';
 import SideMenu from '../SideMenu/SideMenu';
 import InventoryList from './Inventory/InventoryList';
 import InventoryDetail from './Inventory/InventoryDetail';
-import CajaPrincipal from './Cajas/Principal.js';
-import Cafe from './Cajas/Cafeteria.js';
+import Rehabilitation from './Cajas/Rehabilitacion.js';
 import AddItemScreen from './AddItemScreen.js';
 import PatientBill from './Cuentas/PatientBill';
 import PatientList from './Patients/PatientList';
@@ -35,9 +34,10 @@ import ListaProveedores from './Proveedores/ListaProveedores';
 import AgregarProveedor from './Proveedores/AgregarProveedor';
 
 import {
+  CajaPrincipal,
+  Cafe,
   BloodBank,
   Lab,
-  Rehabilitation,
   Tomography,
   XRay
 } from './Servicios';

@@ -193,26 +193,6 @@ class SideMenu extends Component {
     }
   }
 
-  ventas() {
-    if (this.props.userType === 'admin') {
-      return (
-        <View>
-           <Text style={styles.sectionHeadingStyle}>
-             Ventas
-           </Text>
-           <View style={styles.navSectionStyle}>
-             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('CajaPrincipal')}>
-             Caja Principal
-             </Text>
-             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Cafe')}>
-             Cafetería
-             </Text>
-           </View>
-         </View>
-      );
-    }
-  }
-
   servicios() {
     if (this.props.userType === 'admin') {
       return (
@@ -221,6 +201,15 @@ class SideMenu extends Component {
              Servicios
            </Text>
            <View style={styles.navSectionStyle}>
+             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('CajaPrincipal')}>
+               Caja Principal
+             </Text>
+             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Cafe')}>
+               Cafetería
+             </Text>
+             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Rehabilitation')}>
+               Rehabilitación
+             </Text>
              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Lab')}>
                Laboratorio
              </Text>
@@ -232,9 +221,6 @@ class SideMenu extends Component {
              </Text>
              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('BloodBank')}>
                Banco de Sangre
-             </Text>
-             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Rehabilitation')}>
-               Rehabilitación
              </Text>
              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('AdminQuirofano')}>
                Quirófanos
@@ -306,7 +292,6 @@ class SideMenu extends Component {
           {this.fichasPersonales()}
           {this.ocupacion()}
           {this.farmacia()}
-          {this.ventas()}
           {this.servicios()}
           {this.cobros()}
           {this.pruebas()}
