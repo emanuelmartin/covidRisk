@@ -21,7 +21,7 @@ const INITIAL_STATE = {
   Tomografia: '',
   RayosX: '',
   multiQry: '',
-  loading: true
+  loading: false
 };
 
 export default (state = INITIAL_STATE, action) => {

@@ -48,45 +48,43 @@ export const queryFunc = ({ type, object, variable, text, include }) => {
 };
 
 export const multiQuery = (array, text) => {
+  const jsonArray = [];
+  const allQuery = new Promise((resolve) => {
+    array.forEach((newElement, index) => {
+      const parseObject = Parse.Object.extend(newElement.object);
+      const query = new Parse.Query(parseObject);
+      if (newElement.type === 'get') {
+        query.get(text);
+      } else {
+        query[newElement.type](newElement.variable, text);
+      }
+      query.find().then((results) => {
+        for (let i = 0; i < results.length; i++) {
+          jsonArray.push(results[i].toJSON());
+          jsonArray[jsonArray.length - 1].class = results[0].className;
+        }
+        if (index === array.length - 1) resolve();
+      });
+    });
+  });
   return async (dispatch) => {
     dispatch({ type: DB_QUERY, payload: text });
 
     if (text === '') {
       dispatch({ type: DB_QUERY_RESULTS, name: 'multiQry', payload: '' });
     } else {
-      let query = null;
-      const promises = [];
-      const jsonArray = [];
-
-      array.forEach((newElement) => {
-        query = new Parse.Query(newElement.object);
-
-        if (newElement.type === 'get') {
-          query.get(text);
-        } else {
-          query[newElement.type](newElement.variable, text);
-        }
-        promises.push(query.find());
-      });
-
-      Promise.all(promises).then(results => {
-        results.forEach(result => {
-          for (let i = 0; i < result.length; i++) {
-            jsonArray.push(result[i].toJSON());
+        allQuery.then(() => {
+          if (jsonArray.length > 0) {
+            dispatch({
+              type: DB_QUERY_RESULTS,
+              payload: jsonArray,
+              name: 'multiQry',
+              loading: false });
+          } else {
+            console.log(jsonArray);
+            dispatch({ type: DB_QUERY_NO_RESULTS, name: 'multiQry' });
           }
-        });
-      }).then(() => {
-        if (jsonArray.length > 0) {
-          console.log(jsonArray[0]);
-          dispatch({
-            type: DB_QUERY_RESULTS,
-            payload: jsonArray,
-            name: 'multiQry',
-            loading: false });
-        } else {
-          dispatch({ type: DB_QUERY_NO_RESULTS, name: 'multiQry' });
-        }
-      });
+        }).catch(console.log('Función Fallida'));
     }
   };
 };

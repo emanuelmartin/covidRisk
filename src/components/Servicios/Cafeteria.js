@@ -6,9 +6,11 @@ import {
   FlatList,
   TouchableWithoutFeedback,
   TextInput,
-  ScrollView
+  ScrollView,
+  Dimensions
 } from 'react-native';
 import { connect } from 'react-redux';
+import SwipeView from 'react-native-swipeview';
 import { NavigationActions } from 'react-navigation';
 import { SearchBar, Icon } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
@@ -104,6 +106,12 @@ class Cafe extends Component {
     this.props.cleanFunc();
   }
 
+  onSwipedLeft(index) {
+    const array = [...this.state.Alimentos];
+    array.splice(index, 1);
+    this.setState({ Alimentos: array });
+  }
+
   updatePaciente(item) {
     this.setState({ Paciente: item });
     this.props.queryFunc({ text: '' });
@@ -137,6 +145,9 @@ class Cafe extends Component {
   };
 
   listaAlimento() {
+    if (this.props.load) {
+      return <Spinner size="large" />;
+    }
     let dataList = null;
     if (Array.isArray(this.props.Cafeteria)) {
       dataList = this.props.Cafeteria;
@@ -176,9 +187,13 @@ class Cafe extends Component {
 
   totalAnadido() {
     let total = 0;
+    let newPrice = 0;
     this.state.Alimentos.forEach((bill) => {
-        total += parseFloat(bill.Precio) * parseFloat(bill.cantidad);
-      });
+      if (isNaN(parseFloat(bill.cantidad))) {
+        newPrice = 0;
+      } else { newPrice = parseFloat(bill.cantidad); }
+      total += parseFloat(bill.Precio) * newPrice;
+    });
     return (
       <CardSection>
         <View style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center' }}>
@@ -190,6 +205,9 @@ class Cafe extends Component {
   }
 
   listaPaciente() {
+    if (this.props.load) {
+      return <Spinner size="large" />;
+    }
     let dataList = null;
     if (Array.isArray(this.props.Patient)) {
       dataList = this.props.Patient;
@@ -401,20 +419,31 @@ class Cafe extends Component {
   }
 
   renderAlimentos(item, index) {
+    const leftOpenValue = Dimensions.get('window').width;
       return (
-        <CardSection>
-          <Text style={styles.patientTextStyle}>
-            {item.Concepto}
-          </Text>
-          <TextInput
-            placeholder="1"
-            value={item.cantidad}
-            keyboardType="numeric"
-            autoCorrect={false}
-            style={styles.inputStyle}
-            onChangeText={cantidad => this.updateQuantity(index, cantidad)}
+          <SwipeView
+            disableSwipeToRight
+            previewSwipeDemo={true}
+            leftOpenValue={leftOpenValue}
+            onSwipedLeft={() => this.onSwipedLeft(index)}
+            swipeDuration={500}
+            renderVisibleContent={() =>
+              <CardSection>
+                <Text style={styles.patientTextStyle}>
+                  {item.Concepto}
+                </Text>
+                <TextInput
+                  placeholder="1"
+                  value={item.cantidad}
+                  keyboardType="numeric"
+                  autoCorrect={false}
+                  style={styles.inputStyle}
+                  onChangeText={cantidad => this.updateQuantity(index, cantidad)}
+                />
+            </CardSection>
+          }
           />
-        </CardSection>
+
     );
   }
 
@@ -439,13 +468,8 @@ class Cafe extends Component {
           </Button>
         </CardSection>
       );
-    } else if (this.state.sellType === 'Cuenta Paciente') {
-      return (
-        <View>
-          {this.buscarPaciente()}
-        </View>
-      );
-    } else if (this.state.sellType === 'Venta al público') {
+    } else if (this.state.sellType === 'Cuenta Paciente' ||
+               this.state.sellType === 'Venta al público') {
       return (
         <View>
           {this.buscarPaciente()}
@@ -507,7 +531,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = ({ query, bill }) => {
  const { text, Patient, Cafeteria } = query;
  const { loading, error, succesBill, succesPay } = bill;
- return { text, Patient, Cafeteria, loading, error, succesBill, succesPay };
+ const load = query.loading;
+ return { text, Patient, Cafeteria, loading, error, succesBill, succesPay, load };
 };
 
 export default connect(

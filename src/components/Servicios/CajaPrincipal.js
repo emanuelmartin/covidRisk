@@ -9,7 +9,7 @@ import {
   ScrollView
 } from 'react-native';
 import { connect } from 'react-redux';
-import { SearchBar } from 'react-native-elements';
+import { SearchBar, Icon } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
 import { Dropdown } from 'react-native-material-dropdown';
 import { CardSection, Button, Spinner } from '../common';
@@ -17,7 +17,7 @@ import { queryFunc, multiQuery, cleanFunc, addBill, clearBill } from '../../acti
 
 class CajaPrincipal extends Component {
   static navigationOptions = {
-    title: 'Ventas',
+    title: 'Caja Principal',
   };
 
   constructor(props) {
@@ -88,7 +88,19 @@ class CajaPrincipal extends Component {
   onPayPress() {
     let total = 0;
     this.state.Productos.forEach((bill) => {
-        total += parseFloat(bill.Precio) * parseFloat(bill.cantidad);
+      if (bill.class === 'Farmacia') {
+        if (this.state.sellType === 'Venta al público') {
+          total += parseFloat(bill.publicPrice) * parseFloat(bill.cantidad);
+        } else if (this.state.sellType === 'Cuenta Paciente') {
+          total += parseFloat(bill.pacientPrice) * parseFloat(bill.cantidad);
+        }
+      } else if (bill.class === 'Cafeteria' ||
+              bill.class === 'Laboratory' ||
+              bill.class === 'Tomografia' ||
+              bill.class === 'RayosX' ||
+              bill.class === 'Rehabilitacion') {
+          total += parseFloat(bill.Precio) * parseFloat(bill.cantidad);
+        }
       });
     this.props.payment('cajaPrincipalIngresos', this.state.Productos, total);
   }
@@ -137,6 +149,9 @@ class CajaPrincipal extends Component {
   };
 
   listaProducto() {
+    if (this.props.load) {
+      return <Spinner size="large" />;
+    }
     let dataList = null;
     if (Array.isArray(this.props.multiQry)) {
       dataList = this.props.multiQry;
@@ -174,7 +189,41 @@ class CajaPrincipal extends Component {
     );
   }
 
+  totalAnadido() {
+    let total = 0;
+    let newPrice = 0;
+    this.state.Productos.forEach((bill) => {
+      if (isNaN(parseFloat(bill.cantidad))) {
+        newPrice = 0;
+      } else { newPrice = parseFloat(bill.cantidad); }
+      if (bill.class === 'Farmacia') {
+        if (this.state.sellType === 'Venta al público') {
+          total += parseFloat(bill.publicPrice) * newPrice;
+        } else if (this.state.sellType === 'Cuenta Paciente') {
+          total += parseFloat(bill.pacientPrice) * newPrice;
+        }
+      } else if (bill.class === 'Cafeteria' ||
+              bill.class === 'Laboratory' ||
+              bill.class === 'Tomografia' ||
+              bill.class === 'RayosX' ||
+              bill.class === 'Rehabilitacion') {
+          total += parseFloat(bill.Precio) * newPrice;
+      }
+    });
+    return (
+      <CardSection>
+        <View style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center' }}>
+          <Text style={styles.emphasisTextStyle}> Total</Text>
+          <Text style={styles.emphasisTextStyle}> ${total}</Text>
+        </View>
+      </CardSection>
+    );
+  }
+
   listaPaciente() {
+    if (this.props.load) {
+      return <Spinner size="large" />;
+    }
     let dataList = null;
     if (Array.isArray(this.props.Patient)) {
       dataList = this.props.Patient;
@@ -199,13 +248,11 @@ class CajaPrincipal extends Component {
   buscarProducto() {
     const queryArray =
     [{ type: 'startsWith', object: 'Farmacia', variable: 'name' },
-     { type: 'startsWith', object: 'Cafeteria', variable: 'Concepto' },
      { type: 'startsWith', object: 'Laboratory', variable: 'Concepto' },
      { type: 'startsWith', object: 'RayosX', variable: 'Concepto' },
      { type: 'startsWith', object: 'Rehabilitacion', variable: 'Concepto' },
      { type: 'startsWith', object: 'Tomografia', variable: 'Concepto' }
    ];
-
     if (this.state.searchItem === true) {
       return (
         <View style={{ flex: 1 }}>
@@ -213,9 +260,13 @@ class CajaPrincipal extends Component {
             <SearchBar
               round
               lightTheme
-              searchIcon={{ size: 24 }}
               containerStyle={{ flex: 1, backgroundColor: 'white' }}
-              imputStyle={{ backgroundColor: 'white', marginTop: 0, marginBottom: 0 }}
+              searchIcon={
+                <Icon
+                  name='camera'
+                  type='material-community'
+                  onPress={this.navigateToScreen('BarCodeScanner', { updateCode: false })}
+                />}
               onChangeText={text => this.props.multiQuery(queryArray, text)}
               onClear={() => this.props.queryFunc({ text: '' })}
               placeholder="Concepto"
@@ -243,6 +294,7 @@ class CajaPrincipal extends Component {
         <CardSection>
           {this.listaProductoAnadido()}
         </CardSection>
+        {this.totalAnadido()}
         {this.renderError()}
         {this.renderButtons()}
       </View>
@@ -250,7 +302,7 @@ class CajaPrincipal extends Component {
   }
 
   buscarPaciente() {
-    if (this.state.Paciente.names === '') {
+    if (this.state.Paciente.names === '' && this.state.sellType === 'Cuenta Paciente') {
       return (
         <View style={{ flex: 1 }}>
           <CardSection>
@@ -274,6 +326,12 @@ class CajaPrincipal extends Component {
             {this.listaPaciente()}
           </CardSection>
         </View>
+      );
+    } else if (this.state.sellType === 'Venta al público') {
+      return (
+        <CardSection>
+          {this.buscarProducto()}
+        </CardSection>
       );
     }
     return (
@@ -319,22 +377,31 @@ class CajaPrincipal extends Component {
     );
   };
 
-  renderLog() {
-    if (typeof this.props.multiQry === 'string') {
-      return (
-        <View>
-          <Text>{this.props.multiQry}</Text>
-        </View>
-      );
-    }
-  }
-
   renderError() {
     if (this.props.error !== '') {
       return (
         <Text>{this.props.error}</Text>
       );
     }
+  }
+
+  renderFinalButton() {
+    if (this.state.sellType === 'Venta al público') {
+      return (
+        <CardSection>
+          <Button onPress={this.onPayPress.bind(this)}>
+            Cobrar
+          </Button>
+        </CardSection>
+      );
+    }
+    return (
+      <CardSection>
+        <Button onPress={this.onBillPress.bind(this)}>
+          Añadir a cuenta
+        </Button>
+      </CardSection>
+    );
   }
 
   renderButtons() {
@@ -351,18 +418,13 @@ class CajaPrincipal extends Component {
             Borrar cuenta
           </Button>
         </CardSection>
-        <CardSection>
-          <Button onPress={this.onBillPress.bind(this)}>
-            Añadir a cuenta
-          </Button>
-        </CardSection>
+        {this.renderFinalButton()}
       </View>
     );
   }
 
   renderProducto(item) {
-
-    if (item.type === 'Farmacia') {
+    if (item.class === 'Farmacia') {
       return (
         <TouchableWithoutFeedback
         onPress={() => this.addProducto(item)}
@@ -374,21 +436,28 @@ class CajaPrincipal extends Component {
           </View>
         </TouchableWithoutFeedback>
       );
+    } else if (item.class === 'Cafeteria' ||
+    item.class === 'Laboratory' ||
+    item.class === 'Tomografia' ||
+    item.class === 'RayosX' ||
+    item.class === 'Rehabilitacion'
+    ) {
+      return (
+        <TouchableWithoutFeedback
+        onPress={() => this.addProducto(item)}
+        >
+          <View>
+            <Text style={styles.textStyle} >
+              {item.Concepto}
+            </Text>
+          </View>
+        </TouchableWithoutFeedback>
+      );
     }
-    return (
-      <TouchableWithoutFeedback
-      onPress={() => this.addProducto(item)}
-      >
-        <View>
-          <Text style={styles.textStyle} >
-            {item.Concepto}
-          </Text>
-        </View>
-      </TouchableWithoutFeedback>
-    );
   }
 
   renderProductos(item, index) {
+    if (item.class === 'Farmacia') {
       return (
         <CardSection>
           <Text style={styles.patientTextStyle}>
@@ -403,7 +472,29 @@ class CajaPrincipal extends Component {
             onChangeText={cantidad => this.updateQuantity(index, cantidad)}
           />
         </CardSection>
-    );
+      );
+    } else if (item.class === 'Cafeteria' ||
+    item.class === 'Laboratory' ||
+    item.class === 'Tomografia' ||
+    item.class === 'RayosX' ||
+    item.class === 'Rehabilitacion'
+    ) {
+      return (
+        <CardSection>
+          <Text style={styles.patientTextStyle}>
+            {item.Concepto}
+          </Text>
+          <TextInput
+            placeholder="1"
+            value={item.cantidad}
+            keyboardType="numeric"
+            autoCorrect={false}
+            style={styles.inputStyle}
+            onChangeText={cantidad => this.updateQuantity(index, cantidad)}
+          />
+        </CardSection>
+      );
+    }
   }
 
   renderPaciente(item) {
@@ -419,7 +510,7 @@ class CajaPrincipal extends Component {
   }
 
   renderDecide() {
-    if (this.props.succes) {
+    if (this.props.succes || this.props.successPay) {
       return (
         <CardSection>
           <Button onPress={this.onNewBillPress.bind(this)}>
@@ -427,21 +518,35 @@ class CajaPrincipal extends Component {
           </Button>
         </CardSection>
       );
+    } else if (this.state.sellType === 'Cuenta Paciente' ||
+               this.state.sellType === 'Venta al público') {
+      return (
+        <View>
+          {this.buscarPaciente()}
+        </View>
+      );
     }
-    return (
-      <View>
-        {this.buscarPaciente()}
-      </View>
-    );
   }
 
   render() {
-      console.log(this.state);
-
+    console.log(this.state);
+    const data = [{
+        value: 'Venta al público',
+      }, {
+        value: 'Cuenta Paciente'
+      }];
     return (
       <View style={{ flex: 1 }}>
         <ScrollView>
-          {this.renderLog()}
+          <CardSection>
+            <Dropdown
+            containerStyle={{ flex: 1 }}
+            data={data}
+            value={this.state.sellType}
+            onChangeText={value => this.setState({ sellType: value })}
+            placeholder={'Selecciona el tipo de venta'}
+            />
+          </CardSection>
           {this.renderDecide()}
         </ScrollView>
       </View>
@@ -477,7 +582,6 @@ const mapStateToProps = ({ query, bill }) => {
  const { text, Patient, multiQry } = query;
  const { loading, error, succes } = bill;
  const load = query.loading;
- console.log(query);
  return { text, Patient, multiQry, loading, error, succes, load };
 };
 
