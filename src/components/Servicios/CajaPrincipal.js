@@ -90,16 +90,16 @@ class CajaPrincipal extends Component {
     this.state.Productos.forEach((bill) => {
       if (bill.class === 'Farmacia') {
         if (this.state.sellType === 'Venta al público') {
-          total += parseFloat(bill.publicPrice) * parseFloat(bill.cantidad);
+          total += parseFloat(bill.precioPublico) * parseFloat(bill.cantidad);
         } else if (this.state.sellType === 'Cuenta Paciente') {
-          total += parseFloat(bill.pacientPrice) * parseFloat(bill.cantidad);
+          total += parseFloat(bill.precioPaciente) * parseFloat(bill.cantidad);
         }
       } else if (bill.class === 'Cafeteria' ||
               bill.class === 'Laboratory' ||
               bill.class === 'Tomografia' ||
               bill.class === 'RayosX' ||
               bill.class === 'Rehabilitacion') {
-          total += parseFloat(bill.Precio) * parseFloat(bill.cantidad);
+          total += parseFloat(bill.precio) * parseFloat(bill.cantidad);
         }
       });
     this.props.payment('cajaPrincipalIngresos', this.state.Productos, total);
@@ -164,11 +164,11 @@ class CajaPrincipal extends Component {
         ItemSeparatorComponent={this.ListViewItemSeparator}
         //Item Separator View
         renderItem={({ item }) => (
-          this.renderProducto(item)
+            this.renderProducto(item)
         )}
         enableEmptySections
         style={{ marginTop: 10 }}
-        keyExtractor={(item) => item.code}
+        keyExtractor={(item) => item.codigo}
       />
     );
   }
@@ -184,7 +184,7 @@ class CajaPrincipal extends Component {
         )}
         enableEmptySections
         style={{ marginTop: 10 }}
-        keyExtractor={(item) => item.code}
+        keyExtractor={(item) => item.codigo}
       />
     );
   }
@@ -196,18 +196,14 @@ class CajaPrincipal extends Component {
       if (isNaN(parseFloat(bill.cantidad))) {
         newPrice = 0;
       } else { newPrice = parseFloat(bill.cantidad); }
-      if (bill.class === 'Farmacia') {
+      if (bill.class === 'Inventario') {
         if (this.state.sellType === 'Venta al público') {
-          total += parseFloat(bill.publicPrice) * newPrice;
+          total += parseFloat(bill.precioPublico) * newPrice;
         } else if (this.state.sellType === 'Cuenta Paciente') {
-          total += parseFloat(bill.pacientPrice) * newPrice;
+          total += parseFloat(bill.precioPaciente) * newPrice;
         }
-      } else if (bill.class === 'Cafeteria' ||
-              bill.class === 'Laboratory' ||
-              bill.class === 'Tomografia' ||
-              bill.class === 'RayosX' ||
-              bill.class === 'Rehabilitacion') {
-          total += parseFloat(bill.Precio) * newPrice;
+      } else if (bill.class === 'Servicios') {
+          total += parseFloat(bill.precio) * newPrice;
       }
     });
     return (
@@ -247,11 +243,8 @@ class CajaPrincipal extends Component {
 
   buscarProducto() {
     const queryArray =
-    [{ type: 'startsWith', object: 'Farmacia', variable: 'name' },
-     { type: 'startsWith', object: 'Laboratory', variable: 'Concepto' },
-     { type: 'startsWith', object: 'RayosX', variable: 'Concepto' },
-     { type: 'startsWith', object: 'Rehabilitacion', variable: 'Concepto' },
-     { type: 'startsWith', object: 'Tomografia', variable: 'Concepto' }
+    [{ type: 'startsWith', object: 'Inventario', variable: 'nombre' },
+     { type: 'startsWith', object: 'Servicios', variable: 'nombre' }
    ];
     if (this.state.searchItem === true) {
       return (
@@ -424,31 +417,39 @@ class CajaPrincipal extends Component {
   }
 
   renderProducto(item) {
-    if (item.class === 'Farmacia') {
+    if (item.class === 'Inventario') {
+      if (item.tipo === 'medicamento') {
+        return (
+          <TouchableWithoutFeedback
+          onPress={() => this.addProducto(item)}
+          >
+            <View>
+              <Text style={styles.textStyle} >
+                {item.laboratorio} - {item.nombre} {item.presentacion} {item.contenido}
+              </Text>
+            </View>
+        </TouchableWithoutFeedback>
+        );
+      }
       return (
         <TouchableWithoutFeedback
         onPress={() => this.addProducto(item)}
         >
           <View>
             <Text style={styles.textStyle} >
-              {item.laboratory} - {item.name} {item.presentation} {item.content}
+              {item.nombre}
             </Text>
           </View>
         </TouchableWithoutFeedback>
       );
-    } else if (item.class === 'Cafeteria' ||
-    item.class === 'Laboratory' ||
-    item.class === 'Tomografia' ||
-    item.class === 'RayosX' ||
-    item.class === 'Rehabilitacion'
-    ) {
+    } else if (item.class === 'Servicios') {
       return (
         <TouchableWithoutFeedback
         onPress={() => this.addProducto(item)}
         >
           <View>
             <Text style={styles.textStyle} >
-              {item.Concepto}
+              {item.nombre}
             </Text>
           </View>
         </TouchableWithoutFeedback>
@@ -457,44 +458,21 @@ class CajaPrincipal extends Component {
   }
 
   renderProductos(item, index) {
-    if (item.class === 'Farmacia') {
-      return (
-        <CardSection>
-          <Text style={styles.patientTextStyle}>
-            {item.laboratory} - {item.name} {item.presentation} {item.content}
-          </Text>
-          <TextInput
-            placeholder="1"
-            value={item.cantidad}
-            keyboardType="numeric"
-            autoCorrect={false}
-            style={styles.inputStyle}
-            onChangeText={cantidad => this.updateQuantity(index, cantidad)}
-          />
-        </CardSection>
-      );
-    } else if (item.class === 'Cafeteria' ||
-    item.class === 'Laboratory' ||
-    item.class === 'Tomografia' ||
-    item.class === 'RayosX' ||
-    item.class === 'Rehabilitacion'
-    ) {
-      return (
-        <CardSection>
-          <Text style={styles.patientTextStyle}>
-            {item.Concepto}
-          </Text>
-          <TextInput
-            placeholder="1"
-            value={item.cantidad}
-            keyboardType="numeric"
-            autoCorrect={false}
-            style={styles.inputStyle}
-            onChangeText={cantidad => this.updateQuantity(index, cantidad)}
-          />
-        </CardSection>
-      );
-    }
+    return (
+      <CardSection>
+        <Text style={styles.patientTextStyle}>
+          {item.nombre}
+        </Text>
+        <TextInput
+          placeholder="1"
+          value={item.cantidad}
+          keyboardType="numeric"
+          autoCorrect={false}
+          style={styles.inputStyle}
+          onChangeText={cantidad => this.updateQuantity(index, cantidad)}
+        />
+      </CardSection>
+    );
   }
 
   renderPaciente(item) {
