@@ -168,6 +168,57 @@ class DetalleActivo extends Component {
   );
   }
 
+  regresarHospitalizacion() {
+    const { objectId } = this.props.IngresosActivos
+    const { user } = this.props
+    return (
+      <Modal
+      isVisible={this.state.regresarHospitalizacion}
+      transparent={false}
+      >
+      <CardSection>
+        <CardSection>
+        <Text> ¿Confirmar regreso a habitación? </Text>
+        </CardSection>
+        </CardSection>
+        <CardSection>
+          <Button onPress={() => this.props.writeFunc('IngresosActivos', 'get', null, objectId, 'set', 'estadoActual', 'Hospitalización', user) }>
+            Confirmar
+          </Button>
+          <Button onPress={() => this.closeModal('regresarHospitalizacion')}>
+            Cancelar
+          </Button>
+        </CardSection>
+        </Modal>
+  );
+  }
+
+  enviarShock() {
+    const { objectId } = this.props.IngresosActivos;
+    console.log(objectId)
+    const { user } = this.props.user;
+    return (
+    <Modal
+    isVisible={this.state.enviarShock}
+    transparent={false}
+    >
+  <CardSection>
+    <CardSection>
+    <Text> ¿Enviar a sala de shock? </Text>
+    </CardSection>
+    </CardSection>
+    <CardSection>
+      <Button onPress={() => this.props.writeFunc('IngresosActivos', 'get', null, objectId, 'set', 'estadoActual', 'Shock', user) }>
+        Confirmar
+      </Button>
+      <Button onPress={() => this.closeModal('enviarShock')}>
+        Cancelar
+      </Button>
+    </CardSection>
+    </Modal>
+  );
+  }
+
   asignarRecuperacion() {
     return (
       <Modal
@@ -235,20 +286,112 @@ class DetalleActivo extends Component {
   );
   }
 
+  numeroHabitacion() {
+    const { habitacion } = this.props.IngresosActivos
+    if (habitacion) {
+      return (
+        <Text> {'Habitación: '} {habitacion.ID} </Text>
+      );
+    }
+  }
+
   añadirConsulta() {
 
   }
 
-  enviarShock() {
-
+  enviarUTI() {
+    console.log(this.state)
+    return (
+    <Modal
+    isVisible={this.state.enviarUTI}
+    transparent={false}
+    onShow={() => this.props.queryFunc({
+      type: 'startsWith',
+      object: 'Ocupacion',
+      variable: 'Tipo',
+      text: 'Unidad de terapia intensiva' })}
+    >
+  <ScrollView style={styles.viewStyle}>
+  <CardSection>
+      <FlatList
+        data={this.props.Ocupacion}
+        ItemSeparatorComponent={this.ListViewItemSeparator}
+        //Item Separator View
+        renderItem={({ item }) => (
+          // Single Comes here which will be repeatative for the FlatListItems
+          <TouchableWithoutFeedback
+          onPress={() => this.changeModal('enviarUTI', 'confirmarUTI', 'posicionUTI', item)}
+          disabled={item.Ocupada}
+          >
+          <View>
+              <ComponenteHabitacion item={item} tipo={'ingreso'}/>
+          </View>
+          </TouchableWithoutFeedback>
+        )}
+        enableEmptySections
+        style={{ marginTop: 10 }}
+        keyExtractor={(item, index) => index.toString()}
+      />
+      </CardSection>
+    </ScrollView>
+    <CardSection>
+      <Button onPress={() => this.closeModal('enviarUTI')}>
+        Cancelar
+      </Button>
+    </CardSection>
+    </Modal>
+  );
   }
 
-  enviarUTI() {
-
+  confirmarUTI() {
+    const { posicionUTI } = this.state;
+    console.log(this.props)
+    return (
+    <Modal
+    isVisible={this.state.confirmarUTI}
+    transparent={false}
+    >
+  <CardSection>
+    <CardSection>
+    <ComponenteHabitacion item={posicionUTI} tipo={'ingreso'}/>
+    </CardSection>
+    </CardSection>
+    <CardSection>
+      <Button onPress={() => this.updateHabitacion() }>
+        Confirmar
+      </Button>
+      <Button onPress={() => this.closeModal('confirmarUTI')}>
+        Cancelar
+      </Button>
+    </CardSection>
+    </Modal>
+  );
   }
 
   darDeAlta() {
-
+    const { objectId } = this.props.IngresosActivos;
+    console.log(objectId)
+    const { user } = this.props.user;
+    return (
+    <Modal
+    isVisible={this.state.darDeAlta}
+    transparent={false}
+    >
+  <CardSection>
+    <CardSection>
+    <Text> ¿Dar de alta? </Text>
+    </CardSection>
+    </CardSection>
+    <CardSection>
+      <Button onPress={() => this.props.writeFunc('IngresosActivos', 'get', null, objectId, 'set', 'estadoActual', 'Shock', user) }>
+        Confirmar
+      </Button>
+      <Button onPress={() => this.closeModal('darDeAlta')}>
+        Cancelar
+      </Button>
+    </CardSection>
+    </Modal>
+  );
   }
 
   updateHabitacion() {
@@ -282,10 +425,19 @@ const dateTime = DateTime.local().toISO();
                   Momento: dateTime,
                   modificadoPor: user }
 
+
    this.props.writeFunc('IngresosActivos', 'get', null, IngresosActivos.objectId, 'set', 'habitacion', pointerHabitacion, user)
    this.props.writeFunc('IngresosActivos', 'get', null, IngresosActivos.objectId, 'set', 'estadoActual', 'Hospitalización', user)
    this.props.writeFunc('IngresosActivos', 'get', null, IngresosActivos.objectId, 'add', 'historico', array, user.toJSON())
   this.closeModal('confirmarHabitacion');
+}
+
+botonAsignarHabitacion() {
+  const { habitacion } = this.props.IngresosActivos
+  if (!habitacion) {
+  return (
+    <Button onPress={() => this.showModal('asignarHabitacion')}>Asignar habitación</Button>
+  ); }
 }
 
 updateRecuperacion() {
@@ -313,6 +465,30 @@ objectId: posicionRecuperacion.objectId
 this.closeModal('confirmarHabitacion');
 }
 
+asignarPacienteAnonimo() {
+    const { pacienteAnonimo } = this.props.IngresosActivos
+
+  if (pacienteAnonimo) {
+    return (
+    <Button onPress={() => this.showModal('asignarPaciente')}>Asignar paciente</Button>
+  );
+}
+}
+
+nombrePacienteAnonimo() {
+  const { paciente, pacienteAnonimo } = this.props.IngresosActivos
+
+  if (!pacienteAnonimo) {
+    return (
+    <Text> {paciente.names} </Text>
+  );
+} else {
+  return (
+  <Text> {'Paciente anónimo'} </Text>
+);
+}
+}
+
   render() {
     console.log(this.props)
     this.state.loading = this.props.loading;
@@ -332,15 +508,19 @@ this.closeModal('confirmarHabitacion');
             <Text> {estadoActual} </Text>
           </View>
             <View>
-              <Text> {paciente.names} </Text>
+              {this.nombrePacienteAnonimo()}
             </View>
             <View>
               <Text> {tipoMedico}: {medico.names} </Text>
             </View>
             <View>
+            {this.numeroHabitacion()}
+            </View>
+            <View>
             <CardSection>
-              <Button onPress={() => this.showModal('asignarPaciente')}>Asignar paciente</Button>
+              {this.asignarPacienteAnonimo()}
               <Button onPress={() => this.showModal('asignarObservacion')}>Enviar a observación</Button>
+              {this.botonAsignarHabitacion()}
             </CardSection>
             <CardSection>
               <Button onPress={() => this.showModal('añadirConsulta')}>Añadir consulta</Button>
@@ -348,10 +528,8 @@ this.closeModal('confirmarHabitacion');
               </CardSection>
               <CardSection>
               <Button onPress={() => this.showModal('enviarUTI')}>Enviar a terapia intensiva</Button>
-              <Button onPress={() => this.showModal('añadirCirugía')}>Añadir cirugía</Button>
               </CardSection>
               <CardSection>
-              <Button onPress={() => this.showModal('asignarHabitacion')}>Asignar habitación</Button>
               <Button onPress={() => this.showModal('darDeAlta')}>Dar de alta</Button>
             </CardSection>
             <View>
@@ -361,6 +539,53 @@ this.closeModal('confirmarHabitacion');
             {this.enviarShock()}
             {this.enviarUTI()}
             {this.darDeAlta()}
+            {this.confirmarUTI()}
+            </View>
+            </View>
+          </View>
+        );
+      } break;
+
+      case 'Shock': {
+        return (
+          <View>
+          <View>
+            <Text> {estadoActual} </Text>
+          </View>
+            <View>
+              {this.nombrePacienteAnonimo()}
+            </View>
+            <View>
+            {this.numeroHabitacion()}
+            </View>
+            <View>
+              <Text> {tipoMedico}: {medico.names} </Text>
+            </View>
+            <View>
+            <CardSection>
+              {this.asignarPacienteAnonimo()}
+              <Button onPress={() => this.showModal('asignarObservacion')}>Enviar a observación</Button>
+              <Button onPress={() => this.showModal('regresarHospitalizacion')}>Enviar a hospitalización</Button>
+            </CardSection>
+            <CardSection>
+              {this.botonAsignarHabitacion()}
+              <Button onPress={() => this.showModal('añadirConsulta')}>Añadir consulta</Button>
+              </CardSection>
+              <CardSection>
+              <Button onPress={() => this.showModal('enviarUTI')}>Enviar a terapia intensiva</Button>
+              </CardSection>
+              <CardSection>
+              <Button onPress={() => this.showModal('darDeAlta')}>Dar de alta</Button>
+            </CardSection>
+            <View>
+            {this.asignarHabitacion()}
+            {this.confirmarHabitacion()}
+            {this.añadirConsulta()}
+            {this.enviarShock()}
+            {this.enviarUTI()}
+            {this.darDeAlta()}
+            {this.regresarHospitalizacion()}
+            {this.confirmarUTI()}
             </View>
             </View>
           </View>
@@ -389,7 +614,6 @@ this.closeModal('confirmarHabitacion');
               </CardSection>
               <CardSection>
               <Button onPress={() => this.showModal('enviarUTI')}>Enviar a terapia intensiva</Button>
-              <Button onPress={() => this.showModal('añadirCirugía')}>Añadir cirugía</Button>
               </CardSection>
               <CardSection>
               <Button onPress={() => this.showModal('asignarHabitacion')}>Cambiar habitación</Button>
@@ -400,6 +624,7 @@ this.closeModal('confirmarHabitacion');
             {this.añadirConsulta()}
             {this.enviarUTI()}
               {this.darDeAlta()}
+              {this.confirmarUTI()}
             </View>
           </View>
         );
@@ -427,7 +652,6 @@ this.closeModal('confirmarHabitacion');
               </CardSection>
               <CardSection>
               <Button onPress={() => this.showModal('enviarUTI')}>Enviar a terapia intensiva</Button>
-              <Button onPress={() => this.showModal('añadirCirugía')}>Añadir cirugía</Button>
               </CardSection>
               <CardSection>
               <Button onPress={() => this.showModal('asignarHabitacion')}>Asignar habitación</Button>
@@ -444,6 +668,7 @@ this.closeModal('confirmarHabitacion');
             {this.enviarShock()}
             {this.enviarUTI()}
               {this.darDeAlta()}
+              {this.confirmarUTI()}
             </View>
           </View>
         );
@@ -465,18 +690,15 @@ this.closeModal('confirmarHabitacion');
               <Text> {'Habitación'}: {habitacion.ID} </Text>
             </View>
             <CardSection>
-            <CardSection>
               <Button onPress={() => this.showModal('añadirConsulta')}>Añadir consulta</Button>
               <Button onPress={() => this.showModal('enviarShock')}>Enviar a sala de shock</Button>
               </CardSection>
               <CardSection>
               <Button onPress={() => this.showModal('enviarUTI')}>Enviar a terapia intensiva</Button>
-              <Button onPress={() => this.showModal('añadirCirugía')}>Añadir cirugía</Button>
               </CardSection>
               <CardSection>
-              <Button onPress={() => this.showModal('asignarHabitacion')}>Asignar habitación</Button>
+              <Button onPress={() => this.showModal('asignarHabitacion')}>Cambiar habitación</Button>
               <Button onPress={() => this.showModal('darDeAlta')}>Dar de alta</Button>
-            </CardSection>
             </CardSection>
             {this.asignarHabitacion()}
             {this.confirmarHabitacion()}
@@ -484,6 +706,7 @@ this.closeModal('confirmarHabitacion');
             {this.enviarShock()}
             {this.enviarUTI()}
               {this.darDeAlta()}
+              {this.confirmarUTI()}
           </View>
         );
       } break;

@@ -35,12 +35,12 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, loading: false, error: action.error };
     case DB_CLEAN:
       return { ...state, ...INITIAL_STATE };
-    case WRITE_SUCCESS:
+    case WRITE_SUCCESS: {
       console.log(action.payload);
-      return { ...state, [action.name]: action.payload };
-    case DELETE_SUCCESS: {
-      console.log(action);
-      return { ...state }; }
+      return { ...state, [action.name]: action.payload }; }
+      case DELETE_SUCCESS: {
+        console.log(action);
+        return { ...state }; }
     default:
       return { ...state, ...INITIAL_STATE };
     }

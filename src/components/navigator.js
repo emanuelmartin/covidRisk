@@ -75,7 +75,7 @@ const AppStack = createStackNavigator(
     qrGen,
     ListaProveedores,
     AgregarProveedor
-  },
+    },
   {
     defaultNavigationOptions: {
       headerTintColor: '#63C0B9',
