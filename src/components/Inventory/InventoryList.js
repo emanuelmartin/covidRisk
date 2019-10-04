@@ -8,17 +8,28 @@ import {
   TouchableWithoutFeedback,
   Alert
 } from 'react-native';
-import { SearchBar, Icon } from 'react-native-elements';
+import Modal from 'react-native-modal';
 import { NavigationActions } from 'react-navigation';
+import { SearchBar, Icon, CheckBox } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Button, CardSection } from '../common';
-import { queryFunc, cleanFunc, cleanBarCode, setItemCode } from '../../actions';
+import { queryFunc, queryAttach, cleanFunc, cleanBarCode, setItemCode } from '../../actions';
 
 class InventoryList extends React.Component {
   constructor(props) {
     super(props);
     //setting default state
-    this.state = { isLoading: true, search: '', barCodeCharged: false, barCode: '', barType: '' };
+    this.state = {
+      isLoading: true,
+      search: '',
+      barCodeCharged: false,
+      barCode: '',
+      barType: '',
+      modal: false,
+      checkMedicamento: true,
+      checkInsumo: true,
+      checkCafeteria: true
+    };
     this.arrayholder = [];
   }
   static navigationOptions = {
@@ -41,7 +52,6 @@ class InventoryList extends React.Component {
         this.setState(
           {
             isLoading: false,
-            Farmacia: null,
           },
           function () {
             this.arrayholder = responseJson;
@@ -73,6 +83,107 @@ class InventoryList extends React.Component {
     this.props.navigation.navigate(route, item);
   }
 
+  queryInventory = (text) => {
+    if (this.props.userType === 'admin') {
+      if ((this.state.checkMedicamento === true && this.state.checkInsumo === true && this.state.checkCafeteria === true)
+      || (this.state.checkMedicamento === false && this.state.checkInsumo === false && this.state.checkCafeteria === false)) {
+            this.props.queryFunc({
+              type: 'startsWith',
+              object: 'Inventario',
+              variable: 'nombre',
+              text });
+      } else if (this.state.checkMedicamento === true &&
+               this.state.checkInsumo === false &&
+               this.state.checkCafeteria === false) {
+       this.props.queryAttach({
+         object: 'Inventario',
+         text,
+         constrain: [{ type: 'startsWith', variable: 'nombre', text },
+           { type: 'equalTo', variable: 'tipo', text: 'medicamento', bool: 'and' }]
+         });
+      } else if (this.state.checkMedicamento === false &&
+               this.state.checkInsumo === true &&
+               this.state.checkCafeteria === false) {
+       this.props.queryAttach({
+         object: 'Inventario',
+         text,
+         constrain: [{ type: 'startsWith', variable: 'nombre', text },
+           { type: 'equalTo', variable: 'tipo', text: 'insumo', bool: 'and' }]
+         });
+      } else if (this.state.checkMedicamento === false &&
+               this.state.checkInsumo === false &&
+               this.state.checkCafeteria === true) {
+       this.props.queryAttach({
+         object: 'Inventario',
+         text,
+         constrain: [{ type: 'startsWith', variable: 'nombre', text },
+           { type: 'equalTo', variable: 'tipo', text: 'cafeteria', bool: 'and' }]
+         });
+      } else if (this.state.checkMedicamento === true &&
+               this.state.checkInsumo === true &&
+               this.state.checkCafeteria === false) {
+       this.props.queryAttach({
+         object: 'Inventario',
+         text,
+         constrain: [{ type: 'startsWith', variable: 'nombre', text },
+           { type: 'notEqualTo', variable: 'tipo', text: 'cafeteria', bool: 'and' }]
+         });
+      } else if (this.state.checkMedicamento === true &&
+               this.state.checkInsumo === false &&
+               this.state.checkCafeteria === true) {
+       this.props.queryAttach({
+         object: 'Inventario',
+         text,
+         constrain: [{ type: 'startsWith', variable: 'nombre', text },
+           { type: 'notEqualTo', variable: 'tipo', text: 'insumo', bool: 'and' }]
+         });
+      } else if (this.state.checkMedicamento === false &&
+               this.state.checkInsumo === true &&
+               this.state.checkCafeteria === true) {
+       this.props.queryAttach({
+         object: 'Inventario',
+         text,
+         constrain: [{ type: 'startsWith', variable: 'nombre', text },
+           { type: 'notEqualTo', variable: 'tipo', text: 'medicamento', bool: 'and' }]
+         });
+      }
+    } else if (this.props.userType === 'farmacia' ||
+    this.props.userType === 'enfermeria') {
+      if (this.state.checkMedicamento === true &&
+          this.state.checkInsumo === true) {
+            this.props.queryAttach({
+              object: 'Inventario',
+              text,
+              constrain: [{ type: 'startsWith', variable: 'nombre', text },
+                { type: 'notEqualTo', variable: 'tipo', text: 'cafeteria', bool: 'and' }]
+              });
+      } else if (this.state.checkMedicamento === true &&
+                 this.state.checkInsumo === false) {
+       this.props.queryAttach({
+         object: 'Inventario',
+         text,
+         constrain: [{ type: 'startsWith', variable: 'nombre', text },
+           { type: 'equalTo', variable: 'tipo', text: 'medicamento', bool: 'and' }]
+         });
+      } else if (this.state.checkMedicamento === false &&
+                 this.state.checkInsumo === true) {
+       this.props.queryAttach({
+         object: 'Inventario',
+         text,
+         constrain: [{ type: 'startsWith', variable: 'nombre', text },
+           { type: 'equalTo', variable: 'tipo', text: 'insumo', bool: 'and' }]
+         });
+      }
+    } else {
+      this.props.queryAttach({
+        object: 'Inventario',
+        text,
+        constrain: [{ type: 'startsWith', variable: 'nombre', text },
+          { type: 'equalTo', variable: 'tipo', text: 'cafeteria', bool: 'and' }]
+      });
+    }
+  }
+
   ListViewItemSeparator = () => {
     //Item sparator view
     return (
@@ -95,18 +206,118 @@ class InventoryList extends React.Component {
     this.setState({ barCodeCharged: false, barCode: '', barType: '' });
   }
 
+  showAdvancedSearch() {
+    if (this.props.userType === 'admin' || this.props.userType === 'farmacia' || this.props.userType === 'enfermeria') {
+      return (
+        <TouchableWithoutFeedback onPress={() => this.setState({ modal: true })} >
+          <Text style={styles.advancedOptionsStyle}>Búsqueda Avanzada</Text>
+        </TouchableWithoutFeedback>
+      );
+    }
+  }
+
+  modalContent() {
+    if (this.props.userType === 'admin') {
+      return (
+        <View>
+          <CheckBox
+            title='Medicamento'
+            checked={this.state.checkMedicamento}
+            onPress={() => this.setState({ checkMedicamento: !this.state.checkMedicamento })}
+          />
+          <CheckBox
+            title='Insumo'
+            checked={this.state.checkInsumo}
+            onPress={() => this.setState({ checkInsumo: !this.state.checkInsumo })}
+          />
+          <CheckBox
+            title='Cafeteria'
+            checked={this.state.checkCafeteria}
+            onPress={() => this.setState({ checkCafeteria: !this.state.checkCafeteria })}
+          />
+        </View>
+      );
+    } else if (this.props.userType === 'farmacia' || this.props.userType === 'enfermeria') {
+      return (
+        <View>
+          <CheckBox
+            title='Medicamento'
+            checked={this.state.checkMedicamento}
+            onPress={() => this.setState({ checkMedicamento: !this.state.checkMedicamento })}
+          />
+          <CheckBox
+            title='Insumo'
+            checked={this.state.checkInsumo}
+            onPress={() => this.setState({ checkInsumo: !this.state.checkInsumo })}
+          />
+        </View>
+      );
+    }
+  }
+
+  renderModal() {
+    return (
+      <View>
+        <Modal
+          isVisible={this.state.modal}
+          animationType='slide'
+          transparent={false}
+          style={styles.modalStyle}
+          onShow={() => {
+            this.setState({
+              checkMedicamento: false,
+              checkInsumo: false,
+              checkCafeteria: false,
+           });
+          }}
+        >
+          <CardSection>
+            <Text style={styles.titleStyle}>
+              Opciones de Búsqueda Avanzada
+            </Text>
+          </CardSection>
+          <Text style={{ textAlign: 'center' }}>
+            Marque el tipo de producto que desea buscar:
+          </Text>
+          {this.modalContent()}
+          <CardSection>
+            <Button
+              onPress={() => {
+                this.setState({ modal: false });
+                if (this.state.checkMedicamento === false &&
+                    this.state.checkInsumo === false &&
+                    this.state.checkCafeteria === false) {
+                      this.setState({
+                        checkMedicamento: true,
+                        checkInsumo: true,
+                        checkCafeteria: true,
+                      });
+                  }
+                  this.props.queryFunc({ text: '' });
+                  this.props.cleanFunc();
+                }
+              }
+            >
+              Aceptar
+            </Button>
+          </CardSection>
+        </Modal>
+      </View>
+    );
+  }
+
   render() {
     let dataList = null;
-    if (Array.isArray(this.props.Farmacia)) {
-      dataList = this.props.Farmacia;
+    if (Array.isArray(this.props.Inventario)) {
+      dataList = this.props.Inventario;
     } else {
-      dataList = [this.props.Farmacia];
+      dataList = [this.props.Inventario];
     }
     if (this.props.barCode !== '') {
       this.props.queryFunc({
         type: 'equalTo',
-        object: 'Farmacia',
-        variable: 'code',
+        object: 'Inventario',
+        variable: 'codigo',
         text: this.props.barCode });
       this.setState({
         barCodeCharged: true,
@@ -123,7 +334,7 @@ class InventoryList extends React.Component {
         </View>
       );
     }
-    if (this.state.barCodeCharged && this.props.Farmacia === 'Failed') {
+    if (this.state.barCodeCharged && this.props.Inventario === 'Failed') {
       Alert.alert(
         'Error: Producto no encontrado',
         '¿Desea agregarlo? ',
@@ -137,10 +348,13 @@ class InventoryList extends React.Component {
         <View />
       );
     }
+
     return (
       //ListView to show with textinput used as search bar
       <View style={{ flex: 1 }}>
       <View style={styles.viewStyle}>
+        {this.showAdvancedSearch()}
+        {this.renderModal()}
         <SearchBar
           round
           lightTheme
@@ -150,13 +364,9 @@ class InventoryList extends React.Component {
               type='material-community'
               onPress={this.navigateToScreen('BarCodeScanner', { updateCode: false })}
             />}
-          onChangeText={text => this.props.queryFunc({
-            type: 'startsWith',
-            object: 'Farmacia',
-            variable: 'name',
-            text })}
-          onClear={text => this.props.queryFunc({ text: '' })}
-          placeholder="Ingresa el nombre comercial"
+          onChangeText={text => this.queryInventory(text)}
+          onClear={() => this.props.queryFunc({ text: '' })}
+          placeholder="Ingresa el nombre del producto"
           value={this.props.text}
         />
           <FlatList
@@ -168,7 +378,7 @@ class InventoryList extends React.Component {
               <TouchableWithoutFeedback
               onPress={this.navigateToScreen('InventoryDetail', { item })}
               >
-              <Text style={styles.textStyle}>{item.laboratory} - {item.name} {item.presentation} {item.content}</Text>
+              <Text style={styles.textStyle}>{item.laboratorio} - {item.nombre} {item.presentacion} {item.contenido}</Text>
               </TouchableWithoutFeedback>
             )}
             enableEmptySections
@@ -196,16 +406,31 @@ const styles = StyleSheet.create({
   textStyle: {
     padding: 10,
   },
-  footerButton: {
-
+  advancedOptionsStyle: {
+    fontSize: 16,
+    color: '#63C0B9',
+    textAlign: 'center'
+  },
+  modalStyle: {
+    backgroundColor: 'white',
+    padding: 22,
+    justifyContent: 'center',
+    borderRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  titleStyle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#63C0B9'
   }
 });
 
-const mapStateToProps = ({ query, barCodeReader }) => {
- const { text, Farmacia } = query;
+const mapStateToProps = ({ query, barCodeReader, auth }) => {
+ const { text, Inventario } = query;
  const { barCode, barType } = barCodeReader;
- return { text, Farmacia, barCode, barType };
+ const userType = auth.user.attributes.type;
+ return { text, Inventario, barCode, barType, userType };
 };
 
 export default connect(mapStateToProps,
-  { queryFunc, cleanFunc, cleanBarCode, setItemCode })(InventoryList);
+  { queryFunc, queryAttach, cleanFunc, cleanBarCode, setItemCode })(InventoryList);

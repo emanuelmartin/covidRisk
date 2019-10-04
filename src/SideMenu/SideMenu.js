@@ -174,14 +174,20 @@ class SideMenu extends Component {
     }
   }
 
-  farmacia() {
+  inventario() {
     if (this.props.userType === 'admin' ||
         this.props.userType === 'farmacia' ||
-        this.props.userType === 'enfermeria') {
+        this.props.userType === 'enfermeria' ||
+        this.props.userType === 'cafeteria') {
+          let mainName = '';
+          if (this.props.userType === 'admin') { mainName = 'Farmacia y Cafetería'; }
+          else if (this.props.userType === 'farmacia' ||
+          this.props.userType === 'enfermeria') { mainName = 'Farmacia'; }
+          else { mainName = 'Cafetería'; }
       return (
         <View>
            <Text style={styles.sectionHeadingStyle}>
-             Farmacia
+             {mainName}
            </Text>
            <View style={styles.navSectionStyle}>
              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('InventoryList')}>
@@ -291,7 +297,7 @@ class SideMenu extends Component {
         <ScrollView>
           {this.fichasPersonales()}
           {this.ocupacion()}
-          {this.farmacia()}
+          {this.inventario()}
           {this.servicios()}
           {this.cobros()}
           {this.pruebas()}

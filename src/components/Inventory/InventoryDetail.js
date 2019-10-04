@@ -7,12 +7,7 @@ import {
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Card, CardSection, Input, Spinner } from '../common';
-import {
-  stockChanged,
-  publicPriceChanged,
-	pacientPriceChanged,
-	assurancePriceChanged,
-  updateItem } from '../../actions';
+import { itemChanged, updateItem } from '../../actions';
 
 class InventoryDetail extends Component {
 
@@ -29,61 +24,31 @@ class InventoryDetail extends Component {
   }
 
   componentWillMount() {
-    this.props.stockChanged(this.item.stock.toString());
-    this.props.publicPriceChanged(this.item.publicPrice.toString());
-    this.props.pacientPriceChanged(this.item.pacientPrice.toString());
-    this.props.assurancePriceChanged(this.item.assurancePrice.toString());
+    this.props.itemChanged({ variable: 'stock', text: this.item.stock.toString() });
+    this.props.itemChanged({ variable: 'precioPublico', text: this.item.precioPublico.toString() });
+    this.props.itemChanged({
+      variable: 'precioPaciente',
+      text: this.item.precioPaciente.toString()
+    });
+    this.props.itemChanged({
+      variable: 'precioSeguro',
+      text: this.item.precioSeguro.toString()
+    });
   }
 
-  onStockChange(text) {
-		this.props.stockChanged(text);
+  onItemChange(variable, text) {
+    this.props.itemChanged({ variable, text });
 	}
 
-  onPublicPriceChange(text) {
-    this.props.publicPriceChanged(text);
-  }
-
-  onPacientPriceChange(text) {
-    this.props.pacientPriceChanged(text);
-  }
-
-  onAssurancePriceChange(text) {
-    this.props.assurancePriceChanged(text);
-  }
-
-  onUpdateStock() {
-    const stock = this.props.stock;
+  onUpdate(variable) {
+    const newValue = this.props[variable];
     const item = this.item;
-    this.setState({ key: 'stock' });
-    this.props.updateItem({ item, variable: 'stock', value: stock });
-    item.stock = stock;
+    this.setState({ key: variable });
+    this.props.updateItem({ item, variable, value: newValue });
+    item[variable] = newValue;
   }
 
-  onUpdatePublicPrice() {
-    const publicPrice = this.props.publicPrice;
-    const item = this.item;
-    this.setState({ key: 'publicPrice' });
-    this.props.updateItem({ item, variable: 'publicPrice', value: publicPrice });
-    item.publicPrice = publicPrice;
-  }
-
-  onUpdatePacientPrice() {
-    const pacientPrice = this.props.pacientPrice;
-    const item = this.item;
-    this.setState({ key: 'pacientPrice' });
-    this.props.updateItem({ item, variable: 'pacientPrice', value: pacientPrice });
-    item.pacientPrice = pacientPrice;
-  }
-
-  onUpdateAssurancePrice() {
-    const assurancePrice = this.props.assurancePrice;
-    const item = this.item;
-    this.setState({ key: 'assurancePrice' });
-    this.props.updateItem({ item, variable: 'assurancePrice', value: assurancePrice });
-    item.assurancePrice = assurancePrice;
-  }
-
-  renderButton(item, checkValue, onPressFunction) {
+  renderButton(item, checkValue, variable) {
     const data = { key: item[0].toString(), value: item[1].toString() };
 
     if (this.props.loading && checkValue === this.state.key) {
@@ -94,7 +59,7 @@ class InventoryDetail extends Component {
           name='sync'
           type='antdesign'
           color='#63C0B9'
-          onPress={onPressFunction.bind(this)}
+          onPress={() => this.onUpdate(variable)}
         />
       );
     }
@@ -112,14 +77,15 @@ class InventoryDetail extends Component {
               style={{ flex: 2 }}
               label={data.key}
               placeholder=""
-              onChangeText={this.onStockChange.bind(this)}
+              onChangeText={(text) => this.onItemChange('stock', text)}
               value={this.props.stock}
+              keyboardType="numeric"
             />
-          {this.renderButton(item, data.key, this.onUpdateStock)}
+          {this.renderButton(item, data.key, 'stock')}
           </CardSection>
         </View>
       );
-    } else if (data.key === 'publicPrice') {
+    } else if (data.key === 'precioPublico') {
       return (
         <View>
           <CardSection>
@@ -127,14 +93,15 @@ class InventoryDetail extends Component {
               style={{ flex: 2 }}
               label={data.key}
               placeholder=""
-              onChangeText={this.onPublicPriceChange.bind(this)}
-              value={this.props.publicPrice}
+              onChangeText={(text) => this.onItemChange('precioPublico', text)}
+              value={this.props.precioPublico}
+              keyboardType="numeric"
             />
-          {this.renderButton(item, data.key, this.onUpdatePublicPrice)}
+          {this.renderButton(item, data.key, 'precioPublico')}
           </CardSection>
         </View>
       );
-    } else if (data.key === 'pacientPrice') {
+    } else if (data.key === 'precioPaciente') {
       return (
         <View>
           <CardSection>
@@ -142,14 +109,15 @@ class InventoryDetail extends Component {
               style={{ flex: 2 }}
               label={data.key}
               placeholder=""
-              onChangeText={this.onPacientPriceChange.bind(this)}
-              value={this.props.pacientPrice}
+              onChangeText={(text) => this.onItemChange('precioPaciente', text)}
+              value={this.props.precioPaciente}
+              keyboardType="numeric"
             />
-          {this.renderButton(item, data.key, this.onUpdatePacientPrice)}
+          {this.renderButton(item, data.key, 'precioPaciente')}
           </CardSection>
         </View>
       );
-    } else if (data.key === 'assurancePrice') {
+    } else if (data.key === 'precioSeguro') {
       return (
         <View>
           <CardSection>
@@ -157,10 +125,11 @@ class InventoryDetail extends Component {
               style={{ flex: 2 }}
               label={data.key}
               placeholder=""
-              onChangeText={this.onAssurancePriceChange.bind(this)}
-              value={this.props.assurancePrice}
+              onChangeText={(text) => this.onItemChange('precioSeguro', text)}
+              value={this.props.precioSeguro}
+              keyboardType="numeric"
             />
-          {this.renderButton(item, data.key, this.onUpdateAssurancePrice)}
+          {this.renderButton(item, data.key, 'precioSeguro')}
           </CardSection>
         </View>
       );
@@ -211,9 +180,9 @@ class InventoryDetail extends Component {
 const mapStateToProps = state => {
   return {
     stock: state.item.stock,
-    publicPrice: state.item.publicPrice,
-    pacientPrice: state.item.pacientPrice,
-    assurancePrice: state.item.assurancePrice,
+    precioPublico: state.item.precioPublico,
+    precioPaciente: state.item.precioPaciente,
+    precioSeguro: state.item.precioSeguro,
     error: state.item.error,
     loading: state.item.loading
   };
@@ -227,9 +196,4 @@ const styles = {
     },
 };
 
-export default connect(mapStateToProps,
-  { stockChanged,
-    publicPriceChanged,
-    pacientPriceChanged,
-    assurancePriceChanged,
-    updateItem })(InventoryDetail);
+export default connect(mapStateToProps, { itemChanged, updateItem })(InventoryDetail);

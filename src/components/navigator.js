@@ -16,7 +16,7 @@ import SideMenu from '../SideMenu/SideMenu';
 import InventoryList from './Inventory/InventoryList';
 import InventoryDetail from './Inventory/InventoryDetail';
 import Rehabilitation from './Cajas/Rehabilitacion.js';
-import AddItemScreen from './AddItemScreen.js';
+import AddItemScreen from './Inventory/AddItemScreen.js';
 import PatientBill from './Cuentas/PatientBill';
 import PatientList from './Patients/PatientList';
 import PatientDetail from './Patients/PatientDetail';

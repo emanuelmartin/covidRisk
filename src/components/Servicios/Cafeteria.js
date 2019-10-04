@@ -7,7 +7,8 @@ import {
   TouchableWithoutFeedback,
   TextInput,
   ScrollView,
-  Dimensions
+  Dimensions,
+  Alert
 } from 'react-native';
 import { connect } from 'react-redux';
 import SwipeView from 'react-native-swipeview';
@@ -91,7 +92,7 @@ class Cafe extends Component {
     this.state.Alimentos.forEach((bill) => {
         total += parseFloat(bill.Precio) * parseFloat(bill.cantidad);
       });
-    this.props.payment('cafeteriaIngresos', this.state.Alimentos, total);
+    this.props.payment('ventas', this.state.Alimentos, total);
   }
 
   onNewBillPress() {
@@ -106,10 +107,27 @@ class Cafe extends Component {
     this.props.cleanFunc();
   }
 
-  onSwipedLeft(index) {
+  onAlertAccept(index) {
     const array = [...this.state.Alimentos];
     array.splice(index, 1);
-    this.setState({ Alimentos: array });
+    if (this.state.Alimentos.length === 1) {
+      this.setState({ searchItem: true, Alimentos: array });
+      this.props.cleanFunc();
+    } else {
+      this.setState({ Alimentos: array });
+    }
+  }
+
+  onSwipedLeft(index) {
+    Alert.alert(
+      '¿Desea eliminar este producto? ',
+      '',
+      [
+        { text: 'Si', onPress: () => this.onAlertAccept(index) },
+        { text: 'No', onPress: () => console.log('Delete'), style: 'cancel' },
+      ],
+      { cancelable: false }
+    );
   }
 
   updatePaciente(item) {
@@ -426,7 +444,7 @@ class Cafe extends Component {
             previewSwipeDemo={true}
             leftOpenValue={leftOpenValue}
             onSwipedLeft={() => this.onSwipedLeft(index)}
-            swipeDuration={500}
+            swipeDuration={400}
             renderVisibleContent={() =>
               <CardSection>
                 <Text style={styles.patientTextStyle}>

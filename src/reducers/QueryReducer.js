@@ -2,6 +2,7 @@ import {
   DB_QUERY,
   DB_QUERY_RESULTS,
   DB_QUERY_NO_RESULTS,
+  DB_QUERY_ERROR,
   DB_CLEAN,
   WRITE_SUCCESS,
   DELETE_SUCCESS
@@ -12,16 +13,13 @@ const INITIAL_STATE = {
   Patient: '',
   Proveedor: '',
   User: '',
-  Farmacia: '',
   Bill: '',
   BancoSangre: '',
-  Cafeteria: '',
-  Laboratory: '',
-  Rehabilitacion: '',
-  Tomografia: '',
-  RayosX: '',
+  Inventario: '',
+  Servicios: '',
   multiQry: '',
-  loading: false
+  loading: false,
+  error: ''
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -33,6 +31,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, [action.name]: action.payload, loading: false };
     case DB_QUERY_NO_RESULTS:
       return { ...state, [action.name]: 'Failed', loading: false };
+    case DB_QUERY_ERROR:
+      return { ...state, loading: false, error: action.error };
     case DB_CLEAN:
       return { ...state, ...INITIAL_STATE };
     case WRITE_SUCCESS:

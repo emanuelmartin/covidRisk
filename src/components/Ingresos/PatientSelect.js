@@ -518,39 +518,39 @@ pacienteAnonimo() {
     const pacienteAnonimo = this.state.pacienteAnonimo;
 
     const pacientePointer = {
-    __type: 'Pointer',
-   className: 'Patient',
-   objectId: this.state.Patient.objectId
-    }
+      __type: 'Pointer',
+      className: 'Patient',
+      objectId: this.state.Patient.objectId
+    };
 
-    const medicoPointer = {
+  const medicoPointer = {
     __type: 'Pointer',
-   className: 'Medico',
-   objectId: this.state.Medico.objectId
-    }
+    className: 'Medico',
+    objectId: this.state.Medico.objectId
+  };
 
   const ocupacionPointer = {
   __type: 'Pointer',
   className: 'Ocupacion',
   objectId: this.state.Habitacion.objectId
-  }
+  };
 
   const usuarioPointer = {
   __type: 'Pointer',
   className: '_User',
   objectId: this.props.user.id
-  }
+  };
 
     ingresos.set('Tipo', this.state.Tipo);
     ingresos.set('estadoActual', this.state.Tipo);
     ingresos.set('paciente', pacientePointer);
-    ingresos.set('ingresadoPor', usuarioPointer)
-    ingresos.set('pacienteAnonimo', pacienteAnonimo)
+    ingresos.set('ingresadoPor', usuarioPointer);
+    ingresos.set('pacienteAnonimo', pacienteAnonimo);
 
     paciente.get(this.state.Patient.objectId.toString())
     .then((ingresado) => {
       ingresado.set('ingresado', true);
-      ingresado.save()
+      ingresado.save();
     });
 
 
@@ -565,12 +565,12 @@ pacienteAnonimo() {
     switch (this.state.Tipo) {
       case 'Cirugía ambulatoria':
         ingresos.set('medico', medicoPointer);
-        ingresos.set('tipoMedico', 'Médico titular')
+        ingresos.set('tipoMedico', 'Médico titular');
         ingresos.set('Alta', false);
         break;
       case 'Cirugía mayor':
         ingresos.set('medico', medicoPointer);
-        ingresos.set('tipoMedico', 'Médico titular')
+        ingresos.set('tipoMedico', 'Médico titular');
         ingresos.set('habitacion', ocupacionPointer);
         ingresos.set('Alta', false);
         actualizarOcupacion(this.state.Habitacion.objectId.toString());
@@ -578,12 +578,12 @@ pacienteAnonimo() {
       case 'Urgencias':
       ingresos.set('Alta', false);
         ingresos.set('medico', medicoPointer);
-        ingresos.set('tipoMedico', 'Médico de guardia')
+        ingresos.set('tipoMedico', 'Médico de guardia');
         break;
       case 'Hospitalización':
       ingresos.set('Alta', false);
         ingresos.set('medico', medicoPointer);
-        ingresos.set('tipoMedico', 'Médico titular')
+        ingresos.set('tipoMedico', 'Médico titular');
         ingresos.set('habitacion', ocupacionPointer);
         actualizarOcupacion(this.state.Habitacion.objectId.toString());
         break;
@@ -668,10 +668,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   textStyle: {
-    padding: 10,
-  },
-  footerButton: {
-
+    padding: 10
   }
 });
 

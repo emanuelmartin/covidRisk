@@ -4,22 +4,13 @@ import { View, Text, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Dropdown } from 'react-native-material-dropdown';
-import { CardSection, Input, Spinner, Button } from './common';
+import { CardSection, Input, Spinner, Button } from '../common';
 import {
-	codeChanged,
-	nameChanged,
-	formulaChanged,
-	laboratoryChanged,
-	presentationChanged,
-	contentChanged,
-	stockChanged,
-	publicPriceChanged,
-	pacientPriceChanged,
-	assurancePriceChanged,
+	itemChanged,
 	addItem,
 	cleanBarCode,
 	acceptItemAded
-} from '../actions';
+} from '../../actions';
 
 class AddItemScreen extends Component {
 	static navigationOptions = {
@@ -32,74 +23,44 @@ class AddItemScreen extends Component {
 		this.state = { type: '' };
   }
 
-	onCodeChange(text) {
-		this.props.codeChanged(text);
-	}
+	componentDidMount() {
+    if (this.props.userType === 'cafeteria') {
+			this.setState({ type: 'cafeteria' });
+		}
+  }
 
-	onNameChange(text) {
-		this.props.nameChanged(text);
-	}
-
-	onFormulaChange(text) {
-		this.props.formulaChanged(text);
-	}
-
-	onLaboratoryChange(text) {
-		this.props.laboratoryChanged(text);
-	}
-
-	onPresentationChange(text) {
-		this.props.presentationChanged(text);
-	}
-
-	onContentChange(text) {
-		this.props.contentChanged(text);
-	}
-
-	onStockChange(text) {
-		this.props.stockChanged(text);
-	}
-
-	onPublicPriceChange(text) {
-		this.props.publicPriceChanged(text);
-	}
-
-	onPacientPriceChange(text) {
-		this.props.pacientPriceChanged(text);
-	}
-
-	onAssurancePriceChange(text) {
-		this.props.assurancePriceChanged(text);
+	onItemChange(variable, text) {
+    this.props.itemChanged({ variable, text });
 	}
 
 	onButtonPress() {
     const {
-			code,
-			codeType,
-			name,
+			codigo,
+			tipoCodigo,
+			nombre,
 			formula,
-			laboratory,
-			presentation,
-			content,
+			laboratorio,
+			presentacion,
+			contenido,
 			stock,
-			publicPrice,
-			pacientPrice,
-			assurancePrice
+			precioPublico,
+			precioPaciente,
+			precioSeguro
 		} = this.props;
 
     this.props.addItem({
-			code,
-			codeType,
-			name,
+			codigo,
+			tipoCodigo,
+			nombre,
 			formula,
-			laboratory,
-			presentation,
-			content,
+			laboratorio,
+			presentacion,
+			contenido,
 			stock,
-			publicPrice,
-			pacientPrice,
-			assurancePrice,
-			type: this.state.type,
+			precioPublico,
+			precioPaciente,
+			precioSeguro,
+			tipo: this.state.type,
 		});
   }
 
@@ -110,10 +71,6 @@ class AddItemScreen extends Component {
 	onOkPress() {
 		this.props.acceptItemAded();
 	}
-
-	goHome() {
-    this.props.navigation.navigate('PharmacyScreen');
-  }
 
 	renderError() {
     if (this.props.error) {
@@ -140,15 +97,15 @@ class AddItemScreen extends Component {
   }
 
 	renderSpecificFields() {
-		if (this.state.type === 'Medicamento') {
+		if (this.state.type === 'medicamento') {
 			return (
 				<View>
 					<CardSection>
 						<Input
 							label="Nombre Comercial"
 							placeholder="Advil"
-							onChangeText={this.onNameChange.bind(this)}
-							value={this.props.name}
+							onChangeText={(text) => this.onItemChange('nombre', text)}
+							value={this.props.nombre}
 						/>
 					</CardSection>
 
@@ -156,7 +113,7 @@ class AddItemScreen extends Component {
 						<Input
 							label="Fórmula"
 							placeholder="Ibuprofeno"
-							onChangeText={this.onFormulaChange.bind(this)}
+							onChangeText={(text) => this.onItemChange('formula', text)}
 							value={this.props.formula}
 						/>
 					</CardSection>
@@ -165,8 +122,8 @@ class AddItemScreen extends Component {
 						<Input
 							label="Laboratorio"
 							placeholder="Wyeth"
-							onChangeText={this.onLaboratoryChange.bind(this)}
-							value={this.props.laboratory}
+							onChangeText={(text) => this.onItemChange('laboratorio', text)}
+							value={this.props.laboratorio}
 						/>
 					</CardSection>
 
@@ -174,8 +131,8 @@ class AddItemScreen extends Component {
 						<Input
 							label="Presentación"
 							placeholder="Jarabe"
-							onChangeText={this.onPresentationChange.bind(this)}
-							value={this.props.presentation}
+							onChangeText={(text) => this.onItemChange('presentacion', text)}
+							value={this.props.presentacion}
 						/>
 					</CardSection>
 
@@ -183,22 +140,22 @@ class AddItemScreen extends Component {
 						<Input
 							label="Contenido"
 							placeholder="200 ml"
-							onChangeText={this.onContentChange.bind(this)}
-							value={this.props.content}
+							onChangeText={(text) => this.onItemChange('contenido', text)}
+							value={this.props.contenido}
 						/>
 					</CardSection>
 				</View>
 			);
 		}
-		else if (this.state.type === 'Insumo') {
+		else if (this.state.type === 'insumo') {
 			return (
 				<View>
 					<CardSection>
 						<Input
 							label="Descripción"
 							placeholder="Venda elástica 10x5mm"
-							onChangeText={this.onNameChange.bind(this)}
-							value={this.props.name}
+							onChangeText={(text) => this.onItemChange('nombre', text)}
+							value={this.props.nombre}
 						/>
 					</CardSection>
 
@@ -206,8 +163,8 @@ class AddItemScreen extends Component {
 						<Input
 							label="Marca"
 							placeholder="Le Roy"
-							onChangeText={this.onLaboratoryChange.bind(this)}
-							value={this.props.laboratory}
+							onChangeText={(text) => this.onItemChange('laboratorio', text)}
+							value={this.props.laboratorio}
 						/>
 					</CardSection>
 				</View>
@@ -216,7 +173,7 @@ class AddItemScreen extends Component {
 	}
 
 	renderFields() {
-		if (this.state.type !== '') {
+		if (this.state.type === 'medicamento' || this.state.type === 'insumo') {
 			return (
 				<View>
 					<CardSection>
@@ -231,8 +188,8 @@ class AddItemScreen extends Component {
 							<Input
 								label="Código de barras"
 								placeholder="0602760006362"
-								onChangeText={this.onCodeChange.bind(this)}
-								value={this.props.code}
+								onChangeText={(text) => this.onItemChange('codigo', text)}
+								value={this.props.codigo}
 							/>
 							<Icon
 								name='camera'
@@ -249,7 +206,7 @@ class AddItemScreen extends Component {
 						<Input
 							label="Stock"
 							placeholder="0"
-							onChangeText={this.onStockChange.bind(this)}
+							onChangeText={(text) => this.onItemChange('stock', text)}
 							value={this.props.stock}
 							keyboardType="numeric"
 						/>
@@ -259,9 +216,9 @@ class AddItemScreen extends Component {
 						<Input
 							label="Precio Venta Público"
 							placeholder="$ 350.00"
-							onChangeText={this.onPublicPriceChange.bind(this)}
+							onChangeText={(text) => this.onItemChange('precioPublico', text)}
 							keyboardType="numeric"
-							value={this.props.publicPrice}
+							value={this.props.precioPublico}
 						/>
 					</CardSection>
 
@@ -270,8 +227,8 @@ class AddItemScreen extends Component {
 							label="Precio Venta Pacientes"
 							placeholder="$ 250.00"
 							keyboardType="numeric"
-							onChangeText={this.onPacientPriceChange.bind(this)}
-							value={this.props.pacientPrice}
+							onChangeText={(text) => this.onItemChange('precioPaciente', text)}
+							value={this.props.precioPaciente}
 						/>
 					</CardSection>
 
@@ -279,9 +236,44 @@ class AddItemScreen extends Component {
 						<Input
 							label="Precio Venta Aseguradoras"
 							placeholder="$ 500.00"
-							onChangeText={this.onAssurancePriceChange.bind(this)}
+							onChangeText={(text) => this.onItemChange('precioSeguro', text)}
 							keyboardType="numeric"
-							value={this.props.assurancePrice}
+							value={this.props.precioSeguro}
+						/>
+					</CardSection>
+						{this.renderError()}
+					<CardSection>
+						{this.renderButton()}
+					</CardSection>
+				</View>
+			);
+		} else if (this.state.type === 'cafeteria') {
+			return (
+				<View>
+					<CardSection>
+						<Input
+							label="Nombre del producto"
+							placeholder="Yogurt Activia (Fresa)"
+							onChangeText={(text) => this.onItemChange('nombre', text)}
+							value={this.props.nombre}
+						/>
+					</CardSection>
+					<CardSection>
+						<Input
+							label="Precio de Venta"
+							placeholder="$ 350.00"
+							onChangeText={(text) => this.onItemChange('precioPublico', text)}
+							keyboardType="numeric"
+							value={this.props.precioPublico}
+						/>
+					</CardSection>
+					<CardSection>
+						<Input
+							label="Stock"
+							placeholder="0"
+							onChangeText={(text) => this.onItemChange('stock', text)}
+							value={this.props.stock}
+							keyboardType="numeric"
 						/>
 					</CardSection>
 						{this.renderError()}
@@ -293,12 +285,33 @@ class AddItemScreen extends Component {
 		}
 	}
 
+	renderDropDown(data) {
+		if (data !== null) {
+			return (
+				<CardSection>
+          <Dropdown
+          containerStyle={{ flex: 1 }}
+          data={data}
+          value={this.state.type}
+          onChangeText={value => this.setState({ type: value })}
+          placeholder={'Selecciona el tipo de producto'}
+          />
+        </CardSection>
+			);
+		}
+	}
+
   render() {
-		const data = [{
-        value: 'Medicamento',
-      }, {
-        value: 'Insumo'
-      }];
+		let data = null;
+		if (this.props.userType === 'admin') {
+			data = [{ value: 'medicamento' },
+							{ value: 'insumo' },
+							{ value: 'cafeteria' }];
+		} else if (this.props.userType === 'enfermeria' ||
+		this.props.userType === 'farmacia') {
+			data = [{ value: 'medicamento' },
+							{ value: 'insumo' }];
+		}
 		if (this.props.success) {
 			Alert.alert(
         'Producto Agregado con éxito',
@@ -310,17 +323,10 @@ class AddItemScreen extends Component {
         <View />
       );
 		}
+
     return (
 			<KeyboardAwareScrollView>
-				<CardSection>
-          <Dropdown
-          containerStyle={{ flex: 1 }}
-          data={data}
-          value={this.state.type}
-          onChangeText={value => this.setState({ type: value })}
-          placeholder={'Selecciona el tipo de producto'}
-          />
-        </CardSection>
+				{this.renderDropDown(data)}
 				{this.renderFields()}
 			</KeyboardAwareScrollView>
     );
@@ -329,20 +335,21 @@ class AddItemScreen extends Component {
 
 const mapStateToProps = state => {
   return {
-    code: state.item.code,
-		codeType: state.item.codeType,
-    name: state.item.name,
+    codigo: state.item.codigo,
+		tipoCodigo: state.item.tipoCodigo,
+    nombre: state.item.nombre,
 		formula: state.item.formula,
-		laboratory: state.item.laboratory,
-    presentation: state.item.presentation,
-		content: state.item.content,
+		laboratorio: state.item.laboratorio,
+    presentacion: state.item.presentacion,
+		contenido: state.item.contenido,
 		stock: state.item.stock,
-    publicPrice: state.item.publicPrice,
-		pacientPrice: state.item.pacientPrice,
-		assurancePrice: state.item.assurancePrice,
+    precioPublico: state.item.precioPublico,
+		precioPaciente: state.item.precioPaciente,
+		precioSeguro: state.item.precioSeguro,
 		error: state.item.error,
 		success: state.item.success,
-    loading: state.item.loading
+    loading: state.item.loading,
+		userType: state.auth.user.attributes.type
   };
 };
 
@@ -363,16 +370,7 @@ const styles = {
 };
 
 export default connect(mapStateToProps, {
-	codeChanged,
-	nameChanged,
-	formulaChanged,
-	laboratoryChanged,
-	presentationChanged,
-	contentChanged,
-	stockChanged,
-	publicPriceChanged,
-	pacientPriceChanged,
-	assurancePriceChanged,
+	itemChanged,
 	addItem,
 	acceptItemAded,
 	cleanBarCode
