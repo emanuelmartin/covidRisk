@@ -6,7 +6,8 @@ import {
   FlatList,
   ActivityIndicator,
   TouchableWithoutFeedback,
-  ScrollView
+  ScrollView,
+  Alert
 } from 'react-native';
 import Parse from 'parse/react-native';
 import { SearchBar, CheckBox } from 'react-native-elements';
@@ -16,7 +17,7 @@ import { Dropdown } from 'react-native-material-dropdown';
 import Modal from 'react-native-modal';
 import { Button, CardSection } from '../common';
 import { ComponentePaciente, ComponenteMedico, ComponenteHabitacion, ComponenteEspecialidad, ComponenteConsultorio } from '../Listas';
-import { queryFunc, cleanFunc, session } from '../../actions';
+import { queryFunc, cleanFunc, session, printHTMLReducer } from '../../actions';
 
 class PatientSelect extends React.Component {
   static navigationOptions = {
@@ -589,7 +590,39 @@ pacienteAnonimo() {
         break;
       default:
     }
-    ingresos.save();
+
+    ingresos.save().then(() => {
+      Alert.alert(
+    'Listo',
+    'Paciente ingresado correctamente',
+    [
+      { text: 'OK', onPress: () => this.imprimir() },
+    ],
+    { cancelable: false },
+  );
+        });
+}
+
+imprimir() {
+  if (this.state.Tipo === 'Hospitalización') {
+    Alert.alert(
+  '',
+  'Imprimiendo consentimiento de hospitalización',
+  [
+    { text: 'OK', onPress: () => this.imprimirConsentimientoHospitalizacion() },
+  ],
+  { cancelable: false },
+);
+  }
+}
+
+imprimirConsentimientoHospitalizacion() {
+  const pacient = this.state.Patient;
+  const medic = this.state.Medico;
+  const fecha = { dia: '9', mes: 'septiembre', ano: '2019' }
+  const type = 'consentimientoHospitalización'
+  const formato = { paciente: pacient, medico: medic, fecha, type };
+  this.props.printHTMLReducer(formato)
 }
 
   search = text => {
@@ -683,4 +716,4 @@ const mapStateToProps = ({ query, auth }) => {
  return { text, Patient, Ocupacion, Medico, Especialidad, user, Consultorio };
 };
 
-export default connect(mapStateToProps, { queryFunc, cleanFunc, session })(PatientSelect);
+export default connect(mapStateToProps, { queryFunc, cleanFunc, session, printHTMLReducer })(PatientSelect);
