@@ -62,7 +62,23 @@ export default class PacientesActivos extends React.Component {
 
               const pacienteAnonimo = obj.get('pacienteAnonimo');
               if (pacienteAnonimo) {
-                ingreso.paciente = { names: 'Paciente nónimo', pacienteAnonimo: true }
+                ingreso.paciente = { names: 'Paciente anónimo', pacienteAnonimo: true }
+              } else {
+              const paciente = obj.get('paciente');
+              ingreso.paciente = paciente.attributes;
+              ids.paciente = paciente.id;
+            }
+            } break;
+
+            case 'Shock': {
+              ingreso.tipoMedico = 'Médico de guardia';
+              const medico = obj.get('medico');
+              ingreso.medico = medico.attributes;
+              ids.medico = medico.id;
+
+              const pacienteAnonimo = obj.get('pacienteAnonimo');
+              if (pacienteAnonimo) {
+                ingreso.paciente = { names: 'Paciente anónimo', pacienteAnonimo: true }
               } else {
               const paciente = obj.get('paciente');
               ingreso.paciente = paciente.attributes;

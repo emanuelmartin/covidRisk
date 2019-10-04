@@ -279,6 +279,9 @@ class SideMenu extends Component {
              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('qrGen')}>
                Prueba generación de QR
              </Text>
+             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('ingresarPedido')}>
+               Prueba ingreso de pedido
+             </Text>
            </View>
          </View>
       );

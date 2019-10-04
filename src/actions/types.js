@@ -63,3 +63,5 @@ export const PROVIDERFORM_UPDATE = 'providerform_update';
 export const PROVIDER_CREATE = 'provider_create';
 export const PROVIDER_CREATE_SUCCESS = 'provider_create_success';
 export const PROVIDER_CREATE_FAIL = 'provider_create_fail';
+
+export const PRINT = 'print';

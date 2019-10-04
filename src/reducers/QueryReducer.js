@@ -20,8 +20,7 @@ const INITIAL_STATE = {
   Rehabilitacion: '',
   Tomografia: '',
   RayosX: '',
-  multiQry: '',
-  loading: false
+  loading: true
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -35,12 +34,12 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, [action.name]: 'Failed', loading: false };
     case DB_CLEAN:
       return { ...state, ...INITIAL_STATE };
-    case WRITE_SUCCESS:
-      console.log(action.payload);
-      return { ...state, [action.name]: action.payload };
-    case DELETE_SUCCESS: {
-      console.log(action);
-      return { ...state }; }
+    case WRITE_SUCCESS: {
+      console.log(action.payload)
+      return { ...state, [action.name]: action.payload }; }
+      case DELETE_SUCCESS: {
+        console.log(action)
+        return { ...state }; }
     default:
       return { ...state, ...INITIAL_STATE };
     }

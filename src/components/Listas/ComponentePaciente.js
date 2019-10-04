@@ -62,6 +62,22 @@ function seleccionarPaciente(props) {
             );
           } break;
 
+          case 'Shock': {
+            return (
+              <View>
+              <View>
+                <Text> {estadoActual} </Text>
+              </View>
+                <View>
+                  <Text> {paciente.names} </Text>
+                </View>
+                <View>
+                  <Text> {tipoMedico}: {medico.names} </Text>
+                </View>
+              </View>
+            );
+          } break;
+
           case 'Hospitalización': {
             return (
               <View>
