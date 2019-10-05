@@ -32,8 +32,9 @@ class PatientSelect extends React.Component {
     let Especialidad = { name: '' };
     let Consultorio = { ID: '' };
     let Habitacion = { ID: '', query: false };
-    this.state = { isLoading: false, search: '', Habitacion, Patient, Medico, Especialidad, Consultorio, pacienteAnonimo: false };
+    const INITIAL_STATE = { isLoading: false, search: '', Habitacion, Patient, Medico, Especialidad, Consultorio, pacienteAnonimo: false, print1: false, print2: false };
     this.arrayholder = [];
+    this.state = INITIAL_STATE;
   }
 
     renderIt(item, tipo, busqueda) {
@@ -548,6 +549,15 @@ pacienteAnonimo() {
     ingresos.set('ingresadoPor', usuarioPointer);
     ingresos.set('pacienteAnonimo', pacienteAnonimo);
 
+    const ingresoInfo = { Tipo: this.state.Tipo,
+       estadoActual: this.state.tipo,
+        paciente: this.state.Patient,
+        medico: this.state.Medico,
+        habitacion: this.state.Habitacion,
+        fecha: { dia: '9', mes: 'septiembre', ano: '2019' } }
+
+    this.setState({ ingresoInfo });
+
     paciente.get(this.state.Patient.objectId.toString())
     .then((ingresado) => {
       ingresado.set('ingresado', true);
@@ -591,38 +601,23 @@ pacienteAnonimo() {
       default:
     }
 
+
     ingresos.save().then(() => {
       Alert.alert(
-    'Listo',
-    'Paciente ingresado correctamente',
-    [
-      { text: 'OK', onPress: () => this.imprimir() },
-    ],
-    { cancelable: false },
-  );
+        'Listo',
+        'Paciente ingresado correctamente',
+        [
+          { text: 'OK', onPress: () => this.imprimirFormatos() },
+        ],
+      );
         });
 }
 
-imprimir() {
+async imprimirFormatos() {
+const INITIAL_STATE = this.INITIAL_STATE;
   if (this.state.Tipo === 'Hospitalización') {
-    Alert.alert(
-  '',
-  'Imprimiendo consentimiento de hospitalización',
-  [
-    { text: 'OK', onPress: () => this.imprimirConsentimientoHospitalizacion() },
-  ],
-  { cancelable: false },
-);
+    this.props.printHTMLReducer(this.state.ingresoInfo, 'consentimiento de hospitalización')
   }
-}
-
-imprimirConsentimientoHospitalizacion() {
-  const pacient = this.state.Patient;
-  const medic = this.state.Medico;
-  const fecha = { dia: '9', mes: 'septiembre', ano: '2019' }
-  const type = 'consentimientoHospitalización'
-  const formato = { paciente: pacient, medico: medic, fecha, type };
-  this.props.printHTMLReducer(formato)
 }
 
   search = text => {
