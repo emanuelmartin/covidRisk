@@ -276,6 +276,9 @@ class SideMenu extends Component {
              Desarrollo
            </Text>
            <View style={styles.navSectionStyle}>
+           <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Reimprimir')}>
+            Reimpresión
+           </Text>
              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('PruebaImpresion')}>
                Prueba de impresión
              </Text>

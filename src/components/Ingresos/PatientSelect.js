@@ -17,7 +17,7 @@ import { Dropdown } from 'react-native-material-dropdown';
 import Modal from 'react-native-modal';
 import { Button, CardSection } from '../common';
 import { ComponentePaciente, ComponenteMedico, ComponenteHabitacion, ComponenteEspecialidad, ComponenteConsultorio } from '../Listas';
-import { queryFunc, cleanFunc, session, printHTMLReducer } from '../../actions';
+import { queryFunc, cleanFunc, multiWrite, session, printHTMLReducer } from '../../actions';
 
 class PatientSelect extends React.Component {
   static navigationOptions = {
@@ -537,16 +537,9 @@ pacienteAnonimo() {
   objectId: this.state.Habitacion.objectId
   };
 
-  const usuarioPointer = {
-  __type: 'Pointer',
-  className: '_User',
-  objectId: this.props.user.id
-  };
-
     ingresos.set('Tipo', this.state.Tipo);
     ingresos.set('estadoActual', this.state.Tipo);
     ingresos.set('paciente', pacientePointer);
-    ingresos.set('ingresadoPor', usuarioPointer);
     ingresos.set('pacienteAnonimo', pacienteAnonimo);
 
     const ingresoInfo = { Tipo: this.state.Tipo,
@@ -616,7 +609,12 @@ pacienteAnonimo() {
 async imprimirFormatos() {
 const INITIAL_STATE = this.INITIAL_STATE;
   if (this.state.Tipo === 'Hospitalización') {
-    this.props.printHTMLReducer(this.state.ingresoInfo, 'consentimiento de hospitalización')
+    this.props.printHTMLReducer(this.state.ingresoInfo, 'Consentimiento de hospitalización', true)
+    const info = [{ accion: 'set', variable: 'info', valor: this.state.ingresoInfo },
+                  { accion: 'set', variable: 'type', valor: 'Consentimiento de hospitalización' },
+                  { accion: 'set', variable: 'pacienteStr', valor: this.state.Patient.objectId },
+                  { accion: 'set', variable: 'paciente', valor: this.state.Patient.objectId, tipo: 'pointer', pointerTo: 'Patient' }]
+    this.props.multiWrite('Impresiones', info)
   }
 }
 
@@ -700,12 +698,10 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = ({ query, auth }) => {
+const mapStateToProps = ({ query }) => {
  const { text, Patient, Ocupacion, Medico, Especialidad, Consultorio } = query;
- const { user } = auth;
  console.log(query);
- console.log(auth);
- return { text, Patient, Ocupacion, Medico, Especialidad, user, Consultorio };
+ return { text, Patient, Ocupacion, Medico, Especialidad, Consultorio };
 };
 
-export default connect(mapStateToProps, { queryFunc, cleanFunc, session, printHTMLReducer })(PatientSelect);
+export default connect(mapStateToProps, { queryFunc, cleanFunc, multiWrite, session, printHTMLReducer })(PatientSelect);

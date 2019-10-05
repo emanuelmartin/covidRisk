@@ -32,6 +32,7 @@ import BarCodeScanner from './BarCodeScanner';
 import qrGen from './qrGenerator';
 import ListaProveedores from './Proveedores/ListaProveedores';
 import AgregarProveedor from './Proveedores/AgregarProveedor';
+import Reimprimir from './Formatos/reimprimir'
 
 import {
   CajaPrincipal,
@@ -74,7 +75,8 @@ const AppStack = createStackNavigator(
     VoiceNative,
     qrGen,
     ListaProveedores,
-    AgregarProveedor
+    AgregarProveedor,
+    Reimprimir
     },
   {
     defaultNavigationOptions: {

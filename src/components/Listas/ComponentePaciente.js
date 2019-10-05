@@ -3,12 +3,12 @@ import { View, Text } from 'react-native';
 
 const ComponentePaciente = (props) => {
 
-function seleccionarPaciente(props) {
+function seleccionarPaciente() {
+  const { paciente, medico, habitacion, tipo, tipoMedico, estadoActual } = props.item;
+
   switch (props.tipo) {
     case 'activos': {
           console.log(props.item)
-
-          const { paciente, medico, habitacion, tipo, tipoMedico, estadoActual } = props.item;
 
         switch (estadoActual) {
           case 'Urgencias': {

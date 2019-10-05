@@ -48,6 +48,11 @@ export const queryFunc = ({ type, object, variable, text, include }) => {
   };
 };
 
+export const cleanImpresiones = () => {
+  return async (dispatch) =>
+  dispatch({ type: DB_QUERY_RESULTS, payload: null, name: Impresiones, loading: false });
+}
+
 export const queryAttach = ({ object, constrain, text }) => {
   return async (dispatch) => {
     dispatch({ type: DB_QUERY, payload: text });
@@ -152,8 +157,34 @@ export const multiQuery = (array, text) => {
   };
 };
 
-export const writeFunc = (clase, tipo, propiedadConsulta, consulta, accion, propiedadAgregar, valor, user) => {
+export const multiWrite = (clase, acciones) => {
   let jsonArray = [];
+  const user = Parse.User.current();
+  return async (dispatch) => {
+    const ParseObject = Parse.Object.extend(clase);
+    const parseObject = new ParseObject();
+    acciones.forEach((elemento) => {
+      console.log(elemento)
+
+      if (elemento.tipo === 'pointer') {
+        elemento.valor = {
+        __type: 'Pointer',
+        className: elemento.pointerTo,
+        objectId: elemento.valor.toString()
+        };
+      }
+        parseObject[elemento.accion](elemento.variable, elemento.valor);
+    })
+        parseObject.save().then((results) => {
+        jsonArray = results.toJSON();
+          dispatch({ type: WRITE_SUCCESS, name: clase, payload: jsonArray });
+    });
+}
+}
+
+export const writeFunc = (clase, tipo, propiedadConsulta, consulta, accion, propiedadAgregar, valor) => {
+  let jsonArray = [];
+  const user = Parse.User.current();
   return async (dispatch) => {
     const parseObject = Parse.Object.extend(clase);
     const query = new Parse.Query(parseObject);
@@ -193,7 +224,8 @@ export const writeFunc = (clase, tipo, propiedadConsulta, consulta, accion, prop
   };
 };
 
-export const deleteFunc = (clase, tipo, propiedadConsulta, consulta, propiedadEliminar, user) => {
+export const deleteFunc = (clase, tipo, propiedadConsulta, consulta, propiedadEliminar) => {
+  const user = Parse.User.current();
   return async (dispatch) => {
     const parseObject = Parse.Object.extend(clase);
     const query = new Parse.Query(parseObject);
