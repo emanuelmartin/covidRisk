@@ -39,6 +39,10 @@ export const addItem = ({
   precioPublico,
   precioPaciente,
   precioSeguro,
+  iva,
+  proveedor,
+  costo,
+  clave_SAT,
   tipo
 }) => {
   return async (dispatch) => {
@@ -97,7 +101,12 @@ export const addItem = ({
         item.set('precioPaciente', parseInt(precioPublico, 10));
         item.set('precioSeguro', parseInt(precioPublico, 10));
       }
-
+      item.set('iva', iva);
+      item.set('proveedor', proveedor);
+      if (costo === '') {
+        item.set('0');
+      } else { item.set('costo', parseInt(costo, 10)); }
+      item.set('clave_SAT', clave_SAT);
       item.save()
         .then(
         (result) => {

@@ -16,7 +16,7 @@ import { NavigationActions } from 'react-navigation';
 import { SearchBar, Icon } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
 import { CardSection, Button, Spinner } from '../common';
-import { queryFunc, queryAttach, cleanFunc, addBill, clearBill, payment } from '../../actions';
+import { queryFunc, queryAttach, cleanFunc, addBill, clearBill, payment, printHTMLReducer } from '../../actions';
 
 class Cafe extends Component {
   static navigationOptions = {
@@ -90,13 +90,21 @@ class Cafe extends Component {
   onPayPress() {
     let total = 0;
     let newPrice = 0;
+    const info = {
+      fecha: { dia: '06-10-2019', hora: '19:42' },
+      folio: 'C-000010',
+      caja: 'Cafetería',
+      recibido: 170,
+      productos: this.state.Alimentos
+    };
     this.state.Alimentos.forEach((bill) => {
       if (isNaN(parseFloat(bill.cantidad)) || bill.cantidad <= 0) {
         newPrice = 0;
       } else { newPrice = parseFloat(bill.cantidad); }
       total += parseFloat(bill.precioPublico) * newPrice;
     });
-    this.props.payment('ventas', this.state.Alimentos, total);
+    this.props.payment('Ventas', this.state.Alimentos, total);
+    this.props.printHTMLReducer(info, 'ticketVenta', false);
   }
 
   onNewBillPress() {
@@ -452,7 +460,6 @@ class Cafe extends Component {
       return (
           <SwipeView
             disableSwipeToRight
-            previewSwipeDemo={true}
             leftOpenValue={leftOpenValue}
             onSwipedLeft={() => this.onSwipedLeft(index)}
             swipeDuration={400}
@@ -566,4 +573,4 @@ const mapStateToProps = ({ query, bill }) => {
 
 export default connect(
   mapStateToProps,
-  { queryFunc, queryAttach, cleanFunc, addBill, clearBill, payment })(Cafe);
+  { queryFunc, queryAttach, cleanFunc, addBill, clearBill, payment, printHTMLReducer })(Cafe);

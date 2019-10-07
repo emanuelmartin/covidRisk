@@ -25,6 +25,10 @@ const INITIAL_STATE = {
   precioPublico: '',
   precioPaciente: '',
   precioSeguro: '',
+  iva: '',
+  proveedor: '',
+  costo: '',
+  clave_SAT: '',
   error: '',
   success: false,
   loading: false

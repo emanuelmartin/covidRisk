@@ -609,12 +609,12 @@ pacienteAnonimo() {
 async imprimirFormatos() {
 const INITIAL_STATE = this.INITIAL_STATE;
   if (this.state.Tipo === 'Hospitalización') {
-    this.props.printHTMLReducer(this.state.ingresoInfo, 'Consentimiento de hospitalización', true)
+    this.props.printHTMLReducer(this.state.ingresoInfo, 'Consentimiento de hospitalización', true);
     const info = [{ accion: 'set', variable: 'info', valor: this.state.ingresoInfo },
                   { accion: 'set', variable: 'type', valor: 'Consentimiento de hospitalización' },
                   { accion: 'set', variable: 'pacienteStr', valor: this.state.Patient.objectId },
-                  { accion: 'set', variable: 'paciente', valor: this.state.Patient.objectId, tipo: 'pointer', pointerTo: 'Patient' }]
-    this.props.multiWrite('Impresiones', info)
+                  { accion: 'set', variable: 'paciente', valor: this.state.Patient.objectId, tipo: 'pointer', pointerTo: 'Patient' }];
+    this.props.multiWrite('Impresiones', info);
   }
 }
 

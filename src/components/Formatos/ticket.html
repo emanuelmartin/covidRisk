@@ -1,0 +1,140 @@
+<html>
+  <head>
+    <style type="text/css">
+      * {
+          font-size: 12px;
+          font-family: 'Times New Roman';
+      }
+
+      td,
+      th,
+      tr,
+      table {
+          border-top: 1px solid black;
+          border-collapse: collapse;
+      }
+
+      td.descripcion,
+      th.descripcion {
+          width: 75px;
+          max-width: 75px;
+      }
+
+      td.cantidad,
+      th.cantidad {
+          width: 50px;
+          max-width: 50px;
+          word-break: break-all;
+      }
+
+      td.precio,
+      th.precio,
+      td.total,
+      th.total {
+          width: 75px;
+          max-width: 75px;
+          word-break: break-all;
+      }
+
+      .centrado {
+          text-align: center;
+          align-content: center;
+      }
+
+      .align-rigth {
+          text-align: right;
+          align-content: right;
+      }
+
+      .ticket {
+          width: 200;
+          max-width: 200px;
+      }
+
+      img {
+          max-width: inherit;
+          width: inherit;
+      }
+
+      img.qr {
+        width : 100;
+        height: auto;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="ticket">
+      <img
+          src="../img/logoCompleto.jpeg"
+          alt="Logotipo">
+      <p class="centrado">Hospital Real San Lucas S.A. de C.V. <br>
+      Blvd. Anacleto González Flores, No. 178 <br>
+      C.P. 47660, Col. San Miguel<br>
+      RFC: HRS1605113C7</p>
+
+      <p class="centrado"><br>Nota de Venta</p>
+      <p><b>Folio:</b> C-000001<br><b>Caja:</b> Cafeteria
+      <br><b>Fecha:</b> 23/08/2017 08:22 a.m.</p>
+      <table>
+        <thead>
+          <tr>
+            <th class="cantidad">Cant.</th>
+            <th class="descripcion">Descripción</th>
+
+            <th class="precio">Precio</th>
+            <th class="total">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="cantidad">2</td>
+            <td class="descripcion">Sandwich de Jamón</td>
+            <td class="precio">$50.00</td>
+            <td class="total">$100.00</td>
+          </tr>
+          <tr>
+            <td class="cantidad">1</td>
+            <td class="descripcion">Capuchino mediano</td>
+            <td class="precio">$35.00</td>
+            <td class="total">$35.00</td>
+          </tr>
+          <tr>
+            <td class="cantidad">1</td>
+            <td class="descripcion">Jugo de naranja</td>
+            <td class="precio">$25.00</td>
+            <td class="total">$25.00</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="align-rigth"><b>Total (con impuestos):</b> $160.00</p>
+      <table>
+        <thead>
+          <tr>
+            <th class="pago">Pago</th>
+            <th class="total">Total</th>
+            <th class="recibido">Recibido</th>
+            <th class="devuelto">Devuelto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="pago">Efectivo</td>
+            <td class="total">$160.00</td>
+            <td class="recibido">$170.00</td>
+            <td class="devuelto">$10.00</td>
+          </tr>
+        </tbody>
+      </table>
+      <p><br></p>
+      <img
+          class="qr"
+          src="../../temp/qrTicket.png"
+          alt="Logotipo">
+      <p class="centrado">¡GRACIAS POR SU COMPRA!</p>
+    </div>
+  </body>
+</html>

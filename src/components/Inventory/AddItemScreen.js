@@ -45,7 +45,11 @@ class AddItemScreen extends Component {
 			stock,
 			precioPublico,
 			precioPaciente,
-			precioSeguro
+			precioSeguro,
+			iva,
+			proveedor,
+			costo,
+			clave_SAT
 		} = this.props;
 
     this.props.addItem({
@@ -60,6 +64,10 @@ class AddItemScreen extends Component {
 			precioPublico,
 			precioPaciente,
 			precioSeguro,
+			iva,
+			proveedor,
+			costo,
+			clave_SAT,
 			tipo: this.state.type,
 		});
   }
@@ -204,6 +212,49 @@ class AddItemScreen extends Component {
 
 					<CardSection>
 						<Input
+							label="Proveedor"
+							placeholder="PiSA"
+							onChangeText={(text) => this.onItemChange('proveedor', text)}
+							value={this.props.proveedor}
+						/>
+					</CardSection>
+
+					<CardSection>
+						<Input
+							label="Costo de Adquisición"
+							placeholder="0"
+							onChangeText={(text) => this.onItemChange('costo', text)}
+							value={this.props.costo}
+							keyboardType="numeric"
+						/>
+					</CardSection>
+
+					<CardSection>
+						<Input
+							label="Clave SAT"
+							placeholder="01010101"
+							onChangeText={(text) => this.onItemChange('clave_SAT', text)}
+							value={this.props.clave_SAT}
+						/>
+					</CardSection>
+
+					<CardSection>
+						<Text>IVA: </Text>
+						<Dropdown
+							containerStyle={{ flex: 1 }}
+							data={[{ value: 'nulo' },
+										{ value: '0' },
+										{ value: '10' },
+										{ value: '16' }
+										]}
+							value={this.props.iva}
+							onChangeText={(text) => this.onItemChange('iva', text)}
+							placeholder={'Selecciona la tasa correspondiente'}
+						/>
+					</CardSection>
+
+					<CardSection>
+						<Input
 							label="Stock"
 							placeholder="0"
 							onChangeText={(text) => this.onItemChange('stock', text)}
@@ -251,6 +302,30 @@ class AddItemScreen extends Component {
 			return (
 				<View>
 					<CardSection>
+						<View
+							style={{
+								flex: 1,
+								flexDirection: 'row',
+								justifyContent: 'center',
+								alignItems: 'center',
+							}}
+						>
+							<Input
+								label="Código de barras"
+								placeholder="0602760006362"
+								onChangeText={(text) => this.onItemChange('codigo', text)}
+								value={this.props.codigo}
+							/>
+							<Icon
+								name='camera'
+								type='material-community'
+								onPress={this.onCameraPress.bind(this)}
+							/>
+						</View>
+
+					</CardSection>
+
+					<CardSection>
 						<Input
 							label="Nombre del producto"
 							placeholder="Yogurt Activia (Fresa)"
@@ -258,6 +333,50 @@ class AddItemScreen extends Component {
 							value={this.props.nombre}
 						/>
 					</CardSection>
+
+					<CardSection>
+						<Input
+							label="Proveedor"
+							placeholder="Activia"
+							onChangeText={(text) => this.onItemChange('proveedor', text)}
+							value={this.props.proveedor}
+						/>
+					</CardSection>
+
+					<CardSection>
+						<Input
+							label="Costo de Adquisición"
+							placeholder="0"
+							onChangeText={(text) => this.onItemChange('costo', text)}
+							value={this.props.costo}
+							keyboardType="numeric"
+						/>
+					</CardSection>
+
+					<CardSection>
+						<Input
+							label="Clave SAT"
+							placeholder="01010101"
+							onChangeText={(text) => this.onItemChange('clave_SAT', text)}
+							value={this.props.clave_SAT}
+						/>
+					</CardSection>
+
+					<CardSection>
+						<Text>IVA: </Text>
+						<Dropdown
+							containerStyle={{ flex: 1 }}
+							data={[{ value: 'nulo' },
+										{ value: '0' },
+										{ value: '11' },
+										{ value: '16' }
+										]}
+							value={this.props.iva}
+							onChangeText={(text) => this.onItemChange('iva', text)}
+							placeholder={'Seleccione la tasa correspondiente'}
+						/>
+					</CardSection>
+
 					<CardSection>
 						<Input
 							label="Precio de Venta"
@@ -349,6 +468,10 @@ const mapStateToProps = state => {
 		error: state.item.error,
 		success: state.item.success,
     loading: state.item.loading,
+		iva: state.item.iva,
+		proveedor: state.item.proveedor,
+		costo: state.item.costo,
+		clave_SAT: state.item.clave_SAT,
 		userType: state.auth.user.attributes.type
   };
 };
