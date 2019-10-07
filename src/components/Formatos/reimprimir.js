@@ -17,7 +17,7 @@ import { Dropdown } from 'react-native-material-dropdown';
 import Modal from 'react-native-modal';
 import { Button, CardSection } from '../common';
 import { ComponentePaciente, ComponenteMedico, ComponenteHabitacion, ComponenteEspecialidad, ComponenteConsultorio } from '../Listas';
-import { queryFunc, cleanFunc, session, printHTMLReducer, cleanImpresiones } from '../../actions';
+import { queryFunc, cleanFunc, session, printHTMLReducer } from '../../actions';
 
 class Reimprimir extends React.Component {
   static navigationOptions = {
@@ -175,7 +175,6 @@ class Reimprimir extends React.Component {
   }
 
   updateField(item, tipo, busqueda) {
-    this.props.cleanImpresiones();
     this.setState({ [tipo]: item, [busqueda]: false, text: '' });
   }
 
@@ -222,7 +221,7 @@ class Reimprimir extends React.Component {
           containerStyle={{ flex: 1 }}
           data={data}
           value={this.state.tipoFormato}
-          onChangeText={value => { cleanImpresiones(); this.setState({ tipoFormato: value }); }}
+          onChangeText={value => { this.setState({ tipoFormato: value }); }}
           placeholder={'Selecciona el tipo de ingreso'}
           />
         </CardSection>
@@ -250,4 +249,4 @@ const mapStateToProps = ({ query }) => {
  return { text, Patient, Impresiones };
 };
 
-export default connect(mapStateToProps, { queryFunc, cleanFunc, session, printHTMLReducer, cleanImpresiones })(Reimprimir);
+export default connect(mapStateToProps, { queryFunc, cleanFunc, session, printHTMLReducer })(Reimprimir);

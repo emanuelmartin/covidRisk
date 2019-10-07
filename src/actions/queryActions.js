@@ -1,4 +1,5 @@
 import Parse from 'parse/react-native';
+import moment from 'moment-timezone';
 import {
   DB_QUERY,
   DB_QUERY_RESULTS,
@@ -47,11 +48,6 @@ export const queryFunc = ({ type, object, variable, text, include }) => {
     }
   };
 };
-
-export const cleanImpresiones = () => {
-  return async (dispatch) =>
-  dispatch({ type: DB_QUERY_RESULTS, payload: null, name: Impresiones, loading: false });
-}
 
 export const queryAttach = ({ object, constrain, text }) => {
   return async (dispatch) => {
@@ -161,6 +157,8 @@ export const multiWrite = (clase, acciones) => {
   let jsonArray = [];
   const user = Parse.User.current();
   return async (dispatch) => {
+    const timeZone = moment.tz.guess(true);
+    const momento = moment().tz(timeZone).format();
     const ParseObject = Parse.Object.extend(clase);
     const parseObject = new ParseObject();
     acciones.forEach((elemento) => {
@@ -175,6 +173,8 @@ export const multiWrite = (clase, acciones) => {
       }
         parseObject[elemento.accion](elemento.variable, elemento.valor);
     })
+      parseObject.set('momento', momento)
+      parseObject.set('ingresadoPor', user)
         parseObject.save().then((results) => {
         jsonArray = results.toJSON();
           dispatch({ type: WRITE_SUCCESS, name: clase, payload: jsonArray });
