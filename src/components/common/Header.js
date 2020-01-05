@@ -1,15 +1,19 @@
 // Import libraries for making a component
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Image } from 'react-native';
 
 // Make a component
 const Header = (props) => {
-  const { textStyle, viewStyle } = styles;
+  const { textStyle, viewStyle, logoStyle } = styles;
 
   return (
     <View style={viewStyle}>
       <Text style={textStyle}>{props.headerText}</Text>
-    </View>
+      <Image
+      style={logoStyle}
+      source={require('../img/LogoVerde.png')}
+      />
+      </View>
   );
 };
 
@@ -19,15 +23,26 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     height: 60,
-    paddingTop: 15,
+    paddingTop: 1,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     elevation: 2,
     position: 'relative'
-  },
+    },
   textStyle: {
-    fontSize: 20
+    fontSize: 20,
+    color: '#63C0B9',
+    fontSize: 20,
+    fontWeight: 'bold',
+    alignSelf: 'center'
+  },
+  logoStyle: {
+    alignSelf: 'flex-end',
+    width: 30,
+    height: 30,
+    paddingRight: 20,
+    paddingBottom: 20
   }
 };
 

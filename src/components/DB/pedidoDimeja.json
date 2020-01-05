@@ -1,0 +1,1282 @@
+[
+	{
+		"codigo": "7502216930865",
+		"nombre": "ACC 600MG TAB EFERV C20",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "230.84",
+		"precioLista": "358.61",
+		"precioPublico": "358.61"
+	},
+	{
+		"codigo": "7501050613460",
+		"nombre": "AFRIN LUB AD SPRY 20ML",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "46.74",
+		"precioLista": "94.32",
+		"precioPublico": "94.32"
+	},
+	{
+		"codigo": "7501050661201",
+		"nombre": "AFRIN LUB INF SPRY 20ML",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "44.49",
+		"precioLista": "88.14",
+		"precioPublico": "88.14"
+	},
+	{
+		"codigo": "7501126106049",
+		"nombre": "ALGODON PLISADO PG 50G",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "5.22",
+		"precioLista": "6.6",
+		"precioPublico": "6.6"
+	},
+	{
+		"codigo": "7501088505003",
+		"nombre": "ALIN AMP 2ML C1",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "42.64",
+		"precioLista": "70.08",
+		"precioPublico": "70.08"
+	},
+	{
+		"codigo": "7501088505256",
+		"nombre": "ALIN NASAL GTS 20 ML",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "85.44",
+		"precioLista": "138.1",
+		"precioPublico": "138.1"
+	},
+	{
+		"codigo": "7501122961017",
+		"nombre": "ARGENTAFIL 1% CRA 30G",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "129.63",
+		"precioLista": "179.5",
+		"precioPublico": "179.5"
+	},
+	{
+		"codigo": "7501070635596",
+		"nombre": "AS COR 10MG GTS",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "263.25",
+		"precioLista": "405",
+		"precioPublico": "405"
+	},
+	{
+		"codigo": "7501318612655",
+		"nombre": "ASPIRINA PROTECT 100MG CPR C2",
+		"umc": "PZA ",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "77.32",
+		"precioLista": "104",
+		"precioPublico": "104"
+	},
+	{
+		"codigo": "7501037901047",
+		"nombre": "ATROVENT 500MCG 2ML AMP ",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "10",
+		"costoUMC": "592.77",
+		"precioLista": "830.07",
+		"precioPublico": "83.007"
+	},
+	{
+		"codigo": "7502216930599",
+		"nombre": "AVAPENA 20MG INY AMP 2 ML ",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "5",
+		"costoUMC": "199.15",
+		"precioLista": "309.39",
+		"precioPublico": "61.878"
+	},
+	{
+		"codigo": "7501165011588",
+		"nombre": "BUSCAPINA CPTO AMP 5ML ",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "3",
+		"costoUMC": "285.78",
+		"precioLista": "439.98",
+		"precioPublico": "146.66"
+	},
+	{
+		"codigo": "7501125112393",
+		"nombre": "BUVACAINA PESADA 15MG 3ML AMP ",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "5",
+		"costoUMC": "202.62",
+		"precioLista": "303.19",
+		"precioPublico": "60.638"
+	},
+	{
+		"codigo": "7501384541187",
+		"nombre": "CAPTOPRIL 25MG  TAB C/30",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "12.38",
+		"precioLista": "78.65",
+		"precioPublico": "78.65"
+	},
+	{
+		"codigo": "7501124100759",
+		"nombre": "CARNOTPRIM 10MG AMP ",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "6",
+		"costoUMC": "296.57",
+		"precioLista": "375.4",
+		"precioPublico": "62.56666667"
+	},
+	{
+		"codigo": "7501124100704",
+		"nombre": "CARNOTPRIM 10MG CPR ",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "204.45",
+		"precioLista": "258.79",
+		"precioPublico": "258.79"
+	},
+	{
+		"codigo": "7501050610681",
+		"nombre": "CELESTONE INY HYPAK JGA ",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "196.27",
+		"precioLista": "299.19",
+		"precioPublico": "299.19"
+	},
+	{
+		"codigo": "8400002198",
+		"nombre": "CLORAN SOL 15ML",
+		"umc": "PZA ",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "66.13",
+		"precioLista": "107.27",
+		"precioPublico": "107.27"
+	},
+	{
+		"codigo": "8400000156",
+		"nombre": "CLORAN UNG 5G",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "87.02",
+		"precioLista": "141.13",
+		"precioPublico": "141.13"
+	},
+	{
+		"codigo": "7501050620550",
+		"nombre": "CLOROTRIMETON 10MG AMP",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "5",
+		"costoUMC": "115.98",
+		"precioLista": "175.06",
+		"precioPublico": "35.012"
+	},
+	{
+		"codigo": "5900273001566",
+		"nombre": "COLGATE CDNT EXT CLEAN MED",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "9.21",
+		"precioLista": "12.26",
+		"precioPublico": "12.26"
+	},
+	{
+		"codigo": "7509546052885",
+		"nombre": "COLGATE CDNT KIT PORTATIL",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "32.31",
+		"precioLista": "41.95",
+		"precioPublico": "41.95"
+	},
+	{
+		"codigo": "7509546039152",
+		"nombre": "COLGATE MFP PDNT C/CALCIO 22M",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "8.26",
+		"precioLista": "10.09",
+		"precioPublico": "10.09"
+	},
+	{
+		"codigo": "7501328977980",
+		"nombre": "CORDARONE 200MG TAB ",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "20",
+		"costoUMC": "291.85",
+		"precioLista": "421.11",
+		"precioPublico": "21.0555"
+	},
+	{
+		"codigo": "7501122962106",
+		"nombre": "DEXTREVIT IV F A 10ML ",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "2",
+		"costoUMC": "199.2",
+		"precioLista": "253.7",
+		"precioPublico": "126.85"
+	},
+	{
+		"codigo": "7501082208108",
+		"nombre": "HUMULIN NPH 100UI SOL INY ",
+		"umc": "FCO",
+		"umv": "UNI",
+		"cantidadUMV": "1000",
+		"costoUMC": "482.81",
+		"precioLista": "668.5",
+		"precioPublico": "0.6685"
+	},
+	{
+		"codigo": "7501082208009",
+		"nombre": "HUMULIN R 100UI SOL INY ",
+		"umc": "FCO",
+		"umv": "UNI",
+		"cantidadUMV": "1000",
+		"costoUMC": "476.59",
+		"precioLista": "657",
+		"precioPublico": "0.657"
+	},
+	{
+		"codigo": "7501124183271",
+		"nombre": "LIBERTRIM F A 5ML ",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "6",
+		"costoUMC": "558.52",
+		"precioLista": "706.99",
+		"precioPublico": "117.8316667"
+	},
+	{
+		"codigo": "7502216930872",
+		"nombre": "SYNTOCINON  5UI INY 1ML",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "5",
+		"costoUMC": "159.77",
+		"precioLista": "248.2",
+		"precioPublico": "49.64"
+	},
+	{
+		"codigo": "7501328978383",
+		"nombre": "CORDARONE 3ML AMP",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "6",
+		"costoUMC": "406.83",
+		"precioLista": "587.03",
+		"precioPublico": "97.83833333"
+	},
+	{
+		"codigo": "7502012980316",
+		"nombre": "CORTAU�AS BSILLO ROGER IMPORT",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "11.85",
+		"precioLista": "15.22",
+		"precioPublico": "15.22"
+	},
+	{
+		"codigo": "7501109900503",
+		"nombre": "DAKTARIN 2% ORAL GEL 78G",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "399.97",
+		"precioLista": "591.03",
+		"precioPublico": "591.03"
+	},
+	{
+		"codigo": "7501033952760",
+		"nombre": "DEPAKENE 500MG/5ML ",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "323.9",
+		"precioLista": "508.4",
+		"precioPublico": "508.4"
+	},
+	{
+		"codigo": "7501298217703",
+		"nombre": "DEXABION DC INY 3ML JGA ",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "3",
+		"costoUMC": "280.99",
+		"precioLista": "504.15",
+		"precioPublico": "168.05"
+	},
+	{
+		"codigo": "7502209290099",
+		"nombre": "DICYNONE 250MG/2ML AMP ",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "4",
+		"costoUMC": "488.76",
+		"precioLista": "722.59",
+		"precioPublico": "180.6475"
+	},
+	{
+		"codigo": "7501050610704",
+		"nombre": "DOPROSPAN HYPAK JGA ",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "360.82",
+		"precioLista": "550.03",
+		"precioPublico": "550.03"
+	},
+	{
+		"codigo": "7501300407009",
+		"nombre": "DOLAC 10MG TAB ",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "87.5",
+		"precioLista": "140",
+		"precioPublico": "140"
+	},
+	{
+		"codigo": "7501300407030",
+		"nombre": "DOLAC 30MG INY AMP 1ML",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "3",
+		"costoUMC": "224.38",
+		"precioLista": "359",
+		"precioPublico": "119.6666667"
+	},
+	{
+		"codigo": "7501328980119",
+		"nombre": "ENTEROGERMINA 5ML SUSP AMP",
+		"umc": "PZA ",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "310.51",
+		"precioLista": "444.93",
+		"precioPublico": "444.93"
+	},
+	{
+		"codigo": "7501165010826",
+		"nombre": "ENTEROGERMINA SUSP 4BIL AMP",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "306.58",
+		"precioLista": "439.31",
+		"precioPublico": "439.31"
+	},
+	{
+		"codigo": "7501057002120",
+		"nombre": "EPAMIN AD 100MG CAP ",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "257.59",
+		"precioLista": "392.67",
+		"precioPublico": "392.67"
+	},
+	{
+		"codigo": "7501287652362",
+		"nombre": "EPAMIN SOL INY 5 AMP 5ML/250",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "555.48",
+		"precioLista": "900.79",
+		"precioPublico": "900.79"
+	},
+	{
+		"codigo": "75004972",
+		"nombre": "ESPACIL GTS 15ML",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "172.22",
+		"precioLista": "238.5",
+		"precioPublico": "238.5"
+	},
+	{
+		"codigo": "7501299307717",
+		"nombre": "EVOCS III IV 500MG BSA C1",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "397",
+		"precioLista": "596.99",
+		"precioPublico": "596.99"
+	},
+	{
+		"codigo": "7501299307663",
+		"nombre": "EVOCS III IV 750MG BSA ",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "573.25",
+		"precioLista": "862.01",
+		"precioPublico": "862.01"
+	},
+	{
+		"codigo": "7501092743057",
+		"nombre": "FERRANINA IM 100MG 2ML ",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "3",
+		"costoUMC": "301.59",
+		"precioLista": "461",
+		"precioPublico": "153.6666667"
+	},
+	{
+		"codigo": "7501300408228",
+		"nombre": "FURACIIN PDA 85G",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "151.4",
+		"precioLista": "241.24",
+		"precioPublico": "241.24"
+	},
+	{
+		"codigo": "7501050610063",
+		"nombre": "GARAMICINA GU 160MG AMP",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "5",
+		"costoUMC": "756.36",
+		"precioLista": "1146",
+		"precioPublico": "229.2"
+	},
+	{
+		"codigo": "7501349026094",
+		"nombre": "GENTAMICINA 160MG/2ML ",
+		"umc": "CAJA ",
+		"umv": "PZA",
+		"cantidadUMV": "5",
+		"costoUMC": "39",
+		"precioLista": "277.5",
+		"precioPublico": "55.5"
+	},
+	{
+		"codigo": "7590002008898",
+		"nombre": "HEAD & S LIMP RENOV 10ML ",
+		"umc": "TIRA",
+		"umv": "PZA",
+		"cantidadUMV": "24",
+		"costoUMC": "30.57",
+		"precioLista": "35.97",
+		"precioPublico": "1.49875"
+	},
+	{
+		"codigo": "7501324402561",
+		"nombre": "INDERALICI 80MG TAB ",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "171",
+		"precioLista": "294.12",
+		"precioPublico": "294.12"
+	},
+	{
+		"codigo": "7501299306833",
+		"nombre": "INHIBITRON 40MG INY 10ML ",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "196.18",
+		"precioLista": "295",
+		"precioPublico": "295"
+	},
+	{
+		"codigo": "7501299306635",
+		"nombre": "INHIBITRON DUAL 20MG CAP",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "137.66",
+		"precioLista": "207",
+		"precioPublico": "207"
+	},
+	{
+		"codigo": "7501299307175",
+		"nombre": "INHIBITRON F DUAL 40MG CAP ",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "264.68",
+		"precioLista": "398",
+		"precioPublico": "398"
+	},
+	{
+		"codigo": "7501299305751",
+		"nombre": "INHIBITRON TWIT 20/1100MG CAP",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "259.95",
+		"precioLista": "469.01",
+		"precioPublico": "469.01"
+	},
+	{
+		"codigo": "7501089802958",
+		"nombre": "ISORBID SUBLINGUAL 5MG TAB",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "125.06",
+		"precioLista": "193",
+		"precioPublico": "193"
+	},
+	{
+		"codigo": "7501390911042",
+		"nombre": "ITALDERMOL 12G GASAS ",
+		"umc": "PZA ",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "209.3",
+		"precioLista": "299",
+		"precioPublico": "299"
+	},
+	{
+		"codigo": "7501390911011",
+		"nombre": "ITALDERMOL CRA 10G",
+		"umc": "PZA ",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "192.5",
+		"precioLista": "275",
+		"precioPublico": "275"
+	},
+	{
+		"codigo": "7501385494192",
+		"nombre": "KERAL 25MG TAB ",
+		"umc": "PZA  ",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "301.76",
+		"precioLista": "460",
+		"precioPublico": "460"
+	},
+	{
+		"codigo": "7501385494215",
+		"nombre": "KERAL 50MG 2ML INY AMP",
+		"umc": "CAJA ",
+		"umv": "PZA",
+		"cantidadUMV": "3",
+		"costoUMC": "401.47",
+		"precioLista": "612",
+		"precioPublico": "204"
+	},
+	{
+		"codigo": "7501165000186",
+		"nombre": "LASIX20MG 2ML AMP",
+		"umc": "CAJA ",
+		"umv": "PZA",
+		"cantidadUMV": "5",
+		"costoUMC": "215.87",
+		"precioLista": "309.33",
+		"precioPublico": "61.866"
+	},
+	{
+		"codigo": "7503004908738",
+		"nombre": "LIDOCAINA 5% 35G UNG",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "17.5",
+		"precioLista": "90",
+		"precioPublico": "90"
+	},
+	{
+		"codigo": "7503000883879",
+		"nombre": "LOONACTENE RT 100MG AMP ",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "561",
+		"precioLista": "872",
+		"precioPublico": "872"
+	},
+	{
+		"codigo": "7501034650542",
+		"nombre": "MUCOSOLVAN GTS 30ML",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "124.21",
+		"precioLista": "195",
+		"precioPublico": "195"
+	},
+	{
+		"codigo": "7501034650511",
+		"nombre": "MUCOSOLVAN INY AMP",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "10",
+		"costoUMC": "177.55",
+		"precioLista": "279",
+		"precioPublico": "27.9"
+	},
+	{
+		"codigo": "75063393947719",
+		"nombre": "NATURELLA TOALLA NOCTURNA",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "15",
+		"precioLista": "16.83",
+		"precioPublico": "16.83"
+	},
+	{
+		"codigo": "7501165000254",
+		"nombre": "NEOMELUBRINA 1G AMP 2ML",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "5",
+		"costoUMC": "95.3",
+		"precioLista": "136.56",
+		"precioPublico": "27.312"
+	},
+	{
+		"codigo": "7501165000278",
+		"nombre": "NEOMELUBRINA 2.5G AMP 5ML",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "5",
+		"costoUMC": "123.22",
+		"precioLista": "176.57",
+		"precioPublico": "35.314"
+	},
+	{
+		"codigo": "7501165000315",
+		"nombre": "NEOMELUBRINA 5.25 JBE 100ML",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "101.55",
+		"precioLista": "145.51",
+		"precioPublico": "145.51"
+	},
+	{
+		"codigo": "7501165000230",
+		"nombre": "NEOMELUBRINA 500MG TAB",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "64.19",
+		"precioLista": "91.98",
+		"precioPublico": "91.98"
+	},
+	{
+		"codigo": "7501043149921",
+		"nombre": "NEOSPORIN DERMICO UNG 30G",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "232.67",
+		"precioLista": "351.02",
+		"precioPublico": "351.02"
+	},
+	{
+		"codigo": "5000456013666",
+		"nombre": "NEXIUM IV INY 40MG",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "288",
+		"precioLista": "368",
+		"precioPublico": "368"
+	},
+	{
+		"codigo": "7501109900251",
+		"nombre": "NIZORAL CREMA 40G",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "291.61",
+		"precioLista": "430.91",
+		"precioPublico": "430.91"
+	},
+	{
+		"codigo": "7501871730339",
+		"nombre": "NULLYTELY SOB CZA",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "505.9",
+		"precioLista": "743.6",
+		"precioPublico": "743.6"
+	},
+	{
+		"codigo": "736085174007",
+		"nombre": "PONTI OFT SOL 10ML",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "89.45",
+		"precioLista": "139.44",
+		"precioPublico": "139.44"
+	},
+	{
+		"codigo": "7501165011847",
+		"nombre": "PRODOLINA TAB ",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "73.76",
+		"precioLista": "113.56",
+		"precioPublico": "113.56"
+	},
+	{
+		"codigo": "7501072340313",
+		"nombre": "PROFENID IM 100MG AMP",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "6",
+		"costoUMC": "447.91",
+		"precioLista": "641.82",
+		"precioPublico": "106.97"
+	},
+	{
+		"codigo": "7501165005617",
+		"nombre": "PROFENID IV 100MG AMP",
+		"umc": "CAJA ",
+		"umv": "PZA",
+		"cantidadUMV": "3",
+		"costoUMC": "315.24",
+		"precioLista": "451.71",
+		"precioPublico": "150.57"
+	},
+	{
+		"codigo": "7501008498590",
+		"nombre": "REDOXON 1G AMP ",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "6",
+		"costoUMC": "269.91",
+		"precioLista": "395.53",
+		"precioPublico": "65.92166667"
+	},
+	{
+		"codigo": "7501061019008",
+		"nombre": "RIFOCYNA 1G SPRAY  20ML",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "259.33",
+		"precioLista": "371.59",
+		"precioPublico": "371.59"
+	},
+	{
+		"codigo": "7501092793038",
+		"nombre": "RIOPAN 8G GEL 250ML",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "178.6",
+		"precioLista": "273",
+		"precioPublico": "273"
+	},
+	{
+		"codigo": "7501285601454",
+		"nombre": "SAMYR 500MG AMP",
+		"umc": "CAJA ",
+		"umv": "PZA",
+		"cantidadUMV": "5",
+		"costoUMC": "639.27",
+		"precioLista": "1003.4",
+		"precioPublico": "200.68"
+	},
+	{
+		"codigo": "7501124810917",
+		"nombre": "SENOKOT F TAB ",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "102.84",
+		"precioLista": "177.43",
+		"precioPublico": "177.43"
+	},
+	{
+		"codigo": "7501124810900",
+		"nombre": "SENOKOT TAB ",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "102.84",
+		"precioLista": "177.43",
+		"precioPublico": "177.43"
+	},
+	{
+		"codigo": "7501125109935",
+		"nombre": "SOLDRIN OFT 10ML ",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "54.8",
+		"precioLista": "82",
+		"precioPublico": "82"
+	},
+	{
+		"codigo": "7501125109928",
+		"nombre": "SOLDRIN OTICO 10ML",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "125.64",
+		"precioLista": "188",
+		"precioPublico": "188"
+	},
+	{
+		"codigo": "300090887018",
+		"nombre": "SOLUMEDROL 500MG 4ML AMP",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "375.29",
+		"precioLista": "572.09",
+		"precioPublico": "572.09"
+	},
+	{
+		"codigo": "7501070635763",
+		"nombre": "STADIUM 50MG 2ML AMP",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "3",
+		"costoUMC": "411.84",
+		"precioLista": "650",
+		"precioPublico": "216.6666667"
+	},
+	{
+		"codigo": "7501299306352",
+		"nombre": "SUPRADOL 10MG TAB ",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "82.02",
+		"precioLista": "148",
+		"precioPublico": "148"
+	},
+	{
+		"codigo": "7501299301623",
+		"nombre": "SUPRADOL DUET AMP",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "3",
+		"costoUMC": "398.33",
+		"precioLista": "598.99",
+		"precioPublico": "199.6633333"
+	},
+	{
+		"codigo": "75012993002286",
+		"nombre": "SUPRADOL 30MG AMP",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "3",
+		"costoUMC": "135.01",
+		"precioLista": "203",
+		"precioPublico": "67.66666667"
+	},
+	{
+		"codigo": "7501299302354",
+		"nombre": "SUPRADOL 60MG AMP",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "3",
+		"costoUMC": "202.17",
+		"precioLista": "304.01",
+		"precioPublico": "101.3366667"
+	},
+	{
+		"codigo": "7501095452147",
+		"nombre": "TEMPRA 500MG TAB",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "59.38",
+		"precioLista": "100.17",
+		"precioPublico": "100.17"
+	},
+	{
+		"codigo": "7501095452178",
+		"nombre": "TEMPRA 80MG TAB MAST",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "64.42",
+		"precioLista": "104.34",
+		"precioPublico": "104.34"
+	},
+	{
+		"codigo": "7501058714312",
+		"nombre": "TEMPRA GTS PED 30ML",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "90.41",
+		"precioLista": "145.38",
+		"precioPublico": "145.38"
+	},
+	{
+		"codigo": "7501382545598",
+		"nombre": "TRAMADOL 100MG 2ML AMP",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "5",
+		"costoUMC": "41.48",
+		"precioLista": "165",
+		"precioPublico": "33"
+	},
+	{
+		"codigo": "7501100088095",
+		"nombre": "TYLENOL 500MG TAB ",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "56.44",
+		"precioLista": "87.33",
+		"precioPublico": "87.33"
+	},
+	{
+		"codigo": "7501043100618",
+		"nombre": "VENTOLIN 2.5MG AMP",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "20",
+		"costoUMC": "204.06",
+		"precioLista": "420.28",
+		"precioPublico": "21.014"
+	},
+	{
+		"codigo": "7501043163637",
+		"nombre": "VENTOLIN 5MG SOL 10ML",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "189.55",
+		"precioLista": "390.4",
+		"precioPublico": "390.4"
+	},
+	{
+		"codigo": "7501094916251",
+		"nombre": "VOLTAREN 75MG 3ML AMP",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "5",
+		"costoUMC": "508.74",
+		"precioLista": "770.7",
+		"precioPublico": "154.14"
+	},
+	{
+		"codigo": "7501070635664",
+		"nombre": "VONTROL 25MG TAB ",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "200.64",
+		"precioLista": "320",
+		"precioPublico": "320"
+	},
+	{
+		"codigo": "7501070635718",
+		"nombre": "VONTROL 40MG AMP 2ML",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "2",
+		"costoUMC": "107.84",
+		"precioLista": "172",
+		"precioPublico": "86"
+	},
+	{
+		"codigo": "7501082212129",
+		"nombre": "ZYPREXA 10MG IM",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "292.56",
+		"precioLista": "404.5",
+		"precioPublico": "404.5"
+	},
+	{
+		"codigo": "7501118150044",
+		"nombre": "CARBON ACTIVADO ",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "37.85",
+		"precioLista": "60.56",
+		"precioPublico": "60.56"
+	},
+	{
+		"codigo": "4015630006779",
+		"nombre": "ACCU-CHEK LANCETAS ",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "200",
+		"costoUMC": "247.16",
+		"precioLista": "395.45",
+		"precioPublico": "1.97725"
+	},
+	{
+		"codigo": "7501384502553",
+		"nombre": "ORTOPSIQUE 10MG AMP",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "5",
+		"costoUMC": "168",
+		"precioLista": "268.8",
+		"precioPublico": "53.76"
+	},
+	{
+		"codigo": "7501050610001",
+		"nombre": "TEMGESIC 0.3 MG AMP",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "6",
+		"costoUMC": "682.9",
+		"precioLista": "848.32",
+		"precioPublico": "141.3866667"
+	},
+	{
+		"codigo": "7501009002802",
+		"nombre": "DORMICUM 5MG AMP",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "5",
+		"costoUMC": "515.2",
+		"precioLista": "640",
+		"precioPublico": "128"
+	},
+	{
+		"codigo": "304090002822",
+		"nombre": "EQUPO P/BOMBA PRIMARIO C/CLAVE",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "247",
+		"precioLista": "395.2",
+		"precioPublico": "395.2"
+	},
+	{
+		"codigo": "7501125100079",
+		"nombre": "SOL COMBINACION PI 1000ML",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "40",
+		"precioLista": "64",
+		"precioPublico": "64"
+	},
+	{
+		"codigo": "7501125100277",
+		"nombre": "SOL COMBINACION RUBIN CALCAGNO",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "48",
+		"precioLista": "76.8",
+		"precioPublico": "76.8"
+	},
+	{
+		"codigo": "7501125111136",
+		"nombre": "AGUA INYECTABLE 10ML AMP",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "100",
+		"costoUMC": "371.17",
+		"precioLista": "593.87",
+		"precioPublico": "5.9387"
+	},
+	{
+		"codigo": "7501125111259",
+		"nombre": "BICARNAT 10ML AMP",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "100",
+		"costoUMC": "694.26",
+		"precioLista": "1110.81",
+		"precioPublico": "11.1081"
+	},
+	{
+		"codigo": "7501125111303",
+		"nombre": "KELEFUSIN 1.5G AMP",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "100",
+		"costoUMC": "752.85",
+		"precioLista": "1204.56",
+		"precioPublico": "12.0456"
+	},
+	{
+		"codigo": "7501125111358",
+		"nombre": "GLUCONATO DE CALCIO 10% AMP",
+		"umc": "CAJA ",
+		"umv": "PZA",
+		"cantidadUMV": "100",
+		"costoUMC": "666.57",
+		"precioLista": "1066.51",
+		"precioPublico": "10.6651"
+	},
+	{
+		"codigo": "17501125112437",
+		"nombre": "BUVACAINA 50MG 10ML AMP",
+		"umc": "CAJA ",
+		"umv": "PZA",
+		"cantidadUMV": "25",
+		"costoUMC": "416.5",
+		"precioLista": "666.4",
+		"precioPublico": "26.656"
+	},
+	{
+		"codigo": "7501125115561",
+		"nombre": "DOPAMINA 200MG 5ML AMP",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "5",
+		"costoUMC": "90.29",
+		"precioLista": "144.46",
+		"precioPublico": "28.892"
+	},
+	{
+		"codigo": "7501125115608",
+		"nombre": "EPICLODINA 0.15MG AMP ",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "5",
+		"costoUMC": "103.17",
+		"precioLista": "168",
+		"precioPublico": "33.6"
+	},
+	{
+		"codigo": "7501125116605",
+		"nombre": "AMOFILIN 250MG 10 ML ",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "5",
+		"costoUMC": "36.72",
+		"precioLista": "58.75",
+		"precioPublico": "11.75"
+	},
+	{
+		"codigo": "7501125124358",
+		"nombre": "ATROPINA 1G 1ML ",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "50",
+		"costoUMC": "175.79",
+		"precioLista": "281.26",
+		"precioPublico": "5.6252"
+	},
+	{
+		"codigo": "75001125103377",
+		"nombre": "NODESCRON 4MG AMP",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "50",
+		"costoUMC": "1168.12",
+		"precioLista": "1868.99",
+		"precioPublico": "37.3798"
+	},
+	{
+		"codigo": "7501125142987",
+		"nombre": "OSMOROL 20G 100ML ",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "36.49",
+		"precioLista": "58.38",
+		"precioPublico": "58.38"
+	},
+	{
+		"codigo": "17501125122542",
+		"nombre": "SOLUCION CS 3000ML ",
+		"umc": "PZA",
+		"umv": "PZA",
+		"cantidadUMV": "1",
+		"costoUMC": "60",
+		"precioLista": "96",
+		"precioPublico": "96"
+	},
+	{
+		"codigo": "7501125122446",
+		"nombre": "ROPICONEST 2MG AMP",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "5",
+		"costoUMC": "431.69",
+		"precioLista": "690.6",
+		"precioPublico": "138.12"
+	},
+	{
+		"codigo": "7501125122439",
+		"nombre": "ROPICONEST 7.5MG AMP",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "5",
+		"costoUMC": "738.41",
+		"precioLista": "1181.45",
+		"precioPublico": "236.29"
+	},
+	{
+		"codigo": "7501129158292",
+		"nombre": "ADRENALINA 1G AMP",
+		"umc": "CAJA",
+		"umv": "PZA ",
+		"cantidadUMV": "50",
+		"costoUMC": "232.8",
+		"precioLista": "372.48",
+		"precioPublico": "7.4496"
+	},
+	{
+		"codigo": "7501125169571",
+		"nombre": "DOBUTAMINA 250MG IV AMP ",
+		"umc": "PZA",
+		"umv": "PZA ",
+		"cantidadUMV": "1",
+		"costoUMC": "109.99",
+		"precioLista": "243",
+		"precioPublico": ""
+	},
+	{
+		"codigo": "7501125169601",
+		"nombre": "DIGOXINA 500 MG AMP",
+		"umc": "CAJA",
+		"umv": "PZA",
+		"cantidadUMV": "6",
+		"costoUMC": "140",
+		"precioLista": "242.88",
+		"precioPublico": "40.48"
+	}
+]

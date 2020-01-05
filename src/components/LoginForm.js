@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, Text, Image } from 'react-native';
-import { Card, CardSection, Input, Button, Spinner } from './common';
-import { emailChanged, passwordChanged, loginUser, session } from '../actions';
 import Parse from 'parse/react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { Card, CardSection, Input, Button, Spinner, Header } from './common';
+import { emailChanged, passwordChanged, loginUser, session } from '../actions';
+import { Dropdown } from 'react-native-material-dropdown';
+
 
 class LoginForm extends Component {
-  componentWillMount() {
+  static navigationOptions = {
+    headerShown: false  //this will hide the header
+  };
+
+  componentDidMount() {
     Parse.User.currentAsync().then((user) => {
         console.log(user);
         this.props.session(user);
@@ -27,16 +34,16 @@ class LoginForm extends Component {
     this.props.loginUser({ email, password });
   }
 
-onSignupButtonPress() {
-  this.props.navigation.navigate('SignUp');
-}
+  onSignupButtonPress() {
+    this.props.navigation.navigate('SignUp');
+  }
 
   renderButton() {
     if (this.props.loading) {
-      return <Spinner size="large" />
+      return <Spinner size="large" />;
     }
 
-    return(
+    return (
       <Button onPress={this.onLoginButtonPress.bind(this)}>
         Iniciar sesión
       </Button>
@@ -45,7 +52,7 @@ onSignupButtonPress() {
 
   renderError() {
     if (this.props.error) {
-      console.log(this.props.error)
+      console.log(this.props.error);
       return (
         <View style={{ backgroundColor: 'white' }}>
           <Text style={styles.errorTextStyle}>
@@ -58,20 +65,23 @@ onSignupButtonPress() {
 
   render() {
     if (this.props.loggedIn) {
-    this.props.navigation.navigate('Home');
-  }
+      this.props.navigation.navigate('Stack');
+    }
     return (
-      <Card>
+      <KeyboardAwareScrollView>
+        <Header headerText="Hospital Real San Lucas" />
         <Image
         source={(require('./img/LogoVerde.png'))}
-        style={{width: 400, height: 400}}
+        style={{ width: 400, height: 400, justifyContent: 'center' }}
         />
         <CardSection>
           <Input
-            label="Email"
-            placeholder="email@gmail.com"
+          autoCapitalize={'none'}
+            label="Usuario"
+            placeholder="usuario"
             onChangeText={this.onEmailChange.bind(this)}
             value={this.props.email}
+            keyboardType="email-address"
           />
         </CardSection>
 
@@ -96,7 +106,7 @@ onSignupButtonPress() {
             Registrarse
           </Button>
         </CardSection>
-      </Card>
+      </KeyboardAwareScrollView>
     );
   }
 }

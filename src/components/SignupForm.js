@@ -1,28 +1,189 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Picker, Text, ScrollView, View, TouchableWithoutFeedback, Alert } from 'react-native';
+import { Text, ScrollView, View, TouchableWithoutFeedback, Alert, Platform } from 'react-native';
 import { signupUpdate, userCreate } from '../actions';
 import { Card, CardSection, Input, Button, Spinner } from './common';
+import { Dropdown } from 'react-native-material-dropdown';
+import { CheckBox } from 'react-native-elements';
+
+const INITIAL_STATE = {
+  curp: '',
+  lastName1: '',
+  lastName2: '',
+  names: '',
+  birthday: '',
+  sex: '',
+  nationality: '',
+  birthState: '',
+  cedule: '',
+  prof: '',
+  master: '',
+  cp: '',
+  street: '',
+  extNum: '',
+  intNum: '',
+  colonia: '',
+  locality: '',
+  city: '',
+  state: '',
+  phone: '',
+  email: '',
+  bloodType: '',
+  emergencyPhone: '',
+  emergencyPartner: '',
+  emergencyLastName: '',
+  emergencyFirstName: '',
+  username: '',
+  password: '',
+  password2: '',
+  key: 'personal',
+  passwordMatch: true,
+  passwordCheck: true,
+  tipoRegistro: 'Empleado',
+  cargo: '',
+  submaster: '',
+  estadoCivil: '',
+  religion: '',
+  etnia: '',
+  idioma: '',
+  asegurado: false,
+  aseguradora: '',
+  tipoSeguro: '',
+  vigenciaSeguro: ''
+}
 
 class SignupForm extends Component {
-  componentWillMount() {
-    this.setState({ key: 'personal' });
+  static navigationOptions = {
+    title: 'Nuevo Usuario',
+  };
+
+  constructor(props) {
+    super(props);
+
+   this.state = INITIAL_STATE;
   }
 
   onUserCreatePress() {
-    this.props.userCreate(this.props.signupForm);
+    this.props.userCreate(this.state)
+    .then(() => {
+      Alert.alert(
+        'Listo',
+        'Usuario creado correctamente',
+        [
+          { text: 'Ok' },
+        ],
+      );
+      this.setState(INITIAL_STATE);
+    })
+    .catch((error) => {
+      Alert.alert(
+        'Error',
+        `Error al crear el usuario,  ${error.message}`,
+        [
+          { text: 'Ok' },
+        ],
+      );
+    })
   }
 
-  renderButton() {
-    if (this.props.loading) {
-      return <Spinner size="large" />;
+  checkPassword(value) {
+    this.setState({ password: value })
+    if (/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/.test(value)) {
+      this.setState({ passwordCheck: true })
+    } else {
+      this.setState({ passwordCheck: false })
+    }
+  }
+
+  checkPasswordMatch(value) {
+    this.setState({ password2: value, passwordMatch: false })
+    if (this.state.password === value) {
+      this.setState({ passwordMatch: true });
+    }
+  }
+
+  coinciden() {
+    if (!this.state.passwordCheck) {
+      return (
+          <Text> La contraseña debe contener al menos 8 caracteres, una mayúscula, una minúscula y un número </Text>
+      );
+    }
+    if (!this.state.passwordMatch) {
+      return (
+        <Text> Las contraseñas no coinciden </Text>
+      );
+    }
+  }
+
+  seguro() {
+    if (this.state.key === 'seguro') {
+      return (
+        <View>
+        <CardSection>
+        <CheckBox
+          title='Paciente asegurado'
+          checked={this.state.asegurado}
+          onPress={() => this.setState({ asegurado: !this.state.asegurado })}
+          />
+          </CardSection>
+          {this.datosSeguro()}
+        </View>
+        );
+      }
     }
 
-    return (
-      <Button onPress={this.onUserCreatePress.bind(this)}>
-        Crear usuario
-      </Button>
+    datosSeguro() {
+      if (this.state.asegurado) {
+        return (
+      <View>
+      <CardSection>
+      <Input
+        label="Aseguradora"
+        placeholder="GNP"
+        value={this.state.aseguradora}
+        onChangeText={value => this.setState({ aseguradora: value })}
+      />
+      </CardSection>
+
+      <CardSection>
+      <Input
+        label="Tipo de seguro"
+        placeholder="Cobertura amplia"
+        value={this.state.tipoSeguro}
+        onChangeText={value => this.setState({ tipoSeguro: value })}
+        />
+      </CardSection>
+
+      <CardSection>
+      <Input
+        label="Vigencia"
+        placeholder="10/12/2024"
+        value={this.state.vigenciaSeguro}
+        onChangeText={value => this.setState({ vigenciaSeguro: value })}
+        />
+      </CardSection>
+      </View>
     );
+    }
+  }
+
+  infoSeguro() {
+    if (this.state.tipoRegistro === 'Paciente') {
+      return (
+        <Card>
+          <TouchableWithoutFeedback
+            onPress={() => this.setState({ key: 'seguro' })}
+          >
+            <View>
+         <CardSection>
+            <Text style={styles.pickerTextStyle}>Aseguradora</Text>
+          </CardSection>
+        </View>
+        </TouchableWithoutFeedback>
+          {this.seguro()}
+        </Card>
+      );
+    }
   }
 
   personal() {
@@ -32,115 +193,232 @@ class SignupForm extends Component {
       <CardSection>
         <Input
           required
+          autoCapitalize={'characters'}
           label="CURP"
           placeholder="MAAH960909HJCRLC04"
-          value={this.props.curp.toShow}
-          valid={this.props.curp.valid}
-          edited={this.props.curp.edited}
-          onChangeText={value => this.props.signupUpdate({ prop: 'curp', value, type: 'curp', edited: true })}
-        />
+          value={this.state.curp}
+          onChangeText={value => this.setState({ curp: value })}
+          />
       </CardSection>
 
         <CardSection>
           <Input
+            autoCapitalize={'characters'}
             label="Apellido Paterno"
             placeholder="Casillas"
-            value={this.props.lastName1.toShow}
-            onChangeText={value => this.props.signupUpdate(
-              { prop: 'lastName1', value, type: 'oneWord' })}
+            value={this.state.lastName1}
+            onChangeText={value => this.setState({ lastName1: value })}
           />
-        </CardSection>
-
-        <CardSection>
           <Input
+            autoCapitalize={'characters'}
             label="Apellido Materno"
             placeholder="Martín"
-            value={this.props.lastName2}
-            onChangeText={value => this.props.signupUpdate({ prop: 'lastName2', value, type: 'oneWord' })}
-          />
+            value={this.state.lastName2}
+            onChangeText={value => this.setState({ lastName2: value })}
+            />
         </CardSection>
 
         <CardSection>
           <Input
+            autoCapitalize={'characters'}
             label="Nombres"
-            placeholder="Jose Manuel"
-            value={this.props.names}
-            onChangeText={value => this.props.signupUpdate({ prop: 'names', value, type: 'firstCap' })}
+            placeholder="José Manuel"
+            value={this.state.names}
+            onChangeText={value => this.setState({ names: value })}
           />
         </CardSection>
 
         <CardSection>
           <Input
+            autoCapitalize={'characters'}
             label="Fecha de nacimiento"
             placeholder="09-09-1996"
-            value={this.props.birthday}
-            onChangeText={value => this.props.signupUpdate({ prop: 'birthday', value, type: 'date' })}
+            value={this.state.birthday}
+            keyboardType="numeric"
+            onChangeText={value => this.setState({ birthday: value })}
           />
         </CardSection>
 
         <CardSection>
           <Input
+            autoCapitalize={'characters'}
             label="Sexo"
             placeholder="M o F"
-            value={this.props.sex}
-            onChangeText={value => this.props.signupUpdate({ prop: 'sex', value, type: 'oneWord' })}
+            value={this.state.sex}
+            onChangeText={value => this.setState({ sex: value })}
           />
         </CardSection>
 
         <CardSection>
           <Input
+            autoCapitalize={'characters'}
             label="Nacionalidad"
             placeholder="Mexicana"
-            value={this.props.nacionality}
-            onChangeText={value => this.props.signupUpdate({ prop: 'nacionality', value, type: 'oneWord' })}
-          />
-        </CardSection>
-
-        <CardSection>
+            value={this.state.nationality}
+            onChangeText={value => this.setState({ nationality: value })}
+            />
           <Input
+            autoCapitalize={'characters'}
             label="Estado de nacimiento"
             placeholder="Jalisco"
-            value={this.props.birthState}
-            onChangeText={value => this.props.signupUpdate(
-              { prop: 'birthState', value, type: 'firstCap' })}
-          />
+            value={this.state.birthState}
+            onChangeText={value => this.setState({ birthState: value })}
+            />
         </CardSection>
+        {this.personallEspecial()}
         </View>
         );
       }
     }
+    personallEspecial() {
+      if (this.state.tipoRegistro === 'Empleado') {
+        return (
+          <View>
+          <CardSection>
+          <Input
+            autoCapitalize={'characters'}
+            label="Estado civil"
+            placeholder="Soltero"
+            value={this.state.estadoCivil}
+            onChangeText={value => this.setState({ estadoCivil: value })}
+          />
+            </CardSection>
+          </View>
+        );
+      }
+        if (this.state.tipoRegistro === 'Paciente') {
+          return (
+            <View>
+        <CardSection>
+          <Input
+            required
+            label="Religión"
+            placeholder="Religión"
+            value={this.state.religion}
+            onChangeText={value => this.setState({ religion: value })}
+          />
+        </CardSection>
+
+        <CardSection>
+          <Input
+            required
+            label="Etnia indígena"
+            placeholder="Taraumara"
+            value={this.state.etnia}
+            onChangeText={value => this.setState({ etnia: value })}
+          />
+        </CardSection>
+
+        <CardSection>
+          <Input
+            required
+            label="Idioma principal"
+            placeholder="Español"
+            value={this.state.idioma}
+            onChangeText={value => this.setState({ idioma: value })}
+          />
+        </CardSection>
+        </View>
+      );
+      }
+    }
+
+
+  infoProfesional() {
+    if(this.state.tipoRegistro === 'Empleado' || this.state.tipoRegistro === 'Médico')
+    return(
+    <Card>
+       <TouchableWithoutFeedback
+         onPress={() => this.setState({ key: 'profesional' })}
+       >
+         <View>
+       <CardSection>
+         <Text style={styles.pickerTextStyle}>Datos profesionales</Text>
+       </CardSection>
+     </View>
+       </TouchableWithoutFeedback>
+       {this.profesional()}
+     </Card>
+   );
+  }
+
   profesional() {
     if (this.state.key === 'profesional') {
       return (
         <View>
           <CardSection>
             <Input
+              autoCapitalize={'characters'}
+              keyboardType={'numeric'}
               label="Cédula profesional"
               placeholder="12345678"
-              value={this.props.cedule}
-              onChangeText={value => this.props.signupUpdate(
-                { prop: 'cedule', value, type: 'numbers', limit: 8 })}
+              value={this.state.cedule}
+              onChangeText={value => this.setState({ cedule: value })}
             />
           </CardSection>
-
+          {this.profesionalEspecial()}
+        </View>
+        );
+      }
+    }
+    profesionalEspecial() {
+      if (this.state.tipoRegistro === 'Empleado') {
+        return (
+          <View>
           <CardSection>
           <Input
-            label="Profesión"
-            placeholder="Ing. Biomédico"
-            value={this.props.prof}
-            onChangeText={value => this.props.signupUpdate({ prop: 'prof', value, type: 'default' })}
+            autoCapitalize={'characters'}
+            label="Cargo"
+            placeholder="Recepcionista"
+            value={this.state.cargo}
+            onChangeText={value => this.setState({ cargo: value })}
           />
             </CardSection>
 
           <CardSection>
           <Input
-            label="Especialidad"
-            placeholder="Mtría. en materiales"
-            value={this.props.master}
-            onChangeText={value => this.props.signupUpdate({ prop: 'master', value, type: 'default' })}
+            autoCapitalize={'characters'}
+            label="Profesión"
+            placeholder="Ing. Biomédico"
+            value={this.state.prof}
+            onChangeText={value => this.setState({ prof: value })}
+          />
+            </CardSection>
+
+          <CardSection>
+          <Input
+            autoCapitalize={'characters'}
+            label="Maestría"
+            placeholder="Mtría. en diseño de hardware"
+            value={this.state.master}
+            onChangeText={value => this.setState({ master: value })}
           />
           </CardSection>
-        </View>
+          </View>
+        );
+      }
+      if (this.state.tipoRegistro === 'Médico') {
+        return (
+          <View>
+          <CardSection>
+          <Input
+            autoCapitalize={'characters'}
+            label="Especialidad"
+            placeholder="Ginecologia"
+            value={this.state.master}
+            onChangeText={value => this.setState({ master: value })}
+          />
+          </CardSection>
+          <CardSection>
+          <Input
+            autoCapitalize={'characters'}
+            label="Subespecialidad"
+            placeholder="Tococirugía"
+            value={this.state.submaster}
+            onChangeText={value => this.setState({ submaster: value })}
+          />
+          </CardSection>
+          </View>
         );
       }
     }
@@ -150,73 +428,76 @@ class SignupForm extends Component {
         <View>
         <CardSection>
         <Input
+          autoCapitalize={'characters'}
           label="Código postal"
           placeholder="47600"
-          value={this.props.CP}
-          onChangeText={value => this.props.signupUpdate({ prop: 'CP', value, type: 'numbers', limit: 8 })}
+          value={this.state.cp}
+          keyboardType="numeric"
+          onChangeText={value => this.setState({ cp: value })}
         />
         </CardSection>
 
         <CardSection>
         <Input
+          autoCapitalize={'characters'}
           label="Calle"
           placeholder="Av. Colosio"
-          value={this.props.street}
-          onChangeText={value => this.props.signupUpdate({ prop: 'street', value, type: 'firstCap' })}
+          value={this.state.street}
+          onChangeText={value => this.setState({ street: value })}
         />
         </CardSection>
 
         <CardSection>
         <Input
+          autoCapitalize={'characters'}
           label="N. Exterior"
           placeholder="863"
-          value={this.props.extNum}
-          onChangeText={value => this.props.signupUpdate({ prop: 'extNum', value, type: 'numbers', limit: 10 })}
+          value={this.state.extNum}
+          onChangeText={value => this.setState({ extNum: value })}
         />
-        </CardSection>
 
-        <CardSection>
         <Input
+          autoCapitalize={'characters'}
           label="N. Interior"
           placeholder=".1"
-          value={this.props.extNum}
-          onChangeText={value => this.props.signupUpdate({ prop: 'intNum', value, type: 'default' })}
+          value={this.state.intNum}
+          onChangeText={value => this.setState({ intNum: value })}
         />
         </CardSection>
 
         <CardSection>
         <Input
+          autoCapitalize={'characters'}
           label="Colonia"
           placeholder="Centro"
-          value={this.props.colonia}
-          onChangeText={value => this.props.signupUpdate({ prop: 'colonia', value, type: 'firstCap' })}
+          value={this.state.colonia}
+          onChangeText={value => this.setState({ colonia: value })}
         />
-        </CardSection>
 
-        <CardSection>
         <Input
+          autoCapitalize={'characters'}
           label="Localidad"
           placeholder="Tepatitlán"
-          value={this.props.locality}
-          onChangeText={value => this.props.signupUpdate({ prop: 'locality', value, type: 'firstCap' })}
+          value={this.state.locality}
+          onChangeText={value => this.setState({ locality: value })}
         />
         </CardSection>
 
         <CardSection>
         <Input
+          autoCapitalize={'characters'}
           label="Municipio"
           placeholder="Tepatitlán"
-          value={this.props.city}
-          onChangeText={value => this.props.signupUpdate({ prop: 'city', value, type: 'firstCap' })}
+          value={this.state.city}
+          onChangeText={value => this.setState({ city: value })}
         />
-        </CardSection>
 
-        <CardSection>
         <Input
+          autoCapitalize={'characters'}
           label="Estado"
           placeholder="Jalisco"
-          value={this.props.state}
-          onChangeText={value => this.props.signupUpdate({ prop: 'state', value, type: 'oneWord' })}
+          value={this.state.state}
+          onChangeText={value => this.setState({ state: value })}
         />
         </CardSection>
         </View>
@@ -229,21 +510,23 @@ class SignupForm extends Component {
         <View>
           <CardSection>
           <Input
+            autoCapitalize={'characters'}
             label="Teléfono"
-            placeholder="378-121-9925"
-            value={this.props.phone.toShow}
-            valid={this.props.phone.valid}
-            edited={this.props.phone.edited}
-            onChangeText={value => this.props.signupUpdate({ prop: 'phone', value, type: 'phone', edited: true })}
+            placeholder="3781219925"
+            value={this.state.phone}
+            keyboardType="numeric"
+            onChangeText={value => this.setState({ phone: value })}
           />
           </CardSection>
 
           <CardSection>
           <Input
+            autoCapitalize={'characters'}
             label="Email"
             placeholder="emanuel@healtech.com.mx"
-            value={this.props.email}
-            onChangeText={value => this.props.signupUpdate({ prop: 'email', value })}
+            value={this.state.email}
+            keyboardType="email-address"
+            onChangeText={value => this.setState({ email: value })}
           />
           </CardSection>
         </View>
@@ -256,11 +539,12 @@ class SignupForm extends Component {
         <View>
         <CardSection>
         <Input
+          autoCapitalize={'characters'}
           label="Grupo sanguíneo"
           placeholder="O+"
-          value={this.props.bloodType}
-          onChangeText={value => this.props.signupUpdate({ prop: 'bloodType', value })}
-        />
+          value={this.state.bloodType}
+          onChangeText={value => this.setState({ bloodType: value })}
+          />
         </CardSection>
 
         <CardSection>
@@ -269,37 +553,42 @@ class SignupForm extends Component {
 
         <CardSection>
         <Input
+          autoCapitalize={'characters'}
           label="Apellidos"
           placeholder="Martín Alcalá"
-          value={this.props.emergencyLastName}
-          onChangeText={value => this.props.signupUpdate({ prop: 'emergencyLastName', value })}
+          value={this.state.emergencyLastName}
+          onChangeText={value => this.setState({ emergencyLastName: value })}
         />
         </CardSection>
 
         <CardSection>
         <Input
+          autoCapitalize={'characters'}
           label="Nombres"
           placeholder="Héctor Emanuel"
-          value={this.props.emergencyFirstName}
-          onChangeText={value => this.props.signupUpdate({ prop: 'emergencyFirstName', value })}
+          value={this.state.emergencyFirstName}
+          onChangeText={value => this.setState({ emergencyFirstName: value })}
         />
         </CardSection>
 
         <CardSection>
         <Input
+          autoCapitalize={'characters'}
           label="Parentezco"
           placeholder="Padre"
-          value={this.props.emergencyPartner}
-          onChangeText={value => this.props.signupUpdate({ prop: 'emergencyPartner', value })}
+          value={this.state.emergencyPartner}
+          onChangeText={value => this.setState({ emergencyPartner: value })}
         />
         </CardSection>
 
         <CardSection>
         <Input
+          autoCapitalize={'characters'}
           label="Teléfono"
-          placeholder="378-098-92323"
-          value={this.props.emergencyPhone}
-          onChangeText={value => this.props.signupUpdate({ prop: 'emergencyPhone', value })}
+          placeholder="37809892323"
+          value={this.state.emergencyPhone}
+          keyboardType="numeric"
+          onChangeText={value => this.setState({ emergencyPhone: value })}
         />
         </CardSection>
         </View>
@@ -312,10 +601,11 @@ class SignupForm extends Component {
         <View>
         <CardSection>
         <Input
-          label="Usario"
+        autoCapitalize={'none'}
+          label="Usuario"
           placeholder="EmanuelMartin"
-          value={this.props.username}
-          onChangeText={value => this.props.signupUpdate({ prop: 'username', value })}
+          value={this.state.username}
+          onChangeText={value => this.setState({ username: value })}
         />
         </CardSection>
 
@@ -324,8 +614,8 @@ class SignupForm extends Component {
           secureTextEntry
           label="Contraseña"
           placeholder="contraseña"
-          value={this.props.password}
-          onChangeText={value => this.props.signupUpdate({ prop: 'password', value })}
+          value={this.state.password}
+          onChangeText={value => this.checkPassword(value)}
         />
         </CardSection>
 
@@ -334,19 +624,50 @@ class SignupForm extends Component {
           secureTextEntry
           label="Confirmar contraseña"
           placeholder="contraseña"
-          value={this.props.password2}
-          onChangeText={value => this.props.signupUpdate({ prop: 'password2', value })}
+          value={this.state.password2}
+          onChangeText={value => this.checkPasswordMatch(value)}
         />
+        </CardSection>
+
+        <CardSection>
+        {this.coinciden()}
         </CardSection>
         </View>
       );
     }
   }
 
+  renderButton() {
+    if (this.props.loading) {
+      return <Spinner size="large" />;
+    }
+
+    return (
+      <Button onPress={() => this.onUserCreatePress()}>
+        Crear usuario
+      </Button>
+    );
+  }
+
   render() {
     return (
       <View style={{ flex: 1, paddingBottom: 20 }}>
     <ScrollView>
+    <CardSection>
+    <Dropdown
+    containerStyle={{ flex: 1, padding: 5 }}
+    data={[{
+        value: 'Empleado',
+      }, {
+        value: 'Paciente'
+      }, {
+        value: 'Médico'
+      }]}
+    value={this.state.tipoRegistro}
+    onChangeText={value => this.setState({ tipoRegistro: value })}
+    placeholder={'Selecciona el tipo de registro'}
+    />
+    </CardSection>
 
       <Card>
         <TouchableWithoutFeedback
@@ -354,25 +675,14 @@ class SignupForm extends Component {
         >
           <View>
        <CardSection>
-          <Text>Datos personales</Text>
+          <Text style={styles.pickerTextStyle}>Datos personales</Text>
         </CardSection>
       </View>
       </TouchableWithoutFeedback>
         {this.personal()}
       </Card>
 
-      <Card>
-        <TouchableWithoutFeedback
-          onPress={() => this.setState({ key: 'profesional' })}
-        >
-          <View>
-        <CardSection>
-          <Text>Datos profesionales</Text>
-        </CardSection>
-      </View>
-        </TouchableWithoutFeedback>
-        {this.profesional()}
-      </Card>
+     {this.infoProfesional()}
 
       <Card>
         <TouchableWithoutFeedback
@@ -380,7 +690,7 @@ class SignupForm extends Component {
         >
           <View>
         <CardSection>
-          <Text>Domicilio</Text>
+          <Text style={styles.pickerTextStyle}>Domicilio</Text>
         </CardSection>
       </View>
         </TouchableWithoutFeedback>
@@ -393,20 +703,20 @@ class SignupForm extends Component {
         >
           <View>
         <CardSection>
-          <Text>Contacto</Text>
+          <Text style={styles.pickerTextStyle}>Contacto</Text>
         </CardSection>
       </View>
         </TouchableWithoutFeedback>
         {this.contacto()}
       </Card>
-
+        {this.infoSeguro()}
       <Card>
         <TouchableWithoutFeedback
           onPress={() => this.setState({ key: 'emergencia' })}
         >
           <View>
         <CardSection>
-          <Text>Información de emergencia</Text>
+          <Text style={styles.pickerTextStyle}>Información de emergencia</Text>
         </CardSection>
       </View>
         </TouchableWithoutFeedback>
@@ -419,16 +729,18 @@ class SignupForm extends Component {
         >
           <View>
         <CardSection>
-          <Text>Información de inicio de sesión</Text>
+          <Text style={styles.pickerTextStyle}>Información de inicio de sesión</Text>
         </CardSection>
       </View>
         </TouchableWithoutFeedback>
         {this.usuario()}
       </Card>
-      </ScrollView>
+
       <CardSection>
         {this.renderButton()}
       </CardSection>
+
+      </ScrollView>
       </View>
       );
     }
@@ -436,14 +748,44 @@ class SignupForm extends Component {
 
 const styles = {
   pickerTextStyle: {
-    fontSize: 18,
-    paddingLeft: 20
+    fontSize: 26,
+    fontWeight: 'bold'
   }
-}
+};
 
 const mapStateToProps = (state) => {
-  const { loading, curp, lastName1, lastName2, names, birthday, birthState, cedule, phone } = state.signupForm;
-  return { loading, curp, lastName1, lastName2, names, birthday, birthState, cedule, phone };
+  const {
+    loading,
+    curp,
+    lastName1,
+    lastName2,
+    names,
+    birthday,
+    birthState,
+    cedule,
+    phone,
+    nationality,
+    sex,
+    prof,
+    username,
+    password
+  } = state.signupForm;
+  return {
+    loading,
+    curp,
+    lastName1,
+    lastName2,
+    names,
+    birthday,
+    birthState,
+    cedule,
+    phone,
+    nationality,
+    sex,
+    prof,
+    username,
+    password
+  };
 };
 
 export default connect(mapStateToProps, { signupUpdate, userCreate })(SignupForm);

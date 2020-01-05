@@ -1,0 +1,230 @@
+<!doctype html>
+<html>
+  <head>
+    <style type="text/css">
+      * {
+          font-size: 14px;
+          font-family: 'Times New Roman';
+      }
+
+      td,
+      th,
+      tr,
+      table {
+          border: 2px solid #646569;
+          border-collapse: collapse;
+          word-break: break-all;
+      }
+
+      td.cantidad,
+      th.cantidad {
+          padding: 10px;
+          width: 100px;
+          max-width: 100px;
+          word-break: break-all;
+      }
+
+      td.descripcion,
+      th.descripcion {
+          padding: 10px;
+          width: 400px;
+          max-width: 400px;
+          word-break: break-all;
+      }
+
+      td.precio,
+      th.precio {
+        padding: 10px;
+        width: 200px;
+        max-width: 200px;
+        word-break: break-all;
+      }
+
+      td.total,
+      th.total {
+        padding: 10px;
+        width: 200px;
+        max-width: 200px;
+        word-break: break-all;
+      }
+
+      td.table2,
+      th.table2 {
+          width: 10%;
+          max-width: 10%;
+          word-break: break-all;
+      }
+
+      .centrado {
+          text-align: center;
+          align-content: center;
+      }
+
+      .align-right {
+          text-align: right;
+          align-content: right;
+      }
+
+			.align-left {
+          text-align: left;
+          align-content: left;
+      }
+
+      .ticket {
+          width: 100%;
+          max-width: 100%;
+      }
+
+      img {
+          width: 100;
+					max-width: 100px;
+      }
+
+      img.qr {
+        width : 100;
+        height: auto;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+      }
+
+			table.style1 {
+			  border-collapse: collapse;
+			  width: 100%;
+				float: left
+			}
+
+			td, th {
+			  border: 1px solid #000;
+			  text-align: center;
+			  padding: 5px;
+			}
+
+			tr.style1:nth-child(odd) {
+			  background-color: #63C0B9;
+				border: 1px solid #000;
+			}
+
+			/* Create two equal columns that floats next to each other */
+			div.column1 {
+			  float: left;
+			  width: 20%;
+			}
+			div.column2 {
+			  float: left;
+			  width: 40%;
+			}
+			div.column3 {
+			  float: right;
+			  width: 30%;
+			}
+
+			/* Clear floats after the columns */
+			.row:after {
+				width: 500;
+				max-width: 500px;
+			  content: "";
+			  display: table;
+			  clear: both;
+			}
+
+			p.datos {
+				padding: 10px;
+			}
+
+			br.datos {
+			  content: "";
+			  margin: 2em;
+			  display: block;
+			  font-size: 20%;
+			}
+
+    </style>
+  </head>
+  <body>
+		<div class="row">
+			<div class="column1" style="background-color:#fff;">
+				<img src="../img/LogoVerde.png" alt="Logotipo"/>
+			</div>
+			<div class="column2" style="background-color:#fff;">
+				<p>
+					Hospital Real San Lucas S.A. de C.V.<br class="datos">
+					Blvd. Anacleto González Flores, No. 178 <br class="datos">
+					C.P. 47660, Col. San Miguel<br class="datos">
+					RFC: HRS1605113C7
+				</p>
+			</div>
+			<div class="column3" style="background-color:#fff;">
+				<table class="style1">
+					<tr class="style1">
+						<th class="title">Nota de Remisión</th>
+					</tr>
+					<tr class="style1">
+						<td class="style1">C-000001</td>
+					</tr>
+					<tr class="style1">
+						<th class="title">Fecha y Hora</th>
+					</tr>
+					<tr class="style1">
+						<td class="style1">14-11-2019 19:51:35</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+    <div class="ticket">
+			<p class="align-left datos">
+         <b>Paciente:</b> Juan Pérez Durán<br class="datos">
+         <b>Ingreso:</b> oSacew1<br class="datos">
+				 <b>Fecha Ingreso:</b> 10-11-2019
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th class="style1">Cantidad</th>
+            <th class="style1">Descripción</th>
+            <th class="style1">Precio Unitario</th>
+            <th class="style1">Importe</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="cantidad">1</td>
+            <td class="descripcion align-left">Test0</td>
+            <td class="precio">$100.00</td>
+            <td class="total">$100.00</td>
+          </tr>
+          <tr>
+            <td class="cantidad">1</td>
+            <td class="descripcion">Test1</td>
+            <td class="precio">$200.00</td>
+            <td class="total">$200.00</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="align-left datos">
+        <b>Subtotal:</b> $300.00<br class="datos">
+        <b>IVA:</b> 16%<br class="datos">
+        <b>Total:</b> $348.00
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th class="style1">Tipo</th>
+            <th class="style1">Total</th>
+            <th class="style1">Pago</th>
+            <th class="style1">Cambio</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+          <td class="table2 centrado">Efectivo</td>
+          <td class="table2 centrado">$348.00</td>
+          <td class="table2 centrado">$350.00</td>
+          <td class="table2 centrado">$2.00</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Nota:<br></p>
+    </div>
+  </body>
+</html>

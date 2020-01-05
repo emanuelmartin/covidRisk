@@ -12,14 +12,16 @@ const INITIAL_STATE = {
   phone: '',
   shift: '',
   curp: '',
-  lastName1: '',
-  lastName2: '',
-  names: '',
   birthState: '',
   birthday: '',
   cedule: '',
+  nationality: '',
+  sex: '',
+  prof: '',
   edited: false,
-  valid: false
+  valid: false,
+  username: '',
+  password: ''
 };
 
 export default (state = INITIAL_STATE, action) => {

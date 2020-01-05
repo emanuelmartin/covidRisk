@@ -1,8 +1,18 @@
 import React from 'react';
 import { TextInput, View, Text, StyleSheet } from 'react-native';
 
-const Input = ({ label, value, onChangeText, placeholder, secureTextEntry, edited, valid }) => {
-
+const Input = ({
+  label,
+  value,
+  onChangeText,
+  placeholder,
+  secureTextEntry,
+  keyboardType,
+  edited,
+  onEndEditing,
+  selectTextOnFocus,
+  autoCapitalize,
+  valid }) => {
   const validationStyles = edited
     ? valid ? styles.valid : styles.invalid
     : null;
@@ -17,6 +27,10 @@ const Input = ({ label, value, onChangeText, placeholder, secureTextEntry, edite
         style={styles.inputStyle}
         value={value}
         onChangeText={onChangeText}
+        keyboardType={keyboardType}
+        onEndEditing={onEndEditing}
+        selectTextOnFocus={selectTextOnFocus}
+        autoCapitalize={autoCapitalize}
       />
     </View>
   );
@@ -24,18 +38,18 @@ const Input = ({ label, value, onChangeText, placeholder, secureTextEntry, edite
 
 const styles = StyleSheet.create({
   inputStyle: {
-	    color: '#000',
-	    paddingRight: 5,
-	    paddingLeft: 5,
-	    fontSize: 18,
-	    lineHeight: 23,
-	    flex: 1
-	  },
+    color: '#000',
+    paddingRight: 5,
+    paddingLeft: 5,
+    fontSize: 18,
+    lineHeight: 23,
+    flex: 1
+  },
   inputContainer: {
     borderBottomWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.4)',
-    marginTop: 20,
-    height: 50,
+    marginTop: 10,
+    height: 60,
     flex: 1
   },
   valid: {
@@ -45,6 +59,5 @@ const styles = StyleSheet.create({
     borderColor: '#F55E64'
   }
 });
-
 
 export { Input };

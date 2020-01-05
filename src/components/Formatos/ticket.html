@@ -1,0 +1,153 @@
+<!doctype html>
+<html>
+  <head>
+    <style type="text/css">
+      * {
+          font-size: 12px;
+          font-family: 'Times New Roman';
+      }
+
+      td,
+      th,
+      tr,
+      table {
+          border-top: 1px solid black;
+          border-collapse: collapse;
+      }
+
+      td.descripcion,
+      th.descripcion {
+          width: 75px;
+          max-width: 75px;
+      }
+
+      td.cantidad,
+      th.cantidad {
+          width: 55px;
+          max-width: 55px;
+          word-break: break-all;
+      }
+
+      td.total,
+      th.total {
+        width: 70px;
+        max-width: 70px;
+        word-break: break-all;
+      }
+
+      td.recibido,
+      th.recibido,
+      td.cambio,
+      th.cambio {
+          width: 75px;
+          max-width: 75px;
+          word-break: break-all;
+      }
+
+      td.precio,
+      th.precio {
+        width: 65px;
+        max-width: 65px;
+        word-break: break-all;
+      }
+
+      td.pago,
+      th.pago {
+        width: 40px;
+        max-width: 40px;
+        word-break: break-all;
+      }
+
+      .centrado {
+          text-align: center;
+          align-content: center;
+      }
+
+      .align-rigth {
+          text-align: right;
+          align-content: right;
+      }
+
+      .ticket {
+          width: 200;
+          max-width: 200px;
+      }
+
+      img {
+          max-width: inherit;
+          width: inherit;
+      }
+
+      img.qr {
+        width : 100;
+        height: auto;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="ticket">
+      <img src="../img/logoCompleto.jpeg" alt="Logotipo"/>
+      <p class="centrado">Hospital Real San Lucas S.A. de C.V. <br>
+      Blvd. Anacleto González Flores, No. 178 <br>
+      C.P. 47660, Col. San Miguel<br>
+      RFC: HRS1605113C7</p>
+
+      <p class="centrado"><br>Nota de Venta</p>
+      <p><b>Folio:</b>  C-000001<br>
+         <b>Caja:</b> Cafeteria
+      <br><b>Fecha:</b> 14-11-2019 19:10:22
+      <table>
+        <thead>
+          <tr>
+            <th class="cantidad">Cant.</th>
+            <th class="descripcion">Descripción</th>
+
+            <th class="precio">P.U.</th>
+            <th class="total">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="cantidad">1</td>
+            <td class="descripcion">Test0</td>
+            <td class="precio">$100.00</td>
+            <td class="total">$100.00</td>
+          </tr>
+          <tr>
+            <td class="cantidad">1</td>
+          <td class="descripcion">Test1</td>
+          <td class="precio">$200.00</td>
+          <td class="total">$200.00</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="align-rigth"><b>Subtotal:</b> $300.00</p>
+      <p class="align-rigth"><b>IVA:</b> 16%</p>
+      <p class="align-rigth"><b>Total:</b> $348.00</p>
+      <table>
+        <thead>
+          <tr>
+            <th class="pago">Tipo</th>
+            <th class="total">Total</th>
+            <th class="recibido">Pago</th>
+            <th class="cambio">Cambio</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+          <td class="pago">Efectivo</td>
+          <td class="total">$348.00</td>
+          <td class="recibido">$350.00</td>
+          <td class="cambio">$2.00</td>
+          </tr>
+        </tbody>
+      </table>
+      <p><br></p>
+      <p class="centrado">¡GRACIAS POR SU COMPRA!</p>
+    </div>
+  </body>
+</html>
