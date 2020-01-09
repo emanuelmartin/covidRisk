@@ -218,13 +218,13 @@ class PatientBill extends Component {
               bill.cuenta.farmacia.forEach((desglose) => {
                 if (Farmacia.some(producto => producto.objectId === desglose.objectId)) {
                   const pos = Farmacia.map(e => { return e.objectId; }).indexOf(desglose.objectId);
-                  Farmacia[pos].cant = parseFloat(desglose.cantidad + Farmacia[pos].cant);
+                  Farmacia[pos].cant += parseFloat(desglose.cantidad);
                 } else {
                   desglose.sellType = 'publico';
                   desglose.cant = parseFloat(desglose.cantidad);
                   Farmacia.push(desglose);
                 }
-                totalFarmacia += desglose.precioPublico * parseFloat(desglose.cantidad) * (1 + (desglose.iva / 100));
+                totalFarmacia += desglose.precioPublico * parseFloat(desglose.cantidad) * (1 + (desglose.IVA / 100));
               });
             } else if (bill.cuenta.farmacia.length === 1) {
               if (Farmacia.some(producto => producto.objectId === bill.cuenta.farmacia[0].objectId)) {
@@ -235,10 +235,10 @@ class PatientBill extends Component {
                 bill.cuenta.farmacia[0].cant = parseFloat(bill.cuenta.farmacia[0].cantidad);
                 Farmacia.push(bill.cuenta.farmacia[0]);
               }
-              totalFarmacia += bill.cuenta.farmacia[0].precioPublico * parseFloat(bill.cuenta.farmacia[0].cantidad) * (1 + (bill.cuenta.farmacia[0].iva / 100));
+              totalFarmacia += bill.cuenta.farmacia[0].precioPublico * parseFloat(bill.cuenta.farmacia[0].cantidad) * (1 + (bill.cuenta.farmacia[0].IVA / 100));
             }
           }
-
+          /*
           if (bill.cuenta.List !== undefined && bill.cuenta.List !== null) {
             if (bill.cuenta.List.length >=1) {
               bill.cuenta.List.forEach((desglose) => {
@@ -287,7 +287,7 @@ class PatientBill extends Component {
                 totalEstudios += bill.cuenta.List[0].precioPublico * parseFloat(bill.cuenta.List[0].cantidad) * (1 + (bill.cuenta.List[0].iva / 100));
               }
             }
-          }
+          }*/
         }
       });
 
@@ -748,7 +748,7 @@ class PatientBill extends Component {
           <Text
             style={[styles.textStyle, { textAlign: 'right', fontSize: 14 }]}
           >
-            {(item.precioPublico * (1 + (item.iva / 100))).toFixed(2)}
+            {(item.precioPublico * (1 + (item.IVA / 100))).toFixed(2)}
           </Text>
         </View>
       </CardSection>
