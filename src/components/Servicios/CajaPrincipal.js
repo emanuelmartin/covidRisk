@@ -390,6 +390,7 @@ class Principal extends Component {
     let producto = {};
     let nombre = '';
     let precio = 0;
+    let auxPrecio = 0;
 
     if (item.tipo === 'paquete') {
       nombre += item.nombre;
@@ -408,12 +409,14 @@ class Principal extends Component {
       }));
     } else if (item.tipo === 'insumo' || item.tipo === 'medicamento') {
       nombre += `${item.laboratorio} - ${item.nombre}`;
+      if(this.state.sellType === 'Venta al público'){ auxPrecio = item.precioPublico; }
+      else{ auxPrecio = item.precioSeguro; }
       producto = {
         nombre,
         objectId: item.objectId,
         cantidad: '1',
-        precio,
-        iva: (precio * (item.iva / 100))
+        precio: auxPrecio,
+        iva: (auxPrecio * (item.IVA / 100))
       };
       this.setState(state => ({
       farmacia: [...state.farmacia, producto],
