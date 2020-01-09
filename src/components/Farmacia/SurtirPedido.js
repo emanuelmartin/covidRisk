@@ -185,70 +185,59 @@ class SurtirPedido extends Component {
     let { dataList } = this.state;
 
     if (this.state.Cuenta.objectId) {
-            this.state.Productos = this.state.Cuenta.cuenta.farmacia;
+      this.state.Productos = this.state.Cuenta.cuenta.farmacia;
 
-          dataList = this.state.Productos;
+      dataList = this.state.Productos;
       return (
-      <View style={{ paddingLeft: 10, paddingTop: 30, paddingBottom: 0}}>
-      <Text style={{ fontSize: 30,
-    fontWeight: 'bold' }}>
-    Productos
-    </Text>
-      <ScrollView>
-      <FlatList
-        data={dataList}
-        ItemSeparatorComponent={this.ListViewItemSeparator}
-        //Item Separator View
-        renderItem={({ item, index }) => {
-          if(item.nombre) {
-            console.log(this.state.Productos[index].integrado)
-          return (
-            <View style={{ flex: 1, flexDirection: 'column' }}>
-            <View>
-            <Card>
-            <CardSection>
-            <View>
-            <CardSection>
-              <Text style={{fontSize: 18}}>
-                {item.nombre}
-              </Text>
-              <Text style={{fontSize: 15}}>
-                {item.laboratorio}
-              </Text>
-          <Text style={{fontSize: 15}}>
-            {item.cantidad}
+        <View style={{ flex: 1, paddingLeft: 10, paddingTop: 30, paddingBottom: 0}}>
+          <Text style={{ fontSize: 30,
+            fontWeight: 'bold' }}>
+            Productos
           </Text>
-      </CardSection>
-          </View>
-          <CheckBox
-          size={38}
-            checked={this.state.Productos[index].integrado}
-            onPress={() => {
-              const Productos = {...this.state.Productos};
-              Productos[index].integrado = !this.state.Productos[index].integrado;
-              this.setState({ Productos });
-            }
-          }
-          />
-          </CardSection>
-          </Card>
-          </View>
-          </View>
-        ); }}
-      }
-        style={{ marginTop: 10 }}
-        keyExtractor={item=>item.objectId}
-      />
-      </ScrollView>
-      <View>
-      <CardSection>
-        <Button onPress={() => this.confirmar()}>Confirmar</Button>
-        </CardSection>
-        </View>
+          <FlatList
+            data={dataList}
+            ItemSeparatorComponent={this.ListViewItemSeparator}
+            //Item Separator View
+            renderItem={({ item, index }) => {
+              if(item.nombre) {
+                console.log(this.state.Productos[index].integrado)
+                return (
+                  <Card>
+                    <CardSection>
+                      <View style={{flex: 3}}>
+                        <Text style={{fontSize: 15}}>
+                          {item.nombre}
+                        </Text>
+                        <Text style={{fontSize: 13}}>
+                          {item.laboratorio}
+                        </Text>
+                        <Text style={{fontSize: 15}}>
+                          {item.cantidad}
+                        </Text>
+                      </View>
+                      <View style={{flex: 1}}>
+                        <CheckBox
+                          size={38}
+                          checked={this.state.Productos[index].integrado}
+                          onPress={() => {
+                            const Productos = {...this.state.Productos};
+                            Productos[index].integrado = !this.state.Productos[index].integrado;
+                            this.setState({ Productos });
+                          }}
+                        />
+                      </View>
+                    </CardSection>
+                  </Card>
+              ); }}}
+              style={{ marginTop: 10 }}
+              keyExtractor={item=>item.objectId}
+            />
+            <CardSection>
+              <Button onPress={() => this.confirmar()}>Confirmar</Button>
+            </CardSection>
         </View>
     );
-  }
-  }
+  }}
 
   confirmar() {
     if (this.state.Productos && this.state.Cuenta) {
@@ -305,13 +294,9 @@ class SurtirPedido extends Component {
   render() {
     console.log(this.state.Productos)
     return (
-      <View>
-      {this.buscarCuenta()}
-        <ScrollView>
-      {this.listaProductos()}
-        </ScrollView>
-        <View>
-          </View>
+      <View style={{flex: 1}}>
+        {this.buscarCuenta()}
+        {this.listaProductos()}
       </View>
     );
   }

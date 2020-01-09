@@ -748,7 +748,7 @@ class PatientBill extends Component {
           <Text
             style={[styles.textStyle, { textAlign: 'right', fontSize: 14 }]}
           >
-            {(item.precioPublico * (1 + (item.IVA / 100))).toFixed(2)}
+            {(item.precioPublico * item.cant * (1 + (item.IVA / 100))).toFixed(2)}
           </Text>
         </View>
       </CardSection>
