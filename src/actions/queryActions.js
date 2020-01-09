@@ -117,6 +117,8 @@ export const queryAttach = ({ object, constrain, text }) => {
           query[index].get(element.text);
         } else if (element.type === 'doesNotExist') {
           query[index].doesNotExist(element.variable);
+        } else if (element.type === 'matches') {
+            query[index].matches(element.variable, element.text, element.regex);
         } else {
           query[index][element.type](element.variable, element.text);
         }

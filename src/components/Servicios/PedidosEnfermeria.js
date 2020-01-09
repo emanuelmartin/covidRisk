@@ -199,10 +199,10 @@ class PedidosEnfermeria extends Component {
       return <Spinner size="large" />;
     }
     let dataList = null;
-    if (Array.isArray(this.props.multiQry)) {
-      dataList = this.props.multiQry;
+    if (Array.isArray(this.props.Inventario)) {
+      dataList = this.props.Inventario;
     } else {
-      dataList = [this.props.multiQry];
+      dataList = [this.props.Inventario];
     }
     return (
       <FlatList
@@ -279,10 +279,12 @@ class PedidosEnfermeria extends Component {
                 />}
               onChangeText={text => {
                 if (text !== '') {
-                    this.props.multiQuery(
-                      [{ type: 'startsWith', object: 'Inventario', variable: 'nombre' },
-                       { type: 'startsWith', object: 'Servicios', variable: 'nombre' }],
-                      text);
+                  this.props.queryAttach({
+                    object: 'Inventario',
+                    text,
+                    constrain:
+                    [{ type: 'matches', variable: 'nombre', text, regex: 'i' }]
+                  });
                 } else {
                   this.props.cleanFunc();
                 }
@@ -601,7 +603,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ query, bill, printR, auth }) => {
- const { text, User, multiQry, Caja } = query;
+ const { text, User, multiQry, Caja, Inventario } = query;
  const Patient = User;
  const load = query.loading;
  const { user } = auth;
@@ -620,7 +622,8 @@ const mapStateToProps = ({ query, bill, printR, auth }) => {
    load,
    ticketInfo,
    print,
-   user
+   user,
+   Inventario 
  };
 };
 

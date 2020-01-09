@@ -35,14 +35,12 @@ class AgregarProducto extends Component {
     this.state = { producto, Productos: producto.productos };
   }
 
-    componentWillMount() {
+    componentDidMount() {
       const {producto} = this.state;
     if (producto.tipo === 'paquete') {
     } else {
       this.actualizarCosto();
-      if(this.props.userType === 'admin') this.state.admin = true; else this.state.admin = false;
   }
-  console.log('Admin', this.state.admin)
     }
 
     renderFields() {
@@ -177,7 +175,17 @@ class AgregarProducto extends Component {
 
         <CardSection>
 
-          {this.costoAdquisicion()}
+          <Input
+          selectTextOnFocus
+            keyboardType="numeric"
+            label="Costo de adquisición"
+            placeholder="200.20"
+            onChangeText={(text) => this.setState({
+              producto: update(this.state.producto, { costoUMC: { $set: text } })
+            })}
+            value={this.state.producto.costoUMC}
+            onEndEditing={() => this.actualizarCosto()}
+          />
 
           <Input
           selectTextOnFocus
@@ -240,9 +248,17 @@ class AgregarProducto extends Component {
         </CardSection>
 
         <CardSection>
-          {this.costoUnitario()}
+          <Input
+          selectTextOnFocus
+            keyboardType="numeric"
+            label="Costo unitario"
+            placeholder="15.06"
+            onChangeText={(text) => this.setState({
+              producto: update(this.state.producto, { costoUMV: { $set: text } })
+            })}
+            value={this.state.producto.costoUMV}
+          />
 
-          {this.ganancia()}
 
           <Input
           selectTextOnFocus
@@ -253,7 +269,6 @@ class AgregarProducto extends Component {
               producto: update(this.state.producto, { precioPublico: { $set: text } })
             })}
             value={this.state.producto.precioPublico}
-            editable={this.state.admin}
           />
         </CardSection>
 
@@ -279,7 +294,6 @@ class AgregarProducto extends Component {
               producto: update(this.state.producto, { precioNeto: { $set: text } })
             })}
             value={this.state.producto.precioNeto}
-            editable={this.state.admin}
           />
 
           <Input
@@ -291,7 +305,6 @@ class AgregarProducto extends Component {
               producto: update(this.state.producto, { precioSeguro: { $set: text } })
             })}
             value={this.state.producto.precioSeguro}
-            editable={this.state.admin}
           />
         </CardSection>
 
@@ -304,56 +317,6 @@ class AgregarProducto extends Component {
       );
     }
   }
-  }
-
-  costoAdquisicion(){
-    if(this.props.userType === 'admin')
-    return(
-      <Input
-    selectTextOnFocus
-      keyboardType="numeric"
-      label="Costo de adquisición"
-      placeholder="200.20"
-      onChangeText={(text) => this.setState({
-        producto: update(this.state.producto, { costoUMC: { $set: text } })
-      })}
-      value={this.state.producto.costoUMC}
-      onEndEditing={() => this.actualizarCosto()}
-    />
-  )
-  }
-
-  costoUnitario(){
-    if(this.props.userType === 'admin')
-    return(
-      <Input
-      selectTextOnFocus
-        keyboardType="numeric"
-        label="Costo unitario"
-        placeholder="15.06"
-        onChangeText={(text) => this.setState({
-          producto: update(this.state.producto, { costoUMV: { $set: text } })
-        })}
-        value={this.state.producto.costoUMV}
-      />
-  )
-  }
-
-  ganancia(){
-    if(this.props.userType === 'admin')
-    return(
-      <Input
-      selectTextOnFocus
-        keyboardType="numeric"
-        label="Porcentaje de utilidad"
-        placeholder="20"
-        onChangeText={(text) => this.setState({
-          producto: update(this.state.producto, { porcentajeUtilidad: { $set: text } })
-        })}
-        value={this.state.producto.porcentajeUtilidad}
-        onEndEditing={() => this.actualizarCosto()}
-      />
-  )
   }
 
   listaPedido() {
@@ -895,13 +858,10 @@ addElement(item, modal) {
     }
   });
 
-  const mapStateToProps = ({ query, barCodeReader, auth }) => {
-    const { user } = auth;
-    const userType = user.attributes.userType;
-    console.log('UserType', userType)
+  const mapStateToProps = ({ query, barCodeReader }) => {
   const { barCode, barType } = barCodeReader;
   const { text, Proveedor, Inventario } = query;
-  return { text, Proveedor, Inventario, barCode, barType, user, userType };
+  return { text, Proveedor, Inventario, barCode, barType };
   };
 
   export default connect(mapStateToProps, { queryFunc, cleanFunc, cleanBarCode })(AgregarProducto);

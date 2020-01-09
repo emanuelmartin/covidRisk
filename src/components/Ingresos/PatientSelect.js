@@ -284,7 +284,7 @@ pacienteAnonimo() {
                   this.props.queryAttach({
                   object: 'User',
                   text,
-                  constrain: [{ type: 'startsWith', variable: 'lastName1', text },
+                  constrain: [{ type: 'matches', variable: 'lastName1', text, regex: 'i' },
                     { type: 'equalTo', variable: 'type', text: 'paciente', bool: 'and' }]
                   });
                 }}
@@ -297,7 +297,8 @@ pacienteAnonimo() {
               {this.lista('Patient', 'buscarPaciente')}
             </CardSection>
             <CardSection>
-              <Button onPress={() => this.navigateToScreen('SignUp')}>
+              <Button onPress={() => {this.closeModal('buscarPaciente');
+                                      this.props.navigation.navigate('SignUp')} }>
                 Añadir paciente
               </Button>
             </CardSection>
@@ -366,7 +367,8 @@ pacienteAnonimo() {
               {this.lista('Medico', 'seleccionarMedicoTitular')}
             </CardSection>
             <CardSection>
-              <Button onPress={() => this.navigateToScreen('SignUp')}>
+              <Button onPress={() => {this.closeModal('seleccionarMedicoTitular');
+                                      this.props.navigation.navigate('SignUp')} }>
                 Añadir médico
               </Button>
             </CardSection>
@@ -431,7 +433,8 @@ pacienteAnonimo() {
               {this.lista('Medico', 'seleccionarMedicoGuardia')}
             </CardSection>
             <CardSection>
-              <Button onPress={() => this.navigateToScreen('SignUp')}>
+              <Button onPress={() => {this.closeModal('seleccionarMedicoGuardia');
+                                      this.props.navigation.navigate('SignUp')} }>
                 Añadir médico
               </Button>
             </CardSection>
@@ -548,11 +551,12 @@ pacienteAnonimo() {
   className: 'Ocupacion',
   objectId: this.state.Habitacion.objectId
   };
-
+    const date = new Date();
     ingresos.set('tipo', this.state.tipo);
     ingresos.set('estadoActual', this.state.tipo);
     ingresos.set('paciente', pacientePointer);
     ingresos.set('pacienteAnonimo', pacienteAnonimo);
+    ingresos.set('admision', date);
 
     const ingresoInfo = { tipo: this.state.tipo,
        estadoActual: this.state.tipo,

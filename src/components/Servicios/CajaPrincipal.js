@@ -190,7 +190,7 @@ class Principal extends Component {
       if (isNaN(parseFloat(producto.cantidad)) || producto.cantidad <= 0) {
         cant = 0;
       } else { cant = parseFloat(producto.cantidad); }
-      subtotal += producto.precio * cant;
+      subtotal += producto.precioPublico * cant;
       iva += producto.iva * cant;
     });
 
@@ -228,7 +228,7 @@ class Principal extends Component {
       if (isNaN(parseFloat(producto.cantidad)) || producto.cantidad <= 0) {
         cant = 0;
       } else { cant = parseFloat(producto.cantidad); }
-      subtotal += producto.precio * cant;
+      subtotal += producto.precioPublico * cant;
       iva += producto.iva * cant;
     });
 
@@ -389,7 +389,7 @@ class Principal extends Component {
   addProducto(item) {
     let producto = {};
     let nombre = '';
-    let precio = 0;
+    let precioPublico = 0;
 
     if (item.tipo === 'paquete') {
       nombre += item.nombre;
@@ -398,7 +398,7 @@ class Principal extends Component {
         objectId: item.objectId,
         cantidad: '1',
         tipo: 'paquete',
-        precio,
+        precioPublico,
         iva: 0,
         incluye: item.incluye
       };
@@ -412,8 +412,8 @@ class Principal extends Component {
         nombre,
         objectId: item.objectId,
         cantidad: '1',
-        precio,
-        iva: (precio * (item.iva / 100))
+        precioPublico,
+        iva: (precioPublico * (item.iva / 100))
       };
       this.setState(state => ({
       farmacia: [...state.farmacia, producto],
@@ -426,8 +426,8 @@ class Principal extends Component {
         nombre,
         objectId: item.objectId,
         cantidad: '1',
-        precio,
-        iva: (precio * (item.iva / 100))
+        precioPublico,
+        iva: (precioPublico * (item.iva / 100))
       };
       this.setState(state => ({
       imagen: [...state.imagen, producto],
@@ -440,8 +440,8 @@ class Principal extends Component {
         nombre,
         objectId: item.objectId,
         cantidad: '1',
-        precio,
-        iva: (precio * (item.iva / 100))
+        precioPublico,
+        iva: (precioPublico * (item.iva / 100))
       };
       this.setState(state => ({
       laboratorio: [...state.laboratorio, producto],
@@ -454,8 +454,8 @@ class Principal extends Component {
         nombre,
         objectId: item.objectId,
         cantidad: '1',
-        precio,
-        iva: (precio * (item.iva / 100))
+        precioPublico,
+        iva: (precioPublico * (item.iva / 100))
       };
       this.setState(state => ({
       rehabilitacion: [...state.rehabilitacion, producto],
@@ -468,8 +468,8 @@ class Principal extends Component {
         nombre,
         objectId: item.objectId,
         cantidad: '1',
-        precio,
-        iva: (precio * (item.iva / 100))
+        precioPublico,
+        iva: (precioPublico * (item.iva / 100))
       };
       this.setState(state => ({
       otros: [...state.otros, producto],
@@ -589,7 +589,7 @@ class Principal extends Component {
       if (isNaN(parseFloat(producto.cantidad)) || producto.cantidad <= 0) {
         cant = 0;
       } else { cant = parseFloat(producto.cantidad); }
-      subtotal += producto.precio * cant;
+      subtotal += producto.precioPublico * cant;
       iva += producto.iva * cant;
     });
 

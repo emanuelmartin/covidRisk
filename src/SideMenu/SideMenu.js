@@ -21,11 +21,7 @@ class SideMenu extends Component {
   }
 
   fichasPersonales() {
-    if (this.props.userType === 'admin' ||
-        this.props.userType === 'recepcion' ||
-        this.props.userType === 'recursosHumanos' ||
-        this.props.userType === 'enfermeria' ||
-        this.props.userType === 'medico') {
+    if (this.props.userType === 'admin') {
       return (
         <View>
           <Text style={styles.sectionHeadingStyle}>
@@ -34,7 +30,7 @@ class SideMenu extends Component {
           <View style={styles.navSectionStyle}>
             {this.detalleProveedores()}
             {this.detallePacientes()}
-            {this.detalleUsuarios()}
+            {this.detalleMedicos()}
           </View>
         </View>
       );
@@ -51,13 +47,37 @@ class SideMenu extends Component {
           </View>
         );
     }
+    if (this.props.userType === 'recursosHumanos') {
+      return (
+      <View>
+        <Text style={styles.sectionHeadingStyle}>
+          Fichas personales
+        </Text>
+        <View style={styles.navSectionStyle}>
+          {this.detalleEmpleados()}
+          </View>
+          </View>
+        );
+    }
+    if (this.props.userType === 'recepcion' ||
+    this.props.userType === 'admision' ||
+    this.props.userType === 'caja'||
+    this.props.userType === 'enfermeria' ||
+    this.props.userType === 'medico') {
+      return (
+      <View>
+        <Text style={styles.sectionHeadingStyle}>
+          Fichas personales
+        </Text>
+        <View style={styles.navSectionStyle}>
+          {this.detallePacientes()}
+          </View>
+          </View>
+        );
+    }
   }
 
   detallePacientes() {
-    if (this.props.userType === 'admin' ||
-        this.props.userType === 'recepcion' ||
-        this.props.userType === 'enfermeria' ||
-        this.props.userType === 'medico') {
         return (
           <View >
             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('PatientList')}>
@@ -66,25 +86,8 @@ class SideMenu extends Component {
           </View>
         );
       }
-    }
-
-  detalleUsuarios() {
-    if (this.props.userType === 'admin' ||
-        this.props.userType === 'recursosHumanos') {
-      return (
-        <View>
-          <Text style={styles.navItemStyle} onPress={this.navigateToScreen('UserList')}>
-          Empleados
-          </Text>
-        </View>
-      );
-    }
-  }
 
   detalleMedicos() {
-    if (this.props.userType === 'admin' ||
-        this.props.userType === 'recursosHumanos' ||
-            this.props.userType === 'recepcion') {
       return (
         <View>
           <Text style={styles.navItemStyle} onPress={this.navigateToScreen('ListaMedicos')}>
@@ -93,13 +96,8 @@ class SideMenu extends Component {
         </View>
       );
     }
-  }
 
   detalleProveedores() {
-    if (this.props.userType === 'admin' ||
-        this.props.userType === 'recepcion' ||
-        this.props.userType === 'enfermeria' ||
-        this.props.userType === 'medico') {
         return (
           <View >
             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('ListaProveedores')}>
@@ -107,14 +105,15 @@ class SideMenu extends Component {
             </Text>
           </View>
         );
-      }
     }
 
   ocupacion() {
     if (this.props.userType === 'admin' ||
         this.props.userType === 'recepcion' ||
         this.props.userType === 'enfermeria' ||
-        this.props.userType === 'medico'
+        this.props.userType === 'medico' ||
+        this.props.userType === 'admision'||
+        this.props.userType === 'caja'
           ) {
       return (
         <View>
@@ -125,7 +124,6 @@ class SideMenu extends Component {
             {this.pacientesActivos()}
             {this.ocupacionActual()}
             {this.ingresarPaciente()}
-            {this.altaPaciente()}
           </View>
         </View>
       );
@@ -133,7 +131,6 @@ class SideMenu extends Component {
   }
 
   pacientesActivos() {
-    if (this.props.userType === 'admin') {
       return (
         <View>
           <Text style={styles.navItemStyle} onPress={this.navigateToScreen('PacientesActivos')}>
@@ -142,14 +139,8 @@ class SideMenu extends Component {
         </View>
       );
     }
-  }
 
   ocupacionActual() {
-    if (this.props.userType === 'admin' ||
-        this.props.userType === 'recepcion' ||
-        this.props.userType === 'enfermeria' ||
-        this.props.userType === 'medico'
-          ) {
        return (
          <View>
            <Text style={styles.navItemStyle} onPress={this.navigateToScreen('ListaOcupacion')}>
@@ -157,13 +148,13 @@ class SideMenu extends Component {
            </Text>
          </View>
        );
-    }
-  }
+}
 
   ingresarPaciente() {
     if (this.props.userType === 'admin' ||
         this.props.userType === 'recepcion' ||
-        this.props.userType === 'medico') {
+        this.props.userType === 'admision' ||
+        this.props.userType === 'caja') {
       return (
         <View>
         <Text style={styles.navItemStyle} onPress={this.navigateToScreen('PatientSelect')}>
@@ -176,7 +167,10 @@ class SideMenu extends Component {
 
   altaPaciente() {
     if (this.props.userType === 'admin' ||
-        this.props.userType === 'medico') {
+        this.props.userType === 'medico' ||
+        this.props.userType === 'recepcion' ||
+        this.props.userType === 'admision' ||
+        this.props.userType === 'caja') {
       return (
         <View>
         <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Page3')}>
@@ -266,7 +260,11 @@ class SideMenu extends Component {
   }
 
   servicios() {
-    if (this.props.userType === 'admin') {
+    if (this.props.userType === 'admin' ||
+        this.props.userType === 'caja' ||
+        this.props.userType === 'farmacia' ||
+            this.props.userType === 'admision' ||
+                this.props.userType === 'recepcion') {
       return (
         <View>
            <Text style={styles.sectionHeadingStyle}>
@@ -306,7 +304,9 @@ class SideMenu extends Component {
   cobros() {
     if (this.props.userType === 'admin' ||
         this.props.userType === 'farmacia' ||
-        this.props.userType === 'cobranza') {
+        this.props.userType === 'caja' ||
+        this.props.userType === 'recepcion' ||
+        this.props.userType === 'admision') {
       return (
         <View>
            <Text style={styles.sectionHeadingStyle}>
@@ -321,9 +321,6 @@ class SideMenu extends Component {
   }
 
   cuentaPaciente() {
-    if (this.props.userType === 'admin' ||
-        this.props.userType === 'farmacia' ||
-        this.props.userType === 'cobranza') {
       return (
         <View>
         <Text style={styles.navItemStyle} onPress={this.navigateToScreen('PatientBill')}>
@@ -331,7 +328,6 @@ class SideMenu extends Component {
         </Text>
         </View>
       );
-    }
   }
 
   pruebas() {
