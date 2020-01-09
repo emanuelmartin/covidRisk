@@ -122,7 +122,7 @@ class InventoryList extends React.Component {
       text,
       constrain:
       [{ type: 'containedIn', variable: 'tipo', text: search },
-        { type: 'startsWith', variable: 'nombre', text, bool: 'and' }]
+        { type: 'matches', variable: 'nombre', text, bool: 'and', regex: 'i' }]
     });
   }
 

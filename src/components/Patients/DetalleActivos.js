@@ -381,6 +381,7 @@ class DetalleActivo extends Component {
   darDeAlta() {
     const { objectId, paciente } = this.props.IngresosActivos;
     console.log(objectId);
+    console.log(paciente.objectId);
     const { user } = this.props.user;
     return (
     <Modal
@@ -399,7 +400,7 @@ class DetalleActivo extends Component {
         this.props.writeFunc('IngresosActivos', 'get', null, objectId, 'set', 'preAlta', true)
         this.props.writeFunc('IngresosActivos', 'get', null, objectId, 'set', 'Alta', true)
         this.props.writeFunc('IngresosActivos', 'get', null, objectId, 'set', 'fechaAlta', date)
-        this.props.writeFunc('Ocupacion', 'equalTo', 'ocupadaPor', paciente, 'unset', 'ocupadaPor', null)
+        this.props.writeFunc('Ocupacion', 'equalTo', 'ocupadaPor', paciente.objectId, 'unset', 'ocupadaPor', null)
         this.closeModal('darDeAlta')
       }}
       >
@@ -628,16 +629,12 @@ updateRecuperacion() {
               '¿Desea dar de alta al paciente?',
               [
                 { text: 'Si', onPress: () => {
-                  const pointerPaciente = {
-                    __type: 'Pointer',
-                   className: '_User',
-                   objectId: paciente.objectId
-                 };
+                console.log(ubicacion)
                  const date = new Date();
                   this.props.writeFunc('IngresosActivos', 'get', null, objectId, 'set', 'preAlta', true)
                   this.props.writeFunc('IngresosActivos', 'get', null, objectId, 'set', 'Alta', true)
                   this.props.writeFunc('IngresosActivos', 'get', null, objectId, 'set', 'fechaAlta', date)
-                  this.props.writeFunc('Ocupacion', 'equalTo', 'ocupadaPor', pointerPaciente, 'unset', 'ocupadaPor', null)
+                  this.props.writeFunc('Ocupacion', 'get', null, ubicacion.objectId, 'unset', 'ocupadaPor', null)
                 }
               },
                 { text: 'No', onPress: () => console.log('Cancelar'), style: 'cancel' },

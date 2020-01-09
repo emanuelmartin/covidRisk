@@ -189,7 +189,7 @@ class PatientBill extends Component {
         if (bill.cuenta.Type === 'devolucion') {
         } else {
           if (bill.cuenta.imagen !== undefined && bill.cuenta.imagen !== null) {
-            if (bill.cuenta.imagen.length > 1) {
+            if (bill.cuenta.imagen.length > 0) {
               bill.cuenta.imagen.forEach((desglose) => {
                 if (Estudios.some(producto => producto.objectId === desglose.objectId)) {
                   const pos = Estudios.map(e => { return e.objectId; }).indexOf(desglose.objectId);
@@ -211,6 +211,31 @@ class PatientBill extends Component {
                 Estudios.push(bill.cuenta.imagen[0]);
               }
               totalEstudios += bill.cuenta.imagen[0].precio * parseFloat(bill.cuenta.imagen[0].cantidad) * (1 + (bill.cuenta.imagen[0].iva / 100));
+            }
+          }
+          if (bill.cuenta.laboratorio !== undefined && bill.cuenta.laboratorio !== null) {
+            if (bill.cuenta.laboratorio.length > 0) {
+              bill.cuenta.laboratorio.forEach((desglose) => {
+                if (Estudios.some(producto => producto.objectId === desglose.objectId)) {
+                  const pos = Estudios.map(e => { return e.objectId; }).indexOf(desglose.objectId);
+                  Estudios[pos].cant += parseFloat(desglose.cantidad);
+                } else {
+                  desglose.sellType = 'publico';
+                  desglose.cant = parseFloat(desglose.cantidad);
+                  Estudios.push(desglose);
+                }
+                totalEstudios += desglose.precio * parseFloat(desglose.cantidad) * (1 + (desglose.iva / 100));
+              });
+            } else if (bill.cuenta.laboratorio.length === 1) {
+              if (Estudios.some(producto => producto.objectId === bill.cuenta.laboratorio[0].objectId)) {
+                const pos = Estudios.map(e => { return e.objectId; }).indexOf(bill.cuenta.laboratorio[0].objectId);
+                Estudios[pos].cant += parseFloat(bill.cuenta.laboratorio[0].cantidad);
+              } else {
+                bill.cuenta.laboratorio[0].sellType = 'publico';
+                bill.cuenta.laboratorio[0].cant = parseFloat(bill.cuenta.laboratorio[0].cantidad);
+                Estudios.push(bill.cuenta.laboratorio[0]);
+              }
+              totalEstudios += bill.cuenta.laboratorio[0].precio * parseFloat(bill.cuenta.laboratorio[0].cantidad) * (1 + (bill.cuenta.laboratorio[0].iva / 100));
             }
           }
           if (bill.cuenta.farmacia !== undefined && bill.cuenta.farmacia !== null) {

@@ -30,31 +30,45 @@ export default class Importar extends Component {
 
   importar() {
         const Inventario = Parse.Object.extend('Inventario');
-        const Productos = require('./pedidoDimeja.json');
+        const Productos = require('./consignaPromedica.json');
         const objects = [];
         Productos.forEach((producto) => {
           console.log(producto)
 
+          const tipo = producto.tipo;
+          const umc = producto.UMC;
+          const umv = producto.UMV;
           const codigo = producto.codigo;
-      		const nombre = producto.nombre;
-      		const umc = producto.umc;
-      	   const umv = producto.umv;
-      		const cantidadUMV = parseInt(producto.cantidadUMV, 10);
+          const nombre = producto.nombre;
+          const codigoProveedor = producto.codigoProveedor;
+          const stock = 0;
+          const stockMinimo = 0;
+          const IVA = parseInt(producto.IVA, 10);
+          const cantidadUMV = parseInt(producto.cantidadUMV, 10);
           const costoUMC = parseFloat(producto.costoUMC, 10);
-      		const precioLista = parseFloat(producto.precioLista, 10);
-      		const precioPublico = parseFloat(producto.precioPublico, 10);
-
-
+          const costoUMV = parseFloat(producto.costoUMV, 10);
+          const precioPublico = parseFloat(producto.precioPublico, 10);
+          const precioSeguro = parseFloat(producto.precioSeguro, 10);
+          const laboratorio = '';
+          const proveedor = '';
 
           const parseObject = new Inventario();
-          parseObject.set('codigo', codigo);
-          parseObject.set('nombre', nombre);
+          parseObject.set('tipo', tipo);
           parseObject.set('umc', umc);
           parseObject.set('umv', umv);
+          parseObject.set('codigo', codigo);
+          parseObject.set('nombre', nombre);
+          parseObject.set('codigoProveedor', codigoProveedor);
+          parseObject.set('stock', stock);
+          parseObject.set('stockMinimo', stockMinimo);
+          parseObject.set('IVA', IVA);
           parseObject.set('cantidadUMV', cantidadUMV);
           parseObject.set('costoUMC', costoUMC);
-          parseObject.set('precioLista', precioLista);
+          parseObject.set('costoUMV', costoUMV);
           parseObject.set('precioPublico', precioPublico);
+          parseObject.set('precioSeguro', precioSeguro);
+          parseObject.set('laboratorio', laboratorio);
+          parseObject.set('proveedor', proveedor);
 
           objects.push(parseObject);
           }

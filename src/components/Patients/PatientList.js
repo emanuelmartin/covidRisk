@@ -131,7 +131,7 @@ class PatientList extends React.Component {
           />
         </View>
         <CardSection>
-          <Button onPress={this.navigateToScreen('PatientForm')}>
+          <Button onPress={this.navigateToScreen('SignUp')}>
             Añadir paciente
           </Button>
         </CardSection>
