@@ -387,109 +387,100 @@ class Principal extends Component {
 
 
   addProducto(item) {
-    let producto = {};
-    let nombre = '';
-<<<<<<< HEAD
-    let precio = 0;
-    let auxPrecio = 0;
-=======
-    let precioPublico = 0;
->>>>>>> 46b73edadd992e00bb29691afe0a6c620d748bdd
+     let producto = {};
+     let nombre = '';
+     let precio = 0;
+     let auxPrecio = 0;
 
-    if (item.tipo === 'paquete') {
-      nombre += item.nombre;
-      producto = {
-        nombre,
-        objectId: item.objectId,
-        cantidad: '1',
-        tipo: 'paquete',
-        precioPublico,
-        iva: 0,
-        incluye: item.incluye
-      };
-      this.setState(state => ({
-      otros: [...state.otros, producto],
-      searchItem: false
-      }));
-    } else if (item.tipo === 'insumo' || item.tipo === 'medicamento') {
-      nombre += `${item.laboratorio} - ${item.nombre}`;
-      if(this.state.sellType === 'Venta al público'){ auxPrecio = item.precioPublico; }
-      else{ auxPrecio = item.precioSeguro; }
-      producto = {
-        nombre,
-        objectId: item.objectId,
-        cantidad: '1',
-<<<<<<< HEAD
-        precio: auxPrecio,
-        iva: (auxPrecio * (item.IVA / 100))
-=======
-        precioPublico,
-        iva: (precioPublico * (item.iva / 100))
->>>>>>> 46b73edadd992e00bb29691afe0a6c620d748bdd
-      };
-      this.setState(state => ({
-      farmacia: [...state.farmacia, producto],
-      pendienteFarmacia: true,
-      searchItem: false
-      }));
-    } else if (item.tipo === 'imagen') {
-      nombre += `${item.nombre}`;
-      producto = {
-        nombre,
-        objectId: item.objectId,
-        cantidad: '1',
-        precioPublico,
-        iva: (precioPublico * (item.iva / 100))
-      };
-      this.setState(state => ({
-      imagen: [...state.imagen, producto],
-      pendienteImagen: true,
-      searchItem: false
-      }));
-    } else if (item.tipo === 'laboratorio') {
-      nombre += `${item.nombre}`;
-      producto = {
-        nombre,
-        objectId: item.objectId,
-        cantidad: '1',
-        precioPublico,
-        iva: (precioPublico * (item.iva / 100))
-      };
-      this.setState(state => ({
-      laboratorio: [...state.laboratorio, producto],
-      pendienteLaboratorio: true,
-      searchItem: false
-      }));
-    } else if (item.tipo === 'rehabilitacion') {
-      nombre += `${item.nombre}`;
-      producto = {
-        nombre,
-        objectId: item.objectId,
-        cantidad: '1',
-        precioPublico,
-        iva: (precioPublico * (item.iva / 100))
-      };
-      this.setState(state => ({
-      rehabilitacion: [...state.rehabilitacion, producto],
-      pendienteRehabilitacion: true,
-      searchItem: false
-      }));
-    } else {
-      nombre += item.nombre;
-      producto = {
-        nombre,
-        objectId: item.objectId,
-        cantidad: '1',
-        precioPublico,
-        iva: (precioPublico * (item.iva / 100))
-      };
-      this.setState(state => ({
-      otros: [...state.otros, producto],
-      searchItem: false
-      }));
-    }
-    this.props.queryFunc({ text: '' });
-  }
+     if (item.tipo === 'paquete') {
+       nombre += item.nombre;
+       producto = {
+         nombre,
+         objectId: item.objectId,
+         cantidad: '1',
+         tipo: 'paquete',
+         precio,
+         iva: 0,
+         incluye: item.incluye
+       };
+       this.setState(state => ({
+       otros: [...state.otros, producto],
+       searchItem: false
+       }));
+     } else if (item.tipo === 'insumo' || item.tipo === 'medicamento') {
+       nombre += `${item.laboratorio} - ${item.nombre}`;
+       if(this.state.sellType === 'Venta al público'){ auxPrecio = item.precioPublico; }
+       else{ auxPrecio = item.precioSeguro; }
+       producto = {
+         nombre,
+         objectId: item.objectId,
+         cantidad: '1',
+         precio: auxPrecio,
+         iva: (auxPrecio * (item.IVA / 100))
+       };
+       this.setState(state => ({
+       farmacia: [...state.farmacia, producto],
+       pendienteFarmacia: true,
+       searchItem: false
+       }));
+     } else if (item.tipo === 'imagen') {
+       nombre += `${item.nombre}`;
+       producto = {
+         nombre,
+         objectId: item.objectId,
+         cantidad: '1',
+         precio,
+         iva: (precio * (item.iva / 100))
+       };
+       this.setState(state => ({
+       imagen: [...state.imagen, producto],
+       pendienteImagen: true,
+       searchItem: false
+       }));
+     } else if (item.tipo === 'laboratorio') {
+       nombre += `${item.nombre}`;
+       producto = {
+         nombre,
+         objectId: item.objectId,
+         cantidad: '1',
+         precio,
+         iva: (precio * (item.iva / 100))
+       };
+       this.setState(state => ({
+       laboratorio: [...state.laboratorio, producto],
+       pendienteLaboratorio: true,
+       searchItem: false
+       }));
+     } else if (item.tipo === 'rehabilitacion') {
+       nombre += `${item.nombre}`;
+       producto = {
+         nombre,
+         objectId: item.objectId,
+         cantidad: '1',
+         precio,
+         iva: (precio * (item.iva / 100))
+       };
+       this.setState(state => ({
+       rehabilitacion: [...state.rehabilitacion, producto],
+       pendienteRehabilitacion: true,
+       searchItem: false
+       }));
+     } else {
+       nombre += item.nombre;
+       producto = {
+         nombre,
+         objectId: item.objectId,
+         cantidad: '1',
+         precio,
+         iva: (precio * (item.iva / 100))
+       };
+       this.setState(state => ({
+       otros: [...state.otros, producto],
+       searchItem: false
+       }));
+     }
+     this.props.queryFunc({ text: '' });
+   }
 
   updateQuantity(index, cantidad) {
     const {
@@ -601,7 +592,7 @@ class Principal extends Component {
       if (isNaN(parseFloat(producto.cantidad)) || producto.cantidad <= 0) {
         cant = 0;
       } else { cant = parseFloat(producto.cantidad); }
-      subtotal += producto.precioPublico * cant;
+      subtotal += producto.precio * cant;
       iva += producto.iva * cant;
     });
 
