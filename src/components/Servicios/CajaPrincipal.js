@@ -424,12 +424,14 @@ class Principal extends Component {
        searchItem: false
        }));
      } else if (item.tipo === 'imagen') {
+       if(this.state.sellType === 'Venta al público'){ auxPrecio = item.precioPublico; }
+       else{ auxPrecio = item.precioSeguro; }
        nombre += `${item.nombre}`;
        producto = {
          nombre,
          objectId: item.objectId,
          cantidad: '1',
-         precio,
+         precio: auxPrecio,
          iva: (precio * (item.iva / 100))
        };
        this.setState(state => ({
@@ -438,12 +440,14 @@ class Principal extends Component {
        searchItem: false
        }));
      } else if (item.tipo === 'laboratorio') {
+       if(this.state.sellType === 'Venta al público'){ auxPrecio = item.precioPublico; }
+       else{ auxPrecio = item.precioSeguro; }
        nombre += `${item.nombre}`;
        producto = {
          nombre,
          objectId: item.objectId,
          cantidad: '1',
-         precio,
+         precio: auxPrecio,
          iva: (precio * (item.iva / 100))
        };
        this.setState(state => ({
@@ -452,12 +456,14 @@ class Principal extends Component {
        searchItem: false
        }));
      } else if (item.tipo === 'rehabilitacion') {
+       if(this.state.sellType === 'Venta al público'){ auxPrecio = item.precioPublico; }
+       else{ auxPrecio = item.precioSeguro; }
        nombre += `${item.nombre}`;
        producto = {
          nombre,
          objectId: item.objectId,
          cantidad: '1',
-         precio,
+         precio: auxPrecio,
          iva: (precio * (item.iva / 100))
        };
        this.setState(state => ({
