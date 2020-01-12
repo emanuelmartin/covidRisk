@@ -461,10 +461,11 @@ class Laboratorio extends Component {
               containerStyle={{ flex: 1, backgroundColor: 'white' }}
               imputStyle={{ backgroundColor: 'white', marginTop: 0, marginBottom: 0 }}
               onChangeText={text => this.props.queryPointer({
-                type: 'startsWith',
+                type: 'matches',
                 object: 'User',
                 variable: 'lastName1',
                 text,
+                regex: 'i',
                 pointer: { object: 'IngresosActivos', variable: 'paciente' } })}
               onClear={() => this.props.queryFunc({ text: '' })}
               placeholder="Ingresa el primer apellido..."

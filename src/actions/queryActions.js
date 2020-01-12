@@ -55,7 +55,7 @@ export const queryFunc = ({ type, object, variable, text, include }) => {
   };
 };
 
-export const queryPointer = ({ type, object, variable, text, pointer }) => {
+export const queryPointer = ({ type, object, variable, text, pointer, regex }) => {
   const objectID = [];
   const jsonArray = [];
 
@@ -70,6 +70,8 @@ export const queryPointer = ({ type, object, variable, text, pointer }) => {
 
       if (type === 'get') {
         query.get(text);
+      } else if (type === 'matches') {
+          query.matches(variable, text, regex);
       } else {
         query[type](variable, text);
       }

@@ -281,7 +281,7 @@ class SideMenu extends Component {
                Laboratorio
              </Text>
              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Rehabilitacion')}>
-               Caja Rehabilitacion
+               Rehabilitacion
              </Text>
              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('AdminQuirofano')}>
                Quirófanos

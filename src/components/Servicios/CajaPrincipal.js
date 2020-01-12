@@ -389,17 +389,18 @@ class Principal extends Component {
   addProducto(item) {
      let producto = {};
      let nombre = '';
-     let precio = 0;
      let auxPrecio = 0;
+
 
      if (item.tipo === 'paquete') {
        nombre += item.nombre;
+       auxPrecio = item.precio;
        producto = {
          nombre,
          objectId: item.objectId,
          cantidad: '1',
          tipo: 'paquete',
-         precio,
+         precio: auxPrecio,
          iva: 0,
          incluye: item.incluye
        };
@@ -432,7 +433,7 @@ class Principal extends Component {
          objectId: item.objectId,
          cantidad: '1',
          precio: auxPrecio,
-         iva: (precio * (item.iva / 100))
+         iva: (auxPrecio * (item.iva / 100))
        };
        this.setState(state => ({
        imagen: [...state.imagen, producto],
@@ -448,7 +449,7 @@ class Principal extends Component {
          objectId: item.objectId,
          cantidad: '1',
          precio: auxPrecio,
-         iva: (precio * (item.iva / 100))
+         iva: (auxPrecio * (item.iva / 100))
        };
        this.setState(state => ({
        laboratorio: [...state.laboratorio, producto],
@@ -464,7 +465,7 @@ class Principal extends Component {
          objectId: item.objectId,
          cantidad: '1',
          precio: auxPrecio,
-         iva: (precio * (item.iva / 100))
+         iva: (auxPrecio * (item.iva / 100))
        };
        this.setState(state => ({
        rehabilitacion: [...state.rehabilitacion, producto],
@@ -473,12 +474,13 @@ class Principal extends Component {
        }));
      } else {
        nombre += item.nombre;
+       auxPrecio = item.precio;
        producto = {
          nombre,
          objectId: item.objectId,
          cantidad: '1',
-         precio,
-         iva: (precio * (item.iva / 100))
+         precio: auxPrecio,
+         iva: (auxPrecio * (item.iva / 100))
        };
        this.setState(state => ({
        otros: [...state.otros, producto],
@@ -520,10 +522,6 @@ class Principal extends Component {
       this.setState({ otros: array });
     }
   }
-
-  search = text => {
-    console.log(text);
-  };
 
   clear = () => {
     this.props.text.clear();
@@ -711,10 +709,11 @@ class Principal extends Component {
               containerStyle={{ flex: 1, backgroundColor: 'white' }}
               imputStyle={{ backgroundColor: 'white', marginTop: 0, marginBottom: 0 }}
               onChangeText={text => this.props.queryPointer({
-                type: 'startsWith',
+                type: 'matches',
                 object: 'User',
                 variable: 'lastName1',
                 text,
+                regex: 'i',
                 pointer: { object: 'IngresosActivos', variable: 'paciente' } })}
               onClear={() => this.props.queryFunc({ text: '' })}
               placeholder="Ingresa el primer apellido..."
@@ -1050,7 +1049,6 @@ class Principal extends Component {
   }
 
   render() {
-    console.log(this.state);
     const data = [{
         value: 'Venta al público',
       }, {

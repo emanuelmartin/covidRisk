@@ -33,23 +33,18 @@ import {
 
 class Rehabilitacion extends Component {
   static navigationOptions = {
-    title: 'Caja Rehabilitacion',
+    title: 'Rehabilitacion',
   };
 
   constructor(props) {
     super(props);
     //setting default state
-    const Paciente = { names: '' };
-    const Producto = { name: '' };
-    const Productos = [];
-    const Ingreso = '';
-
     this.state = {
       searchItem: true,
-      Paciente,
-      Ingreso,
-      Producto,
-      Productos,
+      Paciente: { names: '' },
+      Ingreso: '',
+      Producto: { name: '' },
+      Productos: [],
       sellType: '',
       modal: false,
       modalCorte: false,
@@ -122,42 +117,15 @@ class Rehabilitacion extends Component {
     let cant = 0;
 
     this.state.Productos.forEach((producto) => {
-      if (producto.tipo === 'paquete quirúrgico') {
-        producto.incluye.forEach((subproducto) => {
-          if (isNaN(parseFloat(subproducto.cantidad)) || subproducto.cantidad <= 0) {
-            cant = 0;
-          } else { cant = parseFloat(subproducto.cantidad); }
-          if (subproducto.tipo === 'cafeteria' ||
-          subproducto.tipo === 'insumo' ||
-          subproducto.tipo === 'medicamento') {
-            subtotal += subproducto.precioPaciente * cant;
-            if (subproducto.iva === '10') {
-              impuestos += cant * subproducto.precioPaciente * 0.10;
-            } else if (subproducto.iva === '16') {
-              impuestos += cant * subproducto.precioPaciente * 0.16;
-            }
-          } else {
-            subtotal += subproducto.precio * cant;
-            impuestos += cant * subproducto.precio * (subproducto.iva / 100);
-          }
-        });
+      if (isNaN(parseFloat(producto.cantidad)) || producto.cantidad <= 0) {
+        cant = 0;
+      } else { cant = parseFloat(producto.cantidad); }
+      if(this.state.sellType === 'Venta al público'){
+          subtotal += producto.precioPublico * cant;
+          impuestos += cant * producto.precioPublico * (producto.iva/100);
       } else {
-        if (isNaN(parseFloat(producto.cantidad)) || producto.cantidad <= 0) {
-          cant = 0;
-        } else { cant = parseFloat(producto.cantidad); }
-        if (producto.tipo === 'cafeteria' ||
-        producto.tipo === 'insumo' ||
-        producto.tipo === 'medicamento') {
-          subtotal += producto.precioPaciente * cant;
-          if (producto.iva === '10') {
-            impuestos += cant * producto.precioPaciente * 0.10;
-          } else if (producto.iva === '16') {
-            impuestos += cant * producto.precioPaciente * 0.16;
-          }
-        } else {
-          subtotal += producto.precio * cant;
-          impuestos += cant * producto.precio * (producto.iva / 100);
-        }
+        subtotal += producto.precioSeguro * cant;
+        impuestos += cant * producto.precioSeguro * (producto.iva/100);
       }
     });
 
@@ -166,7 +134,7 @@ class Rehabilitacion extends Component {
     this.props.addBill({
       patient: this.state.Paciente.objectId,
       ingreso: this.state.Ingreso,
-      bill: { Type: 'rehabilitacion', List: this.state.Productos },
+      bill: { Type: 'rehabilitacion', rehabilitacion: this.state.Productos },
       total
     });
   }
@@ -177,42 +145,15 @@ class Rehabilitacion extends Component {
     let cant = 0;
 
     this.state.Productos.forEach((producto) => {
-      if (producto.tipo === 'paquete quirúrgico') {
-        producto.incluye.forEach((subproducto) => {
-          if (isNaN(parseFloat(subproducto.cantidad)) || subproducto.cantidad <= 0) {
-            cant = 0;
-          } else { cant = parseFloat(subproducto.cantidad); }
-          if (subproducto.tipo === 'cafeteria' ||
-          subproducto.tipo === 'insumo' ||
-          subproducto.tipo === 'medicamento') {
-            subtotal += subproducto.precioPublico * cant;
-            if (subproducto.iva === '10') {
-              impuestos += cant * subproducto.precioPublico * 0.10;
-            } else if (subproducto.iva === '16') {
-              impuestos += cant * subproducto.precioPublico * 0.16;
-            }
-          } else {
-            subtotal += subproducto.precio * cant;
-            impuestos += cant * subproducto.precio * (subproducto.iva / 100);
-          }
-        });
-      } else {
-        if (isNaN(parseFloat(producto.cantidad)) || producto.cantidad <= 0) {
-          cant = 0;
-        } else { cant = parseFloat(producto.cantidad); }
-        if (producto.tipo === 'cafeteria' ||
-        producto.tipo === 'insumo' ||
-        producto.tipo === 'medicamento') {
+      if (isNaN(parseFloat(producto.cantidad)) || producto.cantidad <= 0) {
+        cant = 0;
+      } else { cant = parseFloat(producto.cantidad); }
+      if(this.state.sellType === 'Venta al público'){
           subtotal += producto.precioPublico * cant;
-          if (producto.iva === '10') {
-            impuestos += cant * producto.precioPublico * 0.10;
-          } else if (producto.iva === '16') {
-            impuestos += cant * producto.precioPublico * 0.16;
-          }
-        } else {
-          subtotal += producto.precio * cant;
-          impuestos += cant * producto.precio * (producto.iva / 100);
-        }
+          impuestos += cant * producto.precioPublico * (producto.iva/100);
+      } else {
+        subtotal += producto.precioSeguro * cant;
+        impuestos += cant * producto.precioSeguro * (producto.iva/100);
       }
     });
     this.setState({
@@ -225,20 +166,22 @@ class Rehabilitacion extends Component {
 
   onPayConfirm() {
     const total = { subtotal: this.state.subtotal, iva: this.state.iva };
-    if (parseFloat(this.state.recibido) < (total.subtotal + total.iva)) {
+    if (parseFloat(this.state.recibido) < (total.subtotal + total.iva).toFixed(2)) {
       Alert.alert(
         'Error',
-        'La cantidad recibida debe ser al menos $' + (total.subtotal + total.iva),
+        'La cantidad recibida debe ser al menos $' + (total.subtotal + total.iva).toFixed(2),
         [{ text: 'Ok', style: 'cancel' }],
         { cancelable: false }
       );
     } else {
       this.setState({ modal: false });
       this.props.payment(
-        'rehabilitacion',
-        this.state.Productos,
-        total,
-        parseFloat(this.state.recibido)
+        { pago: total,
+          tipoPago: 'efectivo',
+          tipoVenta: 'ventaPublico',
+          lista: { Type: 'rehabilitacion', farmacia: [], imagen: [], laboratorio: [], rehabilitacion: this.state.Productos, otros: [] },
+          recibido: parseFloat(this.state.recibido),
+        }
       );
     }
   }
@@ -331,10 +274,6 @@ class Rehabilitacion extends Component {
     this.setState({ Productos: newMeds });
   }
 
-  search = text => {
-    console.log(text);
-  };
-
   clear = () => {
     this.props.text.clear();
   };
@@ -384,47 +323,17 @@ class Rehabilitacion extends Component {
     let subtotal = 0;
     let cant = 0;
     let impuestos = 0;
-    let tipoPrecio = 'precioPaciente';
-    if (this.state.Paciente.names === '') {
-      tipoPrecio = 'precioPublico';
-    }
+
     this.state.Productos.forEach((producto) => {
-      if (producto.tipo === 'paquete quirúrgico') {
-        producto.incluye.forEach((subproducto) => {
-          if (isNaN(parseFloat(subproducto.cantidad)) || subproducto.cantidad <= 0) {
-            cant = 0;
-          } else { cant = parseFloat(subproducto.cantidad); }
-          if (subproducto.tipo === 'cafeteria' ||
-          subproducto.tipo === 'insumo' ||
-          subproducto.tipo === 'medicamento') {
-            subtotal += subproducto[tipoPrecio] * cant;
-            if (subproducto.iva === '10') {
-              impuestos += cant * subproducto[tipoPrecio] * 0.10;
-            } else if (subproducto.iva === '16') {
-              impuestos += cant * subproducto[tipoPrecio] * 0.16;
-            }
-          } else {
-            subtotal += subproducto.precio * cant;
-            impuestos += cant * subproducto.precio * (subproducto.iva / 100);
-          }
-        });
+      if (isNaN(parseFloat(producto.cantidad)) || producto.cantidad <= 0) {
+        cant = 0;
+      } else { cant = parseFloat(producto.cantidad); }
+      if(this.state.sellType === 'Venta al público'){
+          subtotal += producto.precioPublico * cant;
+          impuestos += cant * producto.precioPublico * (producto.iva/100);
       } else {
-        if (isNaN(parseFloat(producto.cantidad)) || producto.cantidad <= 0) {
-          cant = 0;
-        } else { cant = parseFloat(producto.cantidad); }
-        if (producto.tipo === 'cafeteria' ||
-        producto.tipo === 'insumo' ||
-        producto.tipo === 'medicamento') {
-          subtotal += producto[tipoPrecio] * cant;
-          if (producto.iva === '10') {
-            impuestos += cant * producto[tipoPrecio] * 0.10;
-          } else if (producto.iva === '16') {
-            impuestos += cant * producto[tipoPrecio] * 0.16;
-          }
-        } else {
-          subtotal += producto.precio * cant;
-          impuestos += cant * producto.precio * (producto.iva / 100);
-        }
+        subtotal += producto.precioSeguro * cant;
+        impuestos += cant * producto.precioSeguro * (producto.iva/100);
       }
     });
     const total = subtotal + impuestos;
@@ -433,7 +342,7 @@ class Rehabilitacion extends Component {
       <CardSection>
         <View style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center' }}>
           <Text style={styles.emphasisTextStyle}> Total</Text>
-          <Text style={styles.emphasisTextStyle}> ${total}</Text>
+          <Text style={styles.emphasisTextStyle}> ${total.toFixed(2)}</Text>
         </View>
       </CardSection>
     );
@@ -442,12 +351,12 @@ class Rehabilitacion extends Component {
   listaPaciente() {
     if (this.props.load) {
       return <Spinner size="large" />;
-    } else if (this.props.Patient !== '') {
+    } else if (this.props.User !== '') {
       let dataList = null;
-      if (Array.isArray(this.props.Patient)) {
-        dataList = this.props.Patient;
+      if (Array.isArray(this.props.User)) {
+        dataList = this.props.User;
       } else {
-        dataList = [this.props.Patient];
+        dataList = [this.props.User];
       }
       return (
         <FlatList
@@ -552,10 +461,11 @@ class Rehabilitacion extends Component {
               containerStyle={{ flex: 1, backgroundColor: 'white' }}
               imputStyle={{ backgroundColor: 'white', marginTop: 0, marginBottom: 0 }}
               onChangeText={text => this.props.queryPointer({
-                type: 'startsWith',
-                object: 'Patient',
+                type: 'matches',
+                object: 'User',
                 variable: 'lastName1',
                 text,
+                regex: 'i',
                 pointer: { object: 'IngresosActivos', variable: 'paciente' } })}
               onClear={() => this.props.queryFunc({ text: '' })}
               placeholder="Ingresa el primer apellido..."
@@ -642,7 +552,7 @@ class Rehabilitacion extends Component {
             </Text>
           </CardSection>
           <CardSection>
-            <Text>Total: ${this.state.subtotal + this.state.iva}</Text>
+            <Text>Total: ${(this.state.subtotal + this.state.iva).toFixed(2)}</Text>
           </CardSection>
           <CardSection>
             <Input
@@ -808,20 +718,12 @@ class Rehabilitacion extends Component {
   }
 
   renderProductos(item, index) {
-    let texto = null;
-    if (item.tipo === 'paquete quirúrgico') {
-      texto = (
-        <Text style={styles.patientTextStyle}>
-          Paquete Quirúrgico - {item.nombre}
-        </Text>
-      );
-    } else {
-      texto = (
-        <Text style={styles.patientTextStyle}>
-          {item.nombre}
-        </Text>
-      );
-    }
+    let texto = (
+      <Text style={styles.patientTextStyle}>
+        {item.nombre}
+      </Text>
+    );
+    
     const leftOpenValue = Dimensions.get('window').width;
       return (
           <SwipeView
@@ -965,13 +867,13 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ query, bill, printR }) => {
- const { text, Patient, Servicios, Caja } = query;
+ const { text, User, Servicios, Caja } = query;
  const load = query.loading;
  const { loading, error, succesBill, succesPay, ticketInfo } = bill;
  const { print } = printR;
  return {
    text,
-   Patient,
+   User,
    Servicios,
    Caja,
    loading,
