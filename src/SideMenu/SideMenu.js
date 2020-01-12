@@ -275,10 +275,10 @@ class SideMenu extends Component {
                Caja Principal
              </Text>
              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Urgencias')}>
-               Caja Urgencias
+               Urgencias
              </Text>
              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Laboratorio')}>
-               Caja Laboratorio
+               Laboratorio
              </Text>
              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Rehabilitacion')}>
                Caja Rehabilitacion

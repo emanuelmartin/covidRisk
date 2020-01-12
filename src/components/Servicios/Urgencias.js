@@ -34,7 +34,7 @@ import {
 
 class Urgencias extends Component {
   static navigationOptions = {
-    title: 'Caja Urgencias',
+    title: 'Urgencias',
   };
 
   constructor(props) {

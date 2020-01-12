@@ -148,7 +148,7 @@ export const payment = ({
                 folio,
                 caja,
                 recibido: parseFloat(recibido),
-                productos: lista
+                lista
               };
               dispatch({ type: PAYMENT_SUCCES, info });
             });

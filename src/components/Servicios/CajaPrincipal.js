@@ -200,7 +200,7 @@ class Principal extends Component {
       patient: this.state.Paciente.objectId,
       ingreso: this.state.Ingreso,
       bill: { Type: 'principal', farmacia, imagen, laboratorio, rehabilitacion, otros },
-      autor: this.props.user,
+      autor: this.props.User,
       total,
       pendienteFarmacia,
       pendienteLaboratorio,

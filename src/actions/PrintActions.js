@@ -19,7 +19,8 @@ iVBORw0KGgoAAAANSUhEUgAAAYsAAAFQCAYAAABOGVJnAAABN2lDQ1BBZG9iZSBSR0IgKDE5OTgpAAAo
 export const printHTMLReducer = (info, type, reimprimir) => {
   function imprimirFormato() {
     return new Promise((resolve, reject) => {
-      const { paciente, fecha, medico, folio, caja, recibido, productos, ingreso } = info;
+      const { paciente, fecha, medico, folio, caja, recibido, lista, ingreso } = info;
+      const listData = lista.farmacia.concat(lista.imagen).concat(lista.laboratorio).concat(lista.rehabilitacion).concat(lista.otros);
       const edad = '23';
       let html = '';
 
@@ -147,40 +148,38 @@ export const printHTMLReducer = (info, type, reimprimir) => {
           let table = '';
           let subtotal = 0;
           let impuestos = 0;
-          productos.forEach((producto) => {
+          listData.forEach((producto) => {
             if (producto.tipo === 'paquete quirúrgico') {
               producto.incluye.forEach((subproducto) => {
-                if (subproducto.tipo === 'cafeteria' ||
-                  subproducto.tipo === 'insumo' ||
-                  subproducto.tipo === 'medicamento') {
-                    table += '<tr><td class="cantidad">';
-                    table += subproducto.cantidad;
-                    table += '</td><td class="descripcion">';
-                    table += subproducto.nombre;
-                    table += '</td><td class="precio">$';
-                    table += subproducto.precioPublico.toFixed(2);
-                    table += '</td><td class="total">$';
-                    table += (subproducto.cantidad * subproducto.precioPublico).toFixed(2);
-                    table += '</td></tr>';
-                    subtotal += (subproducto.cantidad * subproducto.precioPublico);
-                    impuestos += subproducto.cantidad * subproducto.precioPublico * (subproducto.iva / 100)
+                table += '<tr><td class="cantidad">';
+                table += subproducto.cantidad;
+                table += '</td><td class="descripcion">';
+                table += subproducto.nombre;
+                table += '</td><td class="precio">$';
+                table += subproducto.precioPublico.toFixed(2);
+                table += '</td><td class="total">$';
+                table += (subproducto.cantidad * subproducto.precioPublico).toFixed(2);
+                table += '</td></tr>';
+                subtotal += (subproducto.cantidad * subproducto.precioPublico);
+                if (subproducto.tipo === 'insumo' || subproducto.tipo === 'medicamento') {
+                    impuestos += subproducto.cantidad * subproducto.precioPublico * (subproducto.IVA / 100)
                   } else {
-                    table += '<tr><td class="cantidad">';
-                    table += subproducto.cantidad;
-                    table += '</td><td class="descripcion">';
-                    table += subproducto.nombre;
-                    table += '</td><td class="precio">$';
-                    table += subproducto.precio.toFixed(2);
-                    table += '</td><td class="total">$';
-                    table += (subproducto.cantidad * subproducto.precio).toFixed(2);
-                    table += '</td></tr>';
-                    subtotal += (subproducto.cantidad * subproducto.precio);
-                    impuestos += subproducto.cantidad * subproducto.precio * (subproducto.iva / 100);
+                    impuestos += subproducto.cantidad * subproducto.precioPublico * (subproducto.iva / 100);
                   }
               });
-            } else if (producto.tipo === 'cafeteria' ||
-              producto.tipo === 'insumo' ||
-              producto.tipo === 'medicamento') {
+            } else if (producto.tipo === 'insumo' || producto.tipo === 'medicamento') {
+                table += '<tr><td class="cantidad">';
+                table += producto.cantidad;
+                table += '</td><td class="descripcion">';
+                table += producto.nombre;
+                table += '</td><td class="precio">$';
+                table += producto.precioPublico.toFixed(2);
+                table += '</td><td class="total">$';
+                table += (producto.cantidad * producto.precioPublico).toFixed(2);
+                table += '</td></tr>';
+                subtotal += (producto.cantidad * producto.precioPublico);
+                impuestos += producto.cantidad * producto.precioPublico * (producto.IVA / 100);
+              } else {
                 table += '<tr><td class="cantidad">';
                 table += producto.cantidad;
                 table += '</td><td class="descripcion">';
@@ -192,18 +191,6 @@ export const printHTMLReducer = (info, type, reimprimir) => {
                 table += '</td></tr>';
                 subtotal += (producto.cantidad * producto.precioPublico);
                 impuestos += producto.cantidad * producto.precioPublico * (producto.iva / 100);
-              } else {
-                table += '<tr><td class="cantidad">';
-                table += producto.cantidad;
-                table += '</td><td class="descripcion">';
-                table += producto.nombre;
-                table += '</td><td class="precio">$';
-                table += producto.precio.toFixed(2);
-                table += '</td><td class="total">$';
-                table += (producto.cantidad * producto.precio).toFixed(2);
-                table += '</td></tr>';
-                subtotal += (producto.cantidad * producto.precio);
-                impuestos += producto.cantidad * producto.precio * (producto.iva / 100);
               }
           });
 
