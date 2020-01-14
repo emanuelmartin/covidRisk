@@ -1,0 +1,1654 @@
+[
+   {
+      "nombre": "ACIDO URICO ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 86.21,
+      "precioSeguro": 120.69
+   },
+   {
+      "nombre": "ACIDO VALPROICO ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 387.93,
+      "precioSeguro": 543.1
+   },
+   {
+      "nombre": "ALBUMINA ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 86.21,
+      "precioSeguro": 120.69
+   },
+   {
+      "nombre": " ALAFETOPROTEINAS ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 439.66,
+      "precioSeguro": 615.52
+   },
+   {
+      "nombre": "AMILASA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 215.52,
+      "precioSeguro": 301.72
+   },
+   {
+      "nombre": "ANTICUERPOS ANTI PEPTIDO CICLICO CITRULINADO (CCP)",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 465.52,
+      "precioSeguro": 651.72
+   },
+   {
+      "nombre": "ANTICUERPOS ANTI SCL-70",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 517.24,
+      "precioSeguro": 724.14
+   },
+   {
+      "nombre": "ANTICUERPOS ANTI TIROIDEOS ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 706.9,
+      "precioSeguro": 989.66
+   },
+   {
+      "nombre": "ANTICUERPOS ANTINUCLEARES",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 413.79,
+      "precioSeguro": 579.31
+   },
+   {
+      "nombre": "ANTICUERPOS CENTROMERO ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 465.52,
+      "precioSeguro": 651.72
+   },
+   {
+      "nombre": "ANTIGENO CARCINOEMBRIONARIO",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 465.52,
+      "precioSeguro": 651.72
+   },
+   {
+      "nombre": "ANTIGENO PROSTATICO ESPECIFICO (PSA)",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 387.93,
+      "precioSeguro": 543.1
+   },
+   {
+      "nombre": "AZUCARES REDUCTORES ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 86.21,
+      "precioSeguro": 120.69
+   },
+   {
+      "nombre": "BAAR ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 129.31,
+      "precioSeguro": 181.03
+   },
+   {
+      "nombre": "BILIRRUBINA ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 129.31,
+      "precioSeguro": 181.03
+   },
+   {
+      "nombre": "BIOMETRIA HEMATICA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 172.41,
+      "precioSeguro": 241.38
+   },
+   {
+      "nombre": "CA 125",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 732.76,
+      "precioSeguro": 1025.86
+   },
+   {
+      "nombre": "CA 19.9",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 732.76,
+      "precioSeguro": 1025.86
+   },
+   {
+      "nombre": "CALCIO ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 129.31,
+      "precioSeguro": 181.03
+   },
+   {
+      "nombre": "CITOQUIMICO ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 431.03,
+      "precioSeguro": 603.45
+   },
+   {
+      "nombre": "CLORO ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 129.31,
+      "precioSeguro": 181.03
+   },
+   {
+      "nombre": "COLESTEROL ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 86.21,
+      "precioSeguro": 120.69
+   },
+   {
+      "nombre": "COPROLOGICO",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 172.41,
+      "precioSeguro": 241.38
+   },
+   {
+      "nombre": "COPROPARASITOSCOPICO (3)",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 86.21,
+      "precioSeguro": 120.69
+   },
+   {
+      "nombre": "CPK",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 215.52,
+      "precioSeguro": 301.72
+   },
+   {
+      "nombre": "CPK-MB",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 258.62,
+      "precioSeguro": 362.07
+   },
+   {
+      "nombre": "CREATINA ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 86.21,
+      "precioSeguro": 120.69
+   },
+   {
+      "nombre": "CULTIVO GENERAL ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 413.79,
+      "precioSeguro": 579.31
+   },
+   {
+      "nombre": "CULTIVO LIQUIDO CEFALORRAQUIDEO (LCR)",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 517.24,
+      "precioSeguro": 724.14
+   },
+   {
+      "nombre": "CURVA TOLERANCIA GLUCOSA 2 HORAS ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 327.59,
+      "precioSeguro": 458.62
+   },
+   {
+      "nombre": "CURVA TOLERANCIA GLUCOSA 3 HORAS ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 362.07,
+      "precioSeguro": 506.9
+   },
+   {
+      "nombre": "DIMERO D ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 586.21,
+      "precioSeguro": 820.69
+   },
+   {
+      "nombre": "ELECTROLITOS 3 (ES 3) ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 344.83,
+      "precioSeguro": 482.76
+   },
+   {
+      "nombre": "ELECTROLITOS 6 (ES 6)",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 689.66,
+      "precioSeguro": 965.52
+   },
+   {
+      "nombre": "EXAMEN GENERAL DE ORINA (EGO)",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 86.21,
+      "precioSeguro": 120.69
+   },
+   {
+      "nombre": "FACTOR REUMATOIDE",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 129.31,
+      "precioSeguro": 181.03
+   },
+   {
+      "nombre": "FOSFATASA ALCALINA ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 86.21,
+      "precioSeguro": 120.69
+   },
+   {
+      "nombre": "FOSFORO",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 129.31,
+      "precioSeguro": 181.03
+   },
+   {
+      "nombre": "FSH",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 258.62,
+      "precioSeguro": 362.07
+   },
+   {
+      "nombre": "GLUCOSA ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 86.21,
+      "precioSeguro": 120.69
+   },
+   {
+      "nombre": "GRAM",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 129.31,
+      "precioSeguro": 181.03
+   },
+   {
+      "nombre": "GRUPO RH ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 86.21,
+      "precioSeguro": 120.69
+   },
+   {
+      "nombre": "HELICOBACTER PYLORI",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 129.31,
+      "precioSeguro": 181.03
+   },
+   {
+      "nombre": "HEMOCULTIVO",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 517.24,
+      "precioSeguro": 724.14
+   },
+   {
+      "nombre": "HEMOGLOBINA GLUCOSILADA (HbA1C)",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 327.59,
+      "precioSeguro": 458.62
+   },
+   {
+      "nombre": "HEPATITIS B ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 327.59,
+      "precioSeguro": 458.62
+   },
+   {
+      "nombre": "HEPATITIS C ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 327.59,
+      "precioSeguro": 458.62
+   },
+   {
+      "nombre": "LEUCOCITOS EN HECES ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 86.21,
+      "precioSeguro": 120.69
+   },
+   {
+      "nombre": "LH ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 258.62,
+      "precioSeguro": 362.07
+   },
+   {
+      "nombre": "LIPASA ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 215.52,
+      "precioSeguro": 301.72
+   },
+   {
+      "nombre": "MAGNESIO ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 129.31,
+      "precioSeguro": 181.03
+   },
+   {
+      "nombre": "PEPTIDO NATRIURETICO (BNP)",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 991.38,
+      "precioSeguro": 1387.93
+   },
+   {
+      "nombre": "PERFIL CINETICA DE HIERRO",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 1293.1,
+      "precioSeguro": 1810.34
+   },
+   {
+      "nombre": "PERFIL HEPATICO (PFH)",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 862.07,
+      "precioSeguro": 1206.9
+   },
+   {
+      "nombre": "PERFIL LIPIDOS ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 344.83,
+      "precioSeguro": 482.76
+   },
+   {
+      "nombre": "PERFIL OVARICO ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 1379.31,
+      "precioSeguro": 1931.03
+   },
+   {
+      "nombre": "PERFIL TAMIZ RN ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 646.55,
+      "precioSeguro": 905.17
+   },
+   {
+      "nombre": "POTASIO ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 129.31,
+      "precioSeguro": 181.03
+   },
+   {
+      "nombre": "PROCALCITONINA (PCT)",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 1034.48,
+      "precioSeguro": 1448.28
+   },
+   {
+      "nombre": "PROLACTINA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 284.48,
+      "precioSeguro": 398.28
+   },
+   {
+      "nombre": "PRPOTEINA C REACTIVA (PCR)",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 129.31,
+      "precioSeguro": 181.03
+   },
+   {
+      "nombre": "PROTEINAS ORINA 24 HRS",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 189.66,
+      "precioSeguro": 265.52
+   },
+   {
+      "nombre": "PRUEBA DE EMBARAZO ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 129.31,
+      "precioSeguro": 181.03
+   },
+   {
+      "nombre": "PTH MOLECULA INTACTA ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 560.34,
+      "precioSeguro": 784.48
+   },
+   {
+      "nombre": "QUIMICA SANGUINEA 3 (QS3)",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 155.17,
+      "precioSeguro": 217.24
+   },
+   {
+      "nombre": "QUIMICA SANGUINEA 4 (QS 4) ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 189.66,
+      "precioSeguro": 265.52
+   },
+   {
+      "nombre": "QUIMICA SANGUINEA 5 (QS 5)",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 258.62,
+      "precioSeguro": 362.07
+   },
+   {
+      "nombre": "QUIMICA SANGUINEA 6 (QS 6)",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 344.83,
+      "precioSeguro": 482.76
+   },
+   {
+      "nombre": "REACCIONES FEBRILES",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 172.41,
+      "precioSeguro": 241.38
+   },
+   {
+      "nombre": "RETICULOCITOS ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 103.45,
+      "precioSeguro": 144.83
+   },
+   {
+      "nombre": "SODIO ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 155.17,
+      "precioSeguro": 217.24
+   },
+   {
+      "nombre": "T3 ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 215.52,
+      "precioSeguro": 301.72
+   },
+   {
+      "nombre": "T3L",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 258.62,
+      "precioSeguro": 362.07
+   },
+   {
+      "nombre": "T4 ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 215.52,
+      "precioSeguro": 301.72
+   },
+   {
+      "nombre": "T4L ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 301.72,
+      "precioSeguro": 422.41
+   },
+   {
+      "nombre": "TAMIZ O SULLIVAN ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 258.62,
+      "precioSeguro": 362.07
+   },
+   {
+      "nombre": "TGO",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 103.45,
+      "precioSeguro": 144.83
+   },
+   {
+      "nombre": "TGP",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 103.45,
+      "precioSeguro": 144.83
+   },
+   {
+      "nombre": "TIEMPO DE PROTROMBINA (TP)",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 94.83,
+      "precioSeguro": 132.76
+   },
+   {
+      "nombre": "TIEMPO PARCIAL DE TROMBOSPLASTINA ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 94.83,
+      "precioSeguro": 132.76
+   },
+   {
+      "nombre": "TINTA CHINA ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 129.31,
+      "precioSeguro": 181.03
+   },
+   {
+      "nombre": "TIRGLOBULINO",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 413.79,
+      "precioSeguro": 579.31
+   },
+   {
+      "nombre": "TRIGLICERIDOS ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 129.31,
+      "precioSeguro": 181.03
+   },
+   {
+      "nombre": "TROPONINA I",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 344.83,
+      "precioSeguro": 482.76
+   },
+   {
+      "nombre": "TROPONINA ULTRA SENSIBLE ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 862.07,
+      "precioSeguro": 1206.9
+   },
+   {
+      "nombre": "TSH",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 215.52,
+      "precioSeguro": 301.72
+   },
+   {
+      "nombre": "UREA ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 86.21,
+      "precioSeguro": 120.69
+   },
+   {
+      "nombre": "UROCULTIVO ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 344.83,
+      "precioSeguro": 482.76
+   },
+   {
+      "nombre": "VDRL",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 129.31,
+      "precioSeguro": 181.03
+   },
+   {
+      "nombre": "VELOCIDAD DE SEDIMENTACI�N GLOBULAR (VSG) ",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 86.21,
+      "precioSeguro": 120.69
+   },
+   {
+      "nombre": "VIH",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 327.59,
+      "precioSeguro": 458.62
+   },
+   {
+      "nombre": "DEPURACI�N CREATINA ORINA 24 HRS",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 344.83,
+      "precioSeguro": 482.76
+   },
+   {
+      "nombre": "ACIDO URICO GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 120.69,
+      "precioSeguro": 168.97
+   },
+   {
+      "nombre": "ACIDO VALPROICO GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 543.1,
+      "precioSeguro": 760.34
+   },
+   {
+      "nombre": "ALBUMINA GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 120.69,
+      "precioSeguro": 168.97
+   },
+   {
+      "nombre": " ALAFETOPROTEINAS GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 615.52,
+      "precioSeguro": 861.72
+   },
+   {
+      "nombre": "AMILASA GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 301.72,
+      "precioSeguro": 422.41
+   },
+   {
+      "nombre": "ANTICUERPOS ANTI PEPTIDO CICLICO CITRULINADO (CCP) GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 651.72,
+      "precioSeguro": 912.41
+   },
+   {
+      "nombre": "ANTICUERPOS ANTI SCL-70 GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 724.14,
+      "precioSeguro": 1013.79
+   },
+   {
+      "nombre": "ANTICUERPOS ANTI TIROIDEOS GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 989.66,
+      "precioSeguro": 1385.52
+   },
+   {
+      "nombre": "ANTICUERPOS ANTINUCLEARES GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 579.31,
+      "precioSeguro": 811.03
+   },
+   {
+      "nombre": "ANTICUERPOS CENTROMERO GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 651.72,
+      "precioSeguro": 912.41
+   },
+   {
+      "nombre": "ANTIGENO CARCINOEMBRIONARIO GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 651.72,
+      "precioSeguro": 912.41
+   },
+   {
+      "nombre": "ANTIGENO PROSTATICO ESPECIFICO (PSA) GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 543.1,
+      "precioSeguro": 760.34
+   },
+   {
+      "nombre": "AZUCARES REDUCTORES GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 120.69,
+      "precioSeguro": 168.97
+   },
+   {
+      "nombre": "BAAR GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 181.03,
+      "precioSeguro": 253.45
+   },
+   {
+      "nombre": "BILIRRUBINA GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 181.03,
+      "precioSeguro": 253.45
+   },
+   {
+      "nombre": "BIOMETRIA HEMATICA GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 241.38,
+      "precioSeguro": 337.93
+   },
+   {
+      "nombre": "CA 125 GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 1025.86,
+      "precioSeguro": 1436.21
+   },
+   {
+      "nombre": "CA 19.9 GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 1025.86,
+      "precioSeguro": 1436.21
+   },
+   {
+      "nombre": "CALCIO GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 181.03,
+      "precioSeguro": 253.45
+   },
+   {
+      "nombre": "CITOQUIMICO GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 603.45,
+      "precioSeguro": 844.83
+   },
+   {
+      "nombre": "CLORO GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 181.03,
+      "precioSeguro": 253.45
+   },
+   {
+      "nombre": "COLESTEROL GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 120.69,
+      "precioSeguro": 168.97
+   },
+   {
+      "nombre": "COPROLOGICO GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 241.38,
+      "precioSeguro": 337.93
+   },
+   {
+      "nombre": "COPROPARASITOSCOPICO (3) GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 120.69,
+      "precioSeguro": 168.97
+   },
+   {
+      "nombre": "CPK GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 301.72,
+      "precioSeguro": 422.41
+   },
+   {
+      "nombre": "CPK-MB GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 362.07,
+      "precioSeguro": 506.9
+   },
+   {
+      "nombre": "CREATINA GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 120.69,
+      "precioSeguro": 168.97
+   },
+   {
+      "nombre": "CULTIVO GENERAL GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 579.31,
+      "precioSeguro": 811.03
+   },
+   {
+      "nombre": "CULTIVO LIQUIDO CEFALORRAQUIDEO (LCR) GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 724.14,
+      "precioSeguro": 1013.79
+   },
+   {
+      "nombre": "CURVA TOLERANCIA GLUCOSA 2 HORAS GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 458.62,
+      "precioSeguro": 642.07
+   },
+   {
+      "nombre": "CURVA TOLERANCIA GLUCOSA 3 HORAS GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 506.9,
+      "precioSeguro": 709.66
+   },
+   {
+      "nombre": "DIMERO D GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 820.69,
+      "precioSeguro": 1148.97
+   },
+   {
+      "nombre": "ELECTROLITOS 3 (ES 3) GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 482.76,
+      "precioSeguro": 675.86
+   },
+   {
+      "nombre": "ELECTROLITOS 6 (ES 6) GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 965.52,
+      "precioSeguro": 1351.72
+   },
+   {
+      "nombre": "EXAMEN GENERAL DE ORINA (EGO) GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 120.69,
+      "precioSeguro": 168.97
+   },
+   {
+      "nombre": "FACTOR REUMATOIDE GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 181.03,
+      "precioSeguro": 253.45
+   },
+   {
+      "nombre": "FOSFATASA ALCALINA GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 120.69,
+      "precioSeguro": 168.97
+   },
+   {
+      "nombre": "FOSFORO GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 181.03,
+      "precioSeguro": 253.45
+   },
+   {
+      "nombre": "FSH GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 362.07,
+      "precioSeguro": 506.9
+   },
+   {
+      "nombre": "GLUCOSA GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 120.69,
+      "precioSeguro": 168.97
+   },
+   {
+      "nombre": "GRAM GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 181.03,
+      "precioSeguro": 253.45
+   },
+   {
+      "nombre": "GRUPO RH GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 120.69,
+      "precioSeguro": 168.97
+   },
+   {
+      "nombre": "HELICOBACTER PYLORI GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 181.03,
+      "precioSeguro": 253.45
+   },
+   {
+      "nombre": "HEMOCULTIVO GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 724.14,
+      "precioSeguro": 1013.79
+   },
+   {
+      "nombre": "HEMOGLOBINA GLUCOSILADA (HbA1C) GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 458.62,
+      "precioSeguro": 642.07
+   },
+   {
+      "nombre": "HEPATITIS B GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 458.62,
+      "precioSeguro": 642.07
+   },
+   {
+      "nombre": "HEPATITIS C GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 458.62,
+      "precioSeguro": 642.07
+   },
+   {
+      "nombre": "LEUCOCITOS EN HECES GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 120.69,
+      "precioSeguro": 168.97
+   },
+   {
+      "nombre": "LH GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 362.07,
+      "precioSeguro": 506.9
+   },
+   {
+      "nombre": "LIPASA GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 301.72,
+      "precioSeguro": 422.41
+   },
+   {
+      "nombre": "MAGNESIO GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 181.03,
+      "precioSeguro": 253.45
+   },
+   {
+      "nombre": "PEPTIDO NATRIURETICO (BNP) GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 1387.93,
+      "precioSeguro": 1943.1
+   },
+   {
+      "nombre": "PERFIL CINETICA DE HIERRO GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 1810.34,
+      "precioSeguro": 2534.48
+   },
+   {
+      "nombre": "PERFIL HEPATICO (PFH) GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 1206.9,
+      "precioSeguro": 1689.66
+   },
+   {
+      "nombre": "PERFIL LIPIDOS GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 482.76,
+      "precioSeguro": 675.86
+   },
+   {
+      "nombre": "PERFIL OVARICO GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 1931.03,
+      "precioSeguro": 2703.45
+   },
+   {
+      "nombre": "PERFIL TAMIZ RN GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 905.17,
+      "precioSeguro": 1267.24
+   },
+   {
+      "nombre": "POTASIO GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 181.03,
+      "precioSeguro": 253.45
+   },
+   {
+      "nombre": "PROCALCITONINA (PCT) GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 1448.28,
+      "precioSeguro": 2027.59
+   },
+   {
+      "nombre": "PROLACTINA GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 398.28,
+      "precioSeguro": 557.59
+   },
+   {
+      "nombre": "PRPOTEINA C REACTIVA (PCR) GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 181.03,
+      "precioSeguro": 253.45
+   },
+   {
+      "nombre": "PROTEINAS ORINA 24 HRS GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 265.52,
+      "precioSeguro": 371.72
+   },
+   {
+      "nombre": "PRUEBA DE EMBARAZO GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 181.03,
+      "precioSeguro": 253.45
+   },
+   {
+      "nombre": "PTH MOLECULA INTACTA GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 784.48,
+      "precioSeguro": 1098.28
+   },
+   {
+      "nombre": "QUIMICA SANGUINEA 3 (QS3) GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 217.24,
+      "precioSeguro": 304.14
+   },
+   {
+      "nombre": "QUIMICA SANGUINEA 4 (QS 4) GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 265.52,
+      "precioSeguro": 371.72
+   },
+   {
+      "nombre": "QUIMICA SANGUINEA 5 (QS 5) GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 362.07,
+      "precioSeguro": 506.9
+   },
+   {
+      "nombre": "QUIMICA SANGUINEA 6 (QS 6) GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 482.76,
+      "precioSeguro": 675.86
+   },
+   {
+      "nombre": "REACCIONES FEBRILES GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 241.38,
+      "precioSeguro": 337.93
+   },
+   {
+      "nombre": "RETICULOCITOS GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 144.83,
+      "precioSeguro": 202.76
+   },
+   {
+      "nombre": "SODIO GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 217.24,
+      "precioSeguro": 304.14
+   },
+   {
+      "nombre": "T3 GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 301.72,
+      "precioSeguro": 422.41
+   },
+   {
+      "nombre": "T3L GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 362.07,
+      "precioSeguro": 506.9
+   },
+   {
+      "nombre": "T4 GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 301.72,
+      "precioSeguro": 422.41
+   },
+   {
+      "nombre": "T4L GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 422.41,
+      "precioSeguro": 591.38
+   },
+   {
+      "nombre": "TAMIZ O SULLIVAN GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 362.07,
+      "precioSeguro": 506.9
+   },
+   {
+      "nombre": "TGO GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 144.83,
+      "precioSeguro": 202.76
+   },
+   {
+      "nombre": "TGP GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 144.83,
+      "precioSeguro": 202.76
+   },
+   {
+      "nombre": "TIEMPO DE PROTROMBINA (TP) GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 132.76,
+      "precioSeguro": 185.86
+   },
+   {
+      "nombre": "TIEMPO PARCIAL DE TROMBOSPLASTINA GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 132.76,
+      "precioSeguro": 185.86
+   },
+   {
+      "nombre": "TINTA CHINA GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 181.03,
+      "precioSeguro": 253.45
+   },
+   {
+      "nombre": "TIRGLOBULINO GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 579.31,
+      "precioSeguro": 811.03
+   },
+   {
+      "nombre": "TRIGLICERIDOS GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 181.03,
+      "precioSeguro": 253.45
+   },
+   {
+      "nombre": "TROPONINA I GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 482.76,
+      "precioSeguro": 675.86
+   },
+   {
+      "nombre": "TROPONINA ULTRA SENSIBLE GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 1206.9,
+      "precioSeguro": 1689.66
+   },
+   {
+      "nombre": "TSH GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 301.72,
+      "precioSeguro": 422.41
+   },
+   {
+      "nombre": "UREA GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 120.69,
+      "precioSeguro": 168.97
+   },
+   {
+      "nombre": "UROCULTIVO GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 482.76,
+      "precioSeguro": 675.86
+   },
+   {
+      "nombre": "VDRL GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 181.03,
+      "precioSeguro": 253.45
+   },
+   {
+      "nombre": "VELOCIDAD DE SEDIMENTACI�N GLOBULAR (VSG) GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 120.69,
+      "precioSeguro": 168.97
+   },
+   {
+      "nombre": "VIH GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 458.62,
+      "precioSeguro": 642.07
+   },
+   {
+      "nombre": "DEPURACI�N CREATINA ORINA 24 HRS GUARDIA",
+      "tipo": "laboratorio",
+      "iva": 16,
+      "precioPublico": 482.76,
+      "precioSeguro": 675.86
+   },
+   {
+      "nombre": "Tomografia de craneo",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 2068.97,
+      "precioSeguro": 2793.1
+   },
+   {
+      "nombre": "Tomografia de abdomen",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 2413.79,
+      "precioSeguro": 3258.62
+   },
+   {
+      "nombre": "Tomografia de torax",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 2413.79,
+      "precioSeguro": 3258.62
+   },
+   {
+      "nombre": "Tomografia de senos paranasales (SPN)",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 2413.79,
+      "precioSeguro": 3258.62
+   },
+   {
+      "nombre": "Tomografia de macizo facial",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 2413.79,
+      "precioSeguro": 3258.62
+   },
+   {
+      "nombre": "Tomografia de cuello",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 2413.79,
+      "precioSeguro": 3258.62
+   },
+   {
+      "nombre": "Tomografia de columna",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 2413.79,
+      "precioSeguro": 3258.62
+   },
+   {
+      "nombre": "Tomografia de externalidades",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 2413.79,
+      "precioSeguro": 3258.62
+   },
+   {
+      "nombre": " Hora de fluroscopia",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 1551.72,
+      "precioSeguro": 2094.83
+   },
+   {
+      "nombre": "Hora extra de fluroscopia",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 862.07,
+      "precioSeguro": 1163.79
+   },
+   {
+      "nombre": "Ultrasonido / Eco",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 603.45,
+      "precioSeguro": 814.66
+   },
+   {
+      "nombre": "Radiografia de craneo",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 301.72,
+      "precioSeguro": 407.33
+   },
+   {
+      "nombre": "Radiografia de torax",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 301.72,
+      "precioSeguro": 407.33
+   },
+   {
+      "nombre": "Radiografia de cervicales",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 301.72,
+      "precioSeguro": 407.33
+   },
+   {
+      "nombre": "Radiografia de dorsales ",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 301.72,
+      "precioSeguro": 407.33
+   },
+   {
+      "nombre": "Radiografia de lumbares",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 301.72,
+      "precioSeguro": 407.33
+   },
+   {
+      "nombre": "Radiografia de abdomen",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 301.72,
+      "precioSeguro": 407.33
+   },
+   {
+      "nombre": "Radiografia de pelvis",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 301.72,
+      "precioSeguro": 407.33
+   },
+   {
+      "nombre": "Radiografia de rodilla",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 301.72,
+      "precioSeguro": 407.33
+   },
+   {
+      "nombre": "Radiografia de tobillo",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 301.72,
+      "precioSeguro": 407.33
+   },
+   {
+      "nombre": "Radiografia de pie",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 301.72,
+      "precioSeguro": 407.33
+   },
+   {
+      "nombre": "Radiografia de mano",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 301.72,
+      "precioSeguro": 407.33
+   },
+   {
+      "nombre": "Radiografia de mu�eca",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 301.72,
+      "precioSeguro": 407.33
+   },
+   {
+      "nombre": "Radiografia de codo",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 301.72,
+      "precioSeguro": 407.33
+   },
+   {
+      "nombre": "Radiografia de hombro",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 301.72,
+      "precioSeguro": 407.33
+   },
+   {
+      "nombre": "Densitometria",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 431.03,
+      "precioSeguro": 581.9
+   },
+   {
+      "nombre": "Tomografia de craneo guardia",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 2420.69,
+      "precioSeguro": 3267.93
+   },
+   {
+      "nombre": "Tomografia de abdomen guardia",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 2824.14,
+      "precioSeguro": 3812.59
+   },
+   {
+      "nombre": "Tomografia de torax guardia",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 2824.14,
+      "precioSeguro": 3812.59
+   },
+   {
+      "nombre": "Tomografia de senos paranasales (SPN) guardia",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 2824.14,
+      "precioSeguro": 3812.59
+   },
+   {
+      "nombre": "Tomografia de macizo facial guardia",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 2824.14,
+      "precioSeguro": 3812.59
+   },
+   {
+      "nombre": "Tomografia de cuello guardia",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 2824.14,
+      "precioSeguro": 3812.59
+   },
+   {
+      "nombre": "Tomografia de columna guardia",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 2824.14,
+      "precioSeguro": 3812.59
+   },
+   {
+      "nombre": "Tomografia de externalidades guardia",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 2824.14,
+      "precioSeguro": 3812.59
+   },
+   {
+      "nombre": " Hora de fluroscopia guardia",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 1815.52,
+      "precioSeguro": 2450.95
+   },
+   {
+      "nombre": "Hora extra de fluroscopia guardia",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 1008.62,
+      "precioSeguro": 1361.64
+   },
+   {
+      "nombre": "Ultrasonido / Eco guardia",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 706.03,
+      "precioSeguro": 953.15
+   },
+   {
+      "nombre": "Radiografia de craneo guardia",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 353.02,
+      "precioSeguro": 476.57
+   },
+   {
+      "nombre": "Radiografia de torax guardia",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 353.02,
+      "precioSeguro": 476.57
+   },
+   {
+      "nombre": "Radiografia de cervicales guardia",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 353.02,
+      "precioSeguro": 476.57
+   },
+   {
+      "nombre": "Radiografia de dorsales guardia",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 353.02,
+      "precioSeguro": 476.57
+   },
+   {
+      "nombre": "Radiografia de lumbares guardia",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 353.02,
+      "precioSeguro": 476.57
+   },
+   {
+      "nombre": "Radiografia de abdomen guardia",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 353.02,
+      "precioSeguro": 476.57
+   },
+   {
+      "nombre": "Radiografia de pelvis guardia",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 353.02,
+      "precioSeguro": 476.57
+   },
+   {
+      "nombre": "Radiografia de rodilla guardia",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 353.02,
+      "precioSeguro": 476.57
+   },
+   {
+      "nombre": "Radiografia de tobillo guardia",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 353.02,
+      "precioSeguro": 476.57
+   },
+   {
+      "nombre": "Radiografia de pie guardia",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 353.02,
+      "precioSeguro": 476.57
+   },
+   {
+      "nombre": "Radiografia de mano guardia",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 353.02,
+      "precioSeguro": 476.57
+   },
+   {
+      "nombre": "Radiografia de mu�eca guardia",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 353.02,
+      "precioSeguro": 476.57
+   },
+   {
+      "nombre": "Radiografia de codo guardia",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 353.02,
+      "precioSeguro": 476.57
+   },
+   {
+      "nombre": "Radiografia de hombro guardia",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 353.02,
+      "precioSeguro": 476.57
+   },
+   {
+      "nombre": "Densitometria guardia",
+      "tipo": "imagen",
+      "iva": 16,
+      "precioPublico": 504.31,
+      "precioSeguro": 680.82
+   }
+]

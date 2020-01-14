@@ -177,6 +177,8 @@ export const multiQuery = (array, text) => {
       const query = new Parse.Query(parseObject);
       if (newElement.type === 'get') {
         query.get(text);
+      } else if (newElement.type === 'matches') {
+        query.matches(newElement.variable, text, newElement.regex);
       } else {
         query[newElement.type](newElement.variable, text);
       }

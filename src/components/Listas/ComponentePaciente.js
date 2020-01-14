@@ -18,10 +18,10 @@ function seleccionarPaciente() {
                 <Text> {estadoActual} </Text>
               </View>
                 <View>
-                  <Text> {paciente.names} </Text>
+                  <Text> {paciente.names} {paciente.lastName1}</Text>
                 </View>
                 <View>
-                  <Text> {tipoMedico}: {medico.names} </Text>
+                  <Text> {tipoMedico}: {medico.names} {medico.lastName1} </Text>
                 </View>
               </View>
             );
@@ -34,10 +34,10 @@ function seleccionarPaciente() {
                 <Text> {estadoActual} </Text>
               </View>
                 <View>
-                  <Text> {paciente.names} </Text>
+                  <Text> {paciente.names}  {paciente.lastName1}</Text>
                 </View>
                 <View>
-                  <Text> {tipoMedico}: {medico.names} </Text>
+                  <Text> {tipoMedico}: {medico.names} {medico.lastName1} </Text>
                 </View>
                 <View>
                   <Text> {'Habitación'}: {ubicacion.ID} </Text>
@@ -53,10 +53,10 @@ function seleccionarPaciente() {
                 <Text> {estadoActual} </Text>
               </View>
                 <View>
-                  <Text> {paciente.names} </Text>
+                  <Text> {paciente.names} {paciente.lastName1}</Text>
                 </View>
                 <View>
-                  <Text> {tipoMedico}: {medico.names} </Text>
+                  <Text> {tipoMedico}: {medico.names} {medico.lastName1} </Text>
                 </View>
               </View>
             );
@@ -69,10 +69,10 @@ function seleccionarPaciente() {
                 <Text> {estadoActual} </Text>
               </View>
                 <View>
-                  <Text> {paciente.names} </Text>
+                  <Text> {paciente.names} {paciente.lastName1}</Text>
                 </View>
                 <View>
-                  <Text> {tipoMedico}: {medico.names} </Text>
+                  <Text> {tipoMedico}: {medico.names} {medico.lastName1}</Text>
                 </View>
               </View>
             );
@@ -85,10 +85,10 @@ function seleccionarPaciente() {
                 <Text> {estadoActual} </Text>
               </View>
                 <View>
-                  <Text> {paciente.names} </Text>
+                  <Text> {paciente.names} {paciente.lastName1}</Text>
                 </View>
                 <View>
-                  <Text> {tipoMedico}: {medico.names} </Text>
+                  <Text> {tipoMedico}: {medico.names} {medico.lastName1}</Text>
                 </View>
                 <View>
                   <Text> {'Habitación'}: {ubicacion.ID} </Text>
@@ -103,7 +103,7 @@ function seleccionarPaciente() {
         return (
           <View>
             <View>
-              <Text> {paciente.names} </Text>
+              <Text> {paciente.names} {paciente.lastName1} </Text>
             </View>
             <View>
               <Text> {paciente.birthday} </Text>

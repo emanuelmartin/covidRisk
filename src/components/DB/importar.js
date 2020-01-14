@@ -29,46 +29,25 @@ export default class Importar extends Component {
   }
 
   importar() {
-        const Inventario = Parse.Object.extend('Inventario');
-        const Productos = require('./consignaPromedica.json');
+        const Servicios = Parse.Object.extend('Servicios');
+        const Productos = require('./preciosEstudios.json');
         const objects = [];
         Productos.forEach((producto) => {
           console.log(producto)
 
           const tipo = producto.tipo;
-          const umc = producto.UMC;
-          const umv = producto.UMV;
-          const codigo = producto.codigo;
           const nombre = producto.nombre;
-          const codigoProveedor = producto.codigoProveedor;
-          const stock = 0;
-          const stockMinimo = 0;
-          const IVA = parseInt(producto.IVA, 10);
-          const cantidadUMV = parseInt(producto.cantidadUMV, 10);
-          const costoUMC = parseFloat(producto.costoUMC, 10);
-          const costoUMV = parseFloat(producto.costoUMV, 10);
+          const iva = parseInt(producto.iva, 10);
           const precioPublico = parseFloat(producto.precioPublico, 10);
           const precioSeguro = parseFloat(producto.precioSeguro, 10);
-          const laboratorio = '';
-          const proveedor = '';
 
-          const parseObject = new Inventario();
+          const parseObject = new Servicios();
           parseObject.set('tipo', tipo);
-          parseObject.set('umc', umc);
-          parseObject.set('umv', umv);
-          parseObject.set('codigo', codigo);
           parseObject.set('nombre', nombre);
-          parseObject.set('codigoProveedor', codigoProveedor);
-          parseObject.set('stock', stock);
-          parseObject.set('stockMinimo', stockMinimo);
-          parseObject.set('IVA', IVA);
-          parseObject.set('cantidadUMV', cantidadUMV);
-          parseObject.set('costoUMC', costoUMC);
-          parseObject.set('costoUMV', costoUMV);
+          parseObject.set('iva', iva);
           parseObject.set('precioPublico', precioPublico);
           parseObject.set('precioSeguro', precioSeguro);
-          parseObject.set('laboratorio', laboratorio);
-          parseObject.set('proveedor', proveedor);
+          parseObject.set('tipoCobro', 'unitario');
 
           objects.push(parseObject);
           }

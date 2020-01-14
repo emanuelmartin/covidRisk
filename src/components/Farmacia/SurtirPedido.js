@@ -49,7 +49,7 @@ class SurtirPedido extends Component {
       object: 'Cuenta',
       variable: 'pendienteFarmacia',
       text: true,
-    include: ['autor', 'paciente'] })
+    include: ['autor'] })
   }
 
   renderIt(item, index, objeto, tipo, modal) {
@@ -59,10 +59,10 @@ class SurtirPedido extends Component {
       >
       <View>
       <View>
-        <Text>ID de pedido  Solicitado por    Para paciente </Text>
+        <Text>ID de pedido  Solicitado por </Text>
       </View>
         <View>
-          <Text>{item.objectId}   {item.autor.names} {item.paciente.names} </Text>
+          <Text>{item.objectId}   {item.autor.names}  </Text>
         </View>
         </View>
       </TouchableWithoutFeedback>

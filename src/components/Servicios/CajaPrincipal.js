@@ -659,8 +659,8 @@ class Principal extends Component {
               onChangeText={text => {
                 if (text !== '') {
                     this.props.multiQuery(
-                      [{ type: 'startsWith', object: 'Inventario', variable: 'nombre' },
-                       { type: 'startsWith', object: 'Servicios', variable: 'nombre' }],
+                      [
+                       { type: 'matches', object: 'Servicios', variable: 'nombre', regex: 'i' }],
                       text);
                 } else {
                   this.props.cleanFunc();

@@ -498,7 +498,7 @@ updateRecuperacion() {
     const { paciente, pacienteAnonimo } = this.props.IngresosActivos;
     if (!pacienteAnonimo) {
       return (
-      <Text> {paciente.names} </Text>
+      <Text> {paciente.names} {paciente.lastName1}</Text>
     );
   }
     return (
@@ -506,7 +506,7 @@ updateRecuperacion() {
     );
   }
 
-  renderDropdown(tipo) {
+  renderDropdown() {
     let data = [{ value: 'Habitación' },
           { value: 'Recuperación' },
           { value: 'Observación urgencias' },
@@ -518,9 +518,9 @@ updateRecuperacion() {
         ];
 
     data.forEach((obj, index) => {
-      if (obj.value === tipo) {
-        data.splice(index, 1);
-      }
+      //if (obj.value === tipo) {
+        //data.splice(index, 1);
+      //}
     });
 
     return (
@@ -579,6 +579,15 @@ updateRecuperacion() {
     }
   }
 
+  textoUbicacion() {
+    const { ubicacion } = this.props.IngresosActivos;
+    if(ubicacion) {
+      return (
+          <Text> {ubicacion.tipo}: {ubicacion.ID} </Text>
+      )
+    }
+  }
+
   render() {
     console.log(this.props);
     this.state.loading = this.props.loading;
@@ -613,14 +622,14 @@ updateRecuperacion() {
           {this.nombrePacienteAnonimo()}
         </CardSection>
         <CardSection>
-          <Text> {tipoMedico}: {medico.names} </Text>
+          <Text> {tipoMedico}: {medico.names} {medico.lastName1} </Text>
         </CardSection>
         <CardSection>
-          <Text> {ubicacion.tipo}: {ubicacion.ID} </Text>
+          {this.textoUbicacion()}
         </CardSection>
         <View>
           <CardSection>
-            {this.renderDropdown(ubicacion.tipo)}
+            {this.renderDropdown()}
           </CardSection>
           {this.renderListaOcupacion()}
           <CardSection>
