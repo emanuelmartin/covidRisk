@@ -123,9 +123,12 @@ class Laboratorio extends Component {
       if(this.state.sellType === 'Venta al público'){
           subtotal += producto.precioPublico * cant;
           impuestos += cant * producto.precioPublico * (producto.iva/100);
-      } else {
+      } else if(this.props.User.asegurado === true) {
         subtotal += producto.precioSeguro * cant;
         impuestos += cant * producto.precioSeguro * (producto.iva/100);
+      } else {
+        subtotal += producto.precioPublico * cant;
+        impuestos += cant * producto.precioPublico * (producto.iva/100);
       }
     });
 
@@ -151,9 +154,12 @@ class Laboratorio extends Component {
       if(this.state.sellType === 'Venta al público'){
           subtotal += producto.precioPublico * cant;
           impuestos += cant * producto.precioPublico * (producto.iva/100);
-      } else {
+      } else if(this.props.User.asegurado === true) {
         subtotal += producto.precioSeguro * cant;
         impuestos += cant * producto.precioSeguro * (producto.iva/100);
+      } else {
+        subtotal += producto.precioPublico * cant;
+        impuestos += cant * producto.precioPublico * (producto.iva/100);
       }
     });
     this.setState({
@@ -331,9 +337,12 @@ class Laboratorio extends Component {
       if(this.state.sellType === 'Venta al público'){
           subtotal += producto.precioPublico * cant;
           impuestos += cant * producto.precioPublico * (producto.iva/100);
-      } else {
+      } else if(this.props.User.asegurado === true) {
         subtotal += producto.precioSeguro * cant;
         impuestos += cant * producto.precioSeguro * (producto.iva/100);
+      } else {
+        subtotal += producto.precioPublico * cant;
+        impuestos += cant * producto.precioPublico * (producto.iva/100);
       }
     });
     const total = subtotal + impuestos;

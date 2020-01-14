@@ -123,9 +123,12 @@ class Rehabilitacion extends Component {
       if(this.state.sellType === 'Venta al público'){
           subtotal += producto.precioPublico * cant;
           impuestos += cant * producto.precioPublico * (producto.iva/100);
-      } else {
+      } else if(this.props.User.asegurado === true) {
         subtotal += producto.precioSeguro * cant;
         impuestos += cant * producto.precioSeguro * (producto.iva/100);
+      } else {
+        subtotal += producto.precioPublico * cant;
+        impuestos += cant * producto.precioPublico * (producto.iva/100);
       }
     });
 
@@ -151,9 +154,12 @@ class Rehabilitacion extends Component {
       if(this.state.sellType === 'Venta al público'){
           subtotal += producto.precioPublico * cant;
           impuestos += cant * producto.precioPublico * (producto.iva/100);
-      } else {
+      } else if(this.props.User.asegurado === true) {
         subtotal += producto.precioSeguro * cant;
         impuestos += cant * producto.precioSeguro * (producto.iva/100);
+      } else {
+        subtotal += producto.precioPublico * cant;
+        impuestos += cant * producto.precioPublico * (producto.iva/100);
       }
     });
     this.setState({
@@ -331,9 +337,12 @@ class Rehabilitacion extends Component {
       if(this.state.sellType === 'Venta al público'){
           subtotal += producto.precioPublico * cant;
           impuestos += cant * producto.precioPublico * (producto.iva/100);
-      } else {
+      } else if(this.props.User.asegurado === true) {
         subtotal += producto.precioSeguro * cant;
         impuestos += cant * producto.precioSeguro * (producto.iva/100);
+      } else {
+        subtotal += producto.precioPublico * cant;
+        impuestos += cant * producto.precioPublico * (producto.iva/100);
       }
     });
     const total = subtotal + impuestos;
@@ -360,7 +369,7 @@ class Rehabilitacion extends Component {
       }
       return (
         <FlatList
-          data={dataList}
+          data={dataList}true
           ItemSeparatorComponent={this.ListViewItemSeparator}
           //Item Separator View
           renderItem={({ item }) => (
@@ -723,7 +732,7 @@ class Rehabilitacion extends Component {
         {item.nombre}
       </Text>
     );
-    
+
     const leftOpenValue = Dimensions.get('window').width;
       return (
           <SwipeView

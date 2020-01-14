@@ -129,12 +129,19 @@ class Urgencias extends Component {
           } else {
             impuestos += cant * producto.precioPublico * (producto.iva/100);
           }
-      } else {
+      } else if(this.props.User.asegurado === true) {
         subtotal += producto.precioSeguro * cant;
         if(producto.iva === null || producto.iva === undefined){
             impuestos += cant * producto.precioSeguro * (producto.IVA/100);
         } else {
           impuestos += cant * producto.precioSeguro * (producto.iva/100);
+        }
+      } else {
+        subtotal += producto.precioPublico * cant;
+        if(producto.iva === null || producto.iva === undefined){
+            impuestos += cant * producto.precioPublico * (producto.IVA/100);
+        } else {
+          impuestos += cant * producto.precioPublico * (producto.iva/100);
         }
       }
     });
@@ -166,12 +173,19 @@ class Urgencias extends Component {
           } else {
             impuestos += cant * producto.precioPublico * (producto.iva/100);
           }
-      } else {
+      } else if(this.props.User.asegurado === true) {
         subtotal += producto.precioSeguro * cant;
         if(producto.iva === null || producto.iva === undefined){
             impuestos += cant * producto.precioSeguro * (producto.IVA/100);
         } else {
           impuestos += cant * producto.precioSeguro * (producto.iva/100);
+        }
+      } else {
+        subtotal += producto.precioPublico * cant;
+        if(producto.iva === null || producto.iva === undefined){
+            impuestos += cant * producto.precioPublico * (producto.IVA/100);
+        } else {
+          impuestos += cant * producto.precioPublico * (producto.iva/100);
         }
       }
     });
@@ -355,12 +369,19 @@ class Urgencias extends Component {
           } else {
             impuestos += cant * producto.precioPublico * (producto.iva/100);
           }
-      } else {
+      } else if(this.props.User.asegurado === true) {
         subtotal += producto.precioSeguro * cant;
         if(producto.iva === null || producto.iva === undefined){
             impuestos += cant * producto.precioSeguro * (producto.IVA/100);
         } else {
           impuestos += cant * producto.precioSeguro * (producto.iva/100);
+        }
+      } else {
+        subtotal += producto.precioPublico * cant;
+        if(producto.iva === null || producto.iva === undefined){
+            impuestos += cant * producto.precioPublico * (producto.IVA/100);
+        } else {
+          impuestos += cant * producto.precioPublico * (producto.iva/100);
         }
       }
     });

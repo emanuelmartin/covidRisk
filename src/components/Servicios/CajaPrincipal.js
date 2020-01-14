@@ -391,7 +391,6 @@ class Principal extends Component {
      let nombre = '';
      let auxPrecio = 0;
 
-
      if (item.tipo === 'paquete') {
        nombre += item.nombre;
        auxPrecio = item.precio;
@@ -411,7 +410,8 @@ class Principal extends Component {
      } else if (item.tipo === 'insumo' || item.tipo === 'medicamento') {
        nombre += `${item.laboratorio} - ${item.nombre}`;
        if(this.state.sellType === 'Venta al público'){ auxPrecio = item.precioPublico; }
-       else{ auxPrecio = item.precioSeguro; }
+       else if(this.props.User.asegurado === true) { auxPrecio = item.precioSeguro; }
+       else{ auxPrecio = item.precioPublico; }
        producto = {
          nombre,
          objectId: item.objectId,
@@ -426,7 +426,8 @@ class Principal extends Component {
        }));
      } else if (item.tipo === 'imagen') {
        if(this.state.sellType === 'Venta al público'){ auxPrecio = item.precioPublico; }
-       else{ auxPrecio = item.precioSeguro; }
+       else if(this.props.User.asegurado === true) { auxPrecio = item.precioSeguro; }
+       else{ auxPrecio = item.precioPublico; }
        nombre += `${item.nombre}`;
        producto = {
          nombre,
@@ -442,7 +443,8 @@ class Principal extends Component {
        }));
      } else if (item.tipo === 'laboratorio') {
        if(this.state.sellType === 'Venta al público'){ auxPrecio = item.precioPublico; }
-       else{ auxPrecio = item.precioSeguro; }
+       else if(this.props.User.asegurado === true) { auxPrecio = item.precioSeguro; }
+       else{ auxPrecio = item.precioPublico; }
        nombre += `${item.nombre}`;
        producto = {
          nombre,
@@ -458,7 +460,8 @@ class Principal extends Component {
        }));
      } else if (item.tipo === 'rehabilitacion') {
        if(this.state.sellType === 'Venta al público'){ auxPrecio = item.precioPublico; }
-       else{ auxPrecio = item.precioSeguro; }
+       else if(this.props.User.asegurado === true) { auxPrecio = item.precioSeguro; }
+       else{ auxPrecio = item.precioPublico; }
        nombre += `${item.nombre}`;
        producto = {
          nombre,
