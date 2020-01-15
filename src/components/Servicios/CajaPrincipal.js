@@ -219,7 +219,6 @@ class Principal extends Component {
     } = this.state;
 
     const listData = farmacia.concat(imagen).concat(laboratorio).concat(rehabilitacion).concat(otros);
-
     let subtotal = 0;
     let iva = 0;
     let cant = 0;
@@ -228,7 +227,7 @@ class Principal extends Component {
       if (isNaN(parseFloat(producto.cantidad)) || producto.cantidad <= 0) {
         cant = 0;
       } else { cant = parseFloat(producto.cantidad); }
-      subtotal += producto.precioPublico * cant;
+      subtotal += producto.precio * cant;
       iva += producto.iva * cant;
     });
 
