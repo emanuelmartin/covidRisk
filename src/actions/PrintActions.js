@@ -149,6 +149,7 @@ export const printHTMLReducer = (info, type, reimprimir) => {
           let subtotal = 0;
           let impuestos = 0;
           listData.forEach((producto) => {
+            console.log(producto);
             if (producto.tipo === 'paquete quirúrgico') {
               producto.incluye.forEach((subproducto) => {
                 table += '<tr><td class="cantidad">';
@@ -173,24 +174,28 @@ export const printHTMLReducer = (info, type, reimprimir) => {
                 table += '</td><td class="descripcion">';
                 table += producto.nombre;
                 table += '</td><td class="precio">$';
-                table += producto.precioPublico.toFixed(2);
+                table += producto.precio.toFixed(2);
                 table += '</td><td class="total">$';
-                table += (producto.cantidad * producto.precioPublico).toFixed(2);
+                table += (producto.cantidad * producto.precio).toFixed(2);
                 table += '</td></tr>';
-                subtotal += (producto.cantidad * producto.precioPublico);
-                impuestos += producto.cantidad * producto.precioPublico * (producto.IVA / 100);
+                subtotal += (producto.cantidad * producto.precio);
+                if(producto.iva!==null || producto.iva !== undefined){
+                    impuestos += producto.cantidad * producto.precio * (producto.iva / 100);
+                }
               } else {
                 table += '<tr><td class="cantidad">';
                 table += producto.cantidad;
                 table += '</td><td class="descripcion">';
                 table += producto.nombre;
                 table += '</td><td class="precio">$';
-                table += producto.precioPublico.toFixed(2);
+                table += producto.precio.toFixed(2);
                 table += '</td><td class="total">$';
-                table += (producto.cantidad * producto.precioPublico).toFixed(2);
+                table += (producto.cantidad * producto.precio).toFixed(2);
                 table += '</td></tr>';
-                subtotal += (producto.cantidad * producto.precioPublico);
-                impuestos += producto.cantidad * producto.precioPublico * (producto.iva / 100);
+                subtotal += (producto.cantidad * producto.precio);
+                if(producto.IVA!==null || producto.IVA !== undefined){
+                    impuestos += producto.cantidad * producto.precio * (producto.iva / 100);
+                }
               }
           });
 

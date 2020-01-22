@@ -256,7 +256,7 @@ class Principal extends Component {
     } = this.state;
 
     const total = { subtotal, iva };
-    if (parseFloat(recibido) < (subtotal + iva)) {
+    if (parseFloat(recibido) < ((subtotal + iva).toFixed(2))) {
       Alert.alert(
         'Error',
         'La cantidad recibida debe ser al menos $' + (subtotal + iva).toFixed(2),
@@ -658,7 +658,7 @@ class Principal extends Component {
               onChangeText={text => {
                 if (text !== '') {
                     this.props.multiQuery(
-                      [
+                      [ { type: 'matches', object: 'Inventario', variable: 'nombre', regex: 'i' },
                        { type: 'matches', object: 'Servicios', variable: 'nombre', regex: 'i' }],
                       text);
                 } else {
