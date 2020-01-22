@@ -249,7 +249,7 @@ class PatientBill extends Component {
                   desglose.cant = parseFloat(desglose.cantidad);
                   Farmacia.push(desglose);
                 }
-                totalFarmacia += desglose.precioPublico * parseFloat(desglose.cantidad) * (1 + (desglose.IVA / 100));
+                totalFarmacia += desglose.precioPublico * parseFloat(desglose.cantidad) * (1 + (desglose.iva / 100));
               });
             } else if (bill.cuenta.farmacia.length === 1) {
               if (Farmacia.some(producto => producto.objectId === bill.cuenta.farmacia[0].objectId)) {
@@ -260,7 +260,7 @@ class PatientBill extends Component {
                 bill.cuenta.farmacia[0].cant = parseFloat(bill.cuenta.farmacia[0].cantidad);
                 Farmacia.push(bill.cuenta.farmacia[0]);
               }
-              totalFarmacia += bill.cuenta.farmacia[0].precioPublico * parseFloat(bill.cuenta.farmacia[0].cantidad) * (1 + (bill.cuenta.farmacia[0].IVA / 100));
+              totalFarmacia += bill.cuenta.farmacia[0].precioPublico * parseFloat(bill.cuenta.farmacia[0].cantidad) * (1 + (bill.cuenta.farmacia[0].iva / 100));
             }
           }
           /*
@@ -774,7 +774,7 @@ class PatientBill extends Component {
           <Text
             style={[styles.textStyle, { textAlign: 'right', fontSize: 14 }]}
           >
-            {(item.precioPublico * item.cant * (1 + (item.IVA / 100))).toFixed(2)}
+            {(item.precioPublico * item.cant * (1 + (item.iva / 100))).toFixed(2)}
           </Text>
         </View>
       </CardSection>

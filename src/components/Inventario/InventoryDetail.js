@@ -13,7 +13,7 @@ import {
 import SwipeView from 'react-native-swipeview';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Parse from 'parse/react-native';
-import { SearchBar, Icon } from 'react-native-elements';
+import { SearchBar, Icon, CheckBox } from 'react-native-elements';
 import Modal from 'react-native-modal';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -22,10 +22,10 @@ import { queryFunc, cleanFunc, cleanBarCode } from '../../actions';
 import update from 'react-addons-update';
 import { Dropdown } from 'react-native-material-dropdown';
 
-class AgregarProducto extends Component {
+class InventoryDetail extends Component {
 
   static navigationOptions = {
-    title: 'Nuevo Producto',
+    title: 'Actualizar producto',
   };
 
   constructor(props) {
@@ -35,14 +35,12 @@ class AgregarProducto extends Component {
     this.state = { producto, Productos: producto.productos };
   }
 
-    componentWillMount() {
+    componentDidMount() {
       const {producto} = this.state;
     if (producto.tipo === 'paquete') {
     } else {
       this.actualizarCosto();
-      if(this.props.userType === 'admin') this.state.admin = true; else this.state.admin = false;
   }
-  console.log('Admin', this.state.admin)
     }
 
     renderFields() {
@@ -130,7 +128,6 @@ class AgregarProducto extends Component {
         />
 
         <Input
-          editable={false}
           label="Stock"
           value={this.state.producto.stock.toString()}
         />
@@ -181,13 +178,13 @@ class AgregarProducto extends Component {
 
           <Input
           selectTextOnFocus
-            keyboardType="numeric"
-            label="Stock"
-            placeholder="5"
+            label="Precio máximo"
+            placeholder="$ 205.50"
             onChangeText={(text) => this.setState({
-              producto: update(this.state.producto, { stock: { $set: text } })
+              producto: update(this.state.producto, { precioUMC: { $set: text } })
             })}
-            value={this.state.producto.stock.toString()}
+            value={this.state.producto.precioUMC}
+            onEndEditing={() => this.actualizarCosto()}
           />
 
         </CardSection>
@@ -244,31 +241,34 @@ class AgregarProducto extends Component {
 
           {this.ganancia()}
 
-          <Input
-          selectTextOnFocus
-            keyboardType="numeric"
-            label="Precio público"
-            placeholder="22.10"
-            onChangeText={(text) => this.setState({
-              producto: update(this.state.producto, { precioPublico: { $set: text } })
-            })}
-            value={this.state.producto.precioPublico}
-            editable={this.state.admin}
-          />
+            <Input
+            selectTextOnFocus
+              keyboardType="numeric"
+              label="IVA"
+              placeholder="10"
+              onChangeText={(text) => this.setState({
+                producto: update(this.state.producto, { iva: { $set: text } })
+              })}
+              value={this.state.producto.iva}
+              onEndEditing={() => this.actualizarCosto()}
+            />
+
         </CardSection>
 
         <CardSection>
-          <Input
-          selectTextOnFocus
-            keyboardType="numeric"
-            label="IVA"
-            placeholder="10"
-            onChangeText={(text) => this.setState({
-              producto: update(this.state.producto, { iva: { $set: text } })
-            })}
-            value={this.state.producto.iva}
-            onEndEditing={() => this.actualizarCosto()}
-          />
+        <Input
+        selectTextOnFocus
+          keyboardType="numeric"
+          label="Precio público"
+          placeholder="22.10"
+          onChangeText={(text) => this.setState({
+            producto: update(this.state.producto, { precioPublico: { $set: text } })
+          })}
+          value={this.state.producto.precioPublico}
+          editable={this.state.admin}
+        />
+
+
 
           <Input
           selectTextOnFocus
@@ -282,17 +282,6 @@ class AgregarProducto extends Component {
             editable={this.state.admin}
           />
 
-          <Input
-          selectTextOnFocus
-            keyboardType="numeric"
-            label="Precio aseguradora"
-            placeholder="32.50"
-            onChangeText={(text) => this.setState({
-              producto: update(this.state.producto, { precioSeguro: { $set: text } })
-            })}
-            value={this.state.producto.precioSeguro}
-            editable={this.state.admin}
-          />
         </CardSection>
 
         </KeyboardAwareScrollView>
@@ -307,7 +296,6 @@ class AgregarProducto extends Component {
   }
 
   costoAdquisicion(){
-    if(this.props.userType === 'admin')
     return(
       <Input
     selectTextOnFocus
@@ -324,7 +312,6 @@ class AgregarProducto extends Component {
   }
 
   costoUnitario(){
-    if(this.props.userType === 'admin')
     return(
       <Input
       selectTextOnFocus
@@ -335,12 +322,12 @@ class AgregarProducto extends Component {
           producto: update(this.state.producto, { costoUMV: { $set: text } })
         })}
         value={this.state.producto.costoUMV}
+        onEndEditing={() => this.actualizarCosto()}
       />
   )
   }
 
   ganancia(){
-    if(this.props.userType === 'admin')
     return(
       <Input
       selectTextOnFocus
@@ -708,7 +695,6 @@ addElement(item, modal) {
 
     actualizarCosto() {
       const { producto } = this.state;
-
       producto.codigoProveedor = producto.codigoProveedor;
       producto.codigo = producto.codigo;
       producto.stockMinimo = parseInt(producto.stockMinimo, 10);
@@ -719,6 +705,14 @@ addElement(item, modal) {
       producto.costoUMC = parseFloat(producto.costoUMC);
       producto.cantidadUMV = parseInt(producto.cantidadUMV, 10);
       producto.costoUMV = producto.costoUMC / producto.cantidadUMV;
+
+      if(producto.precioUMC > 0) {
+        producto.porcentajeUtilidad = (producto.precioUMC/producto.costoUMC - 1) * 100;
+        producto.precioPublico = producto.precioUMC / producto.cantidadUMV;
+        producto.precioNeto = producto.precioPublico + (producto.precioPublico * (producto.iva / 100));
+        producto.precioSeguro = producto.precioPublico * 1.35;
+
+    } else {
 
       if (producto.costoUMV < 51) this.state.producto.porcentajeUtilidad = 200;
       else if (producto.costoUMV < 101) this.state.producto.porcentajeUtilidad = 100;
@@ -736,12 +730,13 @@ addElement(item, modal) {
       producto.precioPublico = producto.costoUMV + (producto.costoUMV * (producto.porcentajeUtilidad / 100));
       producto.precioNeto = producto.precioPublico + (producto.precioPublico * (producto.iva / 100));
       producto.precioSeguro = producto.precioPublico * 1.35;
+    }
 
       producto.costoUMC = producto.costoUMC.toFixed(2);
       producto.costoUMV = producto.costoUMV.toFixed(2);
       producto.cantidadUMV = producto.cantidadUMV.toString();
       producto.iva = producto.iva.toString();
-      producto.porcentajeUtilidad = producto.porcentajeUtilidad.toString();
+      producto.porcentajeUtilidad = producto.porcentajeUtilidad.toFixed(2);
       producto.cantidadUMV = producto.cantidadUMV.toString();
       producto.precioPublico = producto.precioPublico.toFixed(2);
       producto.precioNeto = producto.precioNeto.toFixed(2);
@@ -829,6 +824,7 @@ addElement(item, modal) {
       parseObject.set('costoUMC', producto.costoUMC);
       parseObject.set('costoUMV', producto.costoUMV);
       parseObject.set('cantidadUMV', producto.cantidadUMV);
+      parseObject.set('precioUMC', producto.precioUMC);
 
       parseObject.save().then(() => {
         Alert.alert(
@@ -904,4 +900,4 @@ addElement(item, modal) {
   return { text, Proveedor, Inventario, barCode, barType, user, userType };
   };
 
-  export default connect(mapStateToProps, { queryFunc, cleanFunc, cleanBarCode })(AgregarProducto);
+  export default connect(mapStateToProps, { queryFunc, cleanFunc, cleanBarCode })(InventoryDetail);

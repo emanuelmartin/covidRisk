@@ -17,7 +17,7 @@ import { SearchBar, Icon } from 'react-native-elements';
 import Modal from 'react-native-modal';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
-import { CardSection, Button, Input } from '../common';
+import { CardSection, Button, Input, Card } from '../common';
 import { queryFunc, cleanFunc, cleanBarCode } from '../../actions';
 import update from 'react-addons-update';
 import { Dropdown } from 'react-native-material-dropdown';
@@ -30,7 +30,7 @@ const INITIAL_STATE = {
   Productos: null,
   Pedido: {},
   Inventario: {},
-  tipoIngreso: null,
+  tipoPedido: 'Compra',
   numFactura: '',
   detalleProducto: false,
   item: '',
@@ -83,15 +83,15 @@ class IngresarPedido extends Component {
       item.nombre = item.nombre;
       item.laboratorio = item.laboratorio;
       item.precioLista = parseFloat(item.precioLista);
-      item.iva = 16
+      item.iva = parseInt(item.iva, 10);
       item.descuento = parseInt(item.descuentoProveedor, 10);
       item.porcentajeUtilidad = parseInt(item.porcentajeUtilidad, 10);
-      item.costoUMC = item.precioLista - (item.precioLista * (item.descuento / 100));
+      item.costoUMC = parseFloat(item.costoUMC);
       item.cantidadUMV = parseInt(item.cantidadUMV, 10);
-      item.costoUMV = item.costoUMC / item.cantidadUMV;
-      item.precioPublico = item.costoUMV + (item.costoUMV * (item.porcentajeUtilidad / 100));
-      item.precioNeto = item.precioPublico + (item.precioPublico * (item.iva / 100));
-      item.precioSeguro = item.precioPublico + (item.precioPublico * (30 / 100));
+      item.costoUMV = parseFloat(item.costoUMV);
+      item.precioPublico = parseFloat(item.precioPublico);
+      item.precioNeto = parseFloat(item.precioNeto);
+      item.precioSeguro = parseFloat(item.precioSeguro);
       item.stockMinimo = parseInt(item.stockMinimo, 10);
       item.ingresoUMC = 1;
 
@@ -101,9 +101,6 @@ class IngresarPedido extends Component {
       item.precioPublico = item.precioPublico.toFixed(2);
       item.precioNeto = item.precioNeto.toFixed(2);
       item.precioSeguro = item.precioSeguro.toFixed(2);
-
-      item.costoUMV = item.costoUMV;
-      item.costo = item.costoUMC;
 
     }
     if (tipo === 'Lista') {
@@ -349,7 +346,7 @@ class IngresarPedido extends Component {
             <Text
               style={[styles.emphasisTextStyle, { textAlign: 'right', fontSize: 16 }]}
             >
-              Precio de lista
+              Costo
             </Text>
           </View>
           </CardSection>
@@ -378,9 +375,12 @@ class IngresarPedido extends Component {
       this.props.cleanBarCode();
     }
 
+    const item2 = this.state.Productos[index];
+
+    console.log('Producto', this.state.Productos[index])
     return (
     <SwipeView
-      onSwipedRight={() => this.showModal(item, index)}
+      onSwipedRight={this.navigateToScreen('InventoryDetail',  item2 )}
       leftOpenValue={leftOpenValue}
       onSwipedLeft={() => this.onSwipedLeft(index)}
       swipeDuration={400}
@@ -412,10 +412,10 @@ class IngresarPedido extends Component {
           style={{ flex: 1 }}
           keyboardType="numeric"
           placeholder="10"
-          value={this.state.Productos[index].precioLista.toString()}
+          value={this.state.Productos[index].costoUMC.toString()}
           onChangeText={value =>
             this.setState({
-              Productos: update(this.state.Productos, { [index]: { precioLista: { $set: value } } })
+              Productos: update(this.state.Productos, { [index]: { costoUMC: { $set: value } } })
             })}
             onEndEditing={() => this.actualizarCosto(index)}
             />
@@ -648,38 +648,58 @@ class IngresarPedido extends Component {
 
     const { Productos } = this.state;
     console.log(Productos);
-    const item = Productos[index];
+    const producto = Productos[index];
 
-    item.codigoProveedor = item.codigoProveedor;
-    item.codigo = item.codigo;
-    item.nombre = item.nombre;
-    item.laboratorio = item.laboratorio;
-    item.precioLista = parseFloat(item.precioLista);
-    item.iva = 16;
-    item.descuento = parseInt(item.descuentoProveedor, 10);
-    item.porcentajeUtilidad = parseInt(item.porcentajeUtilidad, 10);
-    item.costoUMC = item.precioLista - (item.precioLista * (item.descuento / 100));
-    item.cantidadUMV = parseInt(item.cantidadUMV, 10);
-    item.costoUMV = item.costoUMC / item.cantidadUMV;
-    item.precioPublico = item.costoUMV + (item.costoUMV * (item.porcentajeUtilidad / 100));
-    item.precioNeto = item.precioPublico + (item.precioPublico * (item.iva / 100));
-    item.precioSeguro = item.precioPublico + (item.precioPublico * (30 / 100));
-    item.stockMinimo = parseInt(item.stockMinimo, 10);
-    item.ingresoUMC = parseInt(item.ingresoUMC, 10);
+    producto.codigoProveedor = producto.codigoProveedor;
+    producto.codigo = producto.codigo;
+    producto.stockMinimo = parseInt(producto.stockMinimo, 10);
+    producto.nombre = producto.nombre;
+    producto.laboratorio = producto.laboratorio;
+    if (producto.tipo === 'insumo') producto.iva = 16
+    if (producto.tipo === 'medicamento') producto.iva = 0
+    producto.costoUMC = parseFloat(producto.costoUMC);
+    producto.cantidadUMV = parseInt(producto.cantidadUMV, 10);
+    producto.costoUMV = producto.costoUMC / producto.cantidadUMV;
 
-    item.precioLista = item.precioLista.toFixed(2);
-    item.costoUMC = item.costoUMC.toFixed(2);
-    item.costoUMV = item.costoUMV.toFixed(2);
-    item.precioPublico = item.precioPublico.toFixed(2);
-    item.precioNeto = item.precioNeto.toFixed(2);
-    item.precioSeguro = item.precioSeguro.toFixed(2);
+    if(producto.precioUMC > 0) {
+      producto.porcentajeUtilidad = (producto.precioUMC/producto.costoUMC - 1) * 100;
+      producto.precioPublico = producto.precioUMC / producto.cantidadUMV;
+      producto.precioNeto = producto.precioPublico + (producto.precioPublico * (producto.iva / 100));
+      producto.precioSeguro = producto.precioPublico * 1.35;
 
-    item.costoUMV = item.costoUMV;
-    item.costo = item.costoUMC;
+  } else {
 
-    console.log(item);
+    if (producto.costoUMV < 51) producto.porcentajeUtilidad = 200;
+    else if (producto.costoUMV < 101) producto.porcentajeUtilidad = 100;
+    else if(producto.costoUMV < 201) producto.porcentajeUtilidad = 80;
+    else if (producto.costoUMV < 301) producto.porcentajeUtilidad = 60;
+    else if (producto.costoUMV < 501) producto.porcentajeUtilidad = 50;
+    else if (producto.costoUMV < 1001) producto.porcentajeUtilidad = 35;
+    else if (producto.costoUMV < 2501) producto.porcentajeUtilidad = 25;
+    else if (producto.costoUMV < 5001) producto.porcentajeUtilidad = 20;
+    else if (producto.costoUMV < 10001) producto.porcentajeUtilidad = 15;
+    else if (producto.costoUMV < 25001) producto.porcentajeUtilidad = 10;
+    else if (producto.costoUMV < 50001)  producto.porcentajeUtilidad = 5;
 
-    Productos[index] = item;
+    producto.porcentajeUtilidad = producto.porcentajeUtilidad;
+    producto.precioPublico = producto.costoUMV + (producto.costoUMV * (producto.porcentajeUtilidad / 100));
+    producto.precioNeto = producto.precioPublico + (producto.precioPublico * (producto.iva / 100));
+    producto.precioSeguro = producto.precioPublico * 1.35;
+  }
+
+    producto.costoUMC = producto.costoUMC.toFixed(2);
+    producto.costoUMV = producto.costoUMV.toFixed(2);
+    producto.cantidadUMV = producto.cantidadUMV.toString();
+    producto.iva = producto.iva.toString();
+    producto.porcentajeUtilidad = producto.porcentajeUtilidad.toFixed(2);
+    producto.cantidadUMV = producto.cantidadUMV.toString();
+    producto.precioPublico = producto.precioPublico.toFixed(2);
+    producto.precioNeto = producto.precioNeto.toFixed(2);
+    producto.precioSeguro = producto.precioSeguro.toFixed(2);
+
+    producto.costoUMV = producto.costoUMV;
+
+    Productos[index] = producto;
     this.state.Productos = Productos;
     this.setState({ Productos });
   }
@@ -738,11 +758,11 @@ class IngresarPedido extends Component {
       }
     );
 
-  //  const pointerProveedor = {
-  //  __type: 'Pointer',
-  //  className: 'Proveedor',
-  //  objectId: Proveedor.objectId.toString()
-  //  };
+    const pointerProveedor = {
+    __type: 'Pointer',
+    className: 'Proveedor',
+    objectId: Proveedor.objectId.toString()
+    };
 
   const IngresoProducto = Parse.Object.extend('IngresoProducto');
   const ingresoProducto = new IngresoProducto();
@@ -795,24 +815,12 @@ class IngresarPedido extends Component {
 }
 
   infoPedido() {
-    const data = [{
-        value: 'Compra',
-      }, {
-        value: 'Consigna'
-      }];
     return (
       <View>
+              {this.infoCompra()}
       <Text style={{ padding: 5, paddingBottom: 0, fontSize: 30, fontWeight: 'bold' }}>
-      Tipo de ingreso
+      Productos
       </Text>
-        <Dropdown
-        containerStyle={{ flex: 1, padding: 5 }}
-        data={data}
-        value={this.state.tipoPedido}
-        onChangeText={value => this.setState({ tipoPedido: value })}
-        placeholder={'Selecciona el tipo de ingreso'}
-        />
-        {this.infoCompra()}
       </View>
     );
   }
@@ -825,8 +833,8 @@ class IngresarPedido extends Component {
     let { totalNeto } = this.state || 0;
 
     Productos.forEach((element) => {
-      totalBruto += parseFloat(element.precioLista) * (parseFloat(element.ingresoUMC));
-      iva += (parseFloat(element.costoUMC) * (parseFloat(element.iva) / 100)) * (parseFloat(element.ingresoUMC));
+      totalBruto += parseFloat(element.costoUMC) * (parseFloat(element.ingresoUMC));
+      iva += (parseFloat(element.costoUMC) * (parseFloat(element.IVA) / 100)) * (parseFloat(element.ingresoUMC));
       totalNeto += totalBruto + iva;
       totalBruto = parseFloat(totalBruto);
       iva = parseFloat(iva);
@@ -843,6 +851,7 @@ class IngresarPedido extends Component {
     this.calcularTotales();
     if (this.state.tipoPedido === 'Compra') {
       return (
+        <Card>
         <CardSection>
         <Input
           label="Número de factura"
@@ -850,19 +859,24 @@ class IngresarPedido extends Component {
           value={this.state.numFactura}
           onChangeText={value => this.setState({ numFactura: value })}
         />
+        {this.buscarIngreso()}
+        </CardSection>
         <CardSection>
         <Text>
           {'Total de compra: '} {this.state.totalBruto.toString()}
         </Text>
+        </CardSection>
+        <CardSection>
         <Text>
           {'Total de IVA: '} {this.state.iva.toString()}
         </Text>
+        </CardSection>
+        <CardSection>
         <Text>
           {'Total con IVA: '} {this.state.totalNeto.toString()}
         </Text>
         </CardSection>
-        {this.buscarIngreso()}
-        </CardSection>
+        </Card>
       );
     }
 
@@ -933,17 +947,17 @@ class IngresarPedido extends Component {
       item.nombre = item.nombre;
       item.laboratorio = item.laboratorio;
       item.precioLista = parseFloat(item.precioLista);
-      item.iva = 16;
+      item.iva = parseInt(item.iva, 10);
       item.descuento = parseInt(item.descuentoProveedor, 10);
       item.porcentajeUtilidad = parseInt(item.porcentajeUtilidad, 10);
-      item.costoUMC = item.precioLista - (item.precioLista * (item.descuento / 100));
+      item.costoUMC = parseFloat(item.costoUMC);
       item.cantidadUMV = parseInt(item.cantidadUMV, 10);
-      item.costoUMV = item.costoUMC / item.cantidadUMV;
-      item.precioPublico = item.costoUMV + (item.costoUMV * (item.porcentajeUtilidad / 100));
-      item.precioNeto = item.precioPublico + (item.precioPublico * (item.iva / 100));
-      item.precioSeguro = item.precioPublico + (item.precioPublico * (30 / 100));
+      item.costoUMV = parseFloat(item.costoUMV);
+      item.precioPublico = parseFloat(item.precioPublico);
+      item.precioNeto = parseFloat(item.precioNeto);
+      item.precioSeguro = parseFloat(item.precioSeguro);
       item.stockMinimo = parseInt(item.stockMinimo, 10);
-      item.ingresoUMC = parseInt(item.ingresoUMC, 10);
+      item.ingresoUMC = 1;
 
       item.precioLista = item.precioLista.toFixed(2);
       item.costoUMC = item.costoUMC.toFixed(2);
@@ -951,9 +965,6 @@ class IngresarPedido extends Component {
       item.precioPublico = item.precioPublico.toFixed(2);
       item.precioNeto = item.precioNeto.toFixed(2);
       item.precioSeguro = item.precioSeguro.toFixed(2);
-
-      item.costoUMV = item.costoUMV;
-      item.costo = item.costoUMC;
       this.props.cleanBarCode();
 
       let dataList = null;
