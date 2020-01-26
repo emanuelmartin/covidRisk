@@ -161,6 +161,7 @@ class Cafe extends Component {
 
   onPayConfirm() {
     const total = { subtotal: this.state.subtotal, iva: this.state.iva };
+    const { Productos } = this.state;
     if (parseFloat(this.state.recibido) < (total.subtotal + total.iva)) {
       Alert.alert(
         'Error',
@@ -170,12 +171,13 @@ class Cafe extends Component {
       );
     } else {
       this.setState({ modal: false });
-      this.props.payment(
-        'cafeteria',
-        this.state.Productos,
-        total,
-        parseFloat(this.state.recibido)
-      );
+      this.props.payment({
+          pago: total,
+          tipoPago: 'efectivo',
+          tipoVenta: 'ventaPublico',
+          lista: { Type: 'cafeteria', farmacia: Productos },
+          recibido: parseFloat(this.state.recibido),
+      });
     }
   }
 
@@ -386,7 +388,7 @@ class Cafe extends Component {
                     this.props.queryAttach({
                     object: 'Inventario',
                     text,
-                    constrain: [{ type: 'startsWith', variable: 'nombre', text },
+                    constrain: [{ type: 'matches', variable: 'nombre', text, regex: 'i' },
                       { type: 'equalTo', variable: 'tipo', text: 'cafeteria', bool: 'and' }]
                     });
                   } else {
@@ -397,7 +399,7 @@ class Cafe extends Component {
                     this.props.queryAttach({
                     object: 'Inventario',
                     text,
-                    constrain: [{ type: 'startsWith', variable: 'nombre', text },
+                    constrain: [{ type: 'matches', variable: 'nombre', text, regex: 'i' },
                       { type: 'equalTo', variable: 'tipo', text: 'cafeteria', bool: 'and' },
                       { type: 'notContainedIn', variable: 'nombre', text: productoBusqueda, bool: 'and' }]
                     });

@@ -49,22 +49,30 @@ class AdminLaboratorio extends Component {
       object: 'Cuenta',
       variable: 'pendienteLaboratorio',
       text: true,
-    include: ['autor'] })
+    include: ['autor', 'ingresoPaciente.paciente', 'ingresoPaciente.ubicacion'] })
   }
 
   renderIt(item, index, objeto, tipo, modal) {
+      const fech = new Date(item.createdAt)
+      const fecha = fech.toLocaleDateString('dd/MM/yyyy')
+      const hora = fech.toLocaleTimeString()
       return (
       <TouchableWithoutFeedback
       onPress={() => { this.props.cleanFunc(); this.updateElement(item, index, objeto, tipo, modal); }}
       >
       <View>
-      <View>
-        <Text>ID de pedido  Solicitado por  </Text>
+      <Card>
+      <CardSection>
+          <Text>Paciente: {item.ingresoPaciente.paciente.names} {item.ingresoPaciente.paciente.lastName1} {item.ingresoPaciente.paciente.lastName2}</Text>
+          </CardSection>
+          <CardSection>
+          <Text>Médico solicitante: {item.medicoSolicitante}</Text>
+          </CardSection>
+          <CardSection>
+          <Text>Fecha de solicitud: {fecha} {hora}</Text>
+          </CardSection>
+      </Card>
       </View>
-        <View>
-          <Text>{item.objectId}   {item.autor.names} </Text>
-        </View>
-        </View>
       </TouchableWithoutFeedback>
     );
   }
@@ -89,24 +97,64 @@ class AdminLaboratorio extends Component {
       this.setState({ [objeto]: dataList, [modal]: false });
     } else {
     this.props.cleanFunc();
-    this.setState({ [objeto]: item, [modal]: false });
+    console.log('ITEM', item)
+    this.setState({ [objeto]: item, [modal]: false, paciente: item.ingresoPaciente.paciente, ubicacion: item.ingresoPaciente.ubicacion  });
     }
   }
 
   nombreCuenta() {
-    return (this.state.Cuenta.objectId ? `${this.state.Cuenta.objectId}` : 'Seleccionar pedido')
+    if (this.state.Cuenta.objectId) {
+      const { Cuenta, paciente, ubicacion } = this.state;
+      console.log('cuenta',this.state.Cuenta.paciente)
+      const fech = new Date(Cuenta.createdAt)
+      const fecha = fech.toLocaleDateString('dd/MM/yyyy')
+      const hora = fech.toLocaleTimeString()
+      return(
+        <Card style={{ flex: 1}}>
+        <CardSection>
+        <Text>
+        Paciente: {paciente.names} {paciente.lastName1} {paciente.lastName2}
+        </Text>
+        </CardSection>
+        <CardSection>
+        <Text>
+        Ubicación: {ubicacion.tipo} {ubicacion.ID}
+        </Text>
+        </CardSection>
+        <CardSection>
+        <Text>
+        Fecha de solicitud: {fecha} {hora}
+        </Text>
+        </CardSection>
+        </Card>
+       )
+    } else {
+      return(
+        <Card>
+        <CardSection>
+        <Text style={{ fontSize: 30,
+      fontWeight: 'bold' }}>
+        Pedido
+        </Text>
+        </CardSection>
+        <CardSection>
+        <Text>
+     Seleccionar pedido
+     </Text>
+     </CardSection>
+     </Card>
+   );
   }
+}
 
   buscarCuenta() {
     return (
       <View style={{ paddingLeft: 10, paddingTop: 30, paddingBottom: 0}}>
-      <Text style={{ fontSize: 30,
-    fontWeight: 'bold' }}>
-      Pedido
-      </Text>
-      <Text onPress={() => { this.setState({ buscarCuenta: true }); }}>
+      <TouchableWithoutFeedback onPress={() => { this.setState({ buscarCuenta: true }); }}>
+      <View>
       {this.nombreCuenta()}
-      </Text>
+      </View>
+      </TouchableWithoutFeedback>
       <Modal
       visible={this.state.buscarCuenta}
       animationType='slide'
@@ -159,6 +207,8 @@ class AdminLaboratorio extends Component {
       );
     } else if (this.props.Cuenta !== '') {
     return (
+      <View>
+      <Card>
       <FlatList
         data={dataList}
         ItemSeparatorComponent={this.ListViewItemSeparator}
@@ -169,6 +219,8 @@ class AdminLaboratorio extends Component {
         style={{ marginTop: 10 }}
         keyExtractor={item=>item.objectId}
         />
+        </Card>
+        </View>
     );
   }
   }
@@ -191,9 +243,9 @@ class AdminLaboratorio extends Component {
       return (
       <View style={{ paddingLeft: 10, paddingTop: 30, paddingBottom: 0}}>
       <Text style={{ fontSize: 30,
-    fontWeight: 'bold' }}>
-    Productos
-    </Text>
+      fontWeight: 'bold' }}>
+      Productos
+      </Text>
       <ScrollView>
       <FlatList
         data={dataList}
@@ -201,37 +253,35 @@ class AdminLaboratorio extends Component {
         //Item Separator View
         renderItem={({ item, index }) => {
           if(item.nombre) {
-            console.log(this.state.Productos[index].integrado)
           return (
             <View style={{ flex: 1, flexDirection: 'column' }}>
             <View>
             <Card>
-            <CardSection>
-            <View>
-            <CardSection>
-              <Text style={{fontSize: 18}}>
-                {item.nombre}
-              </Text>
-              <Text style={{fontSize: 15}}>
-                {item.laboratorio}
-              </Text>
-          <Text style={{fontSize: 15}}>
-            {item.cantidad}
-          </Text>
-      </CardSection>
-          </View>
-          <CheckBox
-          size={38}
-            checked={this.state.Productos[index].integrado}
-            onPress={() => {
-              const Productos = {...this.state.Productos};
-              Productos[index].integrado = !this.state.Productos[index].integrado;
-              this.setState({ Productos });
-            }
-          }
-          />
-          </CardSection>
-          </Card>
+              <CardSection>
+                <View style={{flex: 3}}>
+                  <Text style={{fontSize: 15}}>
+                    {item.nombre}
+                  </Text>
+                  <Text style={{fontSize: 13}}>
+                    {item.laboratorio}
+                  </Text>
+                  <Text style={{fontSize: 15}}>
+                    {item.cantidad}
+                  </Text>
+                </View>
+                <View style={{flex: 1}}>
+                  <CheckBox
+                    size={38}
+                    checked={this.state.Productos[index].integrado}
+                    onPress={() => {
+                      const Productos = {...this.state.Productos};
+                      Productos[index].integrado = !this.state.Productos[index].integrado;
+                      this.setState({ Productos });
+                    }}
+                  />
+                </View>
+              </CardSection>
+            </Card>
           </View>
           </View>
         ); }}
@@ -307,9 +357,7 @@ class AdminLaboratorio extends Component {
     return (
       <View>
       {this.buscarCuenta()}
-        <ScrollView>
       {this.listaProductos()}
-        </ScrollView>
         <View>
           </View>
       </View>

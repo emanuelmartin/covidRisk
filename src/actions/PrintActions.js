@@ -266,13 +266,13 @@ export const printHTMLReducer = (info, type, reimprimir) => {
                 if(producto.iva!==null || producto.iva !== undefined){
                     impuestos += producto.cantidad * producto.precio * (producto.iva / 100);
                 }
-              } else {
+              } else if (producto.tipo === 'cafeteria') {
                 table += '<tr><td class="cantidad">';
                 table += producto.cantidad;
                 table += '</td><td class="descripcion align-left">';
                 table += producto.nombre;
                 table += '</td><td class="precio">$';
-                table += producto.precio.toFixed(2);
+                table += producto.precioPublico.toFixed(2);
                 table += '</td><td class="total">$';
                 table += (producto.cantidad * producto.precio).toFixed(2);
                 table += '</td></tr>';
@@ -280,6 +280,21 @@ export const printHTMLReducer = (info, type, reimprimir) => {
                 if(producto.iva!==null || producto.iva !== undefined){
                     impuestos += producto.cantidad * producto.precio * (producto.iva / 100);
                 }
+              }
+                else  {
+                  table += '<tr><td class="cantidad">';
+                  table += producto.cantidad;
+                  table += '</td><td class="descripcion align-left">';
+                  table += producto.nombre;
+                  table += '</td><td class="precio">$';
+                  table += producto.precioPublico.toFixed(2);
+                  table += '</td><td class="total">$';
+                  table += (producto.cantidad * producto.precio).toFixed(2);
+                  table += '</td></tr>';
+                  subtotal += (producto.cantidad * producto.precio);
+                  if(producto.iva!==null || producto.iva !== undefined){
+                      impuestos += producto.cantidad * producto.precio * (producto.iva / 100);
+                  }
               }
           });
 
