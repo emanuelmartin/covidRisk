@@ -34,6 +34,7 @@ class PatientSelect extends React.Component {
   }
 
     renderIt(item, tipo, busqueda) {
+      console.log('item',item)
       if (this.state.isLoading) {
         //Loading View while data is loading
         return (
@@ -53,7 +54,7 @@ class PatientSelect extends React.Component {
         </TouchableWithoutFeedback>
       );
 }
-      if (tipo === 'Medico') {
+      else if (tipo === 'Medico') {
         console.log('ItemMedico', item)
       return (
       <TouchableWithoutFeedback
@@ -65,7 +66,7 @@ class PatientSelect extends React.Component {
       </TouchableWithoutFeedback>
     ); }
 
-    if (tipo === 'Especialidad') {
+    else if (tipo === 'Especialidad') {
     return (
     <TouchableWithoutFeedback
     onPress={() => this.updateField(item, tipo, busqueda)}
@@ -76,7 +77,7 @@ class PatientSelect extends React.Component {
     </TouchableWithoutFeedback>
   ); }
 
-  if (tipo === 'Habitacion') {
+  else if (tipo === 'Habitacion') {
   return (
   <TouchableWithoutFeedback
   onPress={() => this.updateField(item, tipo, busqueda)}
@@ -88,7 +89,7 @@ class PatientSelect extends React.Component {
   );
 }
 
-  if (tipo === 'Consultorio') {
+  else if (tipo === 'Consultorio') {
     return (
     <TouchableWithoutFeedback
     onPress={() => this.updateField(item, tipo, busqueda)}
@@ -97,6 +98,23 @@ class PatientSelect extends React.Component {
           <ComponenteConsultorio item={item}/>
       </View>
   </TouchableWithoutFeedback>
+);
+}
+
+else if (tipo === 'Catalogos') {
+  console.log('item', item)
+  return (
+  <TouchableWithoutFeedback
+  onPress={() => this.updateField(item, tipo, busqueda)}
+  >
+    <View>
+        <CardSection>
+        <Text>
+        {item.nombre}
+        </Text>
+        </CardSection>
+    </View>
+</TouchableWithoutFeedback>
 );
 }
     }
@@ -117,7 +135,28 @@ class PatientSelect extends React.Component {
       dataList = this.props[objeto];
     } else {
       dataList = [this.props[objeto]];
-    }
+      console.log('Cat', this.props[objeto])
+      console.log('DAT', dataList)
+      for(var i=dataList.length-1;i>=0;i--)
+{
+    if(dataList[i]=="")
+       dataList.splice(i,1);
+}
+console.log('Cat', this.props[objeto])
+console.log('DAT', dataList)
+    } if (objeto === 'Catalogos') {
+      <FlatList
+        data={dataList}
+        ItemSeparatorComponent={this.ListViewItemSeparator}
+        //Item Separator View
+        renderItem={({ item }) => {
+          console.log('item',item)
+          this.renderIt(item, objeto, busqueda)
+        }}
+        style={{ marginTop: 10 }}
+        keyExtractor={(item) => item.objectId}
+      />
+    } else {
     return (
       <FlatList
         data={dataList}
@@ -131,6 +170,7 @@ class PatientSelect extends React.Component {
         keyExtractor={(item) => item.curp}
       />
     );
+  }
   }
 
   seleccionarHabitacion() {
@@ -248,6 +288,73 @@ pacienteAnonimo() {
       </View>
     );
   }
+}
+
+buscarDiagnostico() {
+  if (this.state.tipo === 'Hospitalización' ||
+      this.state.tipo === 'Cirugía mayor' ||
+      this.state.tipo === 'Cirugía ambulatoria') {
+    return (
+  <View>
+  <CardSection>
+    <Text>Diagnóstico probable</Text>
+  </CardSection>
+  <CardSection>
+    <TouchableWithoutFeedback onPress={() => this.showModal('buscarDiagnostico')}>
+    <View>
+    <CardSection>
+    <Text>
+    Selecciona
+    </Text>
+    </CardSection>
+      </View>
+    </TouchableWithoutFeedback>
+  </CardSection>
+    <View style={{ paddingTop: 50 }}>
+      <TouchableWithoutFeedback onPress={() => this.setState({ buscarDiagnostico: false })}>
+      <View>
+        <Modal
+        isVisible={this.state.buscarDiagnostico}
+        transparent={false}
+        >
+        <TouchableWithoutFeedback>
+        <View style={{ flex: 1 }}>
+          <CardSection>
+            <SearchBar
+              containerStyle={{ flex: 1, backgroundColor: 'white' }}
+              imputStyle={{ backgroundColor: 'white', marginTop: 0, marginBottom: 0 }}
+              round
+
+              searchIcon={{ size: 24 }}
+              onChangeText={text => {
+                this.props.queryAttach({
+                object: 'Catalogos',
+                text,
+                constrain: [{ type: 'matches', variable: 'nombre', text, regex: 'i' },
+                  { type: 'equalTo', variable: 'tipo', text: 'Cie 10', bool: 'and' }]
+                });
+              }}
+              onClear={() => this.props.queryFunc({ text: '' })}
+              placeholder="Ingresa el diagnóstico..."
+              value={this.props.text}
+            />
+            </CardSection>
+          <CardSection>
+            {this.lista('Catalogos', 'buscarDiagnostico')}
+          </CardSection>
+          <CardSection>
+            <Button onPress={() => this.closeModal('buscarDiagnostico')}>
+              Cancelar
+            </Button>
+          </CardSection>
+          </View>
+        </TouchableWithoutFeedback>
+        </Modal>
+      </View>
+    </TouchableWithoutFeedback>
+  </View>
+  </View>
+); }
 }
 
   buscarPaciente() {
@@ -721,6 +828,7 @@ async imprimirFormatos() {
         {this.pacienteAnonimo()}
         {this.buscarPaciente()}
         {this.seleccionarMedicoTitular()}
+        {this.buscarDiagnostico()}
         {this.seleccionarHabitacion()}
         {this.seleccionarMedicoGuardia()}
 
@@ -743,12 +851,12 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ query }) => {
- const { text, Ocupacion, Especialidad, Consultorio, User } = query;
+ const { text, Ocupacion, Especialidad, Consultorio, Catalogos, User } = query;
  console.log(query);
  const Patient = User;
  const Medico = User;
- console.log('Medico', Medico);
- return { text, Patient, Ocupacion, Medico, Especialidad, Consultorio };
+ console.log('Catalogos', Catalogos);
+ return { text, Patient, Ocupacion, Catalogos, Medico, Especialidad, Consultorio };
 };
 
 export default connect(mapStateToProps, { queryFunc, queryAttach, cleanFunc, multiWrite, session, printHTMLReducer })(PatientSelect);

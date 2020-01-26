@@ -142,6 +142,73 @@ class Laboratorio extends Component {
     });
   }
 
+  buscarPacienteExterno() {
+    if (this.state.tipoVenta === 'ventaPublico') {
+      return (
+    <View>
+    <CardSection>
+      <Text>Paciente</Text>
+    </CardSection>
+    <CardSection>
+      <TouchableWithoutFeedback onPress={() => this.showModal('buscarPaciente')}>
+      <View>
+        <ComponentePaciente item={this.state.Patient}/>
+        </View>
+      </TouchableWithoutFeedback>
+    </CardSection>
+      <View style={{ paddingTop: 50 }}>
+        <TouchableWithoutFeedback onPress={() => this.setState({ buscarPaciente: false })}>
+        <View>
+          <Modal
+          isVisible={this.state.buscarPaciente}
+          transparent={false}
+          >
+          <TouchableWithoutFeedback>
+          <View style={{ flex: 1 }}>
+            <CardSection>
+              <SearchBar
+                containerStyle={{ flex: 1, backgroundColor: 'white' }}
+                imputStyle={{ backgroundColor: 'white', marginTop: 0, marginBottom: 0 }}
+                round
+
+                searchIcon={{ size: 24 }}
+                onChangeText={text => {
+                  this.props.queryAttach({
+                  object: 'User',
+                  text,
+                  constrain: [{ type: 'matches', variable: 'lastName1', text, regex: 'i' },
+                    { type: 'equalTo', variable: 'type', text: 'paciente', bool: 'and' }]
+                  });
+                }}
+                onClear={() => this.props.queryFunc({ text: '' })}
+                placeholder="Ingresa el primer apellido..."
+                value={this.props.text}
+              />
+              </CardSection>
+            <CardSection>
+              {this.lista('Patient', 'buscarPaciente')}
+            </CardSection>
+            <CardSection>
+              <Button onPress={() => {this.closeModal('buscarPaciente');
+                                      this.props.navigation.navigate('SignUp')} }>
+                Añadir paciente
+              </Button>
+            </CardSection>
+            <CardSection>
+              <Button onPress={() => this.closeModal('buscarPaciente')}>
+                Cancelar
+              </Button>
+            </CardSection>
+            </View>
+          </TouchableWithoutFeedback>
+          </Modal>
+        </View>
+      </TouchableWithoutFeedback>
+    </View>
+    </View>
+  ); }
+  }
+
   onPayPress() {
     let subtotal = 0;
     let impuestos = 0;

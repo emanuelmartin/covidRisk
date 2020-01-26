@@ -26,7 +26,7 @@ export default class PacientesActivos extends React.Component {
     this.arrayholder = [];
   }
   static navigationOptions = {
-    title: '',
+    title: 'Pacientes activos',
   };
 
   loadData() {
@@ -195,7 +195,6 @@ async query() {
     }
     return (
       <View style={{ flex: 1, paddingTop: 20 }}>
-      <Text style={{ fontSize: 30, fontWeight: 'bold', paddingStart: 15, paddingTop: 15 }} >Pacientes activos</Text>
       <ScrollView style={styles.viewStyle}>
       <CardSection>
           <FlatList

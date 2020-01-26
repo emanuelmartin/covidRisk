@@ -20,7 +20,6 @@ import PatientList from './Patients/PatientList';
 import PatientDetail from './Patients/PatientDetail';
 import ListaOcupacion from './Ocupacion/ListaOcupacion';
 import PatientSelect from './Ingresos/PatientSelect';
-import RoomSelect from './Ingresos/RoomSelect';
 import ListaMedicos from './Medicos/ListaMedicos';
 import PacientesActivos from './Patients/PacientesActivos';
 import DetalleActivos from './Patients/DetalleActivos';
@@ -79,7 +78,6 @@ const AppStack = createStackNavigator(
     PatientDetail,
     ListaOcupacion,
     PatientSelect,
-    RoomSelect,
     ListaMedicos,
     Cafe,
     CajaPrincipal,

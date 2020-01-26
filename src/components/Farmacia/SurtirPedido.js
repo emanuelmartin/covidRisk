@@ -25,7 +25,7 @@ const INITIAL_STATE = {
   Herramienta: { name: ''},
   Productos: new Array(),
   dataList: null,
-  buscarCuenta: false,
+  buscarCuenta: true,
   buscarHerramienta: false };
 
 class SurtirPedido extends Component {
@@ -140,13 +140,7 @@ class SurtirPedido extends Component {
       return(
         <Card>
         <CardSection>
-        <Text style={{ fontSize: 30,
-      fontWeight: 'bold' }}>
-        Pedido
-        </Text>
-        </CardSection>
-        <CardSection>
-        <Text>
+        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
      Seleccionar pedido
      </Text>
      </CardSection>
@@ -262,22 +256,23 @@ class SurtirPedido extends Component {
         renderItem={({ item, index }) => {
           if(item.nombre) {
           return (
-            <View style={{ flex: 1, flexDirection: 'column' }}>
+            <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'space-between' }}>
             <View>
             <Card>
               <CardSection>
                 <View style={{flex: 3}}>
-                  <Text style={{fontSize: 15}}>
+                  <Text style={{fontSize: 18}}>
                     {item.nombre}
                   </Text>
-                  <Text style={{fontSize: 13}}>
+                  <Text style={{fontSize: 14}}>
                     {item.laboratorio}
                   </Text>
-                  <Text style={{fontSize: 15}}>
+                  </View>
+                  <View style={{flex: 1, flexDirection: 'column'}}>
+                    <CardSection>
+                  <Text style={{fontSize: 24, fontWeight: 'bold'}}>
                     {item.cantidad}
                   </Text>
-                </View>
-                <View style={{flex: 1}}>
                   <CheckBox
                     size={38}
                     checked={this.state.Productos[index].integrado}
@@ -287,6 +282,7 @@ class SurtirPedido extends Component {
                       this.setState({ Productos });
                     }}
                   />
+                    </CardSection>
                 </View>
               </CardSection>
             </Card>
@@ -363,9 +359,11 @@ class SurtirPedido extends Component {
   render() {
     console.log(this.state.Productos)
     return (
-      <View>
+      <View style={{ flex: 1 }}>
       {this.buscarCuenta()}
+      <ScrollView>
       {this.listaProductos()}
+      </ScrollView>
         <View>
           </View>
       </View>

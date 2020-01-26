@@ -25,13 +25,13 @@ const INITIAL_STATE = {
   Herramienta: { name: ''},
   Productos: new Array(),
   dataList: null,
-  buscarCuenta: false,
+  buscarCuenta: true,
   buscarHerramienta: false };
 
 class AdminLaboratorio extends Component {
 
   static navigationOptions = {
-    title: 'Surtir pedido',
+    title: 'Análisis pendientes',
   };
 
   constructor(props) {
@@ -132,14 +132,8 @@ class AdminLaboratorio extends Component {
       return(
         <Card>
         <CardSection>
-        <Text style={{ fontSize: 30,
-      fontWeight: 'bold' }}>
-        Pedido
-        </Text>
-        </CardSection>
-        <CardSection>
         <Text>
-     Seleccionar pedido
+     Seleccionar solicitud
      </Text>
      </CardSection>
      </Card>
@@ -164,7 +158,7 @@ class AdminLaboratorio extends Component {
       <CardSection>
       <Text style={{ fontSize: 30,
     fontWeight: 'bold' }}>
-    Buscar pedido
+    Buscar solicitud
     </Text>
     </CardSection>
           <ScrollView>
@@ -202,7 +196,7 @@ class AdminLaboratorio extends Component {
       } else if (this.props.Cuenta === 'Failed') {
       return (
         <Text>
-        Sin resultados
+        Sin análisis pendientes
         </Text>
       );
     } else if (this.props.Cuenta !== '') {

@@ -15,6 +15,7 @@ import Modal from 'react-native-modal';
 import SwipeView from 'react-native-swipeview';
 import { NavigationActions } from 'react-navigation';
 import { SearchBar, Icon } from 'react-native-elements';
+import { ComponentePaciente, ComponenteMedico, ComponenteHabitacion, ComponenteEspecialidad, ComponenteConsultorio } from '../Listas';
 import { Dropdown } from 'react-native-material-dropdown';
 import { CardSection, Button, Spinner, Input } from '../common';
 import {
@@ -60,9 +61,107 @@ class Principal extends Component {
       recibido: 0,
       corte: '',
       subtotal: 0,
-      iva: 0
+      iva: 0,
+      Patient: { names: '' },
+      Medico: { names: '' }
     };
     this.arrayholder = [];
+  }
+
+  showModal(prop) {
+    this.setState({ [prop]: true });
+  }
+
+  renderIt(item, tipo, busqueda) {
+    console.log('item',item)
+    if (this.state.isLoading) {
+      //Loading View while data is loading
+      return (
+        <View style={{ flex: 1, paddingTop: 20 }}>
+          <ActivityIndicator />
+        </View>
+        );
+      }
+      if (tipo === 'Patient') {
+      return (
+      <TouchableWithoutFeedback
+      onPress={() => this.updateField(item, tipo, busqueda)}
+      >
+        <View>
+            <ComponentePaciente item={item}/>
+        </View>
+      </TouchableWithoutFeedback>
+    );
+}
+    else if (tipo === 'Medico') {
+      console.log('ItemMedico', item)
+    return (
+    <TouchableWithoutFeedback
+    onPress={() => this.updateField(item, tipo, busqueda)}
+    >
+      <View>
+          <ComponenteMedico item={item} />
+      </View>
+    </TouchableWithoutFeedback>
+  ); }
+
+  else if (tipo === 'Especialidad') {
+  return (
+  <TouchableWithoutFeedback
+  onPress={() => this.updateField(item, tipo, busqueda)}
+  >
+    <View>
+        <ComponenteEspecialidad item={item}/>
+    </View>
+  </TouchableWithoutFeedback>
+); }
+
+else if (tipo === 'Habitacion') {
+return (
+<TouchableWithoutFeedback
+onPress={() => this.updateField(item, tipo, busqueda)}
+>
+  <View>
+      <ComponenteHabitacion item={item}/>
+  </View>
+    </TouchableWithoutFeedback>
+);
+}
+
+else if (tipo === 'Consultorio') {
+  return (
+  <TouchableWithoutFeedback
+  onPress={() => this.updateField(item, tipo, busqueda)}
+  >
+    <View>
+        <ComponenteConsultorio item={item}/>
+    </View>
+</TouchableWithoutFeedback>
+);
+}
+
+else if (tipo === 'Catalogos') {
+console.log('item', item)
+return (
+<TouchableWithoutFeedback
+onPress={() => this.updateField(item, tipo, busqueda)}
+>
+  <View>
+      <CardSection>
+      <Text>
+      {item.nombre}
+      </Text>
+      </CardSection>
+  </View>
+</TouchableWithoutFeedback>
+);
+}
+  }
+
+  updateField(item, tipo, busqueda) {
+    this.props.text = '';
+    this.props.cleanFunc();
+    this.setState({ [tipo]: item, [busqueda]: false, text: '' });
   }
 
   componentDidMount() {
@@ -93,6 +192,73 @@ class Principal extends Component {
         iva: 0
       });
   }
+
+  seleccionarMedicoTitular() {
+    return (
+    <View>
+    <CardSection>
+      <Text>Médico titular</Text>
+    </CardSection>
+    <CardSection>
+      <TouchableWithoutFeedback onPress={() => this.showModal('seleccionarMedicoTitular')}>
+        <View>
+          <ComponenteMedico item={this.state.Medico} />
+        </View>
+      </TouchableWithoutFeedback>
+    </CardSection>
+      <View style={{ paddingTop: 50 }}>
+        <TouchableWithoutFeedback onPress={() => this.setState({ seleccionarMedicoTitular: false })}>
+        <View>
+          <Modal
+          isVisible={this.state.seleccionarMedicoTitular}
+          transparent={false}
+          >
+          <TouchableWithoutFeedback>
+          <View style={{ flex: 1 }}>
+            <CardSection>
+              <SearchBar
+                containerStyle={{ flex: 1, backgroundColor: 'white' }}
+                imputStyle={{ backgroundColor: 'white', marginTop: 0, marginBottom: 0 }}
+                round
+                searchIcon={{ size: 24 }}
+                onChangeText={text => {
+                  this.props.queryAttach({
+                  object: 'User',
+                  text,
+                  constrain: [{ type: 'matches', variable: 'lastName1', text, regex: 'i' },
+                    { type: 'equalTo', variable: 'type', text: 'medico', bool: 'and' }]
+                  });
+                  }
+                }
+                onClear={() => this.props.queryFunc({ text: '' })}
+                placeholder="Ingresa el primer apellido..."
+                value={this.props.text}
+              />
+              </CardSection>
+            <CardSection>
+              {this.lista('Medico', 'seleccionarMedicoTitular')}
+            </CardSection>
+            <CardSection>
+              <Button onPress={() => {this.closeModal('seleccionarMedicoTitular');
+                                      this.props.navigation.navigate('SignUp')} }>
+                Añadir médico
+              </Button>
+            </CardSection>
+            <CardSection>
+              <Button onPress={() => this.closeModal('seleccionarMedicoTitular')}>
+                Cancelar
+              </Button>
+            </CardSection>
+            </View>
+          </TouchableWithoutFeedback>
+          </Modal>
+        </View>
+      </TouchableWithoutFeedback>
+    </View>
+    </View>
+  );
+}
+
 
   componentWillUnmount() {
     this.props.cleanFunc();
@@ -235,7 +401,9 @@ class Principal extends Component {
       modal: true,
       subtotal,
       iva,
-      recibido: (subtotal + iva).toFixed(2).toString()
+      recibido: (subtotal + iva).toFixed(2).toString(),
+      Medico: {names: ''},
+      Patient: {names: ''}
     });
   }
 
@@ -699,6 +867,117 @@ class Principal extends Component {
     );
   }
 
+  buscarPacienteExterno() {
+      return (
+    <View>
+    <CardSection>
+      <Text>Paciente</Text>
+    </CardSection>
+    <CardSection>
+      <TouchableWithoutFeedback onPress={() => this.showModal('buscarPaciente')}>
+      <View>
+        <ComponentePaciente item={this.state.Patient}/>
+        </View>
+      </TouchableWithoutFeedback>
+    </CardSection>
+      <View style={{ paddingTop: 50 }}>
+        <TouchableWithoutFeedback onPress={() => this.setState({ buscarPaciente: false })}>
+        <View>
+          <Modal
+          isVisible={this.state.buscarPaciente}
+          transparent={false}
+          >
+          <TouchableWithoutFeedback>
+          <View style={{ flex: 1 }}>
+            <CardSection>
+              <SearchBar
+                containerStyle={{ flex: 1, backgroundColor: 'white' }}
+                imputStyle={{ backgroundColor: 'white', marginTop: 0, marginBottom: 0 }}
+                round
+
+                searchIcon={{ size: 24 }}
+                onChangeText={text => {
+                  this.props.queryAttach({
+                  object: 'User',
+                  text,
+                  constrain: [{ type: 'matches', variable: 'lastName1', text, regex: 'i' },
+                    { type: 'equalTo', variable: 'type', text: 'paciente', bool: 'and' }]
+                  });
+                }}
+                onClear={() => this.props.queryFunc({ text: '' })}
+                placeholder="Ingresa el primer apellido..."
+                value={this.props.text}
+              />
+              </CardSection>
+            <CardSection>
+              {this.lista('Patient', 'buscarPaciente')}
+            </CardSection>
+            <CardSection>
+              <Button onPress={() => {this.closeModal('buscarPaciente');
+                                      this.props.navigation.navigate('SignUp')} }>
+                Añadir paciente
+              </Button>
+            </CardSection>
+            <CardSection>
+              <Button onPress={() => this.closeModal('buscarPaciente')}>
+                Cancelar
+              </Button>
+            </CardSection>
+            </View>
+          </TouchableWithoutFeedback>
+          </Modal>
+        </View>
+      </TouchableWithoutFeedback>
+    </View>
+    </View>
+  );
+  }
+
+
+    lista(objeto, busqueda) {
+      let dataList = null;
+      if (Array.isArray(this.props[objeto])) {
+        dataList = this.props[objeto];
+      } else {
+        dataList = [this.props[objeto]];
+        console.log('Cat', this.props[objeto])
+        console.log('DAT', dataList)
+        for(var i=dataList.length-1;i>=0;i--)
+  {
+      if(dataList[i]=="")
+         dataList.splice(i,1);
+  }
+  console.log('Cat', this.props[objeto])
+  console.log('DAT', dataList)
+      } if (objeto === 'Catalogos') {
+        <FlatList
+          data={dataList}
+          ItemSeparatorComponent={this.ListViewItemSeparator}
+          //Item Separator View
+          renderItem={({ item }) => {
+            console.log('item',item)
+            this.renderIt(item, objeto, busqueda)
+          }}
+          style={{ marginTop: 10 }}
+          keyExtractor={(item) => item.objectId}
+        />
+      } else {
+      return (
+        <FlatList
+          data={dataList}
+          ItemSeparatorComponent={this.ListViewItemSeparator}
+          //Item Separator View
+          renderItem={({ item }) => (
+            this.renderIt(item, objeto, busqueda)
+          )}
+          enableEmptySections
+          style={{ marginTop: 10 }}
+          keyExtractor={(item) => item.curp}
+        />
+      );
+    }
+    }
+
   buscarPaciente() {
     if (this.state.Paciente.names === '' && this.state.sellType === 'Cuenta Paciente') {
       return (
@@ -729,9 +1008,17 @@ class Principal extends Component {
       );
     } else if (this.state.sellType === 'Venta al público') {
       return (
+        <View style={{ flex: 1 }}>
         <CardSection>
+          {this.buscarPacienteExterno()}
+          </CardSection>
+          <CardSection>
+            {this.seleccionarMedicoTitular()}
+            </CardSection>
+          <CardSection>
           {this.buscarProducto()}
         </CardSection>
+        </View>
       );
     }
     return (
@@ -1121,6 +1408,7 @@ const styles = StyleSheet.create({
  const { text, User, multiQry, Caja } = query;
  const load = query.loading;
  const Patient = User;
+ const Medico = User;
  const { user } = auth;
  const { loading, error, succesBill, succesPay, ticketInfo } = bill;
  const { print } = printR;
@@ -1137,7 +1425,8 @@ const styles = StyleSheet.create({
    succesPay,
    load,
    ticketInfo,
-   print
+   print,
+   Medico
  };
 };
 
