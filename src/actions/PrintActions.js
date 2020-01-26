@@ -47,49 +47,46 @@ export const printHTMLReducer = (info, type, reimprimir) => {
                 table {
                     border: 2px solid #646569;
                     border-collapse: collapse;
-                }
-
-                td.descripcion,
-                th.descripcion {
-                    width: 75px;
-                    max-width: 75px;
+                    word-break: break-all;
                 }
 
                 td.cantidad,
                 th.cantidad {
-                    width: 55px;
-                    max-width: 55px;
+                    padding: 10px;
+                    width: 100px;
+                    max-width: 100px;
                     word-break: break-all;
                 }
 
-                td.total,
-                th.total {
-                  width: 70px;
-                  max-width: 70px;
-                  word-break: break-all;
-                }
-
-                td.recibido,
-                th.recibido,
-                td.cambio,
-                th.cambio {
-                    width: 75px;
-                    max-width: 75px;
+                td.descripcion,
+                th.descripcion {
+                    padding: 10px;
+                    width: 400px;
+                    max-width: 400px;
                     word-break: break-all;
                 }
 
                 td.precio,
                 th.precio {
-                  width: 65px;
-                  max-width: 65px;
+                  padding: 10px;
+                  width: 200px;
+                  max-width: 200px;
                   word-break: break-all;
                 }
 
-                td.pago,
-                th.pago {
-                  width: 40px;
-                  max-width: 40px;
+                td.total,
+                th.total {
+                  padding: 10px;
+                  width: 200px;
+                  max-width: 200px;
                   word-break: break-all;
+                }
+
+                td.table2,
+                th.table2 {
+                    width: 10%;
+                    max-width: 10%;
+                    word-break: break-all;
                 }
 
                 .centrado {
@@ -97,19 +94,28 @@ export const printHTMLReducer = (info, type, reimprimir) => {
                     align-content: center;
                 }
 
-                .align-rigth {
+                .align-right {
                     text-align: right;
                     align-content: right;
                 }
 
+          			.align-left {
+                    text-align: left;
+                    align-content: left;
+                }
+
                 .ticket {
-                    width: 200;
-                    max-width: 200px;
+                    width: 100%;
+                    max-width: 100%;
+                }
+
+                .bigText {
+                  font-size:24px;
                 }
 
                 img {
-                    max-width: inherit;
-                    width: inherit;
+                    width: 100;
+          					max-width: 100px;
                 }
 
                 img.qr {
@@ -120,31 +126,113 @@ export const printHTMLReducer = (info, type, reimprimir) => {
                   display: block;
                 }
 
+          			table.style1 {
+          			  border-collapse: collapse;
+          			  width: 100%;
+          				float: left
+          			}
+
+          			td, th {
+          			  border: 1px solid #000;
+          			  text-align: center;
+          			  padding: 5px;
+          			}
+
+          			tr.style1:nth-child(odd) {
+          			  background-color: #63C0B9;
+          				border: 1px solid #000;
+          			}
+
+                .hrslColor {
+                  background-color: #63C0B9;
+                }
+
+          			/* Create two equal columns that floats next to each other */
+          			div.column1 {
+          			  float: left;
+          			  width: 20%;
+          			}
+          			div.column2 {
+          			  float: left;
+          			  width: 40%;
+          			}
+          			div.column3 {
+          			  float: right;
+          			  width: 30%;
+          			}
+
+          			/* Clear floats after the columns */
+          			.row:after {
+          				width: 500;
+          				max-width: 500px;
+          			  content: "";
+          			  display: table;
+          			  clear: both;
+          			}
+
+          			p.datos {
+          				padding: 10px;
+          			}
+
+          			br.datos {
+          			  content: "";
+          			  margin: 2em;
+          			  display: block;
+          			  font-size: 20%;
+          			}
+
               </style>
             </head>
             <body>
+          		<div class="row">
+          			<div class="column1" style="background-color:#fff;">
+          				<img src="data:image/png;base64, ${imgData} alt="Logotipo"/>
+          			</div>
+          			<div class="column2" style="background-color:#fff;">
+          				<p>
+          					Hospital Real San Lucas S.A. de C.V.<br class="datos">
+          					Blvd. Anacleto González Flores, No. 178 <br class="datos">
+          					C.P. 47660, Col. San Miguel<br class="datos">
+          					RFC: HRS1605113C7
+          				</p>
+          			</div>
+          			<div class="column3" style="background-color:#fff;">
+          				<table class="style1">
+          					<tr class="style1">
+          						<th class="title">Folio</th>
+          					</tr>
+          					<tr class="style1">
+          						<td class="style1">${folio}</td>
+          					</tr>
+          					<tr class="style1">
+          						<th class="title">Fecha y Hora</th>
+          					</tr>
+          					<tr class="style1">
+          						<td class="style1">${fecha.dia} ${fecha.hora}</td>
+          					</tr>
+          				</table>
+          			</div>
+          		</div>
               <div class="ticket">
-                <img src="data:image/png;base64, ${imgData} alt="Logotipo"/>
-                <p class="centrado">Hospital Real San Lucas S.A. de C.V. <br>
-                Blvd. Anacleto González Flores, No. 178 <br>
-                C.P. 47660, Col. San Miguel<br>
-                RFC: HRS1605113C7</p>
-
-                <p class="centrado"><br>Nota de Venta</p>
-                <p><b>Folio:</b>  ${folio}<br><b>Caja:</b> ${caja}
-                <br><b>Fecha:</b> ${fecha.dia} ${fecha.hora}
-                <table>
+                <p class="centrado">
+                   <b class="bigText">Nota de venta</b>
+                </p>
+          			<p class="align-left datos">
+                   <b>Paciente:</b> Juan Pérez Durán<br class="datos">
+                   <b>Ingreso:</b> oSacew1<br class="datos">
+          				 <b>Fecha de ingreso:</b> 10-11-2019
+                </p>
+                <table style="width: 100%">
                   <thead>
-                    <tr>
-                      <th class="cantidad">Cant.</th>
-                      <th class="descripcion">Descripción</th>
-
-                      <th class="precio">P.U.</th>
-                      <th class="total">Total</th>
+                    <tr class="hrslColor">
+                      <th class="style1">Cantidad</th>
+                      <th class="style1">Descripción</th>
+                      <th class="style1">P.U.</th>
+                      <th class="style1">Importe</th>
                     </tr>
                   </thead>
                   <tbody>
-                    `;
+                  `;
           let table = '';
           let subtotal = 0;
           let impuestos = 0;
@@ -154,7 +242,7 @@ export const printHTMLReducer = (info, type, reimprimir) => {
               producto.incluye.forEach((subproducto) => {
                 table += '<tr><td class="cantidad">';
                 table += subproducto.cantidad;
-                table += '</td><td class="descripcion">';
+                table += '</td><td class="descripcion align-left">';
                 table += subproducto.nombre;
                 table += '</td><td class="precio">$';
                 table += subproducto.precioPublico.toFixed(2);
@@ -162,16 +250,12 @@ export const printHTMLReducer = (info, type, reimprimir) => {
                 table += (subproducto.cantidad * subproducto.precioPublico).toFixed(2);
                 table += '</td></tr>';
                 subtotal += (subproducto.cantidad * subproducto.precioPublico);
-                if (subproducto.tipo === 'insumo' || subproducto.tipo === 'medicamento') {
-                    impuestos += subproducto.cantidad * subproducto.precioPublico * (subproducto.IVA / 100)
-                  } else {
-                    impuestos += subproducto.cantidad * subproducto.precioPublico * (subproducto.iva / 100);
-                  }
+                impuestos += subproducto.cantidad * subproducto.precioPublico * (subproducto.iva / 100);
               });
             } else if (producto.tipo === 'insumo' || producto.tipo === 'medicamento') {
                 table += '<tr><td class="cantidad">';
                 table += producto.cantidad;
-                table += '</td><td class="descripcion">';
+                table += '</td><td class="descripcion align-left">';
                 table += producto.nombre;
                 table += '</td><td class="precio">$';
                 table += producto.precio.toFixed(2);
@@ -185,7 +269,7 @@ export const printHTMLReducer = (info, type, reimprimir) => {
               } else {
                 table += '<tr><td class="cantidad">';
                 table += producto.cantidad;
-                table += '</td><td class="descripcion">';
+                table += '</td><td class="descripcion align-left">';
                 table += producto.nombre;
                 table += '</td><td class="precio">$';
                 table += producto.precio.toFixed(2);
@@ -193,7 +277,7 @@ export const printHTMLReducer = (info, type, reimprimir) => {
                 table += (producto.cantidad * producto.precio).toFixed(2);
                 table += '</td></tr>';
                 subtotal += (producto.cantidad * producto.precio);
-                if(producto.IVA!==null || producto.IVA !== undefined){
+                if(producto.iva!==null || producto.iva !== undefined){
                     impuestos += producto.cantidad * producto.precio * (producto.iva / 100);
                 }
               }
@@ -207,34 +291,7 @@ export const printHTMLReducer = (info, type, reimprimir) => {
           html += '<p class="align-rigth"><b>Total:</b> $';
           const total = subtotal + impuestos;
           html += (total).toFixed(2);
-          html += `</p>
-                    <table>
-                        <thead>
-                          <tr>
-                            <th class="pago">Tipo</th>
-                            <th class="total">Total</th>
-                            <th class="recibido">Pago</th>
-                            <th class="cambio">Cambio</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                          <td class="pago">Efectivo</td>
-                          <td class="total">$`;
-            html += total.toFixed(2);
-            html += '</td><td class="recibido">';
-            html += recibido.toFixed(2);
-            html += '</td><td class="cambio">$';
-            html += (recibido - total).toFixed(2);
-            html += `</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <p><br></p>
-                    <p class="centrado">¡GRACIAS POR SU COMPRA!</p>
-                  </div>
-                </body>
-              </html>`;
+          html +=`</p></div></body></html>`;
           RNPrint.print({ html }).then(() => resolve());
           break;
         case ('abonoCuenta'):

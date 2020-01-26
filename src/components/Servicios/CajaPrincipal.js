@@ -416,7 +416,7 @@ class Principal extends Component {
          objectId: item.objectId,
          cantidad: '1',
          precio: auxPrecio,
-         iva: (auxPrecio * (item.IVA / 100))
+         iva: (auxPrecio * (item.iva / 100))
        };
        this.setState(state => ({
        farmacia: [...state.farmacia, producto],

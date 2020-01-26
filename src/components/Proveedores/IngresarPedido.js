@@ -834,7 +834,7 @@ class IngresarPedido extends Component {
 
     Productos.forEach((element) => {
       totalBruto += parseFloat(element.costoUMC) * (parseFloat(element.ingresoUMC));
-      iva += (parseFloat(element.costoUMC) * (parseFloat(element.IVA) / 100)) * (parseFloat(element.ingresoUMC));
+      iva += (parseFloat(element.costoUMC) * (parseFloat(element.iva) / 100)) * (parseFloat(element.ingresoUMC));
       totalNeto += totalBruto + iva;
       totalBruto = parseFloat(totalBruto);
       iva = parseFloat(iva);
