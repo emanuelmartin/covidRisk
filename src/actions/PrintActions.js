@@ -237,6 +237,7 @@ export const printHTMLReducer = (info, type, reimprimir) => {
           let subtotal = 0;
           let impuestos = 0;
           listData.forEach((producto) => {
+            let price = 0;
             console.log(producto);
             if (producto.tipo === 'paquete quirúrgico') {
               producto.incluye.forEach((subproducto) => {
@@ -245,57 +246,31 @@ export const printHTMLReducer = (info, type, reimprimir) => {
                 table += '</td><td class="descripcion align-left">';
                 table += subproducto.nombre;
                 table += '</td><td class="precio">$';
-                table += subproducto.precioPublico.toFixed(2);
+                if(producto.precio!==null || producto.precio!==undefined){ price = subproducto.precio.toFixed(2); }
+                else { price = subproducto.precioPublico.toFixed(2); }
+                table += price;
                 table += '</td><td class="total">$';
-                table += (subproducto.cantidad * subproducto.precioPublico).toFixed(2);
+                table += (subproducto.cantidad * price).toFixed(2);
                 table += '</td></tr>';
-                subtotal += (subproducto.cantidad * subproducto.precioPublico);
-                impuestos += subproducto.cantidad * subproducto.precioPublico * (subproducto.iva / 100);
+                subtotal += (subproducto.cantidad * price);
+                impuestos += subproducto.iva;
               });
-            } else if (producto.tipo === 'insumo' || producto.tipo === 'medicamento') {
+            } else {
                 table += '<tr><td class="cantidad">';
                 table += producto.cantidad;
                 table += '</td><td class="descripcion align-left">';
                 table += producto.nombre;
                 table += '</td><td class="precio">$';
-                table += producto.precio.toFixed(2);
+                if(producto.precio!==null || producto.precio!==undefined){ price = producto.precio.toFixed(2); }
+                else { price = producto.precioPublico.toFixed(2); }
+                table += price;
                 table += '</td><td class="total">$';
-                table += (producto.cantidad * producto.precio).toFixed(2);
+                table += (producto.cantidad * price).toFixed(2);
                 table += '</td></tr>';
-                subtotal += (producto.cantidad * producto.precio);
+                subtotal += (producto.cantidad * price);
                 if(producto.iva!==null || producto.iva !== undefined){
-                    impuestos += producto.cantidad * producto.precio * (producto.iva / 100);
+                    impuestos += producto.iva;
                 }
-              } else if (producto.tipo === 'cafeteria') {
-                table += '<tr><td class="cantidad">';
-                table += producto.cantidad;
-                table += '</td><td class="descripcion align-left">';
-                table += producto.nombre;
-                table += '</td><td class="precio">$';
-                table += producto.precioPublico.toFixed(2);
-                table += '</td><td class="total">$';
-                table += (producto.cantidad * producto.precio).toFixed(2);
-                table += '</td></tr>';
-                subtotal += (producto.cantidad * producto.precio);
-                if(producto.iva!==null || producto.iva !== undefined){
-                    impuestos += producto.cantidad * producto.precio * (producto.iva / 100);
-                }
-              }
-                else  {
-                  console.log('Producto', producto)
-                  table += '<tr><td class="cantidad">';
-                  table += producto.cantidad;
-                  table += '</td><td class="descripcion align-left">';
-                  table += producto.nombre;
-                  table += '</td><td class="precio">$';
-                  table += producto.precioPublico.toFixed(2);
-                  table += '</td><td class="total">$';
-                  table += (producto.cantidad * producto.precio).toFixed(2);
-                  table += '</td></tr>';
-                  subtotal += (producto.cantidad * producto.precio);
-                  if(producto.iva!==null || producto.iva !== undefined){
-                      impuestos += producto.cantidad * producto.precio * (producto.iva / 100);
-                  }
               }
           });
 
@@ -310,8 +285,223 @@ export const printHTMLReducer = (info, type, reimprimir) => {
           html +=`</p></div></body></html>`;
           RNPrint.print({ html }).then(() => resolve());
           break;
+        //case ('resumeBill'):
+        case ('detailBill'):
+          html = `
+          <!doctype html>
+          <html>
+            <head>
+              <style type="text/css">
+                * {
+                    font-size: 12px;
+                    font-family: 'Times New Roman';
+                }
+
+                td,
+                th,
+                tr,
+                table {
+                    border: 2px solid #646569;
+                    border-collapse: collapse;
+                    word-break: break-all;
+                }
+
+                td.cantidad,
+                th.cantidad {
+                    padding: 10px;
+                    width: 100px;
+                    max-width: 100px;
+                    word-break: break-all;
+                }
+
+                td.descripcion,
+                th.descripcion {
+                    padding: 10px;
+                    width: 400px;
+                    max-width: 400px;
+                    word-break: break-all;
+                }
+
+                td.precio,
+                th.precio {
+                  padding: 10px;
+                  width: 200px;
+                  max-width: 200px;
+                  word-break: break-all;
+                }
+
+                td.total,
+                th.total {
+                  padding: 10px;
+                  width: 200px;
+                  max-width: 200px;
+                  word-break: break-all;
+                }
+
+                td.table2,
+                th.table2 {
+                    width: 10%;
+                    max-width: 10%;
+                    word-break: break-all;
+                }
+
+                .centrado {
+                    text-align: center;
+                    align-content: center;
+                }
+
+                .align-right {
+                    text-align: right;
+                    align-content: right;
+                }
+
+                .align-left {
+                    text-align: left;
+                    align-content: left;
+                }
+
+                .ticket {
+                    width: 100%;
+                    max-width: 100%;
+                }
+
+                .bigText {
+                  font-size:24px;
+                }
+
+                img {
+                    width: 100;
+                    max-width: 100px;
+                }
+
+                img.qr {
+                  width : 100;
+                  height: auto;
+                  margin-left: auto;
+                  margin-right: auto;
+                  display: block;
+                }
+
+                table.style1 {
+                  border-collapse: collapse;
+                  width: 100%;
+                  float: left
+                }
+
+                td, th {
+                  border: 1px solid #000;
+                  text-align: center;
+                  padding: 5px;
+                }
+
+                tr.style1:nth-child(odd) {
+                  background-color: #63C0B9;
+                  border: 1px solid #000;
+                }
+
+                .hrslColor {
+                  background-color: #63C0B9;
+                }
+
+                /* Create two equal columns that floats next to each other */
+                div.column1 {
+                  float: left;
+                  width: 20%;
+                }
+                div.column2 {
+                  float: left;
+                  width: 40%;
+                }
+                div.column3 {
+                  float: right;
+                  width: 30%;
+                }
+
+                /* Clear floats after the columns */
+                .row:after {
+                  width: 500;
+                  max-width: 500px;
+                  content: "";
+                  display: table;
+                  clear: both;
+                }
+
+                p.datos {
+                  padding: 10px;
+                }
+
+                br.datos {
+                  content: "";
+                  margin: 2em;
+                  display: block;
+                  font-size: 20%;
+                }
+
+              </style>
+            </head>
+            <body>
+              <div class="row">
+                <div class="column1" style="background-color:#fff;">
+                  <img src="data:image/png;base64,${imgData1}"/>
+                </div>
+                <div class="column2" style="background-color:#fff;">
+                  <p>
+                    Hospital Real San Lucas S.A. de C.V.<br class="datos">
+                    Blvd. Anacleto González Flores, No. 178 <br class="datos">
+                    C.P. 47660, Col. San Miguel<br class="datos">
+                    RFC: HRS1605113C7
+                  </p>
+                </div>
+                <div class="column3" style="background-color:#fff;">
+                  <table class="style1">
+                    <tr class="style1">
+                      <th class="title">Fecha y Hora</th>
+                    </tr>
+                    <tr class="style1">
+                      <td class="style1">${fecha.dia} ${fecha.hora}</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div class="ticket">
+                <p class="centrado">
+                   <b class="bigText">Resumen Cuenta</b>
+                </p>
+                <p class="align-left datos">
+                   <b>Paciente:</b> Juan Pérez Durán<br class="datos">
+                </p>
+                <table style="width: 100%">
+                  <thead>
+                    <tr class="hrslColor">
+                      <th class="style1">Descripción</th>
+                      <th class="style1">Importe</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="descripcion align-left">Farmacia</td>
+                      <td class="total">$${info.totalFarmacia}</td>
+                    </tr>
+                    <tr>
+                      <td class="descripcion align-left">Estudios</td>
+                      <td class="total">$${info.totalEstudios}</td>
+                    </tr>
+                    <tr>
+                      <td class="descripcion align-left">Hospitalización</td>
+                      <td class="total">$${info.totalHospitalizacion}</td>
+                    </tr>
+                    <tr>
+                      <td class="descripcion align-left">Cirugía</td>
+                      <td class="total">$${info.totalCirugia}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p class="align-right"><b>Total:</b>$${info.totalFarmacia+info.totalEstudios+info.totalHospitalizacion+info.totalCirugia}</p>
+              </div>
+            </body>
+          </html>
+          `;
         case ('abonoCuenta'):
-        console.log('abonoCuenta, test', ingreso);
           html = `
           <!doctype html>
           <html>
