@@ -101,7 +101,7 @@ export const queryPointer = ({ type, object, variable, text, pointer, regex }) =
 
 export const queryAttach = ({ object, constrain, text }) => {
   return async (dispatch) => {
-    dispatch({ type: DB_QUERY, payload: text });
+    dispatch({ type: DB_QUERY, payload: text, loading: true });
 
     if (constrain.length <= 0) {
       dispatch({
@@ -112,6 +112,7 @@ export const queryAttach = ({ object, constrain, text }) => {
     } else {
       let jsonArray = [];
       const query = [];
+
       let mainQuery = null;
       constrain.forEach((element, index) => {
         query[index] = new Parse.Query(object);
@@ -160,9 +161,9 @@ export const queryAttach = ({ object, constrain, text }) => {
             const array = jsonArray;
             jsonArray = array[0];
           }
-          dispatch({ type: DB_QUERY_RESULTS, payload: jsonArray, name: object });
+          dispatch({ type: DB_QUERY_RESULTS, payload: jsonArray, name: object, loading: false });
         } else {
-          dispatch({ type: DB_QUERY_NO_RESULTS, name: object });
+          dispatch({ type: DB_QUERY_NO_RESULTS, name: object, loading: false });
         }
       });
     }
