@@ -20,7 +20,10 @@ export const printHTMLReducer = (info, type, reimprimir) => {
   function imprimirFormato() {
     return new Promise((resolve, reject) => {
       const { paciente, fecha, medico, folio, caja, recibido, lista, ingreso } = info;
-      const listData = lista.farmacia.concat(lista.imagen).concat(lista.laboratorio).concat(lista.rehabilitacion).concat(lista.otros);
+
+      if(type==='ticketVenta'){
+        const listData = lista.farmacia.concat(lista.imagen).concat(lista.laboratorio).concat(lista.rehabilitacion).concat(lista.otros);
+      }
       const edad = '23';
       let html = '';
 
@@ -286,7 +289,7 @@ export const printHTMLReducer = (info, type, reimprimir) => {
           RNPrint.print({ html }).then(() => resolve());
           break;
         //case ('resumeBill'):
-        case ('detailBill'):
+        case ('resumeBill'):
           html = `
           <!doctype html>
           <html>
@@ -468,7 +471,7 @@ export const printHTMLReducer = (info, type, reimprimir) => {
                    <b class="bigText">Resumen Cuenta</b>
                 </p>
                 <p class="align-left datos">
-                   <b>Paciente:</b> Juan Pérez Durán<br class="datos">
+                   <b>Paciente:</b>${paciente.lastName1} ${paciente.lastName2} ${paciente.names}<br class="datos">
                 </p>
                 <table style="width: 100%">
                   <thead>
@@ -480,27 +483,29 @@ export const printHTMLReducer = (info, type, reimprimir) => {
                   <tbody>
                     <tr>
                       <td class="descripcion align-left">Farmacia</td>
-                      <td class="total">$${info.totalFarmacia}</td>
+                      <td class="total">$${lista.totalFarmacia.toFixed(2)}</td>
                     </tr>
                     <tr>
                       <td class="descripcion align-left">Estudios</td>
-                      <td class="total">$${info.totalEstudios}</td>
+                      <td class="total">$${lista.totalEstudios.toFixed(2)}</td>
                     </tr>
                     <tr>
                       <td class="descripcion align-left">Hospitalización</td>
-                      <td class="total">$${info.totalHospitalizacion}</td>
+                      <td class="total">$${lista.totalHospitalizacion.toFixed(2)}</td>
                     </tr>
                     <tr>
                       <td class="descripcion align-left">Cirugía</td>
-                      <td class="total">$${info.totalCirugia}</td>
+                      <td class="total">$${lista.totalCirugia.toFixed(2)}</td>
                     </tr>
                   </tbody>
                 </table>
-                <p class="align-right"><b>Total:</b>$${info.totalFarmacia+info.totalEstudios+info.totalHospitalizacion+info.totalCirugia}</p>
+                <p class="align-right"><b>Total:</b>$${(lista.totalFarmacia+lista.totalEstudios+lista.totalHospitalizacion+lista.totalCirugia).toFixed(2)}</p>
               </div>
             </body>
           </html>
           `;
+          RNPrint.print({ html }).then(() => resolve());
+          break;
         case ('abonoCuenta'):
           html = `
           <!doctype html>

@@ -100,7 +100,7 @@ class PatientBill extends Component {
     const dia = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
     const hora = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
     const info = {
-      paciente: this.state.Paciente,
+      paciente: this.state.Paciente.paciente,
       fecha: { dia, hora },
       lista: { Farmacia, totalFarmacia, Estudios, totalEstudios, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }
     };
