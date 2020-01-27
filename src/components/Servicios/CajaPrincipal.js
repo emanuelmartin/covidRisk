@@ -156,6 +156,7 @@ onPress={() => this.updateField(item, tipo, busqueda)}
   }
 
   updateField(item, tipo, busqueda) {
+    console.log('Item', item, 'Tipo', tipo)
     this.props.text = '';
     this.props.cleanFunc();
     this.setState({ [tipo]: item, [busqueda]: false, text: '' });
@@ -345,7 +346,7 @@ onPress={() => this.updateField(item, tipo, busqueda)}
       pendienteLaboratorio,
       pendienteImagen,
       pendienteRehabilitacion,
-      sellType
+      sellType,
     } = this.state;
 
     const listData = farmacia.concat(imagen).concat(laboratorio).concat(rehabilitacion).concat(otros);
@@ -363,6 +364,8 @@ onPress={() => this.updateField(item, tipo, busqueda)}
     });
 
     const total = subtotal + iva;
+
+    console.log('State', this.state)
 
     this.props.addBill({
       patient: this.state.Paciente.objectId,
@@ -382,6 +385,7 @@ onPress={() => this.updateField(item, tipo, busqueda)}
   }
 
   onPayPress() {
+    console.log('State', this.state)
     const {
       farmacia,
       imagen,
@@ -408,12 +412,11 @@ onPress={() => this.updateField(item, tipo, busqueda)}
       subtotal,
       iva,
       recibido: (subtotal + iva).toFixed(2).toString(),
-      Medico: {names: ''},
-      Patient: {names: ''}
     });
   }
 
   onPayConfirm() {
+    console.log('state', this.state)
     const {
       farmacia,
       imagen,
@@ -427,8 +430,13 @@ onPress={() => this.updateField(item, tipo, busqueda)}
       pendienteLaboratorio,
       pendienteImagen,
       pendienteRehabilitacion,
-      sellType
+      sellType,
+      Patient,
+      Medico,
+      bill,
+      autor
     } = this.state;
+
 
     const total = { subtotal, iva };
     if (parseFloat(recibido) < ((subtotal + iva).toFixed(2))) {
@@ -440,6 +448,10 @@ onPress={() => this.updateField(item, tipo, busqueda)}
       );
     } else {
       this.setState({ modal: false });
+      console.log('PacienteS', this.state.Paciente)
+      console.log('PatientS', this.state.Patient)
+      console.log('PacienteP', this.props.Paciente)
+      console.log('PatientP', this.props.Patient)
       this.props.payment(
         { pago: total,
           tipoPago: 'efectivo',
@@ -450,8 +462,9 @@ onPress={() => this.updateField(item, tipo, busqueda)}
           pendienteLaboratorio,
           pendienteImagen,
           pendienteRehabilitacion,
+          paciente: this.state.Patient,
           pacienteExterno: this.state.Patient,
-          medicoSolicitante: this.state.Medico,
+          medicoSolicitante: Medico,
           diagnosticoProbable: this.state.Catalogos,
           sellType
         }
@@ -628,6 +641,7 @@ onPress={() => this.updateField(item, tipo, busqueda)}
   }
 
   updatePaciente(item) {
+    console.log('Ingreso', item)
     this.setState({ Paciente: item.paciente, Ingreso: item.objectId });
     this.props.queryFunc({ text: '' });
   }
@@ -1433,6 +1447,7 @@ onPress={() => this.updateField(item, tipo, busqueda)}
   }
 
   render() {
+    console.log('State', this.state)
     const data = [{
         value: 'Venta al público',
       }, {
@@ -1447,9 +1462,7 @@ onPress={() => this.updateField(item, tipo, busqueda)}
             data={data}
             value={this.state.sellType}
             onChangeText={value => {
-              if (value === 'Venta al público') {
-                  this.setState({ sellType: value, Paciente: { names: '' } });
-              } else { this.setState({ sellType: value }); }
+              this.setState({ sellType: value });
             }}
             placeholder={'Selecciona el tipo de venta'}
             />

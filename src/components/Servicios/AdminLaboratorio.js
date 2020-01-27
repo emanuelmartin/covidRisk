@@ -49,13 +49,15 @@ class AdminLaboratorio extends Component {
       object: 'Cuenta',
       variable: 'pendienteLaboratorio',
       text: true,
-    include: ['autor', 'ingresoPaciente.paciente', 'ingresoPaciente.ubicacion'] })
+    include: ['paciente', 'medicoSolicitante', 'autor', 'ingresoPaciente.ubicacion'] })
   }
 
   renderIt(item, index, objeto, tipo, modal) {
-      const fech = new Date(item.createdAt)
-      const fecha = fech.toLocaleDateString('dd/MM/yyyy')
-      const hora = fech.toLocaleTimeString()
+    const fech = new Date(item.createdAt)
+    const fecha = fech.toLocaleDateString('dd/MM/yyyy')
+    const hora = fech.toLocaleTimeString()
+    console.log('Item', item)
+    if(item.pacienteExterno) {
       return (
       <TouchableWithoutFeedback
       onPress={() => { this.props.cleanFunc(); this.updateElement(item, index, objeto, tipo, modal); }}
@@ -63,10 +65,10 @@ class AdminLaboratorio extends Component {
       <View>
       <Card>
       <CardSection>
-          <Text>Paciente: {item.ingresoPaciente.paciente.names} {item.ingresoPaciente.paciente.lastName1} {item.ingresoPaciente.paciente.lastName2}</Text>
+          <Text>Paciente: {item.paciente.names} {item.paciente.lastName1} {item.paciente.lastName2}</Text>
           </CardSection>
           <CardSection>
-          <Text>Médico solicitante: {item.medicoSolicitante}</Text>
+          <Text>Solicitante: {item.autor.names}</Text>
           </CardSection>
           <CardSection>
           <Text>Fecha de solicitud: {fecha} {hora}</Text>
@@ -75,6 +77,27 @@ class AdminLaboratorio extends Component {
       </View>
       </TouchableWithoutFeedback>
     );
+    } else {
+      return (
+      <TouchableWithoutFeedback
+      onPress={() => { this.props.cleanFunc(); this.updateElement(item, index, objeto, tipo, modal); }}
+      >
+      <View>
+      <Card>
+      <CardSection>
+          <Text>Paciente: {item.paciente.names} {item.paciente.lastName1} {item.paciente.lastName2}</Text>
+          </CardSection>
+          <CardSection>
+          <Text>Solicitante: {item.autor.names}</Text>
+          </CardSection>
+          <CardSection>
+          <Text>Fecha de solicitud: {fecha} {hora}</Text>
+          </CardSection>
+      </Card>
+      </View>
+      </TouchableWithoutFeedback>
+    );
+    }
   }
 
   updateElement(item, index, objeto, tipo, modal) {
@@ -98,7 +121,11 @@ class AdminLaboratorio extends Component {
     } else {
     this.props.cleanFunc();
     console.log('ITEM', item)
-    this.setState({ [objeto]: item, [modal]: false, paciente: item.ingresoPaciente.paciente, ubicacion: item.ingresoPaciente.ubicacion  });
+    if (item.pacienteExterno) {
+      this.setState({ [objeto]: item, [modal]: false, paciente: item.paciente, ubicacion: { tipo: 'Externo', ID: ''}  });
+    } else {
+      this.setState({ [objeto]: item, [modal]: false, paciente: item.paciente, ubicacion: item.ingresoPaciente.ubicacion  });
+    }
     }
   }
 
@@ -321,7 +348,7 @@ class AdminLaboratorio extends Component {
     pedido.save().then(() => {
       Alert.alert(
         'Listo',
-        'Pedido surtido correctamente',
+        'Estudio confirmado correctamente',
         [{ text: 'Ok', style: 'cancel' }],
         { cancelable: false }
       );
@@ -362,6 +389,7 @@ class AdminLaboratorio extends Component {
 const mapStateToProps = ({ query, auth }) => {
   const { user } = auth;
  const { text, loading, Inventario, Cuenta } = query;
+ console.log('Cuenta', Cuenta)
  return { text, loading, Inventario, Cuenta, user };
 };
 

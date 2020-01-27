@@ -32,33 +32,19 @@ export const addBill = ({
       const cuenta = new parseObject();
       const autor = Parse.User.current();
 
-      let pacienteExterno = false;
-      if(sellType === 'Venta al público') {
-        const pacientePointer = {
-          __type: 'Pointer',
-          className: 'User',
-          objectId: pacienteExterno.objectId
-        };
-
-        pacienteExterno = true;
-
         const medicoPointer = {
           __type: 'Pointer',
           className: 'User',
           objectId: medicoSolicitante.objectId
         };
 
-        cuenta.set('paciente', pacientePointer)
-        cuenta.set('medicoSolicitante', medicoPointer)
 
-      } else {
+
       const pacientePointer = {
         __type: 'Pointer',
         className: 'User',
         objectId: patient
       };
-      cuenta.set('paciente', pacientePointer)
-    }
 
       const ingresoPointer = {
         __type: 'Pointer',
@@ -66,6 +52,8 @@ export const addBill = ({
         objectId: ingreso
       };
 
+      cuenta.set('medicoSolicitante', medicoPointer)
+      cuenta.set('paciente', pacientePointer)
       cuenta.set('ingresoPaciente', ingresoPointer);
       cuenta.set('cuenta', bill);
       cuenta.set('pagada', false);
@@ -107,12 +95,14 @@ export const payment = ({
   pacienteExterno,
   medicoSolicitante,
   diagnosticoProbable,
-  sellType
+  sellType,
+  paciente,
+  bill
 
 }) => {
   return async (dispatch) => {
     dispatch({ type: PAYMENT });
-
+    console.log('paciente',paciente)
     const autor = Parse.User.current();
     const date = new Date();
     const dia = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
@@ -143,15 +133,16 @@ export const payment = ({
         folio += (fol + 1);
       }
     }).then(() => {
+      console.log('Paciente', pacienteExterno)
       const parseObject = Parse.Object.extend('Ventas');
-      const cuenta = new parseObject();
-      let pacientePointer = '';
+      const venta = new parseObject();
 
-      if(sellType === 'Venta al público') {
-        pacientePointer = {
+        console.log('Medico', medicoSolicitante)
+
+          const pacientePointer = {
           __type: 'Pointer',
           className: 'User',
-          objectId: pacienteExterno.objectId
+          objectId: paciente.objectId
         };
 
         pacienteExterno = true;
@@ -162,31 +153,71 @@ export const payment = ({
           objectId: medicoSolicitante.objectId
         };
 
+      console.log('Paciente', paciente)
+
+      venta.set('medicoSolicitante', medicoPointer)
+      venta.set('paciente', pacientePointer);
+      venta.set('cuenta', lista);
+      venta.set('subtotal', pago.subtotal);
+      venta.set('iva', pago.iva);
+      venta.set('abono', 0);
+      venta.set('folio', folio);
+      venta.set('tipoPago', tipoPago);
+      venta.set('tipoVenta', tipoVenta);
+      venta.set('autor', autor);
+      venta.set('pendienteFarmacia', pendienteFarmacia);
+      venta.set('pendienteLaboratorio', pendienteLaboratorio);
+      venta.set('pendienteImagen', pendienteImagen);
+      venta.set('pendienteRehabilitacion', pendienteRehabilitacion);
+
+      console.log('Venta', venta)
+      dispatch({ type: ADD_BILL });
+
+      const parseObject2 = Parse.Object.extend('Cuenta');
+      const cuenta = new parseObject2();
+      const autor = Parse.User.current();
+
+      let pacienteExterno = false;
+      if(sellType === 'Venta al público') {
+        const pacientePointer = {
+          __type: 'Pointer',
+          className: 'User',
+          objectId: paciente.objectId
+        };
+
+        pacienteExterno = true;
+
+        const medicoPointer = {
+          __type: 'Pointer',
+          className: 'User',
+          objectId: medicoSolicitante.objectId
+        };
+
+        cuenta.set('paciente', pacientePointer)
         cuenta.set('medicoSolicitante', medicoPointer)
 
       } else {
-      pacientePointer = {
+      const pacientePointer = {
         __type: 'Pointer',
         className: 'User',
         objectId: patient
       };
+      cuenta.set('paciente', pacientePointer)
     }
 
       cuenta.set('cuenta', lista);
-      cuenta.set('subtotal', pago.subtotal);
-      cuenta.set('iva', pago.iva);
-      cuenta.set('abono', 0);
-      cuenta.set('folio', folio);
-      cuenta.set('tipoPago', tipoPago);
-      cuenta.set('tipoVenta', tipoVenta);
+      cuenta.set('pagada', true);
+      cuenta.set('abonado', 0);
       cuenta.set('autor', autor);
-    cuenta.set('paciente', pacientePointer)
       cuenta.set('pendienteFarmacia', pendienteFarmacia);
       cuenta.set('pendienteLaboratorio', pendienteLaboratorio);
       cuenta.set('pendienteImagen', pendienteImagen);
       cuenta.set('pendienteRehabilitacion', pendienteRehabilitacion);
+      cuenta.set('pacienteExterno', pacienteExterno)
+
       cuenta.save();
-    }).then(() => {
+
+      venta.save().then((result) => {
         folioQuery.get(folioResult[0].id.toString()).then((resp) => {
           resp.set('folio', fol + 1);
           resp.increment('efectivo', (pago.subtotal + pago.iva));
@@ -208,6 +239,8 @@ export const payment = ({
                 lista
               };
               dispatch({ type: PAYMENT_SUCCES, info });
+              dispatch({ type: ADD_BILL_SUCCES });
+              console.log('Bill created', result);
             });
           });
         });
@@ -215,9 +248,12 @@ export const payment = ({
       (error) => {
         dispatch({ type: PAYMENT_FAIL });
         console.error('Payment failed: ', error);
+        dispatch({ type: ADD_BILL_FAIL });
+        console.error('Error while creating Bill: ', error);
       });
-  };
+  });
 };
+}
 
 export const partialPayment = (caja, recibido, paciente) => {
   return async (dispatch) => {
@@ -250,16 +286,16 @@ export const partialPayment = (caja, recibido, paciente) => {
       }
     }).then(() => {
       const parseObject = Parse.Object.extend('Ventas');
-      const cuenta = new parseObject();
+      const venta = new parseObject();
 
-      cuenta.set('productos', []);
-      cuenta.set('subtotal', 0);
-      cuenta.set('iva', 0);
-      cuenta.set('abono', recibido);
-      cuenta.set('folio', folio);
-      cuenta.set('tipoPago', 'efectivo');
-      cuenta.set('tipoVenta', 'abonoCuenta');
-      cuenta.save();
+      venta.set('productos', []);
+      venta.set('subtotal', 0);
+      venta.set('iva', 0);
+      venta.set('abono', recibido);
+      venta.set('folio', folio);
+      venta.set('tipoPago', 'efectivo');
+      venta.set('tipoVenta', 'abonoCuenta');
+      venta.save();
     }).then(() => {
         folioQuery.get(folioResult[0].id.toString()).then((resp) => {
           resp.set('folio', fol + 1);

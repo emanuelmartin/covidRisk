@@ -282,6 +282,7 @@ export const printHTMLReducer = (info, type, reimprimir) => {
                 }
               }
                 else  {
+                  console.log('Producto', producto)
                   table += '<tr><td class="cantidad">';
                   table += producto.cantidad;
                   table += '</td><td class="descripcion align-left">';
