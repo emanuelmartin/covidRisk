@@ -5,6 +5,7 @@ import {
   StyleSheet,
   FlatList,
   TouchableWithoutFeedback,
+  ActivityIndicator,
   TextInput,
   ScrollView,
   Dimensions,
@@ -73,7 +74,6 @@ class Principal extends Component {
   }
 
   renderIt(item, tipo, busqueda) {
-    console.log('item',item)
     if (this.state.isLoading) {
       //Loading View while data is loading
       return (
@@ -94,7 +94,6 @@ class Principal extends Component {
     );
 }
     else if (tipo === 'Medico') {
-      console.log('ItemMedico', item)
     return (
     <TouchableWithoutFeedback
     onPress={() => this.updateField(item, tipo, busqueda)}
@@ -141,19 +140,17 @@ else if (tipo === 'Consultorio') {
 }
 
 else if (tipo === 'Catalogos') {
-console.log('item', item)
+console.log('item', item.nombre)
 return (
 <TouchableWithoutFeedback
 onPress={() => this.updateField(item, tipo, busqueda)}
 >
-  <View>
-      <CardSection>
+<View>
       <Text>
       {item.nombre}
       </Text>
-      </CardSection>
-  </View>
-</TouchableWithoutFeedback>
+      </View>
+      </TouchableWithoutFeedback>
 );
 }
   }
@@ -226,6 +223,10 @@ onPress={() => this.updateField(item, tipo, busqueda)}
                   object: 'User',
                   text,
                   constrain: [{ type: 'matches', variable: 'lastName1', text, regex: 'i' },
+                  { type: 'equalTo', variable: 'type', text: 'medico', bool: 'and' },
+                  { type: 'matches', variable: 'lastName2', text, regex: 'i', bool: 'or' },
+                  { type: 'equalTo', variable: 'type', text: 'medico', bool: 'and' },
+                  { type: 'matches', variable: 'names', text, regex: 'i', bool: 'or' },
                     { type: 'equalTo', variable: 'type', text: 'medico', bool: 'and' }]
                   });
                   }
@@ -343,7 +344,8 @@ onPress={() => this.updateField(item, tipo, busqueda)}
       pendienteFarmacia,
       pendienteLaboratorio,
       pendienteImagen,
-      pendienteRehabilitacion
+      pendienteRehabilitacion,
+      sellType
     } = this.state;
 
     const listData = farmacia.concat(imagen).concat(laboratorio).concat(rehabilitacion).concat(otros);
@@ -371,7 +373,11 @@ onPress={() => this.updateField(item, tipo, busqueda)}
       pendienteFarmacia,
       pendienteLaboratorio,
       pendienteImagen,
-      pendienteRehabilitacion
+      pendienteRehabilitacion,
+      pacienteExterno: this.state.Patient,
+      medicoSolicitante: this.state.Medico,
+      diagnosticoProbable: this.state.Catalogos,
+      sellType
     });
   }
 
@@ -420,7 +426,8 @@ onPress={() => this.updateField(item, tipo, busqueda)}
       pendienteFarmacia,
       pendienteLaboratorio,
       pendienteImagen,
-      pendienteRehabilitacion
+      pendienteRehabilitacion,
+      sellType
     } = this.state;
 
     const total = { subtotal, iva };
@@ -442,10 +449,83 @@ onPress={() => this.updateField(item, tipo, busqueda)}
           pendienteFarmacia,
           pendienteLaboratorio,
           pendienteImagen,
-          pendienteRehabilitacion
+          pendienteRehabilitacion,
+          pacienteExterno: this.state.Patient,
+          medicoSolicitante: this.state.Medico,
+          diagnosticoProbable: this.state.Catalogos,
+          sellType
         }
       );
     }
+  }
+
+  buscarDiagnostico() {
+      return (
+    <View>
+    <CardSection>
+      <Text>Diagnóstico probable</Text>
+    </CardSection>
+    <CardSection>
+      <TouchableWithoutFeedback onPress={() => this.showModal('buscarDiagnostico')}>
+      <View>
+      <CardSection>
+      <Text>
+      Selecciona
+      </Text>
+      </CardSection>
+        </View>
+      </TouchableWithoutFeedback>
+    </CardSection>
+      <View style={{ paddingTop: 50 }}>
+        <TouchableWithoutFeedback onPress={() => this.setState({ buscarDiagnostico: false })}>
+        <View>
+          <Modal
+          isVisible={this.state.buscarDiagnostico}
+          transparent={false}
+          >
+          <TouchableWithoutFeedback>
+          <View style={{ flex: 1 }}>
+            <CardSection>
+              <SearchBar
+                containerStyle={{ flex: 1, backgroundColor: 'white' }}
+                imputStyle={{ backgroundColor: 'white', marginTop: 0, marginBottom: 0 }}
+                round
+
+                searchIcon={{ size: 24 }}
+                onChangeText={text => {
+                  this.props.queryAttach({
+                  object: 'Catalogos',
+                  text,
+                  constrain: [{ type: 'matches', variable: 'nombre', text, regex: 'i' },
+                    { type: 'equalTo', variable: 'tipo', text: 'Cie 10', bool: 'and' }]
+                  });
+                }}
+                onClear={() => this.props.queryFunc({ text: '' })}
+                placeholder="Ingresa el diagnóstico..."
+                value={this.props.text}
+              />
+              </CardSection>
+            <CardSection>
+              {this.lista('Catalogos', 'buscarDiagnostico')}
+            </CardSection>
+            <CardSection>
+              <Button onPress={() => this.closeModal('buscarDiagnostico')}>
+                Cancelar
+              </Button>
+            </CardSection>
+            </View>
+          </TouchableWithoutFeedback>
+          </Modal>
+        </View>
+      </TouchableWithoutFeedback>
+    </View>
+    </View>
+  );
+  }
+
+  closeModal(prop) {
+    this.props.queryFunc({ text: '' });
+    this.setState({ [prop]: false });
   }
 
   onCorteConfirm(retiro) {
@@ -901,6 +981,10 @@ onPress={() => this.updateField(item, tipo, busqueda)}
                   object: 'User',
                   text,
                   constrain: [{ type: 'matches', variable: 'lastName1', text, regex: 'i' },
+                  { type: 'equalTo', variable: 'type', text: 'paciente', bool: 'and' },
+                  { type: 'matches', variable: 'lastName2', text, regex: 'i', bool: 'or' },
+                  { type: 'equalTo', variable: 'type', text: 'paciente', bool: 'and' },
+                  { type: 'matches', variable: 'names', text, regex: 'i', bool: 'or' },
                     { type: 'equalTo', variable: 'type', text: 'paciente', bool: 'and' }]
                   });
                 }}
@@ -935,32 +1019,39 @@ onPress={() => this.updateField(item, tipo, busqueda)}
 
 
     lista(objeto, busqueda) {
+      if(this.props.loadingQuery){
+        return(
+        <View style={{ flex: 1, paddingTop: 20 }}>
+          <ActivityIndicator />
+        </View>
+      );
+    } else if(this.props[objeto] === 'Failed'){
+          return(
+          <View style={{ flex: 1, paddingTop: 20 }}>
+          <Text>
+          Sin resultados
+          </Text>
+          </View>
+        );
+        } else {
       let dataList = null;
       if (Array.isArray(this.props[objeto])) {
         dataList = this.props[objeto];
       } else {
         dataList = [this.props[objeto]];
-        console.log('Cat', this.props[objeto])
-        console.log('DAT', dataList)
-        for(var i=dataList.length-1;i>=0;i--)
-  {
-      if(dataList[i]=="")
-         dataList.splice(i,1);
-  }
-  console.log('Cat', this.props[objeto])
-  console.log('DAT', dataList)
       } if (objeto === 'Catalogos') {
+        return(
         <FlatList
           data={dataList}
           ItemSeparatorComponent={this.ListViewItemSeparator}
           //Item Separator View
           renderItem={({ item }) => {
-            console.log('item',item)
             this.renderIt(item, objeto, busqueda)
           }}
           style={{ marginTop: 10 }}
           keyExtractor={(item) => item.objectId}
         />
+      )
       } else {
       return (
         <FlatList
@@ -976,7 +1067,8 @@ onPress={() => this.updateField(item, tipo, busqueda)}
         />
       );
     }
-    }
+  }
+  }
 
   buscarPaciente() {
     if (this.state.Paciente.names === '' && this.state.sellType === 'Cuenta Paciente') {
@@ -1015,6 +1107,9 @@ onPress={() => this.updateField(item, tipo, busqueda)}
           <CardSection>
             {this.seleccionarMedicoTitular()}
             </CardSection>
+            <CardSection>
+              {this.buscarDiagnostico()}
+              </CardSection>
           <CardSection>
           {this.buscarProducto()}
         </CardSection>
@@ -1405,7 +1500,8 @@ const styles = StyleSheet.create({
 });
 
  const mapStateToProps = ({ query, bill, printR, auth }) => {
- const { text, User, multiQry, Caja } = query;
+ const { text, User, multiQry, Caja, Catalogos } = query;
+ const loadingQuery = query.loading;
  const load = query.loading;
  const Patient = User;
  const Medico = User;
@@ -1426,7 +1522,9 @@ const styles = StyleSheet.create({
    load,
    ticketInfo,
    print,
-   Medico
+   Medico,
+   Catalogos,
+   loadingQuery
  };
 };
 

@@ -19,7 +19,11 @@ export const addBill = ({
   pendienteFarmacia = false,
   pendienteLaboratorio = false,
   pendienteImagen = false,
-  pendienteRehabilitacion = false
+  pendienteRehabilitacion = false,
+  pacienteExterno,
+  medicoSolicitante,
+  diagnosticoProbable,
+  sellType
 }) => {
     return async (dispatch) => {
       dispatch({ type: ADD_BILL });
@@ -28,11 +32,33 @@ export const addBill = ({
       const cuenta = new parseObject();
       const autor = Parse.User.current();
 
-      const pacientPointer = {
+      let pacienteExterno = false;
+      if(sellType === 'Venta al público') {
+        const pacientePointer = {
+          __type: 'Pointer',
+          className: 'User',
+          objectId: pacienteExterno.objectId
+        };
+
+        pacienteExterno = true;
+
+        const medicoPointer = {
+          __type: 'Pointer',
+          className: 'User',
+          objectId: medicoSolicitante.objectId
+        };
+
+        cuenta.set('paciente', pacientePointer)
+        cuenta.set('medicoSolicitante', medicoPointer)
+
+      } else {
+      const pacientePointer = {
         __type: 'Pointer',
         className: 'User',
         objectId: patient
       };
+      cuenta.set('paciente', pacientePointer)
+    }
 
       const ingresoPointer = {
         __type: 'Pointer',
@@ -40,7 +66,6 @@ export const addBill = ({
         objectId: ingreso
       };
 
-      cuenta.set('paciente', pacientPointer);
       cuenta.set('ingresoPaciente', ingresoPointer);
       cuenta.set('cuenta', bill);
       cuenta.set('pagada', false);
@@ -78,7 +103,12 @@ export const payment = ({
   pendienteFarmacia = false,
   pendienteLaboratorio = false,
   pendienteImagen = false,
-  pendienteRehabilitacion = false
+  pendienteRehabilitacion = false,
+  pacienteExterno,
+  medicoSolicitante,
+  diagnosticoProbable,
+  sellType
+
 }) => {
   return async (dispatch) => {
     dispatch({ type: PAYMENT });
@@ -115,6 +145,32 @@ export const payment = ({
     }).then(() => {
       const parseObject = Parse.Object.extend('Ventas');
       const cuenta = new parseObject();
+      let pacientePointer = '';
+
+      if(sellType === 'Venta al público') {
+        pacientePointer = {
+          __type: 'Pointer',
+          className: 'User',
+          objectId: pacienteExterno.objectId
+        };
+
+        pacienteExterno = true;
+
+        const medicoPointer = {
+          __type: 'Pointer',
+          className: 'User',
+          objectId: medicoSolicitante.objectId
+        };
+
+        cuenta.set('medicoSolicitante', medicoPointer)
+
+      } else {
+      pacientePointer = {
+        __type: 'Pointer',
+        className: 'User',
+        objectId: patient
+      };
+    }
 
       cuenta.set('cuenta', lista);
       cuenta.set('subtotal', pago.subtotal);
@@ -124,6 +180,7 @@ export const payment = ({
       cuenta.set('tipoPago', tipoPago);
       cuenta.set('tipoVenta', tipoVenta);
       cuenta.set('autor', autor);
+    cuenta.set('paciente', pacientePointer)
       cuenta.set('pendienteFarmacia', pendienteFarmacia);
       cuenta.set('pendienteLaboratorio', pendienteLaboratorio);
       cuenta.set('pendienteImagen', pendienteImagen);

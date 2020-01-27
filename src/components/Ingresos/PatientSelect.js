@@ -15,7 +15,7 @@ import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { Dropdown } from 'react-native-material-dropdown';
 import Modal from 'react-native-modal';
-import { Button, CardSection } from '../common';
+import { Button, CardSection, Card } from '../common';
 import { ComponentePaciente, ComponenteMedico, ComponenteHabitacion, ComponenteEspecialidad, ComponenteConsultorio } from '../Listas';
 import { queryFunc, queryAttach, cleanFunc, multiWrite, session, printHTMLReducer } from '../../actions';
 
@@ -34,7 +34,6 @@ class PatientSelect extends React.Component {
   }
 
     renderIt(item, tipo, busqueda) {
-      console.log('item',item)
       if (this.state.isLoading) {
         //Loading View while data is loading
         return (
@@ -55,7 +54,6 @@ class PatientSelect extends React.Component {
       );
 }
       else if (tipo === 'Medico') {
-        console.log('ItemMedico', item)
       return (
       <TouchableWithoutFeedback
       onPress={() => this.updateField(item, tipo, busqueda)}
@@ -99,28 +97,28 @@ class PatientSelect extends React.Component {
       </View>
   </TouchableWithoutFeedback>
 );
-}
-
-else if (tipo === 'Catalogos') {
-  console.log('item', item)
+} else if (tipo === 'Catalogos') {
+  console.log('item', item.nombre)
   return (
   <TouchableWithoutFeedback
   onPress={() => this.updateField(item, tipo, busqueda)}
   >
     <View>
-        <CardSection>
+        <View>
         <Text>
-        {item.nombre}
+        Hola
         </Text>
-        </CardSection>
+        </View>
     </View>
 </TouchableWithoutFeedback>
 );
+
 }
-    }
+}
 
 
   showModal(prop) {
+    this.props.cleanFunc()
     this.setState({ [prop]: true });
   }
 
@@ -130,32 +128,39 @@ else if (tipo === 'Catalogos') {
   }
 
   lista(objeto, busqueda) {
+    if(this.props.loading){
+      return(
+      <View style={{ flex: 1, paddingTop: 20 }}>
+        <ActivityIndicator />
+      </View>
+    );
+  } else if(this.props[objeto] === 'Failed'){
+        return(
+        <View style={{ flex: 1, paddingTop: 20 }}>
+        <Text>
+        Sin resultados
+        </Text>
+        </View>
+      );
+      } else {
     let dataList = null;
     if (Array.isArray(this.props[objeto])) {
       dataList = this.props[objeto];
     } else {
       dataList = [this.props[objeto]];
-      console.log('Cat', this.props[objeto])
-      console.log('DAT', dataList)
-      for(var i=dataList.length-1;i>=0;i--)
-{
-    if(dataList[i]=="")
-       dataList.splice(i,1);
-}
-console.log('Cat', this.props[objeto])
-console.log('DAT', dataList)
     } if (objeto === 'Catalogos') {
+      return(
       <FlatList
         data={dataList}
         ItemSeparatorComponent={this.ListViewItemSeparator}
         //Item Separator View
         renderItem={({ item }) => {
-          console.log('item',item)
           this.renderIt(item, objeto, busqueda)
         }}
         style={{ marginTop: 10 }}
         keyExtractor={(item) => item.objectId}
       />
+    );
     } else {
     return (
       <FlatList
@@ -167,10 +172,11 @@ console.log('DAT', dataList)
         )}
         enableEmptySections
         style={{ marginTop: 10 }}
-        keyExtractor={(item) => item.curp}
+        keyExtractor={(item) => item.objectId}
       />
     );
   }
+}
   }
 
   seleccionarHabitacion() {
@@ -330,11 +336,10 @@ buscarDiagnostico() {
                 this.props.queryAttach({
                 object: 'Catalogos',
                 text,
-                constrain: [{ type: 'matches', variable: 'nombre', text, regex: 'i' },
-                  { type: 'equalTo', variable: 'tipo', text: 'Cie 10', bool: 'and' }]
+                constrain: [{ type: 'matches', variable: 'nombre', text, regex: 'i' }]
                 });
               }}
-              onClear={() => this.props.queryFunc({ text: '' })}
+                onClear={() => this.props.cleanFunc()}
               placeholder="Ingresa el diagnóstico..."
               value={this.props.text}
             />
@@ -380,6 +385,11 @@ buscarDiagnostico() {
           >
           <TouchableWithoutFeedback>
           <View style={{ flex: 1 }}>
+          <CardSection>
+            <Button onPress={() => this.closeModal('buscarPaciente')}>
+              Cancelar
+            </Button>
+          </CardSection>
             <CardSection>
               <SearchBar
                 containerStyle={{ flex: 1, backgroundColor: 'white' }}
@@ -392,10 +402,15 @@ buscarDiagnostico() {
                   object: 'User',
                   text,
                   constrain: [{ type: 'matches', variable: 'lastName1', text, regex: 'i' },
+                  { type: 'equalTo', variable: 'type', text: 'paciente', bool: 'and' },
+                  { type: 'matches', variable: 'lastName2', text, regex: 'i', bool: 'or' },
+                  { type: 'equalTo', variable: 'type', text: 'paciente', bool: 'and' },
+                  { type: 'matches', variable: 'names', text, regex: 'i', bool: 'or' },
                     { type: 'equalTo', variable: 'type', text: 'paciente', bool: 'and' }]
                   });
                 }}
-                onClear={() => this.props.queryFunc({ text: '' })}
+                  onClear={() => this.props.cleanFunc()}
+
                 placeholder="Ingresa el primer apellido..."
                 value={this.props.text}
               />
@@ -407,11 +422,6 @@ buscarDiagnostico() {
               <Button onPress={() => {this.closeModal('buscarPaciente');
                                       this.props.navigation.navigate('SignUp')} }>
                 Añadir paciente
-              </Button>
-            </CardSection>
-            <CardSection>
-              <Button onPress={() => this.closeModal('buscarPaciente')}>
-                Cancelar
               </Button>
             </CardSection>
             </View>
@@ -460,12 +470,16 @@ buscarDiagnostico() {
                   this.props.queryAttach({
                   object: 'User',
                   text,
-                  constrain: [{ type: 'startsWith', variable: 'lastName1', text },
+                  constrain: [{ type: 'matches', variable: 'lastName1', text, regex: 'i' },
+                  { type: 'equalTo', variable: 'type', text: 'medico', bool: 'and' },
+                  { type: 'matches', variable: 'lastName2', text, regex: 'i', bool: 'or' },
+                  { type: 'equalTo', variable: 'type', text: 'medico', bool: 'and' },
+                  { type: 'matches', variable: 'names', text, regex: 'i', bool: 'or' },
                     { type: 'equalTo', variable: 'type', text: 'medico', bool: 'and' }]
                   });
                   }
                 }
-                onClear={() => this.props.queryFunc({ text: '' })}
+                onClear={() => this.props.cleanFunc()}
                 placeholder="Ingresa el primer apellido..."
                 value={this.props.text}
               />
@@ -531,7 +545,7 @@ buscarDiagnostico() {
                     { type: 'equalTo', variable: 'type', text: 'medico', bool: 'and' }]
                   })
                 }
-                onClear={() => this.props.queryFunc({ text: '' })}
+                  onClear={() => this.props.cleanFunc()}
                 placeholder="Ingresa el primer apellido..."
                 value={this.props.text}
               />
@@ -597,7 +611,7 @@ buscarDiagnostico() {
                   object: 'Especialidad',
                   variable: 'name',
                   text })}
-                onClear={() => this.props.queryFunc({ text: '' })}
+                  onClear={() => this.props.cleanFunc()}
                 placeholder="Ingresa el nombre de la Especialidad..."
                 value={this.props.text}
               />
@@ -724,7 +738,6 @@ buscarDiagnostico() {
       const Hospitalizacion = Parse.Object.extend('Hospitalizacion');
         const hospitalizacion = new Hospitalizacion();
 
-        console.log('ingreso', ingreso)
 
         const ingresoPointer = {
         __type: 'Pointer',
@@ -851,12 +864,10 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ query }) => {
- const { text, Ocupacion, Especialidad, Consultorio, Catalogos, User } = query;
- console.log(query);
+ const { text, Ocupacion, Especialidad, Consultorio, Catalogos, User, loading } = query;
  const Patient = User;
  const Medico = User;
- console.log('Catalogos', Catalogos);
- return { text, Patient, Ocupacion, Catalogos, Medico, Especialidad, Consultorio };
+ return { text, Patient, Ocupacion, Catalogos, Medico, Especialidad, Consultorio, loading };
 };
 
 export default connect(mapStateToProps, { queryFunc, queryAttach, cleanFunc, multiWrite, session, printHTMLReducer })(PatientSelect);
