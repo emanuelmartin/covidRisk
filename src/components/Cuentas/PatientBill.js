@@ -94,6 +94,45 @@ class PatientBill extends Component {
     this.setState({ modalPagar: true });
   }
 
+  onResumePrint({ Farmacia, totalFarmacia, Estudios, totalEstudios, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }) {
+    console.log("Resume Print");
+    const date = new Date();
+    const dia = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+    const hora = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+    const info = {
+      paciente: this.state.Paciente,
+      fecha: { dia, hora },
+      lista: { Farmacia, totalFarmacia, Estudios, totalEstudios, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }
+    };
+    this.props.printHTMLReducer(info, 'resumeBill', false);
+  }
+
+  onDetailPrint({ Farmacia, totalFarmacia, Estudios, totalEstudios, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }) {
+    console.log("Detail Print");
+    const date = new Date();
+    const dia = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+    const hora = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+    const info = {
+      paciente: this.state.Paciente,
+      fecha: { dia, hora },
+      lista: { Farmacia, totalFarmacia, Estudios, totalEstudios, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }
+    };
+    this.props.printHTMLReducer(info, 'detailBill', false);
+  }
+
+  onPrintPress({ Farmacia, totalFarmacia, Estudios, totalEstudios, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }) {
+    Alert.alert(
+      'Seleccione el tipo de impresión',
+      '',
+      [
+        { text: 'Resumida', onPress: () => this.onResumePrint({ Farmacia, totalFarmacia, Estudios, totalEstudios, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }) },
+        { text: 'Detallada', onPress: () => this.onDetailPrint({ Farmacia, totalFarmacia, Estudios, totalEstudios, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }) },
+        { text: 'Cancelar', style: 'cancel' }
+      ],
+      { cancelable: false }
+    );
+  }
+
   onPayConfirm() {
     if (this.state.caja === '') {
       Alert.alert(
@@ -407,6 +446,11 @@ class PatientBill extends Component {
                 ${(totalFarmacia + totalEstudios + totalHospitalizacion + totalCirugia).toFixed(2)}
               </Text>
             </View>
+          </CardSection>
+          <CardSection>
+            <Button onPress={this.onPrintPress.bind(this, { Farmacia, totalFarmacia, Estudios, totalEstudios, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia })}>
+              Imprimir Cuenta
+            </Button>
           </CardSection>
           <CardSection>
             <Button onPress={this.onPartialPayPress.bind(this)}>
