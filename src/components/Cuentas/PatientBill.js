@@ -577,7 +577,7 @@ class PatientBill extends Component {
   updatePaciente(item) {
     const pacientePointer = {
       __type: 'Pointer',
-      className: 'User',
+      className: '_User',
       objectId: item.paciente.objectId
     };
 

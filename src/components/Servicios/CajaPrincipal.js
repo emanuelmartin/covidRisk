@@ -378,7 +378,7 @@ onPress={() => this.updateField(item, tipo, busqueda)}
       pendienteImagen,
       pendienteRehabilitacion,
       pacienteExterno: this.state.Patient,
-      medicoSolicitante: this.state.Medico,
+      medicoSolicitante: this.state.autor,
       diagnosticoProbable: this.state.Catalogos,
       sellType
     });

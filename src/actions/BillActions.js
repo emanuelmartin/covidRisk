@@ -32,17 +32,9 @@ export const addBill = ({
       const cuenta = new parseObject();
       const autor = Parse.User.current();
 
-        const medicoPointer = {
-          __type: 'Pointer',
-          className: 'User',
-          objectId: medicoSolicitante.objectId
-        };
-
-
-
       const pacientePointer = {
         __type: 'Pointer',
-        className: 'User',
+        className: '_User',
         objectId: patient
       };
 
@@ -52,7 +44,6 @@ export const addBill = ({
         objectId: ingreso
       };
 
-      cuenta.set('medicoSolicitante', medicoPointer)
       cuenta.set('paciente', pacientePointer)
       cuenta.set('ingresoPaciente', ingresoPointer);
       cuenta.set('cuenta', bill);
@@ -141,7 +132,7 @@ export const payment = ({
 
           const pacientePointer = {
           __type: 'Pointer',
-          className: 'User',
+          className: '_User',
           objectId: paciente.objectId
         };
 
@@ -149,7 +140,7 @@ export const payment = ({
 
         const medicoPointer = {
           __type: 'Pointer',
-          className: 'User',
+          className: '_User',
           objectId: medicoSolicitante.objectId
         };
 
@@ -181,7 +172,7 @@ export const payment = ({
       if(sellType === 'Venta al público') {
         const pacientePointer = {
           __type: 'Pointer',
-          className: 'User',
+          className: '_User',
           objectId: paciente.objectId
         };
 
@@ -189,7 +180,7 @@ export const payment = ({
 
         const medicoPointer = {
           __type: 'Pointer',
-          className: 'User',
+          className: '_User',
           objectId: medicoSolicitante.objectId
         };
 
@@ -199,7 +190,7 @@ export const payment = ({
       } else {
       const pacientePointer = {
         __type: 'Pointer',
-        className: 'User',
+        className: '_User',
         objectId: patient
       };
       cuenta.set('paciente', pacientePointer)

@@ -56,8 +56,6 @@ class AdminLaboratorio extends Component {
     const fech = new Date(item.createdAt)
     const fecha = fech.toLocaleDateString('dd/MM/yyyy')
     const hora = fech.toLocaleTimeString()
-    console.log('Item', item)
-    if(item.pacienteExterno) {
       return (
       <TouchableWithoutFeedback
       onPress={() => { this.props.cleanFunc(); this.updateElement(item, index, objeto, tipo, modal); }}
@@ -68,7 +66,7 @@ class AdminLaboratorio extends Component {
           <Text>Paciente: {item.paciente.names} {item.paciente.lastName1} {item.paciente.lastName2}</Text>
           </CardSection>
           <CardSection>
-          <Text>Solicitante: {item.autor.names}</Text>
+          <Text>Solicitante: {item.solicitante.names}</Text>
           </CardSection>
           <CardSection>
           <Text>Fecha de solicitud: {fecha} {hora}</Text>
@@ -77,27 +75,6 @@ class AdminLaboratorio extends Component {
       </View>
       </TouchableWithoutFeedback>
     );
-    } else {
-      return (
-      <TouchableWithoutFeedback
-      onPress={() => { this.props.cleanFunc(); this.updateElement(item, index, objeto, tipo, modal); }}
-      >
-      <View>
-      <Card>
-      <CardSection>
-          <Text>Paciente: {item.paciente.names} {item.paciente.lastName1} {item.paciente.lastName2}</Text>
-          </CardSection>
-          <CardSection>
-          <Text>Solicitante: {item.autor.names}</Text>
-          </CardSection>
-          <CardSection>
-          <Text>Fecha de solicitud: {fecha} {hora}</Text>
-          </CardSection>
-      </Card>
-      </View>
-      </TouchableWithoutFeedback>
-    );
-    }
   }
 
   updateElement(item, index, objeto, tipo, modal) {
@@ -122,16 +99,16 @@ class AdminLaboratorio extends Component {
     this.props.cleanFunc();
     console.log('ITEM', item)
     if (item.pacienteExterno) {
-      this.setState({ [objeto]: item, [modal]: false, paciente: item.paciente, ubicacion: { tipo: 'Externo', ID: ''}  });
+      this.setState({ [objeto]: item, [modal]: false, paciente: item.paciente, ubicacion: { tipo: 'Externo', ID: ''}, solicitante: item.medicoSolicitante  });
     } else {
-      this.setState({ [objeto]: item, [modal]: false, paciente: item.paciente, ubicacion: item.ingresoPaciente.ubicacion  });
+      this.setState({ [objeto]: item, [modal]: false, paciente: item.paciente, ubicacion: item.ingresoPaciente.ubicacion, solicitante: autor  });
     }
     }
   }
 
   nombreCuenta() {
     if (this.state.Cuenta.objectId) {
-      const { Cuenta, paciente, ubicacion } = this.state;
+      const { Cuenta, paciente, ubicacion, solicitante } = this.state;
       console.log('cuenta',this.state.Cuenta.paciente)
       const fech = new Date(Cuenta.createdAt)
       const fecha = fech.toLocaleDateString('dd/MM/yyyy')
@@ -146,6 +123,11 @@ class AdminLaboratorio extends Component {
         <CardSection>
         <Text>
         Ubicación: {ubicacion.tipo} {ubicacion.ID}
+        </Text>
+        </CardSection>
+        <CardSection>
+        <Text>
+        Solicitante: {solicitante.names} {solicitante.lastName1} {solicitante.lastName2}
         </Text>
         </CardSection>
         <CardSection>
