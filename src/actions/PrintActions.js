@@ -27,6 +27,10 @@ export const printHTMLReducer = (info, type, reimprimir) => {
       const edad = '23';
       let html = '';
 
+      let table = '';
+      let subtotal = 0;
+      let impuestos = 0;
+
       switch (type) {
         case ('Consentimiento de hospitalización'):
           RNPrint.print({
@@ -236,9 +240,9 @@ export const printHTMLReducer = (info, type, reimprimir) => {
                   </thead>
                   <tbody>
                   `;
-          let table = '';
-          let subtotal = 0;
-          let impuestos = 0;
+          table = '';
+          subtotal = 0;
+          impuestos = 0;
           listData.forEach((producto) => {
             let price = 0;
             console.log(producto);
@@ -249,7 +253,7 @@ export const printHTMLReducer = (info, type, reimprimir) => {
                 table += '</td><td class="descripcion align-left">';
                 table += subproducto.nombre;
                 table += '</td><td class="precio">$';
-                if(producto.precio!==null || producto.precio!==undefined){ price = subproducto.precio.toFixed(2); }
+                if(producto.precio!==null && producto.precio!==undefined){ price = subproducto.precio.toFixed(2); }
                 else { price = subproducto.precioPublico.toFixed(2); }
                 table += price;
                 table += '</td><td class="total">$';
@@ -264,7 +268,7 @@ export const printHTMLReducer = (info, type, reimprimir) => {
                 table += '</td><td class="descripcion align-left">';
                 table += producto.nombre;
                 table += '</td><td class="precio">$';
-                if(producto.precio!==null || producto.precio!==undefined){ price = producto.precio.toFixed(2); }
+                if(producto.precio!==null && producto.precio!==undefined){ price = producto.precio.toFixed(2); }
                 else { price = producto.precioPublico.toFixed(2); }
                 table += price;
                 table += '</td><td class="total">$';
@@ -288,7 +292,355 @@ export const printHTMLReducer = (info, type, reimprimir) => {
           html +=`</p></div></body></html>`;
           RNPrint.print({ html }).then(() => resolve());
           break;
-        //case ('resumeBill'):
+        case ('detailBill'):
+          html = `
+          <!doctype html>
+          <html>
+            <head>
+              <style type="text/css">
+                * {
+                    font-size: 12px;
+                    font-family: 'Times New Roman';
+                }
+
+                td,
+                th,
+                tr,
+                table {
+                    border: 2px solid #646569;
+                    border-collapse: collapse;
+                    word-break: break-all;
+                }
+
+                td.cantidad,
+                th.cantidad {
+                    padding: 10px;
+                    width: 100px;
+                    max-width: 100px;
+                    word-break: break-all;
+                }
+
+                td.descripcion,
+                th.descripcion {
+                    padding: 10px;
+                    width: 400px;
+                    max-width: 400px;
+                    word-break: break-all;
+                }
+
+                td.precio,
+                th.precio {
+                  padding: 10px;
+                  width: 200px;
+                  max-width: 200px;
+                  word-break: break-all;
+                }
+
+                td.total,
+                th.total {
+                  padding: 10px;
+                  width: 200px;
+                  max-width: 200px;
+                  word-break: break-all;
+                }
+
+                td.table2,
+                th.table2 {
+                    width: 10%;
+                    max-width: 10%;
+                    word-break: break-all;
+                }
+
+                .centrado {
+                    text-align: center;
+                    align-content: center;
+                }
+
+                .align-right {
+                    text-align: right;
+                    align-content: right;
+                }
+
+                .align-left {
+                    text-align: left;
+                    align-content: left;
+                }
+
+                .ticket {
+                    width: 100%;
+                    max-width: 100%;
+                }
+
+                .bigText {
+                  font-size:24px;
+                }
+
+                img {
+                    width: 100;
+                    max-width: 100px;
+                }
+
+                img.qr {
+                  width : 100;
+                  height: auto;
+                  margin-left: auto;
+                  margin-right: auto;
+                  display: block;
+                }
+
+                table.style1 {
+                  border-collapse: collapse;
+                  width: 100%;
+                  float: left
+                }
+
+                td, th {
+                  border: 1px solid #000;
+                  text-align: center;
+                  padding: 5px;
+                }
+
+                tr.style1:nth-child(odd) {
+                  background-color: #63C0B9;
+                  border: 1px solid #000;
+                }
+
+                .hrslColor {
+                  background-color: #63C0B9;
+                }
+
+                /* Create two equal columns that floats next to each other */
+                div.column1 {
+                  float: left;
+                  width: 20%;
+                }
+                div.column2 {
+                  float: left;
+                  width: 40%;
+                }
+                div.column3 {
+                  float: right;
+                  width: 30%;
+                }
+
+                /* Clear floats after the columns */
+                .row:after {
+                  width: 500;
+                  max-width: 500px;
+                  content: "";
+                  display: table;
+                  clear: both;
+                }
+
+                p.datos {
+                  padding: 10px;
+                }
+
+                br.datos {
+                  content: "";
+                  margin: 2em;
+                  display: block;
+                  font-size: 20%;
+                }
+
+              </style>
+            </head>
+            <body>
+              <div class="row">
+                <div class="column1" style="background-color:#fff;">
+                  <img src="data:image/png;base64,${imgData1}"/>
+                </div>
+                <div class="column2" style="background-color:#fff;">
+                  <p>
+                    Hospital Real San Lucas S.A. de C.V.<br class="datos">
+                    Blvd. Anacleto González Flores, No. 178 <br class="datos">
+                    C.P. 47660, Col. San Miguel<br class="datos">
+                    RFC: HRS1605113C7
+                  </p>
+                </div>
+                <div class="column3" style="background-color:#fff;">
+                  <table class="style1">
+                    <tr class="style1">
+                      <th class="title">Fecha y Hora</th>
+                    </tr>
+                    <tr class="style1">
+                      <td class="style1">${fecha.dia} ${fecha.hora}</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div class="ticket">
+                <p class="centrado">
+                   <b class="bigText">Cuenta Detallada</b>
+                </p>
+                <p class="align-left datos">
+                   <b>Paciente:</b>${paciente.lastName1} ${paciente.lastName2} ${paciente.names}<br class="datos">
+                </p>
+                <p><b class="midText">Farmacia</b></p>
+                <table style="width: 100%">
+                  <thead>
+                    <tr class="hrslColor">
+                      <th class="style1">Cant.</th>
+                      <th class="style1">Descripción</th>
+                      <th class="style1">P.U.</th>
+                      <th class="style1">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+            `;
+
+            table = '';
+            subtotal = 0;
+            impuestos = 0;
+            lista.Farmacia.forEach((producto) => {
+              let price = 0;
+              console.log(producto);
+              table += '<tr><td class="cantidad">';
+              table += producto.cantidad;
+              table += '</td><td class="descripcion align-left">';
+              table += producto.nombre;
+              table += '</td><td class="precio">$';
+              if(producto.precio!==null && producto.precio!==undefined){ price = producto.precio.toFixed(2); }
+              else { price = producto.precioPublico.toFixed(2); }
+              table += price;
+              table += '</td><td class="total">$';
+              table += (producto.cantidad * price).toFixed(2);
+              table += '</td></tr>';
+              subtotal += (producto.cantidad * price);
+              if(producto.iva!==null || producto.iva !== undefined){
+                  impuestos += producto.cantidad * price * (producto.iva/100);
+              }
+            });
+
+            html += table;
+            html += `
+              </tbody>
+                </table>
+                <p><b class="midText">Estudios</b></p>
+                <table style="width: 100%">
+                  <thead class="hrslColor">
+                    <tr>
+                      <th class="style1">Cant.</th>
+                      <th class="style1">Descripción</th>
+                      <th class="style1">P.U.</th>
+                      <th class="style1">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                `;
+
+              table = '';
+              lista.Estudios.forEach((producto) => {
+                console.log('CHECK', producto);
+                let price = 0;
+                console.log(producto);
+                table += '<tr><td class="cantidad">';
+                table += producto.cantidad;
+                table += '</td><td class="descripcion align-left">';
+                table += producto.nombre;
+                table += '</td><td class="precio">$';
+                if(producto.precio!==null && producto.precio!==undefined){ price = producto.precio.toFixed(2); }
+                else { price = producto.precioPublico.toFixed(2); }
+                table += price;
+                table += '</td><td class="total">$';
+                table += (producto.cantidad * price).toFixed(2);
+                table += '</td></tr>';
+                subtotal += (producto.cantidad * price);
+                if(producto.iva!==null || producto.iva !== undefined){
+                    impuestos += producto.cantidad * price * (producto.iva/100);
+                }
+              });
+
+              html += table;
+              html += `
+                </tbody>
+                  </table>
+                  <p><b class="midText">Hospitalización</b></p>
+                  <table style="width: 100%">
+                    <thead class="hrslColor">
+                      <tr>
+                        <th class="style1">Cant.</th>
+                        <th class="style1">Descripción</th>
+                        <th class="style1">P.U.</th>
+                        <th class="style1">Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                `;
+                table = '';
+                lista.Hospitalizacion.forEach((producto) => {
+                  console.log('CHECK', producto);
+                  let price = 0;
+                  console.log(producto);
+                  table += '<tr><td class="cantidad">';
+                  table += producto.cant;
+                  table += '</td><td class="descripcion align-left">';
+                  table += producto.tipoHabitacion;
+                  table += '</td><td class="precio">$';
+                  if(producto.precio!==null && producto.precio!==undefined){ price = producto.precio.toFixed(2); }
+                  else { price = producto.precioPublico.toFixed(2); }
+                  table += price;
+                  table += '</td><td class="total">$';
+                  table += (producto.cant * price).toFixed(2);
+                  table += '</td></tr>';
+                  subtotal += (producto.cant * price);
+                  if(producto.iva!==null || producto.iva !== undefined){
+                    impuestos += producto.cant * price * (producto.iva/100)
+                  }
+                });
+
+                html += table;
+                html += `
+                  </tbody>
+                    </table>
+                    <p><b class="midText">Cirugia</b></p>
+                    <table style="width: 100%">
+                      <thead class="hrslColor">
+                        <tr>
+                          <th class="style1">Cant.</th>
+                          <th class="style1">Descripción</th>
+                          <th class="style1">P.U.</th>
+                          <th class="style1">Total</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                  `;
+
+                  table = '';
+                  lista.Cirugia.forEach((producto) => {
+                    console.log('CHECK', producto);
+                    let price = 0;
+                    console.log(producto);
+                    table += '<tr><td class="cantidad">';
+                    table += producto.cantidad;
+                    table += '</td><td class="descripcion align-left">';
+                    table += producto.nombre;
+                    table += '</td><td class="precio">$';
+                    if(producto.precio!==null && producto.precio!==undefined){ price = producto.precio.toFixed(2); }
+                    else { price = producto.precioPublico.toFixed(2); }
+                    table += price;
+                    table += '</td><td class="total">$';
+                    table += (producto.cantidad * price).toFixed(2);
+                    table += '</td></tr>';
+                    subtotal += (producto.cantidad * price);
+                    if(producto.iva!==null || producto.iva !== undefined){
+                        impuestos += producto.cantidad * price * (producto.iva/100)
+                    }
+                  });
+
+                  html += table;
+                  html += `
+                            </tbody>
+                          </table>
+                          <p class="align-right"><b>Subtotal:</b> $${subtotal.toFixed(2)}</p>
+                          <p class="align-right"><b>Total:</b> $${impuestos.toFixed(2)}</p>
+                          <p class="align-right"><b>Total:</b> $${(subtotal+impuestos).toFixed(2)}</p>
+                        </div>
+                      </body>
+                    </html>
+                  `;
+          RNPrint.print({ html }).then(() => resolve());
+          break;
         case ('resumeBill'):
           html = `
           <!doctype html>

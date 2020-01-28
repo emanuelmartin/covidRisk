@@ -95,7 +95,6 @@ class PatientBill extends Component {
   }
 
   onResumePrint({ Farmacia, totalFarmacia, Estudios, totalEstudios, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }) {
-    console.log("Resume Print");
     const date = new Date();
     const dia = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
     const hora = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
@@ -108,12 +107,11 @@ class PatientBill extends Component {
   }
 
   onDetailPrint({ Farmacia, totalFarmacia, Estudios, totalEstudios, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }) {
-    console.log("Detail Print");
     const date = new Date();
     const dia = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
     const hora = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
     const info = {
-      paciente: this.state.Paciente,
+      paciente: this.state.Paciente.paciente,
       fecha: { dia, hora },
       lista: { Farmacia, totalFarmacia, Estudios, totalEstudios, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }
     };
@@ -367,23 +365,25 @@ class PatientBill extends Component {
         }
 
         dataList.forEach((hosp) => {
-          const ingreso = new Date(hosp.fechaIngreso.iso);
-          let egreso = null;
-          if (hosp.fechaEgreso !== null && hosp.fechaEgreso !== undefined) {
-            egreso = new Date(hosp.fechaEgreso.iso);
-          } else {
-            egreso = new Date();
-          }
-          const dias = Math.ceil((egreso - ingreso) / 864e5, 10);
-          totalHospitalizacion += hosp.servicio.precio * dias;
+          if(hosp.servicio.tipo !== 'Consultorio'){
+            const ingreso = new Date(hosp.fechaIngreso.iso);
+            let egreso = null;
+            if (hosp.fechaEgreso !== null && hosp.fechaEgreso !== undefined) {
+              egreso = new Date(hosp.fechaEgreso.iso);
+            } else {
+              egreso = new Date();
+            }
+            const dias = Math.ceil((egreso - ingreso) / 864e5, 10);
+            totalHospitalizacion += hosp.servicio.precio * dias;
 
-          if (Hospitalizacion.some(producto => producto.objectId === hosp.servicio.objectId)) {
-            const pos = Hospitalizacion.map(e => { return e.objectId; }).indexOf(hosp.servicio.objectId);
-            Hospitalizacion[pos].cant += dias;
-          } else {
-              hosp.servicio.cant = dias;
-              hosp.servicio.sellType = 'publico';
-              Hospitalizacion.push(hosp.servicio);
+            if (this.props.Hospitalizacion.some(producto => producto.objectId === hosp.servicio.objectId)) {
+              const pos = this.props.Hospitalizacion.map(e => { return e.objectId; }).indexOf(hosp.servicio.objectId);
+              this.props.Hospitalizacion[pos].cant += dias;
+            } else {
+                hosp.servicio.cant = dias;
+                hosp.servicio.sellType = 'publico';
+                this.props.Hospitalizacion.push(hosp.servicio);
+            }
           }
         });
       }
@@ -630,7 +630,6 @@ class PatientBill extends Component {
       className: 'IngresosActivos',
       objectId: item.objectId
     };
-
     this.setState({ Paciente: item, buscarPaciente: false });
 
     this.props.queryAttach({
@@ -652,10 +651,6 @@ class PatientBill extends Component {
     constrain: [{ type: 'equalTo', variable: 'ingresoPaciente', text: ingresoPointer }]
     });
   }
-
-  search = text => {
-    console.log(text);
-  };
 
   clear = () => {
     this.props.text.clear();
