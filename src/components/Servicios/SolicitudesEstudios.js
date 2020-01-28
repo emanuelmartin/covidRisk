@@ -30,9 +30,9 @@ import {
   printClean
 } from '../../actions';
 
-class PedidosEnfermeria extends Component {
+class SolicitudesEstudios extends Component {
   static navigationOptions = {
-    title: 'Solicitud a farmacia',
+    title: 'Solicitud de estudios',
   };
 
   constructor(props) {
@@ -116,11 +116,27 @@ class PedidosEnfermeria extends Component {
   }
 
   onBillPress() {
+    const laboratorio = [];
+    const imagen = [];
+    let pendienteImagen = false;
+    let pendienteLaboratorio = false;
+
+    this.state.Productos.forEach((producto) => {
+      if (producto.tipo === 'laboratorio') {
+        laboratorio.push(producto)
+        pendienteLaboratorio = true;
+      } else if (producto.tipo === 'imagen') {
+        imagen.push(producto)
+        pendienteImagen = true;
+        }
+    })
+
     this.props.addBill({
       patient: this.state.Paciente.objectId,
       ingreso: this.state.Ingreso,
-      bill: { Type: 'enfermeria', farmacia: this.state.Productos },
-      pendienteFarmacia: true,
+      bill: { Type: 'enfermeria', laboratorio, imagen },
+      pendienteLaboratorio,
+      pendienteImagen,
       autor: this.props.user
   });
 }
@@ -199,10 +215,10 @@ class PedidosEnfermeria extends Component {
       return <Spinner size="large" />;
     }
     let dataList = null;
-    if (Array.isArray(this.props.Inventario)) {
-      dataList = this.props.Inventario;
+    if (Array.isArray(this.props.Servicios)) {
+      dataList = this.props.Servicios;
     } else {
-      dataList = [this.props.Inventario];
+      dataList = [this.props.Servicios];
     }
     return (
       <FlatList
@@ -280,7 +296,7 @@ class PedidosEnfermeria extends Component {
               onChangeText={text => {
                 if (text !== '') {
                   this.props.queryAttach({
-                    object: 'Inventario',
+                    object: 'Servicios',
                     text,
                     constrain:
                     [{ type: 'matches', variable: 'nombre', text, regex: 'i' }]
@@ -290,7 +306,7 @@ class PedidosEnfermeria extends Component {
                 }
                 }}
               onClear={() => this.props.queryFunc({ text: '' })}
-              placeholder="Ingrese el nombre del producto o servicio"
+              placeholder="Ingrese el nombre del servicio"
               value={this.props.text}
             />
             </CardSection>
@@ -537,7 +553,7 @@ class PedidosEnfermeria extends Component {
       return (
           <CardSection>
             <Button onPress={this.onNewBillPress.bind(this)}>
-              Nueva cuenta
+              Nueva solicitud
             </Button>
           </CardSection>
         );
@@ -604,7 +620,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ query, bill, printR, auth }) => {
- const { text, User, multiQry, Caja, Inventario } = query;
+ const { text, User, multiQry, Caja, Inventario, Servicios } = query;
  const Patient = User;
  const load = query.loading;
  const { user } = auth;
@@ -624,7 +640,8 @@ const mapStateToProps = ({ query, bill, printR, auth }) => {
    ticketInfo,
    print,
    user,
-   Inventario
+   Inventario,
+   Servicios
  };
 };
 
@@ -641,4 +658,4 @@ export default connect(mapStateToProps,
     corte,
     printHTMLReducer,
     printClean
-})(PedidosEnfermeria);
+})(SolicitudesEstudios);

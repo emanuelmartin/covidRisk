@@ -239,24 +239,142 @@ class PatientSelect extends React.Component {
     );}
   }
 
-  seleccionarConsultorio() {
-    if (this.state.tipo === 'Consultorio') {
+  seleccionarUrgencias() {
+    if (this.state.tipo === 'Urgencias' ) {
     return (
       <View>
       <CardSection>
-        <Text>Consultorio</Text>
+        <Text>Posición</Text>
       </CardSection>
       <CardSection>
-        <TouchableWithoutFeedback onPress={() => this.showModal('seleccionarConsultorio')}>
+        <TouchableWithoutFeedback onPress={() => this.showModal('seleccionarHabitacion')}>
         <View >
-          <ComponenteConsultorio item={this.state.Consultorio} / >
+          <ComponenteHabitacion item={this.state.Habitacion} tipo={'ingreso'} / >
         </View>
         </TouchableWithoutFeedback>
       </CardSection>
 
       <View>
         <Modal
-        isVisible={this.state.seleccionarConsultorio}
+        isVisible={this.state.seleccionarHabitacion}
+        transparent={false}
+        onShow={() => this.props.queryFunc({
+          type: 'startsWith',
+          object: 'Ocupacion',
+          variable: 'tipo',
+          text: 'Observación urgencias' })}
+        >
+      <ScrollView style={styles.viewStyle}>
+      <CardSection>
+          <FlatList
+            data={this.props.Ocupacion}
+            ItemSeparatorComponent={this.ListViewItemSeparator}
+            //Item Separator View
+            renderItem={({ item }) => (
+              // Single Comes here which will be repeatative for the FlatListItems
+              <TouchableWithoutFeedback
+              onPress={() => this.updateHabitacion(item)}
+              disabled={item.ocupadaPor}
+              >
+              <View>
+                  <ComponenteHabitacion item={item} tipo={'ingreso'}/>
+              </View>
+              </TouchableWithoutFeedback>
+            )}
+            enableEmptySections
+            style={{ marginTop: 10 }}
+            keyExtractor={(item, index) => index.toString()}
+          />
+          </CardSection>
+        </ScrollView>
+        <CardSection>
+          <Button onPress={() => this.closeModal('seleccionarHabitacion')}>
+            Cancelar
+          </Button>
+        </CardSection>
+        </Modal>
+      </View>
+      </View>
+    );}
+  }
+
+  seleccionarAmbulatoria() {
+    if (this.state.tipo === 'Cirugía ambulatoria' ) {
+    return (
+      <View>
+      <CardSection>
+        <Text>Posición</Text>
+      </CardSection>
+      <CardSection>
+        <TouchableWithoutFeedback onPress={() => this.showModal('seleccionarHabitacion')}>
+        <View >
+          <ComponenteHabitacion item={this.state.Habitacion} tipo={'ingreso'} / >
+        </View>
+        </TouchableWithoutFeedback>
+      </CardSection>
+
+      <View>
+        <Modal
+        isVisible={this.state.seleccionarHabitacion}
+        transparent={false}
+        onShow={() => this.props.queryFunc({
+          type: 'startsWith',
+          object: 'Ocupacion',
+          variable: 'tipo',
+          text: 'Recuperación ambulatoria' })}
+        >
+      <ScrollView style={styles.viewStyle}>
+      <CardSection>
+          <FlatList
+            data={this.props.Ocupacion}
+            ItemSeparatorComponent={this.ListViewItemSeparator}
+            //Item Separator View
+            renderItem={({ item }) => (
+              // Single Comes here which will be repeatative for the FlatListItems
+              <TouchableWithoutFeedback
+              onPress={() => this.updateHabitacion(item)}
+              disabled={item.ocupadaPor}
+              >
+              <View>
+                  <ComponenteHabitacion item={item} tipo={'ingreso'}/>
+              </View>
+              </TouchableWithoutFeedback>
+            )}
+            enableEmptySections
+            style={{ marginTop: 10 }}
+            keyExtractor={(item, index) => index.toString()}
+          />
+          </CardSection>
+        </ScrollView>
+        <CardSection>
+          <Button onPress={() => this.closeModal('seleccionarHabitacion')}>
+            Cancelar
+          </Button>
+        </CardSection>
+        </Modal>
+      </View>
+      </View>
+    );}
+  }
+
+  seleccionarConsultorio() {
+    if (this.state.tipo === 'Consulta' ) {
+    return (
+      <View>
+      <CardSection>
+        <Text>Consultorio</Text>
+      </CardSection>
+      <CardSection>
+        <TouchableWithoutFeedback onPress={() => this.showModal('seleccionarHabitacion')}>
+        <View >
+          <ComponenteHabitacion item={this.state.Habitacion} tipo={'ingreso'} / >
+        </View>
+        </TouchableWithoutFeedback>
+      </CardSection>
+
+      <View>
+        <Modal
+        isVisible={this.state.seleccionarHabitacion}
         transparent={false}
         onShow={() => this.props.queryFunc({
           type: 'startsWith',
@@ -266,11 +384,29 @@ class PatientSelect extends React.Component {
         >
       <ScrollView style={styles.viewStyle}>
       <CardSection>
-          {this.lista('Ocupacion', 'seleccionarConsultorio')}
+          <FlatList
+            data={this.props.Ocupacion}
+            ItemSeparatorComponent={this.ListViewItemSeparator}
+            //Item Separator View
+            renderItem={({ item }) => (
+              // Single Comes here which will be repeatative for the FlatListItems
+              <TouchableWithoutFeedback
+              onPress={() => this.updateHabitacion(item)}
+              disabled={item.ocupadaPor}
+              >
+              <View>
+                  <ComponenteHabitacion item={item} tipo={'ingreso'}/>
+              </View>
+              </TouchableWithoutFeedback>
+            )}
+            enableEmptySections
+            style={{ marginTop: 10 }}
+            keyExtractor={(item, index) => index.toString()}
+          />
           </CardSection>
         </ScrollView>
         <CardSection>
-          <Button onPress={() => this.closeModal('seleccionarConsultorio')}>
+          <Button onPress={() => this.closeModal('seleccionarHabitacion')}>
             Cancelar
           </Button>
         </CardSection>
@@ -279,6 +415,7 @@ class PatientSelect extends React.Component {
       </View>
     );}
   }
+
 
 pacienteAnonimo() {
   if (this.state.tipo === 'Urgencias') {
@@ -336,7 +473,8 @@ buscarDiagnostico() {
                 this.props.queryAttach({
                 object: 'Catalogos',
                 text,
-                constrain: [{ type: 'matches', variable: 'nombre', text, regex: 'i' }]
+                constrain: [{ type: 'matches', variable: 'nombre', text, regex: 'i' },
+                            { type: 'startsWith', variable: 'tipo', text: 'Cie 10', regex: 'i' }]
                 });
               }}
                 onClear={() => this.props.cleanFunc()}
@@ -720,7 +858,14 @@ buscarDiagnostico() {
       ingresos.set('Alta', false);
         ingresos.set('medico', medicoPointer);
         ingresos.set('tipoMedico', 'Médico de guardia');
+        ingresos.set('ubicacion', ocupacionPointer);
         break;
+        case 'Consulta':
+        ingresos.set('Alta', false);
+          ingresos.set('medico', medicoPointer);
+          ingresos.set('tipoMedico', 'Médico titular');
+          ingresos.set('ubicacion', ocupacionPointer);
+          break;
       case 'Hospitalización':
       ingresos.set('Alta', false);
       let date = new Date();
@@ -844,6 +989,9 @@ async imprimirFormatos() {
         {this.buscarDiagnostico()}
         {this.seleccionarHabitacion()}
         {this.seleccionarMedicoGuardia()}
+        {this.seleccionarUrgencias()}
+        {this.seleccionarAmbulatoria()}
+        {this.seleccionarConsultorio()}
 
         <CardSection>
           <Button onPress={() => this.ingresarPaciente()}>Ingresar paciente</Button>

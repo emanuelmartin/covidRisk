@@ -31,7 +31,7 @@ const INITIAL_STATE = {
 class AdminImagen extends Component {
 
   static navigationOptions = {
-    title: 'Análisis pendientes',
+    title: 'Estudios pendientes',
   };
 
   constructor(props) {
@@ -52,6 +52,16 @@ class AdminImagen extends Component {
     include: ['paciente', 'medicoSolicitante', 'autor', 'ingresoPaciente.ubicacion'] })
   }
 
+  nombreMedico(item) {
+    if(item.medicoSolicitante) {
+      return(
+        <CardSection>
+        <Text>Solicitante: {item.medicoSolicitante.names}</Text>
+        </CardSection>
+      );
+    }
+  }
+
   renderIt(item, index, objeto, tipo, modal) {
     const fech = new Date(item.createdAt)
     const fecha = fech.toLocaleDateString('dd/MM/yyyy')
@@ -66,8 +76,9 @@ class AdminImagen extends Component {
           <Text>Paciente: {item.paciente.names} {item.paciente.lastName1} {item.paciente.lastName2}</Text>
           </CardSection>
           <CardSection>
-          <Text>Solicitante: {item.medicoSolicitante.names}</Text>
+          <Text>Sexo: {item.paciente.sex} Fecha de nacimiento: {item.paciente.birthday}</Text>
           </CardSection>
+          {this.nombreMedico(item)}
           <CardSection>
           <Text>Fecha de solicitud: {fecha} {hora}</Text>
           </CardSection>
@@ -101,7 +112,7 @@ class AdminImagen extends Component {
     if (item.pacienteExterno) {
       this.setState({ [objeto]: item, [modal]: false, paciente: item.paciente, ubicacion: { tipo: 'Externo', ID: ''}, solicitante: item.medicoSolicitante  });
     } else {
-      this.setState({ [objeto]: item, [modal]: false, paciente: item.paciente, ubicacion: item.ingresoPaciente.ubicacion, solicitante: autor  });
+      this.setState({ [objeto]: item, [modal]: false, paciente: item.paciente, ubicacion: item.ingresoPaciente.ubicacion, solicitante: item.autor  });
     }
     }
   }
@@ -119,6 +130,9 @@ class AdminImagen extends Component {
         <Text>
         Paciente: {paciente.names} {paciente.lastName1} {paciente.lastName2}
         </Text>
+        </CardSection>
+        <CardSection>
+        <Text>Sexo: {paciente.sex} Fecha de nacimiento: {paciente.birthday}</Text>
         </CardSection>
         <CardSection>
         <Text>

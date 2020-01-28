@@ -33,6 +33,7 @@ import Reimprimir from './Formatos/reimprimir';
 import IngresarPedido from './Proveedores/IngresarPedido';
 import Importar from './DB/importar';
 import PedidosEnfemeria from './Servicios/PedidosEnfermeria';
+import SolicitudesEstudios from './Servicios/SolicitudesEstudios';
 import AdminImagen from './Servicios/AdminImagen';
 import AdminLaboratorio from './Servicios/AdminLaboratorio';
 import AdminRehabilitacion from './Servicios/AdminRehabilitacion';
@@ -77,6 +78,7 @@ const AppStack = createStackNavigator(
     AddItemScreen,
     PatientDetail,
     ListaOcupacion,
+    SolicitudesEstudios,
     PatientSelect,
     ListaMedicos,
     Cafe,

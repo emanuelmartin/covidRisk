@@ -194,6 +194,11 @@ class SideMenu extends Component {
              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('PedidosEnfemeria')}>
              Solicitud a farmacia
              </Text>
+             <View>
+               <Text style={styles.navItemStyle} onPress={this.navigateToScreen('SolicitudesEstudios')}>
+               Solicitudes de estudios
+               </Text>
+               </View>
            </View>
          </View>
       );
@@ -268,38 +273,54 @@ class SideMenu extends Component {
       return (
         <View>
            <Text style={styles.sectionHeadingStyle}>
-             Servicios
+             Solicitudes
            </Text>
            <View style={styles.navSectionStyle}>
              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('CajaPrincipal')}>
-               Caja Principal
+               Productos y servicios
              </Text>
-             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Urgencias')}>
-               Urgencias
-             </Text>
-             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Laboratorio')}>
-               Laboratorio
-             </Text>
-             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Rehabilitacion')}>
-               Rehabilitacion
-             </Text>
-             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('AdminQuirofano')}>
-               Quirófanos
-             </Text>
-             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('AdminImagen')}>
-               Imagen
-             </Text>
-             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('AdminRehabilitacion')}>
-               Rehabilitación
-             </Text>
-             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('AdminLaboratorio')}>
-               Laboratorio
-             </Text>
+
            </View>
          </View>
       );
     }
   }
+
+  imagen() {
+    if (this.props.userType === 'imagen' ||
+        this.props.userType === 'recepcion' ||
+            this.props.userType === 'admin' ||
+                this.props.userType === 'dev') {
+      return (
+        <View>
+        <Text style={styles.sectionHeadingStyle}>
+          Servicios
+        </Text>
+    <Text style={styles.navItemStyle} onPress={this.navigateToScreen('AdminImagen')}>
+      Imagen
+    </Text>
+    </View>
+  );
+  }
+}
+
+lab() {
+  if (this.props.userType === 'laboratorio' ||
+        this.props.userType === 'recepcion' ||
+            this.props.userType === 'admin' ||
+                this.props.userType === 'dev') {
+    return (
+      <View>
+      <Text style={styles.sectionHeadingStyle}>
+        Servicios
+      </Text>
+  <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Laboratorio')}>
+    Laboratorio
+  </Text>
+  </View>
+);
+}
+}
 
   cobros() {
     if (this.props.userType === 'admin' ||
@@ -368,6 +389,8 @@ class SideMenu extends Component {
         <ScrollView>
           {this.fichasPersonales()}
           {this.ocupacion()}
+                       {this.imagen()}
+                        {this.lab()}
           {this.enfermeria()}
           {this.farmacia()}
           {this.cafeteria()}
