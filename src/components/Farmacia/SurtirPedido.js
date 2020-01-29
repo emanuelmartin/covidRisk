@@ -49,13 +49,15 @@ class SurtirPedido extends Component {
       object: 'Cuenta',
       variable: 'pendienteFarmacia',
       text: true,
-    include: ['autor', 'ingresoPaciente.paciente', 'ingresoPaciente.ubicacion'] })
+      include: ['autor', 'ingresoPaciente.paciente', 'ingresoPaciente.ubicacion']
+    });
   }
 
   renderIt(item, index, objeto, tipo, modal) {
-      const fech = new Date(item.createdAt)
-      const fecha = fech.toLocaleDateString('dd/MM/yyyy')
-      const hora = fech.toLocaleTimeString()
+      const fech = new Date(item.createdAt);
+      const fecha = fech.toLocaleDateString('dd/MM/yyyy');
+      const hora = fech.toLocaleTimeString();
+
       return (
       <TouchableWithoutFeedback
       onPress={() => { this.props.cleanFunc(); this.updateElement(item, index, objeto, tipo, modal); }}
@@ -63,11 +65,9 @@ class SurtirPedido extends Component {
       <View>
       <Card>
       <CardSection>
-          <Text>Paciente: {item.ingresoPaciente.paciente.names} {item.ingresoPaciente.paciente.lastName1} {item.ingresoPaciente.paciente.lastName2}</Text>
+          <Text>Paciente: {item.paciente.names} {item.paciente.lastName1} {item.paciente.lastName2}</Text>
           </CardSection>
-          <CardSection>
-          <Text>Ubicación: {item.ingresoPaciente.ubicacion.tipo} {item.ingresoPaciente.ubicacion.ID}</Text>
-          </CardSection>
+
           <CardSection>
           <Text>Fecha de solicitud: {fecha} {hora}</Text>
           </CardSection>
@@ -100,28 +100,22 @@ class SurtirPedido extends Component {
       this.setState({ [objeto]: dataList, [modal]: false });
     } else {
     this.props.cleanFunc();
-    console.log('ITEM', item)
-    this.setState({ [objeto]: item, [modal]: false, paciente: item.ingresoPaciente.paciente, ubicacion: item.ingresoPaciente.ubicacion, autor: item.autor  });
+    this.setState({ [objeto]: item, [modal]: false, paciente: item.paciente, ubicacion: item.ubicacion, autor: item.autor  });
     }
   }
 
   nombreCuenta() {
     if (this.state.Cuenta.objectId) {
       const { Cuenta, paciente, ubicacion, autor } = this.state;
-      console.log('cuenta',this.state.Cuenta.paciente)
-      const fech = new Date(Cuenta.createdAt)
-      const fecha = fech.toLocaleDateString('dd/MM/yyyy')
-      const hora = fech.toLocaleTimeString()
+      const fech = new Date(Cuenta.createdAt);
+      const fecha = fech.toLocaleDateString('dd/MM/yyyy');
+      const hora = fech.toLocaleTimeString();
+      console.log("YEEES", ubicacion);
       return(
         <Card style={{ flex: 1}}>
         <CardSection>
         <Text>
         Paciente: {paciente.names} {paciente.lastName1} {paciente.lastName2}
-        </Text>
-        </CardSection>
-        <CardSection>
-        <Text>
-        Ubicación: {ubicacion.tipo} {ubicacion.ID}
         </Text>
         </CardSection>
         <CardSection>
@@ -314,7 +308,6 @@ class SurtirPedido extends Component {
         if (!producto.integrado) pendienteFarmacia = true;
       })
 
-      console.log('Cuenta', Cuenta.estado)
       pedido.set('objectId', Cuenta.objectId);
       pedido.set('pendienteFarmacia', pendienteFarmacia);
 
@@ -357,7 +350,6 @@ class SurtirPedido extends Component {
   }
 
   render() {
-    console.log(this.state.Productos)
     return (
       <View style={{ flex: 1 }}>
       {this.buscarCuenta()}
