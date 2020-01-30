@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
 import { DateTime } from 'luxon';
+import Parse from 'parse/react-native';
 import {
   Text,
   Alert,
@@ -62,7 +63,16 @@ class DetalleActivo extends Component {
       include: ['paciente', 'medico', 'tipoMedico', 'ubicacion', 'recuperacion']
     });
 
+    this.props.queryFunc({
+      type: 'equalTo',
+      object: 'Hospitalizacion',
+      variable: 'ingreso',
+      text: { "__type": "Pointer", "className": "IngresosActivos", "objectId": data.ids.ingreso },
+      include: ['ingreso', 'ingreso.paciente', 'ingreso.ubicacion', 'servicio', 'recuperacion']
+    });
     console.log(this.props);
+
+    this.setState({ data })
   }
 
   renderItem(item) {
@@ -543,7 +553,7 @@ updateRecuperacion() {
   }
 
   renderListaOcupacion() {
-    if (this.props.loading === false && this.props.Ocupacion !== 'Failed') {
+    if (this.props.loading === false && this.props.Ocupacion !== 'Failed' && this.state.tipo !== '') {
       return (
         <CardSection>
             <FlatList
@@ -558,7 +568,7 @@ updateRecuperacion() {
                     'Confirmación Movimiento:',
                     '¿Desea trasladar al paciente?',
                     [
-                      { text: 'Si', onPress: () => console.log('Aceptar') },
+                      { text: 'Si', onPress: () => this.trasladarPaciente(item) },
                       { text: 'No', onPress: () => console.log('Cancelar'), style: 'cancel' },
                     ],
                     { cancelable: false }
@@ -579,6 +589,113 @@ updateRecuperacion() {
     }
   }
 
+  listaHospitalizacion() {
+    const { Hospitalizacion } = this.props;
+
+    if(Hospitalizacion) {
+    let dataList = null;
+
+    if (Array.isArray(Hospitalizacion)) {
+      dataList = Hospitalizacion;
+    } else {
+      dataList = [Hospitalizacion];
+    }
+    return(
+      <View>
+    <CardSection>
+      <Text style={{ fontSize: 18, fontWeight: 'bold'}}>
+        Historial de hospitalización
+      </Text>
+    </CardSection>
+    <CardSection>
+        <FlatList
+          data={dataList}
+          ItemSeparatorComponent={this.ListViewItemSeparator}
+          //Item Separator View
+          renderItem={({ item }) => (
+            // Single Comes here which will be repeatative for the FlatListItems
+            <TouchableWithoutFeedback
+            onPress={() => this.changeModal('asignarHabitacion', 'confirmarHabitacion', 'nuevaHabitacion', item)}
+            disabled={item.Ocupada}
+            >
+            <View>
+            <Text>
+                {this.fecha(item)} {item.servicio.tipo} {item.servicio.ID}
+            </Text>
+            </View>
+            </TouchableWithoutFeedback>
+          )}
+          enableEmptySections
+          style={{ marginTop: 10 }}
+          keyExtractor={(item, index) => index.toString()}
+        />
+        </CardSection>
+        </View>
+    )
+  }
+  }
+
+  fecha(item) {
+    const time = new Date(item.createdAt)
+    const fecha = time.toLocaleDateString();
+    const hora = time.toLocaleTimeString();
+    return(
+      fecha+' '+hora
+    )
+  }
+
+  trasladarPaciente(item) {
+    const { ubicacion, paciente } = this.props.IngresosActivos;
+    const ingreso = this.props.IngresosActivos;
+
+    console.log('ubicacion', ubicacion);
+    console.log('paciente', paciente);
+    console.log('item', item);
+    console.log('ingreso', this.props.IngresosActivos)
+
+    const Hospitalizacion = Parse.Object.extend('Hospitalizacion');
+    const hospitalizacion = new Hospitalizacion();
+
+    const IngresosActivos = Parse.Object.extend('IngresosActivos');
+    const ingresosActivos = new IngresosActivos();
+
+    const Ocupacion = Parse.Object.extend('Ocupacion');
+    const ocupacionActual = new Ocupacion();
+    const nuevaOcupacion = new Ocupacion();
+
+    const pointerIngreso = {
+      __type: 'Pointer',
+     className: 'IngresosActivos',
+     objectId: ingreso.objectId
+   };
+
+   const pointerServicio = {
+     __type: 'Pointer',
+    className: 'Ocupacion',
+    objectId: item.objectId
+  };
+
+  const pointerPaciente = {
+    __type: 'Pointer',
+   className: '_User',
+   objectId: paciente.objectId
+ };
+
+    hospitalizacion.set('ingreso', pointerIngreso);
+    hospitalizacion.set('servicio', pointerServicio);
+    ingresosActivos.set('objectId', ingreso.objectId);
+    ingresosActivos.set('ubicacion', pointerServicio);
+    ocupacionActual.set('objectId', ubicacion.objectId);
+    ocupacionActual.unset('ocupadaPor');
+    nuevaOcupacion.set('objectId',item.objectId);
+    nuevaOcupacion.set('ocupadaPor', pointerPaciente);
+
+    hospitalizacion.save();
+    ocupacionActual.save();
+    ingresosActivos.save();
+    nuevaOcupacion.save();
+  }
+
   textoUbicacion() {
     const { ubicacion } = this.props.IngresosActivos;
     if(ubicacion) {
@@ -586,6 +703,17 @@ updateRecuperacion() {
           <Text> {ubicacion.tipo}: {ubicacion.ID} </Text>
       )
     }
+  }
+
+  actualizar() {
+    const { data } = this.state
+    this.props.queryFunc({
+      type: 'get',
+      object: 'IngresosActivos',
+      variable: null,
+      text: data.ids.ingreso,
+      include: ['paciente', 'medico', 'tipoMedico', 'ubicacion', 'recuperacion']
+    });
   }
 
   render() {
@@ -629,6 +757,9 @@ updateRecuperacion() {
         </CardSection>
         <View>
           <CardSection>
+          {this.listaHospitalizacion()}
+            </CardSection>
+            <CardSection>
             {this.renderDropdown()}
           </CardSection>
           {this.renderListaOcupacion()}
@@ -673,10 +804,11 @@ updateRecuperacion() {
     });
 
 const mapStateToProps = ({ query, auth }) => {
- const { IngresosActivos, loading, Ocupacion } = query;
+ const { IngresosActivos, loading, Ocupacion, Hospitalizacion } = query;
  const { user } = auth;
+ console.log('Hospito',Hospitalizacion)
  console.log(query)
- return { user, IngresosActivos, loading, Ocupacion };
+ return { user, IngresosActivos, loading, Ocupacion, Hospitalizacion };
 };
 
 export default connect(mapStateToProps,

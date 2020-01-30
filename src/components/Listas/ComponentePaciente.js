@@ -6,6 +6,7 @@ const ComponentePaciente = (props) => {
 function seleccionarPaciente() {
   const { paciente, medico, ubicacion, tipo, tipoMedico, estadoActual } = props.item;
 
+
   switch (props.tipo) {
     case 'activos': {
           console.log(props.item)
@@ -23,6 +24,9 @@ function seleccionarPaciente() {
                 <View>
                   <Text> {tipoMedico}: {medico.names} {medico.lastName1} </Text>
                 </View>
+                <View>
+                  <Text> {ubicacion.tipo}: {ubicacion.ID} </Text>
+                </View>
               </View>
             );
           } break;
@@ -34,13 +38,13 @@ function seleccionarPaciente() {
                 <Text> {estadoActual} </Text>
               </View>
                 <View>
-                  <Text> {paciente.names}  {paciente.lastName1}</Text>
+                  <Text> {paciente.names}  {paciente.lastName1} {paciente.lastName2}</Text>
                 </View>
                 <View>
-                  <Text> {tipoMedico}: {medico.names} {medico.lastName1} </Text>
+                  <Text> {tipoMedico}: {medico.names} {medico.lastName1} {paciente.lastName2}</Text>
                 </View>
                 <View>
-                  <Text> {'Habitación'}: {ubicacion.ID} </Text>
+                  <Text> {ubicacion.tipo}: {ubicacion.ID} </Text>
                 </View>
               </View>
             );
@@ -53,11 +57,12 @@ function seleccionarPaciente() {
                 <Text> {estadoActual} </Text>
               </View>
                 <View>
-                  <Text> {paciente.names} {paciente.lastName1}</Text>
+                  <Text> {paciente.names} {paciente.lastName1}{paciente.lastName2} </Text>
                 </View>
                 <View>
-                  <Text> {tipoMedico}: {medico.names} {medico.lastName1} </Text>
+                  <Text> {tipoMedico}: {medico.names} {medico.lastName1} {medico.lastName2}</Text>
                 </View>
+
               </View>
             );
           } break;
@@ -69,10 +74,10 @@ function seleccionarPaciente() {
                 <Text> {estadoActual} </Text>
               </View>
                 <View>
-                  <Text> {paciente.names} {paciente.lastName1}</Text>
+                  <Text> {paciente.names} {paciente.lastName1} {paciente.lastName2}</Text>
                 </View>
                 <View>
-                  <Text> {tipoMedico}: {medico.names} {medico.lastName1}</Text>
+                  <Text> {tipoMedico}: {medico.names} {medico.lastName1} {medico.lastName2}</Text>
                 </View>
               </View>
             );
@@ -85,13 +90,31 @@ function seleccionarPaciente() {
                 <Text> {estadoActual} </Text>
               </View>
                 <View>
-                  <Text> {paciente.names} {paciente.lastName1}</Text>
+                  <Text> {paciente.names} {paciente.lastName1} {paciente.lastName2}</Text>
                 </View>
                 <View>
-                  <Text> {tipoMedico}: {medico.names} {medico.lastName1}</Text>
+                  <Text> {tipoMedico}: {medico.names} {medico.lastName1} {medico.lastName2}</Text>
                 </View>
                 <View>
-                  <Text> {'Habitación'}: {ubicacion.ID} </Text>
+                  <Text> {ubicacion.tipo}: {ubicacion.ID} </Text>
+                </View>
+              </View>
+            );
+          } break;
+          case 'Consulta': {
+            return (
+              <View>
+              <View>
+                <Text> {estadoActual} </Text>
+              </View>
+                <View>
+                  <Text> {paciente.names} {paciente.lastName1} {paciente.lastName2}</Text>
+                </View>
+                <View>
+                  <Text> {tipoMedico}: {medico.names} {medico.lastName1} {medico.lastName2}</Text>
+                </View>
+                <View>
+                  <Text> {ubicacion.tipo}: {ubicacion.ID} </Text>
                 </View>
               </View>
             );
@@ -103,7 +126,7 @@ function seleccionarPaciente() {
         return (
           <View>
             <View>
-              <Text> {paciente.names} {paciente.lastName1} </Text>
+              <Text> {paciente.names} {paciente.lastName1}{paciente.lastName2} </Text>
             </View>
             <View>
               <Text> {paciente.birthday} </Text>

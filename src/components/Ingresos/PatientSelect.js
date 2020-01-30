@@ -783,6 +783,10 @@ buscarDiagnostico() {
   }
 
   ingresarPaciente() {
+    if(!this.state.Patient.objectId) { console.log('Sin paciente')}
+    else if(!this.state.Medico.objectId) { console.log('Sin medico')}
+    else if(!this.state.Habitacion.objectId) { console.log('Sin ubicación')}
+    else{
     const IngresosActivos = Parse.Object.extend('IngresosActivos');
     const ingresos = new IngresosActivos();
 
@@ -846,6 +850,7 @@ buscarDiagnostico() {
         ingresos.set('medico', medicoPointer);
         ingresos.set('tipoMedico', 'Médico titular');
         ingresos.set('Alta', false);
+          actualizarOcupacion(this.state.Habitacion.objectId.toString());
         break;
       case 'Cirugía mayor':
         ingresos.set('medico', medicoPointer);
@@ -859,12 +864,14 @@ buscarDiagnostico() {
         ingresos.set('medico', medicoPointer);
         ingresos.set('tipoMedico', 'Médico de guardia');
         ingresos.set('ubicacion', ocupacionPointer);
+          actualizarOcupacion(this.state.Habitacion.objectId.toString());
         break;
         case 'Consulta':
         ingresos.set('Alta', false);
           ingresos.set('medico', medicoPointer);
           ingresos.set('tipoMedico', 'Médico titular');
           ingresos.set('ubicacion', ocupacionPointer);
+            actualizarOcupacion(this.state.Habitacion.objectId.toString());
           break;
       case 'Hospitalización':
       ingresos.set('Alta', false);
@@ -915,6 +922,7 @@ buscarDiagnostico() {
           );
         });
       });
+    }
 }
 
 async imprimirFormatos() {
@@ -986,7 +994,7 @@ async imprimirFormatos() {
         {this.pacienteAnonimo()}
         {this.buscarPaciente()}
         {this.seleccionarMedicoTitular()}
-        {this.buscarDiagnostico()}
+        
         {this.seleccionarHabitacion()}
         {this.seleccionarMedicoGuardia()}
         {this.seleccionarUrgencias()}

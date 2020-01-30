@@ -83,6 +83,8 @@ async query(value) {
           value: 'Habitación',
         }, {
           value: 'Quirófano',
+        },
+        { value: 'Consultorio',
         }, {
           value: 'Sala de shock'
         }, {

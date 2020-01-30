@@ -41,7 +41,7 @@ function seleccionarHabitacion() {
         } else if (props.item.ID !== '') {
           return (
             <View style={setStyle(props.item.ocupadaPor)}>
-              <Text> {props.item.ID} </Text>
+              <Text> {props.item.tipo} {props.item.ID} </Text>
               <Text> {props.item.tipoHabitacion} </Text>
               <Text> {'$' }{props.item.precio} </Text>
             </View>

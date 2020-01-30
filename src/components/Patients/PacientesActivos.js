@@ -125,6 +125,19 @@ export default class PacientesActivos extends React.Component {
               ingreso.ubicacion = ubicacion.attributes;
               ids.ubicacion = ubicacion.id;
             } break;
+            case 'Consulta': {
+              const medico = obj.get('medico');
+              ingreso.medico = medico.attributes;
+              ids.medico = medico.id;
+
+              const paciente = obj.get('paciente');
+              ingreso.paciente = paciente.attributes;
+              ids.paciente = paciente.id;
+
+              const ubicacion = obj.get('ubicacion');
+              ingreso.ubicacion = ubicacion.attributes;
+              ids.ubicacion = ubicacion.id;
+            } break;
           }
           ingreso.ids = ids;
           console.log(ingreso)

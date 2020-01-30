@@ -14,7 +14,8 @@ Parse.serverURL = 'https://parseapi.back4app.com/';
 
 export default class MyComponent extends Component {
   componentWillMount() {
-    Parse.initialize('BdSYShHyLMSauwh6WfzaQ63roeNubaor3FSYinGE',
+    console.disableYellowBox = true;
+      Parse.initialize('BdSYShHyLMSauwh6WfzaQ63roeNubaor3FSYinGE',
      'QYFb4wPkwnIQ0zrE0TZLSvVH1TqtNFfeFHhTun5J');
   }
 
