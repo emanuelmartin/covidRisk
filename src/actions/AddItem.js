@@ -140,6 +140,56 @@ export const addItem = ({
   };
 };
 
+export const addService = ({
+  nombre,
+  precioSeguro,
+  precioPublico,
+  iva,
+  tipo,
+  tipoCobro
+}) => {
+  return async (dispatch) => {
+    dispatch({ type: ADD_ITEM });
+    console.log('tipo', tipo);
+    let exist = false;
+    const Item = Parse.Object.extend('Servicios');
+    const checkItem = new Parse.Query(Item);
+
+    checkItem.equalTo('nombre', nombre.toString());
+    const results = await checkItem.find();
+    // Do something with the returned Parse.Object values
+    for (let i = 0; i < results.length; i++) {
+      const object = results[i];
+      if (object.get('tipo') === tipo.toString()) {
+        dispatch({ type: ITEM_ALREADY_EXIST });
+        exist = true;
+      }
+    }
+
+    if (!exist) {
+      const item = new Item();
+      item.set('nombre', nombre);
+      item.set('precioSeguro', parseFloat(precioSeguro));
+      item.set('precioPublico', parseFloat(precioPublico));
+      item.set('iva', parseInt(iva,10));
+      item.set('tipo', tipo);
+      item.set('tipoCobro', tipoCobro);
+
+      item.save()
+        .then(
+        (result) => {
+          dispatch({ type: ADD_ITEM_SUCCES });
+          console.log('Comment created', result);
+        },
+        (error) => {
+          dispatch({ type: ADD_ITEM_FAIL });
+          console.error('Error while creating Comment: ', error);
+        }
+      );
+    }
+  };
+};
+
 export const acceptItemAded = () => ({
   type: ACCEPT_ITEM_ADDED
 });

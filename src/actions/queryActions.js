@@ -15,7 +15,7 @@ export const cleanImpresiones = () => {
   dispatch({ type: DB_QUERY_RESULTS, payload: null, name: Impresiones, loading: false });
 };
 
-export const queryFunc = ({ type, object, variable, text, include }) => {
+export const queryFunc = ({ type, object, variable, text, include, limit }) => {
   return async (dispatch) => {
     dispatch({ type: DB_QUERY, payload: text });
 
@@ -29,11 +29,17 @@ export const queryFunc = ({ type, object, variable, text, include }) => {
       include.map((item) => query.include(item));
     }
 
-      if (type === 'get') {
+    if (type === 'get') {
         query.get(text);
-      } else {
+    } else {
       query[type](variable, text);
     }
+
+    console.log('LIMIT', limit);
+    if(limit!==null && limit!==undefined && limit!==0){
+      query.limit(limit);
+    }
+
     query.find().then((results) => {
         for (let i = 0; i < results.length; i++) {
            jsonArray.push(results[i].toJSON());

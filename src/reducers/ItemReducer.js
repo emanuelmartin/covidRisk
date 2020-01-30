@@ -29,6 +29,8 @@ const INITIAL_STATE = {
   proveedor: '',
   costo: '',
   clave_SAT: '',
+  tipo: '',
+  tipoCobro: '',
   error: '',
   success: false,
   loading: false

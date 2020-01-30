@@ -93,7 +93,7 @@ export const payment = ({
 }) => {
   return async (dispatch) => {
     dispatch({ type: PAYMENT });
-    console.log('paciente',paciente)
+
     const autor = Parse.User.current();
     const date = new Date();
     const dia = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
@@ -124,13 +124,10 @@ export const payment = ({
         folio += (fol + 1);
       }
     }).then(() => {
-      console.log('Paciente', pacienteExterno)
       const parseObject = Parse.Object.extend('Ventas');
       const venta = new parseObject();
-
-        console.log('Medico', medicoSolicitante)
-
-          const pacientePointer = {
+      /*
+        const pacientePointer = {
           __type: 'Pointer',
           className: '_User',
           objectId: paciente.objectId
@@ -143,11 +140,9 @@ export const payment = ({
           className: '_User',
           objectId: medicoSolicitante.objectId
         };
-
-      console.log('Paciente', paciente)
-
-      venta.set('medicoSolicitante', medicoPointer)
-      venta.set('paciente', pacientePointer);
+        */
+      //venta.set('medicoSolicitante', medicoPointer)
+      //venta.set('paciente', pacientePointer);
       venta.set('cuenta', lista);
       venta.set('subtotal', pago.subtotal);
       venta.set('iva', pago.iva);
@@ -167,7 +162,7 @@ export const payment = ({
       const parseObject2 = Parse.Object.extend('Cuenta');
       const cuenta = new parseObject2();
       const autor = Parse.User.current();
-
+      
       let pacienteExterno = false;
       if(sellType === 'Venta al público') {
         const pacientePointer = {

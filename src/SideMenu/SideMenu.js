@@ -383,14 +383,31 @@ lab() {
     }
   }
 
+  administracion() {
+    if(this.props.userType === 'admin' || this.props.userType === 'dev') {
+      return (
+        <View>
+           <Text style={styles.sectionHeadingStyle}>
+             Administración
+           </Text>
+           <View style={styles.navSectionStyle}>
+             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('AjustePrecios')}>
+              Ajuste Precios
+             </Text>
+           </View>
+         </View>
+      );
+    }
+  }
   render() {
     return (
       <View style={styles.container}>
         <ScrollView>
+          {this.administracion()}
           {this.fichasPersonales()}
           {this.ocupacion()}
-                       {this.imagen()}
-                        {this.lab()}
+          {this.imagen()}
+          {this.lab()}
           {this.enfermeria()}
           {this.farmacia()}
           {this.cafeteria()}

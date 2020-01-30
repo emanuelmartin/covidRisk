@@ -37,6 +37,11 @@ import SolicitudesEstudios from './Servicios/SolicitudesEstudios';
 import AdminImagen from './Servicios/AdminImagen';
 import AdminLaboratorio from './Servicios/AdminLaboratorio';
 import AdminRehabilitacion from './Servicios/AdminRehabilitacion';
+import {
+  AjustePrecios,
+  DetallePrecio,
+  NewService
+} from './Administracion';
 
 import {
   InventoryList,
@@ -104,7 +109,10 @@ const AppStack = createStackNavigator(
     PedidosEnfemeria,
     AdminImagen,
     AdminLaboratorio,
-    AdminRehabilitacion
+    AdminRehabilitacion,
+    AjustePrecios,
+    DetallePrecio,
+    NewService
     },
   {
     defaultNavigationOptions: {
