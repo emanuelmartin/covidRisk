@@ -336,6 +336,9 @@ lab() {
            <View style={styles.navSectionStyle}>
              {this.cuentaPaciente()}
            </View>
+           <View style={styles.navSectionStyle}>
+             {this.cargosAdministrativos()}
+           </View>
          </View>
       );
     }
@@ -346,6 +349,16 @@ lab() {
         <View>
         <Text style={styles.navItemStyle} onPress={this.navigateToScreen('PatientBill')}>
           Cuenta de Paciente
+        </Text>
+        </View>
+      );
+  }
+
+  cargosAdministrativos() {
+      return (
+        <View>
+        <Text style={styles.navItemStyle} onPress={this.navigateToScreen('CargosAdmision')}>
+          Cargos administrativos
         </Text>
         </View>
       );

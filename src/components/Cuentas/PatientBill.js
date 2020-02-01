@@ -94,37 +94,37 @@ class PatientBill extends Component {
     this.setState({ modalPagar: true });
   }
 
-  onResumePrint({ Farmacia, totalFarmacia, Estudios, totalEstudios, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }) {
+  onResumePrint({ Farmacia, totalFarmacia, Estudios, totalEstudios, totalAdministrativos, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }) {
     const date = new Date();
     const dia = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
     const hora = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
     const info = {
       paciente: this.state.Paciente.paciente,
       fecha: { dia, hora },
-      lista: { Farmacia, totalFarmacia, Estudios, totalEstudios, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }
+      lista: { Farmacia, totalFarmacia, Estudios, totalEstudios, totalAdministrativos, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }
     };
     this.props.printHTMLReducer(info, 'resumeBill', false);
   }
 
-  onDetailPrint({ Farmacia, totalFarmacia, Estudios, totalEstudios, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }) {
+  onDetailPrint({ Farmacia, totalFarmacia, Estudios, totalEstudios, totalAdministrativos, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }) {
     const date = new Date();
     const dia = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
     const hora = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
     const info = {
       paciente: this.state.Paciente.paciente,
       fecha: { dia, hora },
-      lista: { Farmacia, totalFarmacia, Estudios, totalEstudios, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }
+      lista: { Farmacia, totalFarmacia, Estudios, totalEstudios, totalAdministrativos, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }
     };
     this.props.printHTMLReducer(info, 'detailBill', false);
   }
 
-  onPrintPress({ Farmacia, totalFarmacia, Estudios, totalEstudios, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }) {
+  onPrintPress({ Farmacia, totalFarmacia, Estudios, totalEstudios, totalAdministrativos, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }) {
     Alert.alert(
       'Seleccione el tipo de impresión',
       '',
       [
-        { text: 'Resumida', onPress: () => this.onResumePrint({ Farmacia, totalFarmacia, Estudios, totalEstudios, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }) },
-        { text: 'Detallada', onPress: () => this.onDetailPrint({ Farmacia, totalFarmacia, Estudios, totalEstudios, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }) },
+        { text: 'Resumida', onPress: () => this.onResumePrint({ Farmacia, totalFarmacia, Estudios, totalEstudios, totalAdministrativos, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }) },
+        { text: 'Detallada', onPress: () => this.onDetailPrint({ Farmacia, totalFarmacia, Estudios, totalEstudios, totalAdministrativos, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }) },
         { text: 'Cancelar', style: 'cancel' }
       ],
       { cancelable: false }
@@ -216,11 +216,13 @@ class PatientBill extends Component {
       let totalEstudios = 0;
       let totalCirugia = 0;
       let totalHospitalizacion = 0;
+      let totalAdministrativos = 0;
 
       let Farmacia = [];
       let Estudios = [];
       let Cirugia = [];
       let Hospitalizacion = [];
+      let Administrativos = [];
 
       dataList.forEach((bill) => {
         if (bill.cuenta.Type === 'devolucion') {
@@ -298,6 +300,31 @@ class PatientBill extends Component {
                 Farmacia.push(bill.cuenta.farmacia[0]);
               }
               totalFarmacia += bill.cuenta.farmacia[0].precioPublico * parseFloat(bill.cuenta.farmacia[0].cantidad) * (1 + (bill.cuenta.farmacia[0].iva / 100));
+            }
+          }
+          if (bill.cuenta.administrativo !== undefined && bill.cuenta.administrativo !== null) {
+            if (bill.cuenta.administrativo.length > 0) {
+              bill.cuenta.administrativo.forEach((desglose) => {
+                if (Estudios.some(producto => producto.objectId === desglose.objectId)) {
+                  const pos = Estudios.map(e => { return e.objectId; }).indexOf(desglose.objectId);
+                  Estudios[pos].cant += parseFloat(desglose.cantidad);
+                } else {
+                  desglose.sellType = 'publico';
+                  desglose.cant = parseFloat(desglose.cantidad);
+                  Estudios.push(desglose);
+                }
+                totalAdministrativos += desglose.precio * parseFloat(desglose.cantidad) * (1 + (desglose.iva / 100));
+              });
+            } else if (bill.cuenta.administrativo.length === 1) {
+              if (Estudios.some(producto => producto.objectId === bill.cuenta.administrativo[0].objectId)) {
+                const pos = Estudios.map(e => { return e.objectId; }).indexOf(bill.cuenta.administrativo[0].objectId);
+                Estudios[pos].cant += parseFloat(bill.cuenta.administrativo[0].cantidad);
+              } else {
+                bill.cuenta.administrativo[0].sellType = 'publico';
+                bill.cuenta.administrativo[0].cant = parseFloat(bill.cuenta.administrativo[0].cantidad);
+                Estudios.push(bill.cuenta.administrativo[0]);
+              }
+              totalAdministrativos += bill.cuenta.administrativo[0].precio * parseFloat(bill.cuenta.administrativo[0].cantidad) * (1 + (bill.cuenta.administrativo[0].iva / 100));
             }
           }
           /*
@@ -429,9 +456,9 @@ class PatientBill extends Component {
         });
       }
 
-      if (this.state.total !== (totalFarmacia + totalEstudios + totalHospitalizacion + totalCirugia)) {
+      if (this.state.total !== (totalFarmacia + totalEstudios + totalAdministrativos + totalHospitalizacion + totalCirugia)) {
         this.setState({ total:
-          (totalFarmacia + totalEstudios + totalHospitalizacion + totalCirugia)
+          (totalFarmacia + totalEstudios + totalAdministrativos + totalHospitalizacion + totalCirugia)
         });
       }
 
@@ -439,18 +466,19 @@ class PatientBill extends Component {
         <View>
           {this.show('Farmacia', 'objectId', Farmacia, totalFarmacia, this.renderInsumos)}
           {this.show('Estudios', 'objectId', Estudios, totalEstudios, this.renderServicios)}
+          {this.show('Administrativos', 'objectId', Administrativos, totalAdministrativos, this.renderHosp)}
           {this.show('Hospitalización', 'objectId', Hospitalizacion, totalHospitalizacion, this.renderHosp)}
           {this.show('Cirugia', 'objectId', Cirugia, totalCirugia, this.renderCirugia)}
           <CardSection>
             <View style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center' }}>
               <Text style={styles.emphasisTextStyle}> Total</Text>
               <Text style={styles.emphasisTextStyle}>
-                ${(totalFarmacia + totalEstudios + totalHospitalizacion + totalCirugia).toFixed(2)}
+                ${(totalFarmacia + totalEstudios + totalAdministrativos + totalHospitalizacion + totalCirugia).toFixed(2)}
               </Text>
             </View>
           </CardSection>
           <CardSection>
-            <Button onPress={this.onPrintPress.bind(this, { Farmacia, totalFarmacia, Estudios, totalEstudios, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia })}>
+            <Button onPress={this.onPrintPress.bind(this, { Farmacia, totalFarmacia, Estudios, totalEstudios, totalAdministrativos, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia })}>
               Imprimir Cuenta
             </Button>
           </CardSection>
@@ -707,7 +735,7 @@ class PatientBill extends Component {
             containerStyle={{ flex: 1 }}
             data={[{ value: 'principal' },
                    { value: 'urgencias' },
-                   { value: 'laboratorio' }]}
+                   { value: 'totalestudi' }]}
             value={this.state.caja}
             onChangeText={value => { this.setState({ caja: value }); }}
             placeholder={'Selecciona la caja que cobra'}

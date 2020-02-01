@@ -4,8 +4,9 @@ import { View, Text } from 'react-native';
 const ComponentePaciente = (props) => {
 
 function seleccionarPaciente() {
-  let { paciente, medico, ubicacion, tipo, tipoMedico, estadoActual } = props.item;
-  if(!paciente) paciente = {names: '', lastName1: '', lastName2: '', birthday: ''};
+  console.log(props.item)
+  let { medico, ubicacion, paciente, tipo, tipoMedico, estadoActual } = props.item;
+  if (!paciente) paciente = {names: '', lastName1: '', lastName2: '', birthday: ''}
   if(!ubicacion) ubicacion = {tipo: '', ID: ''}
 
 

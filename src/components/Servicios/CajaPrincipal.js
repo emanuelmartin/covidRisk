@@ -365,8 +365,6 @@ onPress={() => this.updateField(item, tipo, busqueda)}
 
     const total = subtotal + iva;
 
-    console.log('State', this.state)
-
     this.props.addBill({
       patient: this.state.Paciente.objectId,
       ingreso: this.state.Ingreso,

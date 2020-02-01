@@ -37,6 +37,7 @@ import SolicitudesEstudios from './Servicios/SolicitudesEstudios';
 import AdminImagen from './Servicios/AdminImagen';
 import AdminLaboratorio from './Servicios/AdminLaboratorio';
 import AdminRehabilitacion from './Servicios/AdminRehabilitacion';
+import CargosAdmision from './Servicios/CargosAdmision';
 import {
   AjustePrecios,
   DetallePrecio,
@@ -112,7 +113,8 @@ const AppStack = createStackNavigator(
     AdminRehabilitacion,
     AjustePrecios,
     DetallePrecio,
-    NewService
+    NewService,
+    CargosAdmision
     },
   {
     defaultNavigationOptions: {
