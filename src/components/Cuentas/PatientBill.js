@@ -365,7 +365,7 @@ class PatientBill extends Component {
         }
 
         dataList.forEach((hosp) => {
-          console.log('hospa', hosp.servicio.tipo)
+          if(false){
           if(hosp.servicio.tipo !== 'Consultorio'){
             const ingreso = new Date(hosp.createdAt.iso);
             let egreso = null;
@@ -386,6 +386,7 @@ class PatientBill extends Component {
                 this.props.Hospitalizacion.push(hosp.servicio);
             }
           }
+        }
         });
       }
 

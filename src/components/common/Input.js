@@ -12,6 +12,7 @@ const Input = ({
   onEndEditing,
   selectTextOnFocus,
   autoCapitalize,
+  disabled,
   valid }) => {
   const validationStyles = edited
     ? valid ? styles.valid : styles.invalid
@@ -31,6 +32,7 @@ const Input = ({
         onEndEditing={onEndEditing}
         selectTextOnFocus={selectTextOnFocus}
         autoCapitalize={autoCapitalize}
+        autoCapitalize={disabled}
       />
     </View>
   );

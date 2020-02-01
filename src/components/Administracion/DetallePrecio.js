@@ -39,10 +39,15 @@ class DetallePrecio extends Component {
         return (
           <View style={{ flex: 1 }}>
             <CardSection>
-              <FalseInput
-                label="Nombre"
-                value={this.state.servicio.nombre}
-              />
+            <Input
+            selectTextOnFocus
+              label="Nombre"
+              placeholder="Estudio"
+              onChangeText={(text) => this.setState({
+                servicio: update(this.state.servicio, { nombre: { $set: text } })
+              })}
+              value={String(this.state.servicio.nombre)}
+            />
             </CardSection>
             <CardSection>
               <Input
@@ -69,11 +74,38 @@ class DetallePrecio extends Component {
               />
             </CardSection>
             <CardSection>
+              <Text style={{ fontSize: 18 }}>
+              Iva: {this.state.servicio.iva}%
+              </Text>
+            </CardSection>
+            <CardSection>
+              <Text style={{ fontSize: 18 }}>
+              Precio público con iva: {this.precioPublicoIva(this.state.servicio)}
+              </Text>
+            </CardSection>
+            <CardSection>
+              <Text style={{ fontSize: 18 }}>
+              Precio aseguradora con iva: {this.precioSeguroIva(this.state.servicio)}
+              </Text>
+            </CardSection>
+            <CardSection>
               {this.renderButton()}
             </CardSection>
           </View>
       );
     }
+  }
+
+  precioPublicoIva(servicio){
+    return(
+      (servicio.precioPublico * (1 + servicio.iva/100)).toFixed(2)
+    )
+  }
+
+  precioSeguroIva(servicio){
+    return(
+      (servicio.precioSeguro * (1 + servicio.iva/100)).toFixed(2)
+    )
   }
 
   renderButton() {
@@ -101,6 +133,7 @@ class DetallePrecio extends Component {
     const parseObject = new Inventario();
 
     parseObject.set('objectId', servicio.objectId)
+    parseObject.set('nombre', servicio.nombre)
     parseObject.set('precioPublico', parseFloat(servicio.precioPublico));
     parseObject.set('precioSeguro', parseFloat(servicio.precioSeguro));
     parseObject.save().then(() => {

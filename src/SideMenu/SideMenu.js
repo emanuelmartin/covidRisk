@@ -314,7 +314,7 @@ lab() {
       <Text style={styles.sectionHeadingStyle}>
         Servicios
       </Text>
-  <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Laboratorio')}>
+  <Text style={styles.navItemStyle} onPress={this.navigateToScreen('AdminLaboratorio')}>
     Laboratorio
   </Text>
   </View>

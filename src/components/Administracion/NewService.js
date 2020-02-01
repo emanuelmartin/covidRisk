@@ -201,7 +201,8 @@ class NewService extends Component {
           <DropInput
             label='Tipo Servicio'
             data={[{ value: 'imagen' },
-                    { value: 'laboratorio' }]}
+                    { value: 'laboratorio' },
+				                    { value: 'administrativo' }]}
             value={this.props.tipo}
             onChangeText={(text) =>  this.onItemChange('tipo', text)}
             placeholder={'Selecciona el tipo de servicio'}

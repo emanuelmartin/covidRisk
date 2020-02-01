@@ -86,6 +86,8 @@ class AjustePrecios extends Component {
   };
 
   renderServicios(item) {
+    const precioPublicoIva = (item.precioPublico * (1 + item.iva/100)).toFixed(2)
+      const precioSeguroIva = (item.precioSeguro * (1 + item.iva/100)).toFixed(2)
       return (
       <TouchableWithoutFeedback
       onPress={this.navigateToScreen('DetallePrecio', { item })}
@@ -95,7 +97,7 @@ class AjustePrecios extends Component {
             {item.nombre}
           </Text>
           <Text style={styles.textStyle} >
-            Precio Público: ${item.precioPublico}
+            Precio Público: ${precioPublicoIva}
           </Text>
           <Text style={styles.textStyle} >
             Precio Seguro: ${item.precioSeguro}
@@ -110,7 +112,8 @@ class AjustePrecios extends Component {
       value: 'imagen',
     }, {
       value: 'laboratorio'
-    }];
+    },
+            { value: 'administrativo' }];
 
     if (this.props.Servicios!=='Failed' &&
         this.props.Servicios!=='' &&
@@ -130,7 +133,7 @@ class AjustePrecios extends Component {
                     object: 'Servicios',
                     variable: 'tipo',
                     text: this.state.type,
-                    limit: 200
+                    limit: 300
                   });
                 }}
                 placeholder={'Selecciona el tipo de producto/servicios'}

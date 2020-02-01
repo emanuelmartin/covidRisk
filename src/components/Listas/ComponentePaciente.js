@@ -4,7 +4,9 @@ import { View, Text } from 'react-native';
 const ComponentePaciente = (props) => {
 
 function seleccionarPaciente() {
-  const { paciente, medico, ubicacion, tipo, tipoMedico, estadoActual } = props.item;
+  let { paciente, medico, ubicacion, tipo, tipoMedico, estadoActual } = props.item;
+  if(!paciente) paciente = {names: '', lastName1: '', lastName2: '', birthday: ''};
+  if(!ubicacion) ubicacion = {tipo: '', ID: ''}
 
 
   switch (props.tipo) {
@@ -20,6 +22,9 @@ function seleccionarPaciente() {
               </View>
                 <View>
                   <Text> {paciente.names} {paciente.lastName1}</Text>
+                </View>
+                <View>
+                  <Text>{paciente.birthday}</Text>
                 </View>
                 <View>
                   <Text> {tipoMedico}: {medico.names} {medico.lastName1} </Text>
@@ -41,6 +46,9 @@ function seleccionarPaciente() {
                   <Text> {paciente.names}  {paciente.lastName1} {paciente.lastName2}</Text>
                 </View>
                 <View>
+                  <Text>{paciente.birthday}</Text>
+                </View>
+                <View>
                   <Text> {tipoMedico}: {medico.names} {medico.lastName1} {paciente.lastName2}</Text>
                 </View>
                 <View>
@@ -60,6 +68,9 @@ function seleccionarPaciente() {
                   <Text> {paciente.names} {paciente.lastName1}{paciente.lastName2} </Text>
                 </View>
                 <View>
+                  <Text>{paciente.birthday}</Text>
+                </View>
+                <View>
                   <Text> {tipoMedico}: {medico.names} {medico.lastName1} {medico.lastName2}</Text>
                 </View>
 
@@ -75,6 +86,9 @@ function seleccionarPaciente() {
               </View>
                 <View>
                   <Text> {paciente.names} {paciente.lastName1} {paciente.lastName2}</Text>
+                </View>
+                <View>
+                  <Text>{paciente.birthday}</Text>
                 </View>
                 <View>
                   <Text> {tipoMedico}: {medico.names} {medico.lastName1} {medico.lastName2}</Text>
@@ -93,6 +107,9 @@ function seleccionarPaciente() {
                   <Text> {paciente.names} {paciente.lastName1} {paciente.lastName2}</Text>
                 </View>
                 <View>
+                  <Text>{paciente.birthday}</Text>
+                </View>
+                <View>
                   <Text> {tipoMedico}: {medico.names} {medico.lastName1} {medico.lastName2}</Text>
                 </View>
                 <View>
@@ -109,6 +126,9 @@ function seleccionarPaciente() {
               </View>
                 <View>
                   <Text> {paciente.names} {paciente.lastName1} {paciente.lastName2}</Text>
+                </View>
+                <View>
+                  <Text>{paciente.birthday}</Text>
                 </View>
                 <View>
                   <Text> {tipoMedico}: {medico.names} {medico.lastName1} {medico.lastName2}</Text>
