@@ -19,7 +19,7 @@ import { Button, CardSection, Card } from '../common';
 import { ComponentePaciente, ComponenteMedico, ComponenteHabitacion, ComponenteEspecialidad, ComponenteConsultorio } from '../Listas';
 import { queryFunc, queryAttach, cleanFunc, multiWrite, session, printHTMLReducer } from '../../actions';
 
-const INITIAL_STATE = { isLoading: false, search: '', Habitacion: { ID: '', query: false }, Patient: { names: '' }, Medico: { names: '' }, Especialidad: { name: '' }, Consultorio: { ID: '' }, pacienteAnonimo: false, print1: false, print2: false };
+const INITIAL_STATE = { isLoading: false, search: '', Habitacion: { ID: '', query: false }, Patient: { names: '' }, Medico: { names: '' }, Especialidad: { name: '' }, Consultorio: { ID: '' }, pacienteAnonimo: false, print: false };
 
 class PatientSelect extends React.Component {
   static navigationOptions = {
@@ -822,7 +822,7 @@ buscarDiagnostico() {
     ingresos.set('admision', date);
 
     const ingresoInfo = { tipo: this.state.tipo,
-       estadoActual: this.state.tipo,
+        estadoActual: this.state.tipo,
         paciente: this.state.Patient,
         medico: this.state.Medico,
         habitacion: this.state.Habitacion,
@@ -926,14 +926,15 @@ buscarDiagnostico() {
 }
 
 async imprimirFormatos() {
-  if (this.state.tipo === 'Hospitalización') {
+  this.setState({ print: true });
+  /*if (this.state.tipo === 'Hospitalización') {
     this.props.printHTMLReducer(this.state.ingresoInfo, 'Consentimiento de hospitalización', true);
     const info = [{ accion: 'set', variable: 'info', valor: this.state.ingresoInfo },
                   { accion: 'set', variable: 'type', valor: 'Consentimiento de hospitalización' },
                   { accion: 'set', variable: 'pacienteStr', valor: this.state.Patient.objectId },
                   { accion: 'set', variable: 'paciente', valor: this.state.Patient.objectId, tipo: 'pointer', pointerTo: 'Patient' }];
     this.props.multiWrite('Impresiones', info);
-  }
+  }*/
 }
 
   search = text => {
@@ -965,8 +966,52 @@ async imprimirFormatos() {
     );
   };
 
+  printExpediente() {
+    this.props.printHTMLReducer(this.state.ingresoInfo, 'Frontal Expediente Clinico', true);
+    const info = [{ accion: 'set', variable: 'info', valor: this.state.ingresoInfo },
+                  { accion: 'set', variable: 'type', valor: 'Consentimiento de hospitalización' },
+                  { accion: 'set', variable: 'pacienteStr', valor: this.state.Patient.objectId },
+                  { accion: 'set', variable: 'paciente', valor: this.state.Patient.objectId, tipo: 'pointer', pointerTo: 'Patient' }];
+    this.props.multiWrite('Impresiones', info);
+  }
+
+  printConsentimiento() {
+    this.props.printHTMLReducer(this.state.ingresoInfo, 'Consentimiento de hospitalización', true);
+    const info = [{ accion: 'set', variable: 'info', valor: this.state.ingresoInfo },
+                  { accion: 'set', variable: 'type', valor: 'Consentimiento de hospitalización' },
+                  { accion: 'set', variable: 'pacienteStr', valor: this.state.Patient.objectId },
+                  { accion: 'set', variable: 'paciente', valor: this.state.Patient.objectId, tipo: 'pointer', pointerTo: 'Patient' }];
+    this.props.multiWrite('Impresiones', info);
+  }
+
   render() {
-      console.log(this.state);
+    if (this.state.tipo==='Hospitalización' && this.state.print) {
+        return(
+          <View style={{ flex: 1 }}>
+            <CardSection>
+              <Button onPress={() => this.printExpediente()}>Imprimir Frontal Expediente</Button>
+            </CardSection>
+            <CardSection>
+              <Button onPress={() => this.printConsentimiento()}>Imprimir Consentimiento</Button>
+            </CardSection>
+            <CardSection>
+              <Button onPress={() => this.setState(INITIAL_STATE)}>Nuevo Ingreso</Button>
+            </CardSection>
+          </View>
+        );
+    }
+    else if (this.state.tipo!=='Consulta' && this.state.print) {
+      return(
+        <View style={{ flex: 1 }}>
+          <CardSection>
+            <Button onPress={() => console.log('Imprimir Frontal Expediente')}>Imprimir Frontal Expediente</Button>
+          </CardSection>
+          <CardSection>
+            <Button onPress={() => console.log('Nuevo Ingreso')}>Nuevo Ingreso</Button>
+          </CardSection>
+        </View>
+      );
+    }
     const data = [{
         value: 'Cirugía ambulatoria',
       }, {
@@ -994,7 +1039,7 @@ async imprimirFormatos() {
         {this.pacienteAnonimo()}
         {this.buscarPaciente()}
         {this.seleccionarMedicoTitular()}
-        
+
         {this.seleccionarHabitacion()}
         {this.seleccionarMedicoGuardia()}
         {this.seleccionarUrgencias()}
