@@ -3,3 +3,4 @@ export Cafe from './Cafeteria';
 export Urgencias from './Urgencias';
 export Laboratorio from './Laboratorio';
 export Rehabilitacion from './Rehabilitacion';
+export CargosAdmision from './CargosAdmision';

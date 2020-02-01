@@ -109,10 +109,15 @@ class AdminImagen extends Component {
     } else {
     this.props.cleanFunc();
     console.log('ITEM', item)
+    if(!item.solicitante) item.solicitante = {}
     if (item.pacienteExterno) {
-      this.setState({ [objeto]: item, [modal]: false, paciente: item.paciente, ubicacion: { tipo: 'Externo', ID: ''}, solicitante: item.medicoSolicitante  });
+      let  { medicoSolicitante } = item;
+      if(!medicoSolicitante) medicoSolicitante = { names: '', lastName1: '', lastName2: ''}
+      this.setState({ [objeto]: item, [modal]: false, paciente: item.paciente, ubicacion: { tipo: 'Externo', ID: ''}, solicitante: medicoSolicitante  });
     } else {
-      this.setState({ [objeto]: item, [modal]: false, paciente: item.paciente, ubicacion: item.ingresoPaciente.ubicacion, solicitante: item.autor  });
+      let  { autor } = item;
+      if(!autor) autor = { names: '', lastName1: '', lastName2: ''}
+      this.setState({ [objeto]: item, [modal]: false, paciente: item.paciente, ubicacion: item.ingresoPaciente.ubicacion, solicitante: autor  });
     }
     }
   }

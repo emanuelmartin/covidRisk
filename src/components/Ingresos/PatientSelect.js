@@ -783,9 +783,15 @@ buscarDiagnostico() {
   }
 
   ingresarPaciente() {
-    if(!this.state.Patient.objectId) { console.log('Sin paciente')}
-    else if(!this.state.Medico.objectId) { console.log('Sin medico')}
-    else if(!this.state.Habitacion.objectId) { console.log('Sin ubicación')}
+    if(!this.state.Patient.objectId || !this.state.Medico.objectId || this.state.Habitacion.objectId) { 
+      Alert.alert(
+        'Error',
+        'Te faltan datos en el ingreso',
+        [
+          { text: 'OK'},
+        ],
+      );
+    }
     else{
     const IngresosActivos = Parse.Object.extend('IngresosActivos');
     const ingresos = new IngresosActivos();
@@ -994,7 +1000,7 @@ async imprimirFormatos() {
         {this.pacienteAnonimo()}
         {this.buscarPaciente()}
         {this.seleccionarMedicoTitular()}
-        
+
         {this.seleccionarHabitacion()}
         {this.seleccionarMedicoGuardia()}
         {this.seleccionarUrgencias()}
