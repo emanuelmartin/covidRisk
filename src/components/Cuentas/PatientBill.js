@@ -466,7 +466,7 @@ class PatientBill extends Component {
         <View>
           {this.show('Farmacia', 'objectId', Farmacia, totalFarmacia, this.renderInsumos)}
           {this.show('Estudios', 'objectId', Estudios, totalEstudios, this.renderServicios)}
-          {this.show('Administrativos', 'objectId', Administrativos, totalAdministrativos, this.renderServicios)}
+          {this.show('Administrativos', 'objectId', Administrativos, totalAdministrativos, this.renderHosp)}
           {this.show('Hospitalización', 'objectId', Hospitalizacion, totalHospitalizacion, this.renderHosp)}
           {this.show('Cirugia', 'objectId', Cirugia, totalCirugia, this.renderCirugia)}
           <CardSection>
