@@ -38,6 +38,7 @@ import AdminImagen from './Servicios/AdminImagen';
 import AdminLaboratorio from './Servicios/AdminLaboratorio';
 import AdminRehabilitacion from './Servicios/AdminRehabilitacion';
 import CargosAdmision from './Servicios/CargosAdmision';
+import PruebaCalendario from './Agenda/PruebaCalendario';
 import {
   AjustePrecios,
   DetallePrecio,
@@ -114,7 +115,8 @@ const AppStack = createStackNavigator(
     AjustePrecios,
     DetallePrecio,
     NewService,
-    CargosAdmision
+    CargosAdmision,
+    PruebaCalendario
     },
   {
     defaultNavigationOptions: {
