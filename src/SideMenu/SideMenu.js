@@ -378,6 +378,9 @@ lab() {
              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('PruebaImpresion')}>
                Prueba de impresión
              </Text>
+             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('PruebaCalendario')}>
+               Prueba de calendario
+             </Text>
              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('VoiceNative')}>
                Prueba de dictado
              </Text>
