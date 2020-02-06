@@ -412,12 +412,31 @@ lab() {
       );
     }
   }
+
+  expedienteClinico() {
+    if (this.props.userType === 'admin' || this.props.userType === 'dev') {
+      return (
+        <View>
+         <Text style={styles.sectionHeadingStyle}>
+           Expediente Clínico
+         </Text>
+         <View style={styles.navSectionStyle}>
+           <Text style={styles.navItemStyle} onPress={this.navigateToScreen('ExpedienteImpresion')}>
+            Impresión de formatos
+           </Text>
+         </View>
+       </View>
+      );
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <ScrollView>
           {this.administracion()}
           {this.fichasPersonales()}
+          {this.expedienteClinico()}
           {this.ocupacion()}
           {this.imagen()}
           {this.lab()}

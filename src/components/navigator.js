@@ -64,6 +64,11 @@ import {
   Laboratorio,
   Rehabilitacion
 } from './Servicios';
+
+import {
+  ExpedienteImpresion
+} from './Expediente';
+
 import PruebaImpresion from './PruebaImpresion';
 
 
@@ -114,7 +119,8 @@ const AppStack = createStackNavigator(
     AjustePrecios,
     DetallePrecio,
     NewService,
-    CargosAdmision
+    CargosAdmision,
+    ExpedienteImpresion
     },
   {
     defaultNavigationOptions: {
