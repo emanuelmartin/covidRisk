@@ -1,3 +1,5 @@
+import { logoCompleto } from './logoCompleto';
+
 export const indicacionesMedicas = `
   <html>
     <head>
@@ -14,7 +16,6 @@ export const indicacionesMedicas = `
             text-align: right;
             align-content: right;
         }
-
   			.align-left {
             text-align: left;
             align-content: left;
@@ -35,6 +36,9 @@ export const indicacionesMedicas = `
         .text16 {
           font-size:16px;
         }
+        .text14 {
+          font-size:14px;
+        }
         .text10 {
           font-size:10px;
         }
@@ -42,8 +46,8 @@ export const indicacionesMedicas = `
           font-size:12px;
         }
         img {
-            width: 100;
-  					max-width: 100px;
+            width: 100%;
+  					max-width: 100%;
         }
         .hrslColor {
           background-color: #63C0B9;
@@ -73,7 +77,7 @@ export const indicacionesMedicas = `
   			}
 
         p.title {
-          font-size: 17px;
+          font-size: 15px;
         }
         p.sml {
           padding-left: 10px;
@@ -133,7 +137,7 @@ export const indicacionesMedicas = `
     <body>
   		<div class="row">
   			<div class="column1 align-left" style="background-color:#fff;">
-          <img src="../img/logoCompleto.jpeg" alt="Logotipo" style="max-width:100%; height:auto;"/>
+          <img src="data:image/png;base64,${logoCompleto}" alt="Logotipo" style="width:auto;height:90px;"/>
   			</div>
   			<div class="column2 align-right" style="background-color:#fff;">
   				<p class="title">
@@ -147,20 +151,32 @@ export const indicacionesMedicas = `
         <div class="centrado white">*</div>
         <div class="centrado"><b class="bigText">INDICACIONES MÉDICAS</b></div>
         <div class="container">
-          <p class="align-left datos"><b>Nombre:</b> _____________________________________________ <b>Edad:</b> _________<b> Sexo:</b> _________</p>
+          <p class="align-left datos"><b>Nombre:</b> _________________________________________________ <b>Edad:</b> _________<b> Sexo:</b> _________</p>
           <p class="align-left datos"><b>Fecha:</b> ___/___/___<b class="white smlText">*</b><b>Hora:</b> ______<b class="white smlText">*</b><b>Servicio:</b> ______________<b class="white smlText">*</b><b>Habitación No.</b> ________<b class="white smlText">*</b><b>N° Exp.</b> ________</p>
         </div>
         <div class="centrado white">*</div>
         <table class="fill bigText">
           <thead>
             <tr bgcolor="#63C0B9" class="white" height="30">
-              <th colspan="3" class="text16">Especificar Actividad, Procedimientos, Medicamentos, Dosis, Vía de Administración y Periodicidad<br>
+              <th colspan="3" class="text14">Especificar Actividad, Procedimientos, Medicamentos, Dosis, Vía de Administración y Periodicidad<br>
                   Nombre, Cédula y Firma del Médico</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td width="20%" height="25" class="midText centrado">Fecha y Hora</td>
+              <td colspan="2" width="80%" height="25" class="pad10"></td>
+            </tr>
+            <tr>
+              <td width="20%" height="25" class="midText centrado"></td>
+              <td colspan="2" width="80%" height="25" class="pad10"></td>
+            </tr>
+            <tr>
+              <td width="20%" height="25" class="midText centrado"></td>
+              <td colspan="2" width="80%" height="25" class="pad10"></td>
+            </tr>
+            <tr>
+              <td width="20%" height="25" class="midText centrado"></td>
               <td colspan="2" width="80%" height="25" class="pad10"></td>
             </tr>
             <tr>
@@ -259,7 +275,7 @@ export const indicacionesMedicas = `
 
       <div class="row">
   			<div class="column1 align-left" style="background-color:#fff;">
-          <img src="../img/logoCompleto.jpeg" alt="Logotipo" style="max-width:100%; height:auto;"/>
+          <img src="data:image/png;base64,${logoCompleto}" alt="Logotipo" style="width:auto;height:90px;"/>
   			</div>
   			<div class="column2 align-right" style="background-color:#fff;">
   				<p class="title">
@@ -280,13 +296,25 @@ export const indicacionesMedicas = `
         <table class="fill bigText">
           <thead>
             <tr bgcolor="#63C0B9" class="white" height="30">
-              <th colspan="3" class="text16">Especificar Actividad, Procedimientos, Medicamentos, Dosis, Vía de Administración y Periodicidad<br>
+              <th colspan="3" class="text14">Especificar Actividad, Procedimientos, Medicamentos, Dosis, Vía de Administración y Periodicidad<br>
                   Nombre, Cédula y Firma del Médico</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td width="20%" height="25" class="midText centrado">Fecha y Hora</td>
+              <td colspan="2" width="80%" height="25" class="pad10"></td>
+            </tr>
+            <tr>
+              <td width="20%" height="25" class="midText centrado"></td>
+              <td colspan="2" width="80%" height="25" class="pad10"></td>
+            </tr>
+            <tr>
+              <td width="20%" height="25" class="midText centrado"></td>
+              <td colspan="2" width="80%" height="25" class="pad10"></td>
+            </tr>
+            <tr>
+              <td width="20%" height="25" class="midText centrado"></td>
               <td colspan="2" width="80%" height="25" class="pad10"></td>
             </tr>
             <tr>

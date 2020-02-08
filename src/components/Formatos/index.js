@@ -8,3 +8,5 @@ export * from './5_4 NOTA-POSTQUIRURGICA';
 export * from './5_4 NOTA-PREQUIRURGICA';
 export * from './5_4 NOTA-POSTQUIRURGICA';
 export * from './7 INDICACIONES-MEDICAS';
+export * from './logoCompleto';
+export * from './logo';

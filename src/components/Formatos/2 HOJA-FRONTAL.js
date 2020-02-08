@@ -1,3 +1,5 @@
+import { logoCompleto } from './logoCompleto';
+
 export const hojaFrontal = `
   <html>
     <head>
@@ -28,7 +30,7 @@ export const hojaFrontal = `
         }
         img {
             width: 100;
-            max-width: 100px;
+            max-width: 500px;
         }
         .hrslColor {
           background-color: #63C0B9;
@@ -44,7 +46,7 @@ export const hojaFrontal = `
           width: 50%;
         }
         p.title {
-          font-size: 17px;
+          font-size: 15px;
         }
         /* Clear floats after the columns */
         .row:after {
@@ -74,7 +76,7 @@ export const hojaFrontal = `
       </div>
       <div class="row">
         <div class="column1 align-left" style="background-color:#fff;">
-          <img src="../img/logoCompleto.jpeg" alt="Logotipo" style="max-width:100%; height:auto;"/>
+          <img src="data:image/png;base64,${logoCompleto}" alt="Logotipo" style="width:auto;height:90px;"/>
         </div>
         <div class="column2 align-right" style="background-color:#fff;">
           <p class="title">
@@ -90,12 +92,12 @@ export const hojaFrontal = `
            <b class="bigText">HOJA FRONTAL DEL EXPEDIENTE CLÍNICO</b>
         </p>
         <p class="align-left datos">
-           <b>NOMBRE DEL PACIENTE:</b> _________________________________________________________<br class="datos">
-           <b>EDAD:</b>___________________________________ <b>SEXO:</b>_______________________________<br class="datos">
-           <b>HABITACION:</b>_____________ <b>N° DE EXPEDIENTE:</b>_____________ <b>N° DE PACIENTE:</b>_____________<br class="datos">
-           <b>DIAGNOSTICO DE INGRESO:</b> _______________________________________________________<b><br class="datos">
-           <b>TRATAMIENTO PROPUESTO:</b> ______________________________________________________________________________<b><br class="datos">
-           <b>MEDICO TRATANTE:</b> ______________________________________________________________________________________<b>
+           <b>NOMBRE DEL PACIENTE:</b> _______________________________________________________________<br class="datos">
+           <b>EDAD:</b>_____________________________________ <b>SEXO:</b>___________________________________<br class="datos">
+           <b>HABITACION:</b>______________ <b>N° DE EXPEDIENTE:</b>______________ <b>N° DE PACIENTE:</b>______________<br class="datos">
+           <b>DIAGNOSTICO DE INGRESO:</b> ____________________________________________________________<br class="datos">
+           <b>TRATAMIENTO PROPUESTO:</b> ____________________________________________________________<br class="datos">
+           <b>MEDICO TRATANTE:</b> __________________________________________________________________
         </p>
         <p class="centrado hrslColor">
            <b class="bigText">ORDEN DEL EXPEDIENTE CLINICO</b>

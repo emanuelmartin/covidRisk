@@ -1,3 +1,5 @@
+import { logoCompleto } from './logoCompleto';
+
 export const notaMedica = `
   <html>
     <head>
@@ -33,8 +35,8 @@ export const notaMedica = `
           font-size:12px;
         }
         img {
-            width: 100;
-            max-width: 100px;
+            width: 100%;
+            max-width: 100%;
         }
         .hrslColor {
           background-color: #63C0B9;
@@ -67,7 +69,7 @@ export const notaMedica = `
         }
 
         p.title {
-          font-size: 17px;
+          font-size: 15px;
         }
         p.sml {
           padding-left: 10px;
@@ -119,7 +121,7 @@ export const notaMedica = `
       <div></div>
       <div class="row">
         <div class="column1 align-left" style="background-color:#fff;">
-          <img src="../img/logoCompleto.jpeg" alt="Logotipo" style="max-width:100%; height:auto;"/>
+          <img src="data:image/png;base64,${logoCompleto}" alt="Logotipo" style="width:auto;height:90px;"/>
         </div>
         <div class="column2 align-right" style="background-color:#fff;">
           <p class="title">
@@ -135,7 +137,7 @@ export const notaMedica = `
            <b class="bigText">NOTA MÉDICA DE INGRESO</b>
         </div>
         <div class="container">
-          <p class="align-left datos"><b>Nombre:</b> _________________________________________ <b>Edad:</b> _________<b> Sexo:</b> _________</p>
+          <p class="align-left datos"><b>Nombre:</b> _______________________________________________ <b>Edad:</b> _________<b> Sexo:</b> _________</p>
           <p class="align-left datos"><b>Fecha de Nacimiento:</b> ___/___/___<b class="white smlText">*</b><b>Servicio:</b> ______________<b class="white smlText">*</b><b>Habitación No.</b> _____<b class="white smlText">*</b><b>N° Exp.</b> ________</p>
         </div>
         <div class="centrado white">*</div>

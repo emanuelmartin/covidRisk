@@ -1,3 +1,5 @@
+import { logoCompleto } from './logoCompleto';
+
 export const notaPostQuirurgica = `
   <html>
     <head>
@@ -14,7 +16,6 @@ export const notaPostQuirurgica = `
             text-align: right;
             align-content: right;
         }
-
         .align-left {
             text-align: left;
             align-content: left;
@@ -35,6 +36,9 @@ export const notaPostQuirurgica = `
         .text16 {
           font-size:16px;
         }
+        .text13 {
+          font-size:13px;
+        }
         .text10 {
           font-size:10px;
         }
@@ -42,8 +46,8 @@ export const notaPostQuirurgica = `
           font-size:12px;
         }
         img {
-            width: 100;
-            max-width: 100px;
+            width: 100%;
+            max-width: 100%;
         }
         .hrslColor {
           background-color: #63C0B9;
@@ -73,7 +77,7 @@ export const notaPostQuirurgica = `
         }
 
         p.title {
-          font-size: 17px;
+          font-size: 15px;
         }
         p.sml {
           padding-left: 10px;
@@ -133,7 +137,7 @@ export const notaPostQuirurgica = `
     <body>
       <div class="row">
         <div class="column1 align-left" style="background-color:#fff;">
-          <img src="../img/logoCompleto.jpeg" alt="Logotipo" style="max-width:100%; height:auto;"/>
+          <img src="data:image/png;base64,${logoCompleto}" alt="Logotipo" style="width:auto;height:90px;"/>
         </div>
         <div class="column2 align-right" style="background-color:#fff;">
           <p class="title">
@@ -147,7 +151,7 @@ export const notaPostQuirurgica = `
         <div class="centrado white">*</div>
         <div class="centrado"><b class="bigText">NOTA POST-QUIRÚRGICA</b></div>
         <div class="container">
-          <p class="align-left datos"><b>Nombre:</b> _____________________________________________ <b>Edad:</b> _________<b> Sexo:</b> _________</p>
+          <p class="align-left datos"><b>Nombre:</b> _________________________________________________ <b>Edad:</b> _________<b> Sexo:</b> _________</p>
           <p class="align-left datos"><b>Fecha:</b> ___/___/___<b class="white smlText">*</b><b>Hora:</b> ______<b class="white smlText">*</b><b>Servicio:</b> ______________<b class="white smlText">*</b><b>Habitación No.</b> ________<b class="white smlText">*</b><b>N° Exp.</b> ________</p>
         </div>
         <div class="centrado white">*</div>
@@ -173,10 +177,10 @@ export const notaPostQuirurgica = `
             </tr>
             <tr>
               <td colspan="1" width="35%" height="60" class="text16 align-up pad10">Sangrado aproximado:<br><b class="white smlText">***</b>___________ ml</td>
-              <td colspan="3" width="65%" height="60" class="text16 align-up pad10">Recuento de gasas realizado por: ________________________________<br>&#9675; Completo &#9675; Incompleto &#9675; No se realizó,  Motivo por lo que no se realizó:</td>
+              <td colspan="3" width="65%" height="60" class="text16 align-up pad10"><a class="smlText">Recuento de gasas realizado por: __________________________________________<br>&#9675; Completo &#9675; Incompleto &#9675; No se realizó,  Motivo por lo que no se realizó:</a></td>
             </tr>
             <tr>
-              <td colspan="1" width="35%" height="20" class="text16 align-up pad10">Solicitud de histopatológico &#9675; Si &#9675; No</td>
+              <td colspan="1" width="35%" height="20" class="text16 align-up pad10"><a class="text13">Solicitud de histopatológico &#9675; Si &#9675; No</a></td>
               <td colspan="3" width="65%" height="20" class="text16 align-up pad10">Resultado:</td>
             </tr>
             <tr>
@@ -194,7 +198,7 @@ export const notaPostQuirurgica = `
           </thead>
           <tbody>
             <tr>
-              <td colspan="4" height="20" class="text16 align-up pad10"><b class="white smlText">*********</b>Cirujano:</td>
+              <td colspan="4" height="20" class="text16 align-up pad10"><b class="white smlText">***********</b>Cirujano:</td>
             </tr>
             <tr>
               <td colspan="4" height="20" class="text16 align-up pad10"><b class="white smlText">**</b>Primer ayudante:</td>
@@ -206,10 +210,10 @@ export const notaPostQuirurgica = `
               <td colspan="4" height="20" class="text16 align-up pad10"><b class="white smlText">*****</b>Intrumentista:</td>
             </tr>
             <tr>
-              <td colspan="4" height="20" class="text16 align-up pad10"><b class="white smlText">********</b>Circulante:</td>
+              <td colspan="4" height="20" class="text16 align-up pad10"><b class="white smlText">*********</b>Circulante:</td>
             </tr>
             <tr>
-              <td colspan="4" height="20" class="text16 align-up pad10"><b class="white smlText">****</b>Anestesiólogo:</td>
+              <td colspan="4" height="20" class="text16 align-up pad10"><b class="white smlText">*****</b>Anestesiólogo:</td>
             </tr>
           </tbody>
         </table>
@@ -249,7 +253,7 @@ export const notaPostQuirurgica = `
             </tr>
             <tr>
               <td colspan="3" width="55%" height="20" class="text16 align-up pad10"></td>
-              <td rowspan="3" colspan="1" width="45%" height="20" class="text12 centrado pad10"><br>____________________________________________<br>Nombre, Cédula y Firma del Médico Responsable</td>
+              <td rowspan="3" colspan="1" width="45%" height="20" class="text12 centrado pad10"><br>____________________________________________<br><a class="smlText">Nombre, Cédula y Firma del Médico Responsable</a></td>
             </tr>
             <tr>
               <td colspan="3" width="55%" height="20" class="text16 align-up pad10"></td>

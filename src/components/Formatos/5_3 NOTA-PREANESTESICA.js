@@ -1,3 +1,5 @@
+import { logoCompleto } from './logoCompleto';
+
 export const notaPreAnestesica = `
   <html>
     <head>
@@ -39,8 +41,8 @@ export const notaPreAnestesica = `
           font-size:12px;
         }
         img {
-            width: 100;
-            max-width: 100px;
+            width: 100&;
+            max-width: 100%;
         }
         .hrslColor {
           background-color: #63C0B9;
@@ -70,7 +72,7 @@ export const notaPreAnestesica = `
         }
 
         p.title {
-          font-size: 17px;
+          font-size: 15px;
         }
         p.sml {
           padding-left: 10px;
@@ -121,7 +123,7 @@ export const notaPreAnestesica = `
     <body>
       <div class="row">
         <div class="column1 align-left" style="background-color:#fff;">
-          <img src="../img/logoCompleto.jpeg" alt="Logotipo" style="max-width:100%; height:auto;"/>
+          <img src="data:image/png;base64,${logoCompleto}" alt="Logotipo" style="width:auto;height:90px;"/>
         </div>
         <div class="column2 align-right" style="background-color:#fff;">
           <p class="title">
@@ -137,7 +139,7 @@ export const notaPreAnestesica = `
            <b class="bigText">NOTA PRE-ANESTÉSICA</b>
         </div>
         <div class="container">
-          <p class="align-left datos"><b>Nombre:</b> _________________________________________ <b>Edad:</b> _________<b> Sexo:</b> _________</p>
+          <p class="align-left datos"><b>Nombre:</b> ______________________________________________ <b>Edad:</b> _________<b> Sexo:</b> _________</p>
           <p class="align-left datos"><b>Fecha de ingreso:</b> ___/___/___<b class="white smlText">*</b><b>Servicio:</b> ______________<b class="white smlText">*</b><b>Habitación No.</b> ________<b class="white smlText">*</b><b>N° Exp.</b> ________</p>
         </div>
         <div class="centrado white">*</div>
@@ -150,7 +152,7 @@ export const notaPreAnestesica = `
           <tbody>
             <tr>
               <td colspan="3" height="35" class="text16 align-up pad10">Fecha de la cirguía:<b class="white smlText">*************************</b>Turno:</td>
-              <td width="25%" height="35" class="text16 align-up pad10 centrado">&#9675; Electiva<b class="white smlText">***</b>&#9675; Urgencia</td>
+              <td width="25%" height="35" class="align-up pad10 centrado"><a class="smlText">&#9675; Electiva<b class="white smlText">***</b>&#9675; Urgencia</a></td>
             </tr>
             <tr>
               <td colspan="4" height="35" class="text16 align-up pad10">Diagnóstico Prequirúrgico:</td>
@@ -175,7 +177,7 @@ export const notaPreAnestesica = `
         </table>
         <div class="centrado white">*</div>
         <div class="centrado white">*</div>
-        <p class="centrado datos1">________________________________<br><b>Nombre, Cédula y Firma del Médico Responsable</b></p>
+        <p class="centrado datos1">_______________________________________<br><b>Nombre, Cédula y Firma del Médico Responsable</b></p>
         <div class="centrado">
            <b class="midText">NOTA PRE-ANESTÉSICA O COMENTARIOS DEL CASO</b>
         </div>

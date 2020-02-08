@@ -1,4 +1,6 @@
-export const registroIngresoEgreso = `
+import { logoCompleto } from './logoCompleto';
+
+export let registroIngresoEgreso = `
   <html>
     <head>
       <style type="text/css">
@@ -34,7 +36,7 @@ export const registroIngresoEgreso = `
         }
         img {
             width: 100;
-            max-width: 100px;
+            max-width: 500px;
         }
         .hrslColor {
           background-color: #63C0B9;
@@ -63,7 +65,7 @@ export const registroIngresoEgreso = `
         }
 
         p.title {
-          font-size: 17px;
+          font-size: 15px;
         }
         p.sml {
           padding-left: 10px;
@@ -103,7 +105,7 @@ export const registroIngresoEgreso = `
       <div></div>
       <div class="row">
         <div class="column1 align-left" style="background-color:#fff;">
-          <img src="../img/logoCompleto.jpeg" alt="Logotipo" style="max-width:100%; height:auto;"/>
+          <img src="data:image/png;base64,${logoCompleto}" alt="Logotipo" style="width:auto;height:90px;"/>
         </div>
         <div class="column2 align-right" style="background-color:#fff;">
           <p class="title">
@@ -122,23 +124,23 @@ export const registroIngresoEgreso = `
         <div class="container">
           <div class="centrado midText">DATOS DE INGRESO DEL PACIENTE</div>
           <p class="align-right datos1"><b>N° de Expediente:</b> _______________</p>
-          <p class="align-left datos"><b>Fecha de Ingreso:</b> _______/_______/_______<b class="white smlText">*********</b><b>Hora de Ingreso:</b> _______________________</p>
+          <p class="align-left datos"><b>Fecha de Ingreso:</b> _______/_______/_______<b class="white smlText">*********</b><b>Hora de Ingreso:</b> ________________________</p>
           <p class="align-left sml"><b class="white">********************</b>Día<b class="white">*******</b>Mes<b class="white">******</b>Año</p>
-          <p class="align-left datos"><b>Nombre:</b> ______________________/______________________/______________________</p>
-          <p class="align-left sml"><b class="white">*********************</b>Nombre(s)<b class="white">********************</b>Apellido Paterno<b class="white">***************</b>Apellido Materno</p>
-          <p class="align-left datos"><b>Edad:</b> ________________<b class="white smlText">***</b><b>Ocupación:</b> _________________<b class="white smlText">***</b><b>Estado Civil:</b> ________________</p>
+          <p class="align-left datos"><b>Nombre:</b> ________________________/________________________/________________________</p>
+          <p class="align-left sml"><b class="white">*********************</b>Nombre(s)<b class="white">********************</b>Apellido Paterno<b class="white">******************</b>Apellido Materno</p>
+          <p class="align-left datos"><b>Edad:</b> ________________<b class="white smlText">***</b><b>Ocupación:</b> __________________<b class="white smlText">***</b><b>Estado Civil:</b> _________________</p>
           <p class="align-left datos"><b>Escolaridad:</b> ______________<b class="white smlText">***</b><b>Lugar y Fecha de Nacimiento:</b> ______________________________</p>
           <p class="align-left datos"><b>Derivado por el Médico:</b> ______________________<b class="white smlText">*</b><b>Paciente esporádico:</b> _____<b class="white smlText">*</b><b>Parte Médico:</b><a class="font12"> Si</a>__<a class="font12"> No</a>__</p>
           <p class="align-left datos"><b>Derechohabiente de:</b> _______________<b class="white smlText">***</b><b>(Aseguradora) ¿Cuál?:</b> ____________________________</p>
-          <p class="align-left datos"><b>Domicilio:</b> __________________<b class="white smlText">**</b><b>Municipio:</b> _________________<b class="white smlText">**</b><b>Estado:</b> ________________</p>
-          <p class="align-left datos"><b>Colonia:</b> _______________________<b class="white smlText">**</b><b>CP:</b> ____________<b class="white smlText">**</b><b>Teléfono:</b> ____________________</p>
-          <p class="align-left datos"><b>Nombre del Esposo:</b> ____________________________________________________________</p>
-          <p class="align-left datos"><b>Nombre de la Madre (si es menor):</b> ___________________________________________________</p>
-          <p class="align-left datos"><b>Nombre del Padre (si es menor):</b> _____________________________________________________</p>
-          <p class="align-left datos"><b>Servicio al que ingresa:</b> _________________________<b class="white smlText">***</b><b>Habitación N°:</b> ______________________<br class="datos"></p>
-          <p class="align-left datos"><b>Impresión Diagnóstica:</b> ___________________________________________________________</p>
-          <p class="align-left datos"><b class="white smlText">********************</b> ___________________________________________________________</p>
-          <p class="centrado datos1">________________________________<br><b>Nombre y Firma / Huella del Paciente o Titular</b></p>
+          <p class="align-left datos"><b>Domicilio:</b> ____________________<b class="white smlText">**</b><b>Municipio:</b> _________________<b class="white smlText">**</b><b>Estado:</b> ________________</p>
+          <p class="align-left datos"><b>Colonia:</b> __________________________<b class="white smlText">**</b><b>CP:</b> ____________<b class="white smlText">**</b><b>Teléfono:</b> _____________________</p>
+          <p class="align-left datos"><b>Nombre del Esposo:</b> ________________________________________________________________</p>
+          <p class="align-left datos"><b>Nombre de la Madre (si es menor):</b> ____________________________________________________</p>
+          <p class="align-left datos"><b>Nombre del Padre (si es menor):</b> ______________________________________________________</p>
+          <p class="align-left datos"><b>Servicio al que ingresa:</b> _________________________<b class="white smlText">***</b><b>Habitación N°:</b> _____________________<br class="datos"></p>
+          <p class="align-left datos"><b>Impresión Diagnóstica:</b> _____________________________________________________________</p>
+          <p class="align-left datos"><b class="white smlText">************************</b> _____________________________________________________________</p>
+          <p class="centrado datos1">__________________________________________<br><b>Nombre y Firma / Huella del Paciente o Titular</b></p>
         </div>
         <div class="centrado white">**************</div>
         <div class="centrado midText">FAMILIAR RESPONSABLE</div>
@@ -147,13 +149,13 @@ export const registroIngresoEgreso = `
         <p class="centrado datos1">________________________________<br><b>Firma o huella digital</b></p>
         <div class="container">
           <div class="centrado midText">DATOS AL EGRESO DEL PACIENTE</div>
-          <p class="align-left datos"><b>Fecha de Egreso:</b> _______/_______/_______<b class="white smlText">*****</b><b>Motivo de Engreso:</b> _________________________</p>
+          <p class="align-left datos"><b>Fecha de Egreso:</b> _______/_______/_______<b class="white smlText">*****</b><b>Motivo del Egreso:</b> ____________________________</p>
           <p class="align-left sml"><b class="white">**********************</b>Día<b class="white">*******</b>Mes<b class="white">******</b>Año</p>
           <p class="align-left datos"><b>Cirugía:</b><a class="font12"> (Si) (No) </a><b class="white smlText">****</b><b>Corta Estancia:</b><a class="font12"> (Si) (No)</a><b class="white smlText">******</b><b>Tipo de cirguía:</b> _______________________________</p>
           <p class="align-left datos"><b>Re-intervención quirúrgica:</b><a class="font12"> (Si) (No) </a><b class="white smlText">******</b><b>Tipo de cirguía:</b> _____________________________________</p>
           <p class="align-left datos"><b>Infección Hospitalaria:</b><a class="font12"> (Si) (No) </a><b class="white smlText">********</b><b>Tipo de infección:</b> _____________________________________</p>
-          <p class="align-left datos"><b>Diagnóstico de Egreso:</b><b class="white smlText">**</b><b>Principal:</b> _______________________________________<b class="white smlText">**</b><b>CIE-10</b><b class="white smlText">**</b>______</p>
-          <p class="align-left datos"><b class="white smlText">********************</b><b>Secundario:</b> _______________________________________<b class="white smlText">**</b><b>CIE-10</b><b class="white smlText">**</b>______</p>
+          <p class="align-left datos"><b>Diagnóstico de Egreso:</b><b class="white smlText">**</b><b>Principal:</b> _________________________________________<b class="white smlText">**</b><b>CIE-10</b><b class="white smlText">**</b>______</p>
+          <p class="align-left datos"><b class="white smlText">*************************</b><b>Secundario:</b> _______________________________________<b class="white smlText">**</b><b>CIE-10</b><b class="white smlText">**</b>______</p>
           <p class="align-left datos"><b>Servicio de egreso:</b> ___________________________</p>
           <p class="centrado datos1">____________________________________________<br><b>Nombre, Cédula y Firma del Médico a cargo del Egreso</b></p>
         </div>
