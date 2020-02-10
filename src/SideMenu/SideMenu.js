@@ -5,12 +5,61 @@ import { ScrollView, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import styles from './SideMenu.style';
 import { session, logOut } from '../actions';
+import WifiManager from "react-native-wifi-reborn";
+import {PermissionsAndroid} from 'react-native';
+
+async function requestLocationPermission() {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      {
+        title: 'Permiso de ubicación',
+        message:
+          'Necesitamos acceder a la ubicación ',
+        buttonNeutral: 'Preguntarme después',
+        buttonNegative: 'Cancelar',
+        buttonPositive: 'OK',
+      },
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log('You can use the location');
+    } else {
+      console.log('Location permission denied');
+    }
+  } catch (err) {
+    console.warn(err);
+  }
+}
+
 
 class SideMenu extends Component {
+  constructor(props) {
+    super(props);
+    // setting default state
+    this.state = {
+      ssid: ''
+    };
+    this.arrayholder = [];
+  }
+
+
   onLogoutButtonPress() {
     this.props.logOut().then(
       this.setState({ logout: 'logout' })
     );
+  }
+
+  componentWillMount() {
+    WifiManager.getCurrentWifiSSID().then(
+      ssid => {
+        this.setState({ ssid: ssid })
+        console.log("Your current connected wifi SSID is " + ssid);
+      },
+      () => {
+        console.log("Cannot get current SSID!");
+      }
+    );
+    console.log(this.props.userLevel)
   }
 
   navigateToScreen = (route) => () => {
@@ -433,23 +482,41 @@ lab() {
     }
   }
 
+  wifi() {
+    const { ssid } = this.state;
+    if(ssid === 'Ina_General' || this.props.userLevel === 'write') {
+      return(
+      <ScrollView>
+        {this.administracion()}
+        {this.fichasPersonales()}
+        {this.expedienteClinico()}
+        {this.ocupacion()}
+        {this.imagen()}
+        {this.lab()}
+        {this.enfermeria()}
+        {this.farmacia()}
+        {this.cafeteria()}
+        {this.servicios()}
+        {this.cobros()}
+        {this.pruebas()}
+      </ScrollView>
+    );
+  } else {
+    return(
+      <View style={styles.container}>
+      <Text style={{ fontSize: 17, alignSelf: 'center', fontWeight: 'bold', color: 'black', paddingLeft: 20, paddingRight: 20 }}>
+      No tienes permisos para acceder al sistema
+      </Text>
+      </View>
+    );
+  }
+  }
+
   render() {
+    requestLocationPermission()
     return (
       <View style={styles.container}>
-        <ScrollView>
-          {this.administracion()}
-          {this.fichasPersonales()}
-          {this.expedienteClinico()}
-          {this.ocupacion()}
-          {this.imagen()}
-          {this.lab()}
-          {this.enfermeria()}
-          {this.farmacia()}
-          {this.cafeteria()}
-          {this.servicios()}
-          {this.cobros()}
-          {this.pruebas()}
-        </ScrollView>
+        {this.wifi()}
         <View style={styles.footerContainer}>
           <Text
             onPress={this.onLogoutButtonPress.bind(this)}
@@ -470,7 +537,8 @@ SideMenu.propTypes = {
 const mapStateToProps = ({ auth }) => {
  const { user } = auth;
  const userType = user.attributes.userType;
- return { user, userType };
+ const userLevel = user.attributes.userLevel;
+ return { user, userType, userLevel };
 };
 
 export default connect(mapStateToProps, { session, logOut })(SideMenu);

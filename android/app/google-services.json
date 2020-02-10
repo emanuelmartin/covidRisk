@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "885037840344",
+    "firebase_url": "https://hrsl-e9cda.firebaseio.com",
+    "project_id": "hrsl-e9cda",
+    "storage_bucket": "hrsl-e9cda.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:885037840344:android:1af3403200d9f7c713a4ad",
+        "android_client_info": {
+          "package_name": "com.hrsl"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "885037840344-f0o2vbbroofbo1a6sg940iquqm3s2v7c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMfCiCW9LgECi3X7vmPFaK3DcJYXlDs0U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "885037840344-f0o2vbbroofbo1a6sg940iquqm3s2v7c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
