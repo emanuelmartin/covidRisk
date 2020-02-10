@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.5",
     "@typescript-eslint/eslint-plugin": "^2.14.0",
+    "firebase": "^7.8.1",
     "luxon": "^1.21.3",
     "moment-timezone": "^0.5.27",
     "parse": "^2.11.0",
@@ -27,6 +28,7 @@
     "react-native-keyboard-aware-scroll-view": "^0.9.1",
     "react-native-material-dropdown": "^0.11.1",
     "react-native-modal": "^11.5.3",
+    "react-native-notifications": "^3.1.1",
     "react-native-parse": "0.0.1",
     "react-native-print": "^0.6.0",
     "react-native-qrcode-svg": "^6.0.1",
@@ -38,6 +40,7 @@
     "react-native-swipeview": "^1.0.3",
     "react-native-vector-icons": "^6.6.0",
     "react-native-voice": "^0.3.0",
+    "react-native-wifi-reborn": "^2.3.2",
     "react-navigation": "^4.0.10",
     "react-navigation-drawer": "^2.3.3",
     "react-navigation-stack": "^2.0.5",

@@ -783,7 +783,7 @@ buscarDiagnostico() {
   }
 
   ingresarPaciente() {
-    if(!this.state.Patient.objectId || !this.state.Medico.objectId || this.state.Habitacion.objectId) { 
+    if(!this.state.Patient.objectId || !this.state.Medico.objectId || !this.state.Habitacion.objectId) { 
       Alert.alert(
         'Error',
         'Te faltan datos en el ingreso',
