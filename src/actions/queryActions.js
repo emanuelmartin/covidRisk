@@ -68,7 +68,7 @@ export const queryPointer = ({ type, object, variable, text, pointer, regex }) =
   return async (dispatch) => {
     dispatch({ type: DB_QUERY, payload: text });
 
-    if (text === '') {
+    if (text === '' && type !== 'exists') {
       dispatch({ type: DB_QUERY_RESULTS, payload: '' });
     } else {
       const parseObject = Parse.Object.extend(object);
@@ -77,7 +77,9 @@ export const queryPointer = ({ type, object, variable, text, pointer, regex }) =
       if (type === 'get') {
         query.get(text);
       } else if (type === 'matches') {
-          query.matches(variable, text, regex);
+        query.matches(variable, text, regex);
+      } else if (type === 'exists') {
+        query.exists(variable);
       } else {
         query[type](variable, text);
       }
@@ -89,6 +91,9 @@ export const queryPointer = ({ type, object, variable, text, pointer, regex }) =
         const parsePointer = Parse.Object.extend(pointer.object);
         const queryPtr = new Parse.Query(parsePointer);
         queryPtr.containedIn(pointer.variable, objectID);
+        if (pointer.constrain !== null && pointer.constrain !== undefined) {
+          queryPtr.equalTo(pointer.constrain.variable, pointer.constrain.value);
+        }
         queryPtr.include(pointer.variable);
         queryPtr.find().then((resultPointers) => {
           for (let i = 0; i < resultPointers.length; i++) {

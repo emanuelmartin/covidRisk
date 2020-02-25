@@ -328,47 +328,34 @@ class SideMenu extends Component {
              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('CajaPrincipal')}>
                Productos y servicios
              </Text>
-
+             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('CargosAdmision')}>
+               Cargos administrativos
+             </Text>
            </View>
          </View>
       );
     }
   }
 
-  imagen() {
+  serv() {
     if (this.props.userType === 'imagen' ||
         this.props.userType === 'recepcion' ||
             this.props.userType === 'admin' ||
                 this.props.userType === 'dev') {
       return (
         <View>
-        <Text style={styles.sectionHeadingStyle}>
-          Servicios
-        </Text>
-    <Text style={styles.navItemStyle} onPress={this.navigateToScreen('AdminImagen')}>
-      Imagen
-    </Text>
-    </View>
-  );
+            <Text style={styles.sectionHeadingStyle}>
+              Servicios
+            </Text>
+            <Text style={styles.navItemStyle} onPress={this.navigateToScreen('AdminImagen')}>
+              Imagen
+            </Text>
+            <Text style={styles.navItemStyle} onPress={this.navigateToScreen('AdminLaboratorio')}>
+              Laboratorio
+            </Text>
+        </View>
+    );
   }
-}
-
-lab() {
-  if (this.props.userType === 'laboratorio' ||
-        this.props.userType === 'recepcion' ||
-            this.props.userType === 'admin' ||
-                this.props.userType === 'dev') {
-    return (
-      <View>
-      <Text style={styles.sectionHeadingStyle}>
-        Servicios
-      </Text>
-  <Text style={styles.navItemStyle} onPress={this.navigateToScreen('AdminLaboratorio')}>
-    Laboratorio
-  </Text>
-  </View>
-);
-}
 }
 
   cobros() {
@@ -383,34 +370,13 @@ lab() {
              Control Financiero
            </Text>
            <View style={styles.navSectionStyle}>
-             {this.cuentaPaciente()}
-           </View>
-           <View style={styles.navSectionStyle}>
-             {this.cargosAdministrativos()}
+             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('PatientBill')}>
+               Cuenta de Paciente
+             </Text>
            </View>
          </View>
       );
     }
-  }
-
-  cuentaPaciente() {
-      return (
-        <View>
-        <Text style={styles.navItemStyle} onPress={this.navigateToScreen('PatientBill')}>
-          Cuenta de Paciente
-        </Text>
-        </View>
-      );
-  }
-
-  cargosAdministrativos() {
-      return (
-        <View>
-        <Text style={styles.navItemStyle} onPress={this.navigateToScreen('CargosAdmision')}>
-          Cargos administrativos
-        </Text>
-        </View>
-      );
   }
 
   pruebas() {
@@ -491,8 +457,7 @@ lab() {
         {this.fichasPersonales()}
         {this.expedienteClinico()}
         {this.ocupacion()}
-        {this.imagen()}
-        {this.lab()}
+        {this.serv()}
         {this.enfermeria()}
         {this.farmacia()}
         {this.cafeteria()}

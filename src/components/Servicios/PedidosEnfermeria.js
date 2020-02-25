@@ -19,15 +19,10 @@ import {
   queryFunc,
   queryAttach,
   queryPointer,
-  multiQuery,
-  writeFunc,
   cleanFunc,
   addBill,
   clearBill,
-  payment,
-  corte,
-  printHTMLReducer,
-  printClean
+  corte
 } from '../../actions';
 
 class PedidosEnfermeria extends Component {
@@ -63,7 +58,6 @@ class PedidosEnfermeria extends Component {
   componentDidMount() {
     this.props.queryFunc({ text: '' });
     this.props.cleanFunc();
-    this.props.printClean();
     this.setState(
       {
         searchItem: true,
@@ -79,11 +73,17 @@ class PedidosEnfermeria extends Component {
         subtotal: 0,
         iva: 0
       });
+    this.props.queryPointer({
+      type: 'exists',
+      object: 'User',
+      variable: 'lastName1',
+      text: '',
+      pointer: { object: 'IngresosActivos', variable: 'paciente' }
+    });
   }
 
   componentWillUnmount() {
     this.props.cleanFunc();
-    this.props.printClean();
   }
 
   onAddPress() {
@@ -117,11 +117,14 @@ class PedidosEnfermeria extends Component {
 
   onBillPress() {
     this.props.addBill({
+      autor: this.props.user,
       patient: this.state.Paciente.objectId,
       ingreso: this.state.Ingreso,
-      bill: { Type: 'enfermeria', farmacia: this.state.Productos },
+      bill: { Type: 'enfermeria', farmacia: this.state.Productos, imagen: [], laboratorio: [], rehabilitacion: [], otros: [] },
       pendienteFarmacia: true,
-      autor: this.props.user
+      pendienteLaboratorio: false,
+      pendienteImagen: false,
+      pendienteRehabilitacion: false
   });
 }
 
@@ -136,7 +139,6 @@ class PedidosEnfermeria extends Component {
     });
     this.props.clearBill();
     this.props.cleanFunc();
-    this.props.printClean();
   }
 
   onAlertAccept(index) {
@@ -175,8 +177,18 @@ class PedidosEnfermeria extends Component {
 
   addProducto(item) {
     this.updateProducto(item);
+    const nombre = `${item.laboratorio} - ${item.nombre}`;
+    const producto = {
+      nombre,
+      objectId: item.objectId,
+      cantidad: '1',
+      precio: item.precioPublico,
+      precioPublico: item.precioPublico,
+      precioSeguro: item.precioSeguro,
+      iva: item.iva,
+    };
     this.setState(state => ({
-    Productos: [...state.Productos, state.Producto]
+    Productos: [...state.Productos, producto]
     }));
   }
 
@@ -551,7 +563,6 @@ class PedidosEnfermeria extends Component {
   }
 
   render() {
-    console.log(this.state);
     const data = [{
         value: 'Venta al público',
       }, {
@@ -608,7 +619,6 @@ const mapStateToProps = ({ query, bill, printR, auth }) => {
  const Patient = User;
  const load = query.loading;
  const { user } = auth;
- console.log('USER', user)
  const { loading, error, succesBill, succesPay, ticketInfo } = bill;
  const { print } = printR;
  return {
@@ -632,13 +642,8 @@ export default connect(mapStateToProps,
   { queryFunc,
     queryAttach,
     queryPointer,
-    multiQuery,
-    writeFunc,
     cleanFunc,
     addBill,
     clearBill,
-    payment,
-    corte,
-    printHTMLReducer,
-    printClean
+    corte
 })(PedidosEnfermeria);

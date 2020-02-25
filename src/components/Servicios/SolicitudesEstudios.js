@@ -19,15 +19,10 @@ import {
   queryFunc,
   queryAttach,
   queryPointer,
-  multiQuery,
-  writeFunc,
   cleanFunc,
   addBill,
   clearBill,
-  payment,
-  corte,
-  printHTMLReducer,
-  printClean
+  corte
 } from '../../actions';
 
 class SolicitudesEstudios extends Component {
@@ -63,7 +58,6 @@ class SolicitudesEstudios extends Component {
   componentDidMount() {
     this.props.queryFunc({ text: '' });
     this.props.cleanFunc();
-    this.props.printClean();
     this.setState(
       {
         searchItem: true,
@@ -83,7 +77,6 @@ class SolicitudesEstudios extends Component {
 
   componentWillUnmount() {
     this.props.cleanFunc();
-    this.props.printClean();
   }
 
   onAddPress() {
@@ -132,12 +125,14 @@ class SolicitudesEstudios extends Component {
     })
 
     this.props.addBill({
+      autor: this.props.user,
       patient: this.state.Paciente.objectId,
       ingreso: this.state.Ingreso,
-      bill: { Type: 'enfermeria', laboratorio, imagen },
+      bill: { Type: 'enfermeria', laboratorio, imagen, farmacia: [], rehabilitacion: [], otros: [] },
       pendienteLaboratorio,
       pendienteImagen,
-      autor: this.props.user
+      pendienteFarmacia: false,
+      pendienteRehabilitacion: false
   });
 }
 
@@ -152,7 +147,6 @@ class SolicitudesEstudios extends Component {
     });
     this.props.clearBill();
     this.props.cleanFunc();
-    this.props.printClean();
   }
 
   onAlertAccept(index) {
@@ -191,8 +185,19 @@ class SolicitudesEstudios extends Component {
 
   addProducto(item) {
     this.updateProducto(item);
+    const producto = {
+      nombre: item.nombre,
+      objectId: item.objectId,
+      cantidad: '1',
+      precio: item.precioPublico,
+      precioPublico: item.precioPublico,
+      precioSeguro: item.precioSeguro,
+      iva: item.iva,
+      tipo: item.tipo,
+      tipoCobro: item.tipoCobro
+    };
     this.setState(state => ({
-    Productos: [...state.Productos, state.Producto]
+    Productos: [...state.Productos, producto]
     }));
   }
 
@@ -649,13 +654,8 @@ export default connect(mapStateToProps,
   { queryFunc,
     queryAttach,
     queryPointer,
-    multiQuery,
-    writeFunc,
     cleanFunc,
     addBill,
     clearBill,
-    payment,
-    corte,
-    printHTMLReducer,
-    printClean
+    corte
 })(SolicitudesEstudios);

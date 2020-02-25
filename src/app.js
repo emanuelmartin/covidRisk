@@ -6,7 +6,7 @@ import { createStore, applyMiddleware } from 'redux';
 import reducers from './reducers';
 import Nav from './components/navigator';
 import 'react-native-gesture-handler';
-import {Notifications} from 'react-native-notifications';
+import { Notifications } from 'react-native-notifications';
 
 const AsyncStorage = require('react-native').AsyncStorage;
 
@@ -33,13 +33,13 @@ export default class MyComponent extends Component {
      });
 
      Notifications.postLocalNotification({
-  body: 'Has recibido un pedido de enfermería',
-  title: 'Pedido nuevo',
-  sound: 'chime.aiff',
-  category: 'SOME_CATEGORY',
-  link: 'localNotificationLink',
-  fireDate: new Date()
-}, 1);
+      body: 'Has recibido un pedido de enfermería',
+      title: 'Pedido nuevo',
+      sound: 'chime.aiff',
+      category: 'SOME_CATEGORY',
+      link: 'localNotificationLink',
+      fireDate: new Date()
+    }, 1);
   }
 
 
