@@ -173,6 +173,7 @@ class SideMenu extends Component {
             {this.pacientesActivos()}
             {this.ocupacionActual()}
             {this.ingresarPaciente()}
+            {this.programacionQuirurgica()}
           </View>
         </View>
       );
@@ -197,6 +198,16 @@ class SideMenu extends Component {
            </Text>
          </View>
        );
+}
+
+programacionQuirurgica() {
+  return(
+    <View>
+    <Text style={styles.navItemStyle} onPress={this.navigateToScreen('PruebaCalendario')}>
+      Programación quirúrgica
+    </Text>
+    </View>
+  )
 }
 
   ingresarPaciente() {
@@ -328,34 +339,47 @@ class SideMenu extends Component {
              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('CajaPrincipal')}>
                Productos y servicios
              </Text>
-             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('CargosAdmision')}>
-               Cargos administrativos
-             </Text>
+
            </View>
          </View>
       );
     }
   }
 
-  serv() {
+  imagen() {
     if (this.props.userType === 'imagen' ||
         this.props.userType === 'recepcion' ||
             this.props.userType === 'admin' ||
                 this.props.userType === 'dev') {
       return (
         <View>
-            <Text style={styles.sectionHeadingStyle}>
-              Servicios
-            </Text>
-            <Text style={styles.navItemStyle} onPress={this.navigateToScreen('AdminImagen')}>
-              Imagen
-            </Text>
-            <Text style={styles.navItemStyle} onPress={this.navigateToScreen('AdminLaboratorio')}>
-              Laboratorio
-            </Text>
-        </View>
-    );
+        <Text style={styles.sectionHeadingStyle}>
+          Servicios
+        </Text>
+    <Text style={styles.navItemStyle} onPress={this.navigateToScreen('AdminImagen')}>
+      Imagen
+    </Text>
+    </View>
+  );
   }
+}
+
+lab() {
+  if (this.props.userType === 'laboratorio' ||
+        this.props.userType === 'recepcion' ||
+            this.props.userType === 'admin' ||
+                this.props.userType === 'dev') {
+    return (
+      <View>
+      <Text style={styles.sectionHeadingStyle}>
+        Servicios
+      </Text>
+  <Text style={styles.navItemStyle} onPress={this.navigateToScreen('AdminLaboratorio')}>
+    Laboratorio
+  </Text>
+  </View>
+);
+}
 }
 
   cobros() {
@@ -370,13 +394,47 @@ class SideMenu extends Component {
              Control Financiero
            </Text>
            <View style={styles.navSectionStyle}>
-             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('PatientBill')}>
-               Cuenta de Paciente
-             </Text>
+             {this.cuentaPaciente()}
+           </View>
+           <View style={styles.navSectionStyle}>
+             {this.cargosAdministrativos()}
+           </View>
+           <View style={styles.navSectionStyle}>
+             {this.agregarHonorarios()}
            </View>
          </View>
       );
     }
+  }
+
+  cuentaPaciente() {
+      return (
+        <View>
+        <Text style={styles.navItemStyle} onPress={this.navigateToScreen('PatientBill')}>
+          Cuenta de Paciente
+        </Text>
+        </View>
+      );
+  }
+
+  cargosAdministrativos() {
+      return (
+        <View>
+        <Text style={styles.navItemStyle} onPress={this.navigateToScreen('CargosAdmision')}>
+          Cargos administrativos
+        </Text>
+        </View>
+      );
+  }
+
+  agregarHonorarios() {
+      return (
+        <View>
+        <Text style={styles.navItemStyle} onPress={this.navigateToScreen('AgregarHonorarios')}>
+          Agregar honorarios
+        </Text>
+        </View>
+      );
   }
 
   pruebas() {
@@ -425,6 +483,9 @@ class SideMenu extends Component {
              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('AjustePrecios')}>
               Ajuste Precios
              </Text>
+             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('PagosPendientes')}>
+              Pagos pendientes
+             </Text>
            </View>
          </View>
       );
@@ -450,6 +511,7 @@ class SideMenu extends Component {
 
   wifi() {
     const { ssid } = this.state;
+    console.log('Valido', ssid === 'Ina_General')
     if(ssid === 'Ina_General' || this.props.userLevel === 'write') {
       return(
       <ScrollView>
@@ -457,7 +519,8 @@ class SideMenu extends Component {
         {this.fichasPersonales()}
         {this.expedienteClinico()}
         {this.ocupacion()}
-        {this.serv()}
+        {this.imagen()}
+        {this.lab()}
         {this.enfermeria()}
         {this.farmacia()}
         {this.cafeteria()}

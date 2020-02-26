@@ -24,6 +24,7 @@ import {
   queryAttach,
   queryPointer,
   multiQuery,
+  writeFunc,
   cleanFunc,
   addBill,
   clearBill,
@@ -35,7 +36,7 @@ import {
 
 class Principal extends Component {
   static navigationOptions = {
-    title: 'Productos y Servicios',
+    title: 'Caja Principal',
   };
 
   constructor(props) {
@@ -359,16 +360,17 @@ onPress={() => this.updateField(item, tipo, busqueda)}
         cant = 0;
       } else { cant = parseFloat(producto.cantidad); }
       subtotal += producto.precioPublico * cant;
-      iva += producto.precioPublico * (1 + (producto.iva / 100)) * cant;
+      iva += producto.iva * cant;
     });
 
     const total = subtotal + iva;
 
     this.props.addBill({
-      autor: this.props.User,
       patient: this.state.Paciente.objectId,
       ingreso: this.state.Ingreso,
       bill: { Type: 'principal', farmacia, imagen, laboratorio, rehabilitacion, otros },
+      autor: this.props.User,
+      total,
       pendienteFarmacia,
       pendienteLaboratorio,
       pendienteImagen,
@@ -400,7 +402,7 @@ onPress={() => this.updateField(item, tipo, busqueda)}
         cant = 0;
       } else { cant = parseFloat(producto.cantidad); }
       subtotal += producto.precio * cant;
-      iva += producto.precio * (1 + (producto.iva/100)) * cant;
+      iva += producto.iva * cant;
     });
 
     this.setState({
@@ -674,9 +676,7 @@ onPress={() => this.updateField(item, tipo, busqueda)}
          objectId: item.objectId,
          cantidad: '1',
          precio: auxPrecio,
-         precioPublico: item.precioPublico,
-         precioSeguro: item.precioSeguro,
-         iva: item.iva
+         iva: (auxPrecio * (item.iva / 100))
        };
        this.setState(state => ({
        farmacia: [...state.farmacia, producto],
@@ -693,9 +693,7 @@ onPress={() => this.updateField(item, tipo, busqueda)}
          objectId: item.objectId,
          cantidad: '1',
          precio: auxPrecio,
-         precioPublico: item.precioPublico,
-         precioSeguro: item.precioSeguro,
-         iva: item.iva
+         iva: (auxPrecio * (item.iva / 100))
        };
        this.setState(state => ({
        imagen: [...state.imagen, producto],
@@ -712,9 +710,7 @@ onPress={() => this.updateField(item, tipo, busqueda)}
          objectId: item.objectId,
          cantidad: '1',
          precio: auxPrecio,
-         precioPublico: item.precioPublico,
-         precioSeguro: item.precioSeguro,
-         iva: item.iva
+         iva: (auxPrecio * (item.iva / 100))
        };
        this.setState(state => ({
        laboratorio: [...state.laboratorio, producto],
@@ -731,9 +727,7 @@ onPress={() => this.updateField(item, tipo, busqueda)}
          objectId: item.objectId,
          cantidad: '1',
          precio: auxPrecio,
-         precioPublico: item.precioPublico,
-         precioSeguro: item.precioSeguro,
-         iva: item.iva
+         iva: (auxPrecio * (item.iva / 100))
        };
        this.setState(state => ({
        rehabilitacion: [...state.rehabilitacion, producto],
@@ -742,15 +736,13 @@ onPress={() => this.updateField(item, tipo, busqueda)}
        }));
      } else {
        nombre += item.nombre;
-       auxPrecio = item.precioPublico;
+       auxPrecio = item.precio;
        producto = {
          nombre,
          objectId: item.objectId,
          cantidad: '1',
          precio: auxPrecio,
-         precioPublico: item.precioPublico,
-         precioSeguro: item.precioSeguro,
-         iva: item.iva
+         iva: (auxPrecio * (item.iva / 100))
        };
        this.setState(state => ({
        otros: [...state.otros, producto],
@@ -867,10 +859,11 @@ onPress={() => this.updateField(item, tipo, busqueda)}
         cant = 0;
       } else { cant = parseFloat(producto.cantidad); }
       subtotal += producto.precio * cant;
-      iva += producto.precio * (producto.iva / 100) * cant;
+      iva += producto.iva * cant;
     });
 
     const total = subtotal + iva;
+
     return (
       <CardSection>
         <View style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center' }}>
@@ -1551,6 +1544,7 @@ export default connect(mapStateToProps,
     queryAttach,
     queryPointer,
     multiQuery,
+    writeFunc,
     cleanFunc,
     addBill,
     clearBill,

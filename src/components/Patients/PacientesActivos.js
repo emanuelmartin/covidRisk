@@ -33,6 +33,7 @@ export default class PacientesActivos extends React.Component {
     console.log('Carga de información')
     const Ingresos = Parse.Object.extend('IngresosActivos');
     const ingresos = new Parse.Query(Ingresos);
+    ingresos.limit(1000);
     ingresos.include('paciente');
     ingresos.include('ubicacion');
     ingresos.include('medico');

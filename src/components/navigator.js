@@ -37,8 +37,10 @@ import SolicitudesEstudios from './Servicios/SolicitudesEstudios';
 import AdminImagen from './Servicios/AdminImagen';
 import AdminLaboratorio from './Servicios/AdminLaboratorio';
 import AdminRehabilitacion from './Servicios/AdminRehabilitacion';
+import AgregarHonorarios from './Servicios/AgregarHonorarios';
 import CargosAdmision from './Servicios/CargosAdmision';
 import PruebaCalendario from './Agenda/PruebaCalendario';
+import PagosPendientes from './Administracion/PagosPendientes'
 import {
   AjustePrecios,
   DetallePrecio,
@@ -122,7 +124,9 @@ const AppStack = createStackNavigator(
     NewService,
     CargosAdmision,
     ExpedienteImpresion,
-    PruebaCalendario
+    PruebaCalendario,
+    PagosPendientes,
+    AgregarHonorarios
     },
   {
     defaultNavigationOptions: {

@@ -30,9 +30,9 @@ import {
   printClean
 } from '../../actions';
 
-class PedidosEnfermeria extends Component {
+class AgregarHonorarios extends Component {
   static navigationOptions = {
-    title: 'Solicitud a farmacia',
+    title: 'Agregar honorarios',
   };
 
   constructor(props) {
@@ -116,11 +116,16 @@ class PedidosEnfermeria extends Component {
   }
 
   onBillPress() {
+    const administrativos = [];
+
+    this.state.Productos.forEach((producto) => {
+      administrativos.push(producto);
+    })
+
     this.props.addBill({
       patient: this.state.Paciente.objectId,
       ingreso: this.state.Ingreso,
-      bill: { Type: 'enfermeria', farmacia: this.state.Productos },
-      pendienteFarmacia: true,
+      bill: { Type: 'admision', administrativos },
       autor: this.props.user
   });
 }
@@ -199,10 +204,10 @@ class PedidosEnfermeria extends Component {
       return <Spinner size="large" />;
     }
     let dataList = null;
-    if (Array.isArray(this.props.Inventario)) {
-      dataList = this.props.Inventario;
+    if (Array.isArray(this.props.Servicios)) {
+      dataList = this.props.Servicios;
     } else {
-      dataList = [this.props.Inventario];
+      dataList = [this.props.Servicios];
     }
     return (
       <FlatList
@@ -262,64 +267,6 @@ class PedidosEnfermeria extends Component {
     }
   }
 
-  buscarProducto() {
-    if (this.state.searchItem === true) {
-      return (
-        <View style={{ flex: 1 }}>
-          <CardSection>
-            <SearchBar
-              round
-              lightTheme
-              containerStyle={{ flex: 1, backgroundColor: 'white' }}
-              searchIcon={
-                <Icon
-                  name='camera'
-                  type='material-community'
-                  onPress={this.navigateToScreen('BarCodeScanner', { updateCode: false })}
-                />}
-              onChangeText={text => {
-                if (text !== '') {
-                  this.props.queryAttach({
-                    object: 'Inventario',
-                    text,
-                    constrain:
-                    [{ type: 'matches', variable: 'nombre', text, regex: 'i' }]
-                  });
-                } else {
-                  this.props.cleanFunc();
-                }
-                }}
-              onClear={() => this.props.queryFunc({ text: '' })}
-              placeholder="Ingrese el nombre del producto o servicio"
-              value={this.props.text}
-            />
-            </CardSection>
-          <CardSection>
-            {this.listaProducto()}
-          </CardSection>
-        </View>
-      );
-    }
-    return (
-      <View style={{ flex: 1 }}>
-        <CardSection>
-            <Text style={styles.emphasisTextStyle}>Descripción:</Text>
-          <View style={{ flex: 1 }}>
-            <Text
-              style={[styles.emphasisTextStyle, { textAlign: 'right' }]}
-            >
-              Cantidad:
-            </Text>
-          </View>
-        </CardSection>
-        <CardSection>
-          {this.listaProductoAnadido()}
-        </CardSection>
-        {this.renderError()}
-        {this.renderButtons()}
-      </View>
-    );
-  }
 
   buscarPaciente() {
     if (this.state.Paciente.names === '') {
@@ -364,9 +311,6 @@ class PedidosEnfermeria extends Component {
                 {this.state.Paciente.names} {this.state.Paciente.lastName1} {this.state.Paciente.lastName2}
               </Text>
             </View>
-        </CardSection>
-        <CardSection>
-          {this.buscarProducto()}
         </CardSection>
       </View>
     );
@@ -537,7 +481,7 @@ class PedidosEnfermeria extends Component {
       return (
           <CardSection>
             <Button onPress={this.onNewBillPress.bind(this)}>
-              Nueva cuenta
+              Nueva solicitud
             </Button>
           </CardSection>
         );
@@ -604,7 +548,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ query, bill, printR, auth }) => {
- const { text, User, multiQry, Caja, Inventario } = query;
+ const { text, User, multiQry, Caja, Inventario, Servicios } = query;
  const Patient = User;
  const load = query.loading;
  const { user } = auth;
@@ -624,7 +568,8 @@ const mapStateToProps = ({ query, bill, printR, auth }) => {
    ticketInfo,
    print,
    user,
-   Inventario
+   Inventario,
+   Servicios
  };
 };
 
@@ -641,4 +586,4 @@ export default connect(mapStateToProps,
     corte,
     printHTMLReducer,
     printClean
-})(PedidosEnfermeria);
+})(AgregarHonorarios);

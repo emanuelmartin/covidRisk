@@ -21,17 +21,17 @@ import { Dropdown } from 'react-native-material-dropdown';
 
 const INITIAL_STATE = {
   searchItem: true,
-  Cuenta: { names: ''},
+  IngresoProducto: { names: ''},
   Herramienta: { name: ''},
   Productos: new Array(),
   dataList: null,
-  buscarCuenta: true,
+  buscarIngresoProducto: true,
   buscarHerramienta: false };
 
-class AdminImagen extends Component {
+class SurtirPedido extends Component {
 
   static navigationOptions = {
-    title: 'Estudios pendientes',
+    title: 'Pagos pendientes',
   };
 
   constructor(props) {
@@ -43,29 +43,21 @@ class AdminImagen extends Component {
     this.props.cleanFunc();
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.queryFunc({
       type: 'equalTo',
-      object: 'Cuenta',
-      variable: 'pendienteImagen',
+      object: 'IngresoProducto',
+      variable: 'pendiente',
       text: true,
-    include: ['paciente', 'medicoSolicitante', 'autor', 'ingresoPaciente.ubicacion'] })
-  }
-
-  nombreMedico(item) {
-    if(item.medicoSolicitante) {
-      return(
-        <CardSection>
-        <Text>Solicitante: {item.medicoSolicitante.names}</Text>
-        </CardSection>
-      );
-    }
+      include: ['autor', 'proveedor']
+    });
   }
 
   renderIt(item, index, objeto, tipo, modal) {
-    const fech = new Date(item.createdAt)
-    const fecha = fech.toLocaleDateString('dd/MM/yyyy')
-    const hora = fech.toLocaleTimeString()
+      const fech = new Date(item.createdAt);
+      const fecha = fech.toLocaleDateString('dd/MM/yyyy');
+      const hora = fech.toLocaleTimeString();
+
       return (
       <TouchableWithoutFeedback
       onPress={() => { this.props.cleanFunc(); this.updateElement(item, index, objeto, tipo, modal); }}
@@ -73,14 +65,16 @@ class AdminImagen extends Component {
       <View>
       <Card>
       <CardSection>
-          <Text>Paciente: {item.paciente.names ? item.paciente.names : ''} {item.paciente.lastName1} {item.paciente.lastName2}</Text>
+          <Text>Proveedor: {item.proveedor.nombre}</Text>
           </CardSection>
           <CardSection>
-          <Text>Sexo: {item.paciente.sex} Fecha de nacimiento: {item.paciente.birthday}</Text>
-          </CardSection>
-          {this.nombreMedico(item)}
+              <Text>Número de factura: {item.numFactura}</Text>
+              </CardSection>
           <CardSection>
-          <Text>Fecha de solicitud: {fecha} {hora}</Text>
+          <Text>Fecha de ingreso: {fecha} {hora}</Text>
+          </CardSection>
+          <CardSection>
+          <Text>Ingresado por: {item.autor.names} {item.autor.lastName1} {item.autor.lastName2}</Text>
           </CardSection>
       </Card>
       </View>
@@ -108,50 +102,34 @@ class AdminImagen extends Component {
       this.setState({ [objeto]: dataList, [modal]: false });
     } else {
     this.props.cleanFunc();
-    console.log('ITEM', item)
-    if(!item.solicitante) item.solicitante = {}
-    if (item.pacienteExterno) {
-      let  { medicoSolicitante } = item;
-      if(!medicoSolicitante) medicoSolicitante = { names: '', lastName1: '', lastName2: ''}
-      this.setState({ [objeto]: item, [modal]: false, paciente: item.paciente, ubicacion: { tipo: 'Externo', ID: ''}, solicitante: medicoSolicitante  });
-    } else {
-      let  { autor } = item;
-      if(!autor) autor = { names: '', lastName1: '', lastName2: ''}
-      this.setState({ [objeto]: item, [modal]: false, paciente: item.paciente, ubicacion: item.ingresoPaciente.ubicacion, solicitante: autor  });
-    }
+    this.setState({ [objeto]: item, [modal]: false, proveedor: item.proveedor, ubicacion: item.ubicacion, autor: item.autor  });
     }
   }
 
-  nombreCuenta() {
-    if (this.state.Cuenta.objectId) {
-      let { Cuenta, paciente, ubicacion, solicitante } = this.state;
-      console.log('cuenta',this.state.Cuenta.paciente)
-      const fech = new Date(Cuenta.createdAt)
-      const fecha = fech.toLocaleDateString('dd/MM/yyyy')
-      const hora = fech.toLocaleTimeString()
+  nombreIngresoProducto() {
+    if (this.state.IngresoProducto.objectId) {
+      const { IngresoProducto, proveedor, ubicacion, autor } = this.state;
+      const fech = new Date(IngresoProducto.createdAt);
+      const fecha = fech.toLocaleDateString('dd/MM/yyyy');
+      const hora = fech.toLocaleTimeString();
       return(
         <Card style={{ flex: 1}}>
         <CardSection>
         <Text>
-        Paciente: {paciente.names} {paciente.lastName1} {paciente.lastName2}
+        Proveedor: {proveedor.nombre}
         </Text>
         </CardSection>
         <CardSection>
-        <Text>Sexo: {paciente.sex} Fecha de nacimiento: {paciente.birthday}</Text>
-        </CardSection>
+            <Text>Número de factura: {IngresoProducto.numFactura}</Text>
+            </CardSection>
         <CardSection>
         <Text>
-        Ubicación: {ubicacion ? ubicacion.tipo : ''} {ubicacion ? ubicacion.ID : ''}
-        </Text>
-        </CardSection>
-        <CardSection>
-        <Text>
-        Solicitante: {solicitante.names} {solicitante.lastName1} {solicitante.lastName2}
+        Fecha de ingreso: {fecha} {hora}
         </Text>
         </CardSection>
         <CardSection>
         <Text>
-        Fecha de solicitud: {fecha} {hora}
+        Ingresado por: {autor.names} {autor.lastName1} {autor.lastName2}
         </Text>
         </CardSection>
         </Card>
@@ -160,8 +138,8 @@ class AdminImagen extends Component {
       return(
         <Card>
         <CardSection>
-        <Text>
-     Seleccionar solicitud
+        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
+     Seleccionar pedido
      </Text>
      </CardSection>
      </Card>
@@ -169,16 +147,16 @@ class AdminImagen extends Component {
   }
 }
 
-  buscarCuenta() {
+  buscarIngresoProducto() {
     return (
       <View style={{ paddingLeft: 10, paddingTop: 30, paddingBottom: 0}}>
-      <TouchableWithoutFeedback onPress={() => { this.setState({ buscarCuenta: true }); }}>
+      <TouchableWithoutFeedback onPress={() => { this.setState({ buscarIngresoProducto: true }); }}>
       <View>
-      {this.nombreCuenta()}
+      {this.nombreIngresoProducto()}
       </View>
       </TouchableWithoutFeedback>
       <Modal
-      visible={this.state.buscarCuenta}
+      visible={this.state.buscarIngresoProducto}
       animationType='slide'
       transparent={false}
       >
@@ -186,7 +164,7 @@ class AdminImagen extends Component {
       <CardSection>
       <Text style={{ fontSize: 30,
     fontWeight: 'bold' }}>
-    Buscar solicitud
+    Buscar pedido
     </Text>
     </CardSection>
           <ScrollView>
@@ -195,7 +173,7 @@ class AdminImagen extends Component {
           </CardSection>
           </ScrollView>
           <CardSection>
-          <Button onPress={() => { this.props.cleanFunc(); this.setState({ buscarCuenta: false }); }}>
+          <Button onPress={() => { this.props.cleanFunc(); this.setState({ buscarIngresoProducto: false }); }}>
           Cancelar
           </Button>
           </CardSection>
@@ -208,26 +186,26 @@ class AdminImagen extends Component {
 
   listaPedidos() {
     let dataList = null;
-
-    if (Array.isArray(this.props.Cuenta)) {
-      dataList = this.props.Cuenta;
+    if(this.props.IngresoProducto) {
+    if (Array.isArray(this.props.IngresoProducto)) {
+      dataList = this.props.IngresoProducto;
     } else {
-      dataList = [this.props.Cuenta];
+      dataList = [this.props.IngresoProducto];
     }
-
+console.log('List', dataList)
     if (this.props.loading) {
       return (
         <View style={{ flex: 1, paddingTop: 20 }}>
           <ActivityIndicator />
         </View>
         );
-      } else if (this.props.Cuenta === 'Failed') {
+      } else if (this.props.IngresoProducto === 'Failed') {
       return (
         <Text>
-        Sin estudios pendientes
+        Sin resultados
         </Text>
       );
-    } else if (this.props.Cuenta !== '') {
+    } else if (this.props.IngresoProducto !== '') {
     return (
       <View>
       <Card>
@@ -236,7 +214,7 @@ class AdminImagen extends Component {
         ItemSeparatorComponent={this.ListViewItemSeparator}
         //Item Separator View
         renderItem={({ item, index }) => (
-          this.renderIt(item, index, 'Cuenta', null, 'buscarCuenta')
+          this.renderIt(item, index, 'IngresoProducto', null, 'buscarIngresoProducto')
         )}
         style={{ marginTop: 10 }}
         keyExtractor={item=>item.objectId}
@@ -245,6 +223,7 @@ class AdminImagen extends Component {
         </View>
     );
   }
+}
   }
 
 
@@ -257,17 +236,29 @@ class AdminImagen extends Component {
       );
     }
     let { dataList } = this.state;
+    const { IngresoProducto } = this.state;
 
-    if (this.state.Cuenta.objectId) {
-            this.state.Productos = this.state.Cuenta.cuenta.imagen;
+    if (this.state.IngresoProducto.objectId) {
+            this.state.Productos = this.state.IngresoProducto.productos;
 
           dataList = this.state.Productos;
       return (
       <View style={{ paddingLeft: 10, paddingTop: 30, paddingBottom: 0}}>
       <Text style={{ fontSize: 30,
       fontWeight: 'bold' }}>
-      Estudios
+      Productos
       </Text>
+      <Card>
+      <CardSection>
+      <Text> Total sin IVA: {IngresoProducto.subtotal}</Text>
+      </CardSection>
+      <CardSection>
+      <Text> IVA: {IngresoProducto.iva}</Text>
+      </CardSection>
+      <CardSection>
+      <Text> Total con IVA: {IngresoProducto.total}</Text>
+      </CardSection>
+      </Card>
       <ScrollView>
       <FlatList
         data={dataList}
@@ -276,31 +267,34 @@ class AdminImagen extends Component {
         renderItem={({ item, index }) => {
           if(item.nombre) {
           return (
-            <View style={{ flex: 1, flexDirection: 'column' }}>
+            <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'space-between' }}>
             <View>
             <Card>
               <CardSection>
                 <View style={{flex: 3}}>
-                  <Text style={{fontSize: 15}}>
+                  <Text style={{fontSize: 18}}>
                     {item.nombre}
                   </Text>
-                  <Text style={{fontSize: 13}}>
-                    {item.imagen}
+                  <Text style={{fontSize: 14}}>
+                    {item.laboratorio}
                   </Text>
-                  <Text style={{fontSize: 15}}>
-                    {item.cantidad}
+                  </View>
+                  <View style={{flex: 1, flexDirection: 'column'}}>
+                    <CardSection>
+                  <Text style={{fontSize: 24, fontWeight: 'bold'}}>
+                    {item.ingresoUMC}
                   </Text>
-                </View>
-                <View style={{flex: 1}}>
-                  <CheckBox
-                    size={38}
-                    checked={this.state.Productos[index].integrado}
-                    onPress={() => {
-                      const Productos = {...this.state.Productos};
-                      Productos[index].integrado = !this.state.Productos[index].integrado;
-                      this.setState({ Productos });
-                    }}
-                  />
+                    </CardSection>
+                    <CardSection>
+                  <Text style={{fontSize: 16}}>
+                    {item.costoUMC}
+                  </Text>
+                    </CardSection>
+                    <CardSection>
+                  <Text style={{fontSize: 16}}>
+                    {item.costoUMC*item.ingresoUMC}
+                  </Text>
+                    </CardSection>
                 </View>
               </CardSection>
             </Card>
@@ -323,33 +317,19 @@ class AdminImagen extends Component {
   }
 
   confirmar() {
-    if (this.state.Productos && this.state.Cuenta) {
-      const { Cuenta } = this.state;
-      const Pedido = Parse.Object.extend('Cuenta');
+    if (this.state.Productos && this.state.IngresoProducto) {
+      const { IngresoProducto } = this.state;
+      const Pedido = Parse.Object.extend('IngresoProducto');
       const pedido = new Pedido();
-      let pendienteImagen = false;
-      this.state.Productos.forEach((producto) => {
-        if (!producto.integrado) pendienteImagen = true;
-      })
+      let pendiente = false;
 
-      console.log('Cuenta', Cuenta.estado)
-      pedido.set('objectId', Cuenta.objectId);
-      pedido.set('pendienteImagen', pendienteImagen);
+      pedido.set('objectId', IngresoProducto.objectId);
+      pedido.set('pendiente', false);
 
-      const Productos = this.state.Productos;
-
-      let failed = 0;
-    Productos.forEach((producto) => {
-        if (!producto.integrado) {
-        failed += 1;
-      }
-})
-
-    if (!failed) {
     pedido.save().then(() => {
       Alert.alert(
         'Listo',
-        'Estudio confirmado correctamente',
+        'Pedido surtido correctamente',
         [{ text: 'Ok', style: 'cancel' }],
         { cancelable: false }
       );
@@ -362,7 +342,6 @@ class AdminImagen extends Component {
       [{ text: 'Ok', style: 'cancel' }],
       { cancelable: false }
     );
-  }
 }
 }
 
@@ -375,11 +354,12 @@ class AdminImagen extends Component {
   }
 
   render() {
-    console.log(this.state.Productos)
     return (
-      <View>
-      {this.buscarCuenta()}
+      <View style={{ flex: 1 }}>
+      {this.buscarIngresoProducto()}
+      <ScrollView>
       {this.listaProductos()}
+      </ScrollView>
         <View>
           </View>
       </View>
@@ -389,9 +369,9 @@ class AdminImagen extends Component {
 
 const mapStateToProps = ({ query, auth }) => {
   const { user } = auth;
- const { text, loading, Inventario, Cuenta } = query;
- console.log('Cuenta', Cuenta)
- return { text, loading, Inventario, Cuenta, user };
+ const { text, loading, Inventario, IngresoProducto } = query;
+ console.log('IngresoProducto', IngresoProducto)
+ return { text, loading, Inventario, IngresoProducto, user };
 };
 
-export default connect(mapStateToProps, { queryFunc, cleanFunc, multiWrite, cleanVariable })(AdminImagen);
+export default connect(mapStateToProps, { queryFunc, cleanFunc, multiWrite, cleanVariable })(SurtirPedido);

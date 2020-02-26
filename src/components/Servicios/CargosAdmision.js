@@ -18,11 +18,16 @@ import { CardSection, Button, Spinner } from '../common';
 import {
   queryFunc,
   queryAttach,
-  queryIngreso,
+  queryPointer,
+  multiQuery,
+  writeFunc,
   cleanFunc,
   addBill,
   clearBill,
-  corte
+  payment,
+  corte,
+  printHTMLReducer,
+  printClean
 } from '../../actions';
 
 class CargosAdmision extends Component {
@@ -56,7 +61,9 @@ class CargosAdmision extends Component {
   }
 
   componentDidMount() {
+    this.props.queryFunc({ text: '' });
     this.props.cleanFunc();
+    this.props.printClean();
     this.setState(
       {
         searchItem: true,
@@ -72,16 +79,11 @@ class CargosAdmision extends Component {
         subtotal: 0,
         iva: 0
       });
-    this.props.queryIngreso({
-      object: 'User',
-      type: 'exists',
-      variable: 'lastName1',
-      text: '',
-    });
   }
 
   componentWillUnmount() {
     this.props.cleanFunc();
+    this.props.printClean();
   }
 
   onAddPress() {
@@ -121,14 +123,10 @@ class CargosAdmision extends Component {
     })
 
     this.props.addBill({
-      autor: this.props.user,
       patient: this.state.Paciente.objectId,
       ingreso: this.state.Ingreso,
-      bill: { Type: 'administrativo', laboratorio: [], imagen: [], farmacia: [], rehabilitacion: [], otros: administrativos },
-      pendienteLaboratorio: false,
-      pendienteImagen: false,
-      pendienteFarmacia: false,
-      pendienteRehabilitacion: false
+      bill: { Type: 'admision', administrativos },
+      autor: this.props.user
   });
 }
 
@@ -143,6 +141,7 @@ class CargosAdmision extends Component {
     });
     this.props.clearBill();
     this.props.cleanFunc();
+    this.props.printClean();
   }
 
   onAlertAccept(index) {
@@ -169,7 +168,7 @@ class CargosAdmision extends Component {
   }
 
   updatePaciente(item) {
-    this.setState({ Paciente: item, Ingreso: item.ingresoId });
+    this.setState({ Paciente: item.paciente, Ingreso: item.objectId });
     this.props.queryFunc({ text: '' });
   }
 
@@ -181,19 +180,8 @@ class CargosAdmision extends Component {
 
   addProducto(item) {
     this.updateProducto(item);
-    const producto = {
-      nombre: item.nombre,
-      objectId: item.objectId,
-      cantidad: '1',
-      precio: item.precioPublico,
-      precioPublico: item.precioPublico,
-      precioSeguro: item.precioSeguro,
-      iva: item.iva,
-      tipo: item.tipo,
-      tipoCobro: item.tipoCobro
-    };
     this.setState(state => ({
-    Productos: [...state.Productos, producto]
+    Productos: [...state.Productos, state.Producto]
     }));
   }
 
@@ -350,14 +338,13 @@ class CargosAdmision extends Component {
               searchIcon={{ size: 24 }}
               containerStyle={{ flex: 1, backgroundColor: 'white' }}
               imputStyle={{ backgroundColor: 'white', marginTop: 0, marginBottom: 0 }}
-              onChangeText={text => this.props.queryIngreso({
-                  type: 'matches',
-                  object: 'User',
-                  variable: 'lastName1',
-                  regex: 'i',
-                  text,
-                })
-              }
+              onChangeText={text => this.props.queryPointer({
+                type: 'matches',
+                object: 'User',
+                variable: 'lastName1',
+                regex: 'i',
+                text,
+                pointer: { object: 'IngresosActivos', variable: 'paciente' } })}
               onClear={() => this.props.queryFunc({ text: '' })}
               placeholder="Ingresa el primer apellido..."
               value={this.props.text}
@@ -544,7 +531,7 @@ class CargosAdmision extends Component {
         onPress={() => this.updatePaciente(item)}
         >
           <View>
-            <Text style={styles.textStyle} >{item.names} {item.lastName1} {item.lastName2} </Text>
+            <Text style={styles.textStyle} >{item.paciente.names} {item.paciente.lastName1} {item.paciente.lastName2} </Text>
           </View>
         </TouchableWithoutFeedback>
       );
@@ -651,9 +638,14 @@ const mapStateToProps = ({ query, bill, printR, auth }) => {
 export default connect(mapStateToProps,
   { queryFunc,
     queryAttach,
-    queryIngreso,
+    queryPointer,
+    multiQuery,
+    writeFunc,
     cleanFunc,
     addBill,
     clearBill,
-    corte
+    payment,
+    corte,
+    printHTMLReducer,
+    printClean
 })(CargosAdmision);

@@ -15,6 +15,7 @@ export const addBill = ({
   patient,
   ingreso,
   bill,
+  total,
   pendienteFarmacia = false,
   pendienteLaboratorio = false,
   pendienteImagen = false,
@@ -47,6 +48,7 @@ export const addBill = ({
       cuenta.set('ingresoPaciente', ingresoPointer);
       cuenta.set('cuenta', bill);
       cuenta.set('pagada', false);
+      cuenta.set('total', total);
       cuenta.set('abonado', 0);
       cuenta.set('autor', autor);
       cuenta.set('pendienteFarmacia', pendienteFarmacia);
@@ -160,7 +162,7 @@ export const payment = ({
       const parseObject2 = Parse.Object.extend('Cuenta');
       const cuenta = new parseObject2();
       const autor = Parse.User.current();
-
+      
       let pacienteExterno = false;
       if(sellType === 'Venta al público') {
         const pacientePointer = {

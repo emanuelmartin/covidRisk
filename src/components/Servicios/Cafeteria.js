@@ -282,15 +282,10 @@ class Cafe extends Component {
       return <Spinner size="large" />;
     }
     let dataList = null;
-    if (Array.isArray(this.props.ProductosCafeteria)) {
-      dataList = this.props.ProductosCafeteria;
+    if (Array.isArray(this.props.Inventario)) {
+      dataList = this.props.Inventario;
     } else {
-      dataList = [this.props.ProductosCafeteria];
-    }
-    if (dataList === null) {
-      return (
-        <View/>
-      );
+      dataList = [this.props.Inventario];
     }
     return (
       <FlatList
@@ -302,7 +297,7 @@ class Cafe extends Component {
         )}
         enableEmptySections
         style={{ marginTop: 10 }}
-        keyExtractor={(item) => item.objectId}
+        keyExtractor={(item) => item.code}
       />
     );
   }
@@ -318,7 +313,7 @@ class Cafe extends Component {
         )}
         enableEmptySections
         style={{ marginTop: 10 }}
-        keyExtractor={(item) => item.objectId}
+        keyExtractor={(item) => item.code}
       />
     );
   }
@@ -391,9 +386,10 @@ class Cafe extends Component {
                 if (text !== '') {
                   if (this.state.Productos.length === 0) {
                     this.props.queryAttach({
-                    object: 'ProductosCafeteria',
+                    object: 'Inventario',
                     text,
-                    constrain: [{ type: 'matches', variable: 'nombre', text, regex: 'i' }]
+                    constrain: [{ type: 'matches', variable: 'nombre', text, regex: 'i' },
+                      { type: 'equalTo', variable: 'tipo', text: 'cafeteria', bool: 'and' }]
                     });
                   } else {
                     const productoBusqueda = [];
@@ -401,9 +397,10 @@ class Cafe extends Component {
                       productoBusqueda.push(producto.nombre);
                     });
                     this.props.queryAttach({
-                    object: 'ProductosCafeteria',
+                    object: 'Inventario',
                     text,
                     constrain: [{ type: 'matches', variable: 'nombre', text, regex: 'i' },
+                      { type: 'equalTo', variable: 'tipo', text: 'cafeteria', bool: 'and' },
                       { type: 'notContainedIn', variable: 'nombre', text: productoBusqueda, bool: 'and' }]
                     });
                   }
@@ -857,14 +854,14 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ query, bill, printR }) => {
- const { text, User, ProductosCafeteria, Caja } = query;
+ const { text, User, Inventario, Caja } = query;
  const load = query.loading;
  const { loading, error, succesBill, succesPay, ticketInfo } = bill;
  const { print } = printR;
  return {
    text,
    User,
-   ProductosCafeteria,
+   Inventario,
    Caja,
    loading,
    error,

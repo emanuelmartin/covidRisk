@@ -157,9 +157,10 @@ class IngresarPedido extends Component {
             containerStyle={{ flex: 1, backgroundColor: 'white' }}
             imputStyle={{ backgroundColor: 'white', marginTop: 0, marginBottom: 0 }}
             onChangeText={text => this.props.queryFunc({
-              type: 'startsWith',
+              type: 'matches',
               object: 'Proveedor',
               variable: 'nombre',
+              regex: 'i',
               text })}
             onClear={() => { this.props.cleanFunc(); }}
             placeholder="Ingresa el nombre de la empresa..."
@@ -209,9 +210,10 @@ class IngresarPedido extends Component {
                   onPress={this.navigateToScreen('BarCodeScanner', { updateCode: false }, 'buscarProducto')}
                 />}
               onChangeText={text => this.props.queryFunc({
-                type: 'startsWith',
+                type: 'matches',
                 object: 'Inventario',
                 variable: 'nombre',
+                regex: 'i',
                 text })}
               onClear={() => this.props.cleanFunc()}
               placeholder="Nombre"
@@ -417,7 +419,6 @@ class IngresarPedido extends Component {
             this.setState({
               Productos: update(this.state.Productos, { [index]: { costoUMC: { $set: value } } })
             })}
-            onEndEditing={() => this.actualizarCosto(index)}
             />
             </View>
             </TouchableWithoutFeedback>
@@ -463,7 +464,6 @@ class IngresarPedido extends Component {
           this.setState({
             Productos: update(this.state.Productos, { [index]: { precioLista: { $set: value } } })
           })}
-        onEndEditing={() => this.actualizarCosto(index)}
       />
       <Input
       selectTextOnFocus
@@ -475,7 +475,6 @@ class IngresarPedido extends Component {
           this.setState({
             Productos: update(this.state.Productos, { [index]: { descuentoProveedor: { $set: value } } })
           })}
-        onEndEditing={() => this.actualizarCosto(index)}
       />
       </View>
       <Input
@@ -488,7 +487,6 @@ class IngresarPedido extends Component {
           this.setState({
             Productos: update(this.state.Productos, { [index]: { costoUMC: { $set: value } } })
           })}
-        onEndEditing={() => this.actualizarCosto(index)}
       />
       <Input
       selectTextOnFocus
@@ -571,7 +569,6 @@ class IngresarPedido extends Component {
         this.setState({
           Productos: update(this.state.Productos, { [index]: { porcentajeUtilidad: { $set: value } } })
         })}
-        onEndEditing={() => this.actualizarCosto(index)}
     />
     <Input
     selectTextOnFocus
@@ -723,40 +720,6 @@ class IngresarPedido extends Component {
 }
 
   ingresarPedido() {
-    let success = true;
-
-    const Inventario = Parse.Object.extend('Inventario');
-    const { Productos, tipoPedido, Proveedor, totalBruto, iva, totalNeto, numFactura } = this.state;
-    const objects = [];
-    if (tipoPedido && numFactura && Proveedor && Productos) {
-      Productos.forEach((producto) => {
-      const nuevoStock = parseInt(producto.stock, 10) + (parseInt(producto.ingresoUMC, 10) * parseInt(producto.cantidadUMV, 10));
-      const parseObject = new Inventario();
-      parseObject.set('objectId', producto.objectId);
-      parseObject.set('nombre', producto.nombre);
-      parseObject.set('cantidadUMV', parseInt(producto.cantidadUMV, 10));
-      parseObject.set('codigo', producto.codigo);
-      parseObject.set('umc', producto.umc);
-      parseObject.set('umv', producto.umv);
-      parseObject.set('iva', parseInt(producto.iva, 10));
-      parseObject.set('descuentoProveedor', parseInt(producto.descuentoProveedor, 10));
-      parseObject.set('laboratorio', producto.laboratorio);
-      parseObject.set('tipo', producto.tipo);
-      parseObject.set('proveedor', producto.proveedor);
-      parseObject.set('stock', parseInt(nuevoStock, 10));
-      parseObject.set('stockMinimo', parseInt(producto.stockMinimo, 10));
-      parseObject.set('precioLista', parseFloat(producto.precioLista));
-      parseObject.set('costoUMC', parseFloat(producto.costoUMC));
-      parseObject.set('costoUMV', parseFloat(producto.costoUMV));
-      parseObject.set('precioSeguro', parseFloat(producto.precioSeguro));
-      parseObject.set('porcentajeUtilidad', parseInt((producto.porcentajeUtilidad), 10));
-      parseObject.set('precioNeto', parseFloat(producto.precioNeto));
-      parseObject.set('precioPublico', parseFloat(producto.precioPublico));
-      parseObject.set('codigoProveedor', producto.codigoProveedor);
-
-      objects.push(parseObject);
-      }
-    );
 
     const pointerProveedor = {
     __type: 'Pointer',
@@ -804,7 +767,6 @@ class IngresarPedido extends Component {
       [{ text: 'Ok', style: 'cancel' }]
     );
     this.setState(INITIAL_STATE);
-  }
 } else {
   Alert.alert(
     'Error',

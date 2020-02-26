@@ -181,9 +181,9 @@ class InventoryDetail extends Component {
             label="Precio máximo"
             placeholder="$ 205.50"
             onChangeText={(text) => this.setState({
-              producto: update(this.state.producto, { precioUMC: { $set: text } })
+              producto: update(this.state.producto, { precioMaximo: { $set: text } })
             })}
-            value={this.state.producto.precioUMC}
+            value={this.state.producto.precioMaximo}
             onEndEditing={() => this.actualizarCosto()}
           />
 
@@ -706,25 +706,26 @@ addElement(item, modal) {
       producto.cantidadUMV = parseInt(producto.cantidadUMV, 10);
       producto.costoUMV = producto.costoUMC / producto.cantidadUMV;
 
-      if(producto.precioUMC > 0) {
-        producto.porcentajeUtilidad = (producto.precioUMC/producto.costoUMC - 1) * 100;
-        producto.precioPublico = producto.precioUMC / producto.cantidadUMV;
+      if(producto.precioMaximo > 0) {
+        producto.porcentajeUtilidad = (producto.precioMaximo/producto.costoUMC - 1) * 100;
+        producto.precioPublico = producto.precioMaximo / producto.cantidadUMV;
         producto.precioNeto = producto.precioPublico + (producto.precioPublico * (producto.iva / 100));
         producto.precioSeguro = producto.precioPublico * 1.35;
+        producto.precioMaximo = parseFloat(producto.precioMaximo).toFixed(2)
 
     } else {
 
-      if (producto.costoUMV < 51) this.state.producto.porcentajeUtilidad = 200;
-      else if (producto.costoUMV < 101) this.state.producto.porcentajeUtilidad = 100;
-      else if(producto.costoUMV < 201) this.state.producto.porcentajeUtilidad = 80;
-      else if (producto.costoUMV < 301) this.state.producto.porcentajeUtilidad = 60;
-      else if (producto.costoUMV < 501) this.state.producto.porcentajeUtilidad = 50;
-      else if (producto.costoUMV < 1001) this.state.producto.porcentajeUtilidad = 35;
-      else if (producto.costoUMV < 2501) this.state.producto.porcentajeUtilidad = 25;
-      else if (producto.costoUMV < 5001) this.state.producto.porcentajeUtilidad = 20;
-      else if (producto.costoUMV < 10001) this.state.producto.porcentajeUtilidad = 15;
-      else if (producto.costoUMV < 25001) this.state.producto.porcentajeUtilidad = 10;
-      else if (producto.costoUMV < 50001) this.state. producto.porcentajeUtilidad = 5;
+      if (producto.costoUMC < 51) this.state.producto.porcentajeUtilidad = 125;
+      else if (producto.costoUMC < 101) this.state.producto.porcentajeUtilidad = 100;
+      else if(producto.costoUMC < 201) this.state.producto.porcentajeUtilidad = 75;
+      else if (producto.costoUMC < 301) this.state.producto.porcentajeUtilidad = 60;
+      else if (producto.costoUMC < 501) this.state.producto.porcentajeUtilidad = 50;
+      else if (producto.costoUMC < 1001) this.state.producto.porcentajeUtilidad = 35;
+      else if (producto.costoUMC < 2501) this.state.producto.porcentajeUtilidad = 25;
+      else if (producto.costoUMC < 5001) this.state.producto.porcentajeUtilidad = 20;
+      else if (producto.costoUMC < 10001) this.state.producto.porcentajeUtilidad = 15;
+      else if (producto.costoUMC < 25001) this.state.producto.porcentajeUtilidad = 10;
+      else if (producto.costoUMC < 50001) this.state. producto.porcentajeUtilidad = 5;
 
       producto.porcentajeUtilidad = producto.porcentajeUtilidad;
       producto.precioPublico = producto.costoUMV + (producto.costoUMV * (producto.porcentajeUtilidad / 100));
@@ -797,6 +798,7 @@ addElement(item, modal) {
       producto.precioNeto = parseFloat(producto.precioNeto)
       producto.precioSeguro = parseFloat(producto.precioSeguro)
       producto.stockMinimo = parseInt(producto.stockMinimo, 10);
+      producto.precioMaximo = parseFloat(producto.precioMaximo)
 
       const Inventario = Parse.Object.extend('Inventario');
       const parseObject = new Inventario();
@@ -824,7 +826,7 @@ addElement(item, modal) {
       parseObject.set('costoUMC', producto.costoUMC);
       parseObject.set('costoUMV', producto.costoUMV);
       parseObject.set('cantidadUMV', producto.cantidadUMV);
-      parseObject.set('precioUMC', producto.precioUMC);
+      parseObject.set('precioMaximo', producto.precioMaximo);
 
       parseObject.save().then(() => {
         Alert.alert(

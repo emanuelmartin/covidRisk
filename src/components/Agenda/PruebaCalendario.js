@@ -9,7 +9,7 @@ class PruebaCalendario extends Component {
     super(props);
 
     LocaleConfig.locales.en = LocaleConfig.locales[''];
-LocaleConfig.locales.fr = {
+LocaleConfig.locales.mx = {
   monthNames: [
     'Enero',
     'Febrero',
@@ -50,7 +50,7 @@ LocaleConfig.locales.fr = {
   dayNamesShort: ['Dom.', 'Lun.', 'Mar.', 'Mie.', 'Jue.', 'Vie.', 'Sab.'],
 };
 
-LocaleConfig.defaultLocale = 'fr';
+LocaleConfig.defaultLocale = 'mx';
 
     this.state = {
       items: {}
@@ -68,14 +68,14 @@ LocaleConfig.defaultLocale = 'fr';
       variable: 'tipo',
       text: 'Cirugía'
     });
+    this.loadItems();
   }
 
   render() {
     return (
       <Agenda
         items={this.state.items}
-        loadItemsForMonth={this.loadItems.bind(this)}
-        selected={'2020-02-01'}
+        selected={Date.now()}
         renderItem={this.renderItem.bind(this)}
         renderEmptyDate={this.renderEmptyDate.bind(this)}
         rowHasChanged={this.rowHasChanged.bind(this)}
@@ -97,22 +97,13 @@ LocaleConfig.defaultLocale = 'fr';
     );
   }
 
-  loadItems(day) {
+  loadItems() {
     setTimeout(() => {
       const { Programacion } = this.props;
-      console.log('Programacia', Programacion)
-      for (let i = -15; i < 85; i++) {
-        const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-        const strTime = this.timeToString(time);
-        if (!this.state.items[strTime]) {
-          this.state.items[strTime] = [];
       Programacion.forEach((programacion) => {
-        console.log('Prog',programacion)
-        this.state.items[programacion.info.fecha] = [];
+        if(!this.state.items[programacion.info.fecha]) this.state.items[programacion.info.fecha] = [];
         this.state.items[programacion.info.fecha].push(programacion.info)
       })
-  }
-}
 const newItems = {};
 Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
 this.setState({
@@ -121,23 +112,19 @@ this.setState({
 }, 1000);
   }
 
-
-
   renderItem(item) {
     return (
       <TouchableOpacity
         style={[styles.item, {height: item.height}]}
         onPress={() => Alert.alert(
           item.name,
-          `Sala: ${item.sala}`
+          `Sala: ${item.sala}\nHora: ${item.hora}\nDuración aproximada: ${item.duracion}\nTipo de cirugía: ${item.tipo}\nNombre del paciente: ${item.nombrePaciente}\nEdad del paciente: ${item.edadPaciente}\nCirujano: ${item.cirujano}\nAyudante: ${item.ayudante}\nInstrumentista: ${item.instrumentista}\nAnestesiólogo: ${item.anestesiologo}\nPediatra: ${item.pediatra}\nImagenología: ${item.imagenologia}\nPersona que programa: ${item.nombrePrograma}\nEnfermero que programa: ${item.enfermeroPrograma}\nObservaciones: ${item.observaciones}\nFecha de programación: ${item.fechaProgramacion}`
         )}
       >
+        <Text>Hora: {item.hora}</Text>
         <Text>Sala: {item.sala}</Text>
         <Text>Tipo de cirugía: {item.tipo}</Text>
         <Text>Cirujano: {item.cirujano}</Text>
-        <Text>Ayudante: {item.ayudante}</Text>
-        <Text>Anestesiólogo: {item.anestesiologo}</Text>
-        <Text>Enfermero que programa: {item.enfermero}</Text>
       </TouchableOpacity>
     );
   }
