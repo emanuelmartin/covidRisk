@@ -91,9 +91,6 @@ export const queryPointer = ({ type, object, variable, text, pointer, regex }) =
         const parsePointer = Parse.Object.extend(pointer.object);
         const queryPtr = new Parse.Query(parsePointer);
         queryPtr.containedIn(pointer.variable, objectID);
-        if (pointer.constrain !== null && pointer.constrain !== undefined) {
-          queryPtr.equalTo(pointer.constrain.variable, pointer.constrain.value);
-        }
         queryPtr.include(pointer.variable);
         queryPtr.find().then((resultPointers) => {
           for (let i = 0; i < resultPointers.length; i++) {
@@ -103,6 +100,64 @@ export const queryPointer = ({ type, object, variable, text, pointer, regex }) =
             dispatch({ type: DB_QUERY_RESULTS, payload: jsonArray, name: object, loading: false });
           } else {
             dispatch({ type: DB_QUERY_NO_RESULTS, name: object });
+          }
+        });
+      });
+    }
+  };
+};
+
+export const queryIngreso = ({ object, type, variable, text, regex }) => {
+  const patientID = [];
+  const ingresoID = [];
+  let jsonArray = [];
+
+  return async (dispatch) => {
+    dispatch({ type: DB_QUERY, payload: text });
+    if (text === '' && type !== 'exists') {
+      dispatch({ type: DB_QUERY_RESULTS, payload: '' });
+    } else {
+      const parseObject = Parse.Object.extend('IngresosActivos');
+      const query = new Parse.Query(parseObject);
+      query.equalTo('Alta', false);
+      query.include('paciente');
+      query.find().then((results) => {
+        for (let i = 0; i < results.length; i++) {
+           patientID.push(results[i].get('paciente').id);
+           ingresoID.push(results[i].id)
+        }
+        const parseObject1 = Parse.Object.extend(object);
+        const query1 = new Parse.Query(parseObject1);
+
+        if (type === 'get') {
+          query1.get(text);
+        } else if (type === 'matches') {
+          query1.matches(variable, text, regex);
+        } else if (type === 'exists') {
+          query1.exists(variable);
+        } else {
+          query1[type](variable, text);
+        }
+        const query2 = new Parse.Query(object);
+        query2.containedIn('objectId', patientID);
+        const mainQuery = Parse.Query.and(query1, query2);
+        mainQuery.find().then((results) => {
+          for (let i = 0; i < results.length; i++) {
+             for (let j = 0; j < patientID.length; j++) {
+               if (results[i].id === patientID[j]) {
+                 results[i].set('ingresoId', ingresoID[j]);
+               }
+             }
+             jsonArray.push(results[i].toJSON());
+          }
+          if (jsonArray.length > 0) {
+            if (jsonArray.length === 1) {
+              const array = jsonArray;
+              jsonArray = array[0];
+            }
+            dispatch({ type: DB_QUERY_RESULTS, payload: jsonArray, name: object, loading: false });
+          } else {
+            dispatch({ type: DB_QUERY_NO_RESULTS, name: object, loading: false });
           }
         });
       });

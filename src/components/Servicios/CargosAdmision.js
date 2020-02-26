@@ -18,7 +18,7 @@ import { CardSection, Button, Spinner } from '../common';
 import {
   queryFunc,
   queryAttach,
-  queryPointer,
+  queryIngreso,
   cleanFunc,
   addBill,
   clearBill,
@@ -56,7 +56,6 @@ class CargosAdmision extends Component {
   }
 
   componentDidMount() {
-    this.props.queryFunc({ text: '' });
     this.props.cleanFunc();
     this.setState(
       {
@@ -73,6 +72,12 @@ class CargosAdmision extends Component {
         subtotal: 0,
         iva: 0
       });
+    this.props.queryIngreso({
+      object: 'User',
+      type: 'exists',
+      variable: 'lastName1',
+      text: '',
+    });
   }
 
   componentWillUnmount() {
@@ -164,7 +169,7 @@ class CargosAdmision extends Component {
   }
 
   updatePaciente(item) {
-    this.setState({ Paciente: item.paciente, Ingreso: item.objectId });
+    this.setState({ Paciente: item, Ingreso: item.ingresoId });
     this.props.queryFunc({ text: '' });
   }
 
@@ -345,13 +350,14 @@ class CargosAdmision extends Component {
               searchIcon={{ size: 24 }}
               containerStyle={{ flex: 1, backgroundColor: 'white' }}
               imputStyle={{ backgroundColor: 'white', marginTop: 0, marginBottom: 0 }}
-              onChangeText={text => this.props.queryPointer({
-                type: 'matches',
-                object: 'User',
-                variable: 'lastName1',
-                regex: 'i',
-                text,
-                pointer: { object: 'IngresosActivos', variable: 'paciente' } })}
+              onChangeText={text => this.props.queryIngreso({
+                  type: 'matches',
+                  object: 'User',
+                  variable: 'lastName1',
+                  regex: 'i',
+                  text,
+                })
+              }
               onClear={() => this.props.queryFunc({ text: '' })}
               placeholder="Ingresa el primer apellido..."
               value={this.props.text}
@@ -538,7 +544,7 @@ class CargosAdmision extends Component {
         onPress={() => this.updatePaciente(item)}
         >
           <View>
-            <Text style={styles.textStyle} >{item.paciente.names} {item.paciente.lastName1} {item.paciente.lastName2} </Text>
+            <Text style={styles.textStyle} >{item.names} {item.lastName1} {item.lastName2} </Text>
           </View>
         </TouchableWithoutFeedback>
       );
@@ -645,7 +651,7 @@ const mapStateToProps = ({ query, bill, printR, auth }) => {
 export default connect(mapStateToProps,
   { queryFunc,
     queryAttach,
-    queryPointer,
+    queryIngreso,
     cleanFunc,
     addBill,
     clearBill,
