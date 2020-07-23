@@ -12,7 +12,7 @@
     "lodash": "^4.17.15",
     "luxon": "^1.19.2",
     "moment": "^2.24.0",
-    "parse": "^2.4.0",
+    "parse": "^2.10.0",
     "prop-types": "^15.7.2",
     "react": "16.8.3",
     "react-addons": "^0.9.1-deprecated",
