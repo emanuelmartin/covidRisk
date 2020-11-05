@@ -82,6 +82,7 @@ project.ext.react = [
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
+apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -132,8 +133,8 @@ android {
         applicationId "com.hrsl"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "0.7"
         missingDimensionStrategy 'react-native-camera', 'general' // <--- insert this line
     }
     splits {
@@ -181,8 +182,19 @@ android {
 }
 
 dependencies {
-implementation project(':react-native-notifications')
-   implementation 'com.google.firebase:firebase-core:16.0.0'
+    implementation project(':react-native-wifi-reborn')
+    implementation project(':react-native-voice')
+    implementation project(':react-native-safe-area-context')
+    implementation project(':react-native-code-push')
+    implementation project(':appcenter')
+    implementation project(':appcenter-crashes')
+    implementation project(':appcenter-analytics')
+    implementation project(':react-native-screens')
+    implementation project(':react-native-reanimated')
+    implementation project(':react-native-gesture-handler')
+    implementation project(':react-native-vector-icons')
+    implementation project(':react-native-notifications')
+    implementation 'com.google.firebase:firebase-core:16.0.0'
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
@@ -210,6 +222,5 @@ task copyDownloadableDepsToLibs(type: Copy) {
 googleServices { disableVersionCheck = true }
 
 apply plugin: 'com.google.gms.google-services'
-
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)

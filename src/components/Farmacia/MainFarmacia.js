@@ -200,9 +200,9 @@ class MainFarmacia extends Component {
     }
     let dataList = null;
     if (Array.isArray(this.props.Inventario)) {
-      dataList = this.props.Inventario;
+      dataList = [].concat(this.props.Inventario).sort((a, b) => a.nombre > b.nombre);
     } else {
-      dataList = [this.props.Inventario];
+      dataList = [].concat([this.props.Inventario]).sort((a, b) => a.nombre > b.nombre);
     }
     return (
       <FlatList
@@ -242,9 +242,9 @@ class MainFarmacia extends Component {
     } else if (this.props.Patient !== '') {
       let dataList = null;
       if (Array.isArray(this.props.Patient)) {
-        dataList = this.props.Patient;
+        dataList = [].concat(this.props.Patient).sort((a, b) => a.names > b.names);
       } else {
-        dataList = [this.props.Patient];
+        dataList = [].concat([this.props.Patient]).sort((a, b) => a.names > b.names);
       }
       return (
         <FlatList

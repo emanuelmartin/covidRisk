@@ -48,6 +48,8 @@ import {
 } from './Administracion';
 
 import {
+  CafeteriaList,
+  CafeteriaDetail,
   InventoryList,
   InventoryDetail
 } from './Inventario';
@@ -87,6 +89,8 @@ const AppStack = createStackNavigator(
     PatientForm,
     PatientList,
     PatientBill,
+    CafeteriaList,
+    CafeteriaDetail,
     InventoryList,
     InventoryDetail,
     AddItemScreen,

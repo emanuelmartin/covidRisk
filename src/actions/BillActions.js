@@ -23,26 +23,34 @@ export const addBill = ({
   pacienteExterno,
   medicoSolicitante,
   diagnosticoProbable,
-  sellType
+  sellType,
+  autor
 }) => {
     return async (dispatch) => {
       dispatch({ type: ADD_BILL });
 
       const parseObject = Parse.Object.extend('Cuenta');
       const cuenta = new parseObject();
-      const autor = Parse.User.current();
-
-      const pacientePointer = {
+      let pacientePointer = {};
+      let ingresoPointer = {};
+      if (bill){
+       pacientePointer = {
         __type: 'Pointer',
         className: '_User',
         objectId: patient
       };
 
-      const ingresoPointer = {
+       ingresoPointer = {
         __type: 'Pointer',
         className: 'IngresosActivos',
         objectId: ingreso
       };
+
+      autorPointer = {
+       __type: 'Pointer',
+       className: '_User',
+       objectId: autor.toJSON().objectId
+     };
 
       cuenta.set('paciente', pacientePointer)
       cuenta.set('ingresoPaciente', ingresoPointer);
@@ -50,19 +58,19 @@ export const addBill = ({
       cuenta.set('pagada', false);
       cuenta.set('total', total);
       cuenta.set('abonado', 0);
-      cuenta.set('autor', autor);
+      cuenta.set('autor', autorPointer);
       cuenta.set('pendienteFarmacia', pendienteFarmacia);
       cuenta.set('pendienteLaboratorio', pendienteLaboratorio);
       cuenta.set('pendienteImagen', pendienteImagen);
       cuenta.set('pendienteRehabilitacion', pendienteRehabilitacion);
-
+    }
       cuenta.save().then(
         (result) => {
           dispatch({ type: ADD_BILL_SUCCES });
           console.log('Bill created', result);
         },
         (error) => {
-          dispatch({ type: ADD_BILL_FAIL });
+          dispatch({ type: ADD_BILL_FAIL, error });
           console.error('Error while creating Bill: ', error);
         }
       );
@@ -88,7 +96,9 @@ export const payment = ({
   diagnosticoProbable,
   sellType,
   paciente,
-  bill
+  bill,
+  descuento,
+  tipoDescuento
 
 }) => {
   return async (dispatch) => {
@@ -126,23 +136,26 @@ export const payment = ({
     }).then(() => {
       const parseObject = Parse.Object.extend('Ventas');
       const venta = new parseObject();
-      /*
+
+      if(bill) {
         const pacientePointer = {
           __type: 'Pointer',
           className: '_User',
           objectId: paciente.objectId
         };
 
-        pacienteExterno = true;
 
         const medicoPointer = {
           __type: 'Pointer',
           className: '_User',
           objectId: medicoSolicitante.objectId
         };
-        */
-      //venta.set('medicoSolicitante', medicoPointer)
-      //venta.set('paciente', pacientePointer);
+
+      venta.set('medicoSolicitante', medicoPointer)
+      venta.set('paciente', pacientePointer);
+    }
+      tipoDescuento ? venta.set('tipoDescuento', tipoDescuento) : null;
+      descuento ? venta.set('descuento', parseFloat(descuento)) : null;
       venta.set('cuenta', lista);
       venta.set('subtotal', pago.subtotal);
       venta.set('iva', pago.iva);
@@ -183,12 +196,8 @@ export const payment = ({
         cuenta.set('medicoSolicitante', medicoPointer)
 
       } else {
-      const pacientePointer = {
-        __type: 'Pointer',
-        className: '_User',
-        objectId: patient
-      };
-      cuenta.set('paciente', pacientePointer)
+
+
     }
 
       cuenta.set('cuenta', lista);
@@ -222,7 +231,9 @@ export const payment = ({
                 folio,
                 caja,
                 recibido: parseFloat(recibido),
-                lista
+                lista,
+                descuento,
+                tipoDescuento
               };
               dispatch({ type: PAYMENT_SUCCES, info });
               dispatch({ type: ADD_BILL_SUCCES });
@@ -306,20 +317,25 @@ export const partialPayment = (caja, recibido, paciente) => {
 };
 
 export const corte = (caja, retiro) => {
+  return async (dispatch) => {
+    return new Promise((resolve, reject) => {
   const user = Parse.User.current();
   let cajaObject = null;
-
+  const date = new Date();
+  const dia = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+  const hora = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+  let info = {};
   console.log('retiro', retiro);
-  return async (dispatch) => {
     dispatch({ type: CORTE });
 
     const ParseObject = Parse.Object.extend('Caja');
     const query = new Parse.Query(ParseObject);
     query.equalTo('nombre', caja);
     query.find().then(result => {
-      cajaObject = result;
+      cajaObject = result[0].toJSON();
       query.get(result[0].id.toString()).then((query1) => {
         query1.increment('efectivo', -(retiro));
+        query1.increment('folio', 1);
         query1.save();
       });
     }).then(() => {
@@ -332,17 +348,23 @@ export const corte = (caja, retiro) => {
       const pointerCaja = {
         __type: 'Pointer',
        className: 'Caja',
-       objectId: cajaObject[0].id
+       objectId: cajaObject.id
       };
 
+      cajaObject.efectivo = cajaObject.efectivo - retiro;
+      cajaObject.folio = cajaObject.folio + 1;
+      info = {autor: user.toJSON(), caja: cajaObject, retiro,   fecha: { dia, hora }, folio: 'A'}
       const ParseCorte = Parse.Object.extend('CorteCaja');
       const Corte = new ParseCorte();
       Corte.set('caja', pointerCaja);
       Corte.set('usuario', pointerUsuario);
       Corte.set('retiro', retiro);
       Corte.save();
-    }).then(() => {
-        dispatch({ type: CORTE_SUCCESS });
+
+    }).then(( ) => {
+        dispatch({ type: CORTE_SUCCESS, info });
+      resolve();
     });
-  };
+  });
+};
 };

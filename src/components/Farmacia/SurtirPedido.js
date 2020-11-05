@@ -26,7 +26,8 @@ const INITIAL_STATE = {
   Productos: new Array(),
   dataList: null,
   buscarCuenta: true,
-  buscarHerramienta: false };
+  buscarHerramienta: false,
+query: true };
 
 class SurtirPedido extends Component {
 
@@ -43,15 +44,7 @@ class SurtirPedido extends Component {
     this.props.cleanFunc();
   }
 
-  componentDidMount() {
-    this.props.queryFunc({
-      type: 'equalTo',
-      object: 'Cuenta',
-      variable: 'pendienteFarmacia',
-      text: true,
-      include: ['autor', 'ingresoPaciente.paciente', 'ingresoPaciente.ubicacion']
-    });
-  }
+
 
   renderIt(item, index, objeto, tipo, modal) {
       const fech = new Date(item.createdAt);
@@ -144,9 +137,19 @@ class SurtirPedido extends Component {
 }
 
   buscarCuenta() {
+    if (this.state.query) {
+      this.props.queryFunc({
+        type: 'equalTo',
+        object: 'Cuenta',
+        variable: 'pendienteFarmacia',
+        text: true,
+        include: ['autor', 'ingresoPaciente.paciente', 'ingresoPaciente.ubicacion']
+      });
+      this.setState({query : false})
+    }
     return (
       <View style={{ paddingLeft: 10, paddingTop: 30, paddingBottom: 0}}>
-      <TouchableWithoutFeedback onPress={() => { this.setState({ buscarCuenta: true }); }}>
+      <TouchableWithoutFeedback onPress={() => { this.setState({ buscarCuenta: true, query: true }); }}>
       <View>
       {this.nombreCuenta()}
       </View>
@@ -322,12 +325,7 @@ class SurtirPedido extends Component {
 
     if (!failed) {
     pedido.save().then(() => {
-      Alert.alert(
-        'Listo',
-        'Pedido surtido correctamente',
-        [{ text: 'Ok', style: 'cancel' }],
-        { cancelable: false }
-      );
+
       this.setState(INITIAL_STATE)
     })
   } else {

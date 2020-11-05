@@ -720,16 +720,18 @@ class AddItemScreen extends Component {
   render() {
 		console.log(this.state);
 		let data = null;
-		if (this.props.userType === 'admin') {
+		if (this.props.userType === 'dev' ||
+	this.props.userType === 'admin') {
 			data = [{ value: 'medicamento' },
 							{ value: 'insumo' },
 							{ value: 'cafeteria' },
 							{ value: 'paquete quirúrgico' }];
-		} else if (this.props.userType === 'enfermeria' ||
-		this.props.userType === 'farmacia') {
+		} else if (this.props.userType === 'farmacia') {
 			data = [{ value: 'medicamento' },
 							{ value: 'insumo' },
 							{ value: 'paquete quirúrgico' }];
+		} else if (this.props.userType === 'cafeteria') {
+			data = [{ value: 'cafeteria' }];
 		}
 		if (this.props.success) {
 			Alert.alert(

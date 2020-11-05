@@ -200,9 +200,9 @@ class PedidosEnfermeria extends Component {
     }
     let dataList = null;
     if (Array.isArray(this.props.Inventario)) {
-      dataList = this.props.Inventario;
+      dataList = [].concat(this.props.Inventario).sort((a, b) => a.nombre > b.nombre);
     } else {
-      dataList = [this.props.Inventario];
+      dataList = [].concat([this.props.Inventario]).sort((a, b) => a.nombre > b.nombre);
     }
     return (
       <FlatList
@@ -220,6 +220,7 @@ class PedidosEnfermeria extends Component {
   }
 
   listaProductoAnadido() {
+    //const dataList = [].concat(this.state.Productos).sort((a, b) => a.nombre > b.nombre);
     return (
       <FlatList
         data={this.state.Productos}
@@ -242,9 +243,9 @@ class PedidosEnfermeria extends Component {
     } else if (this.props.Patient !== '') {
       let dataList = null;
       if (Array.isArray(this.props.Patient)) {
-        dataList = this.props.Patient;
+        dataList = [].concat(this.props.Patient).sort((a, b) => a.names > b.names);
       } else {
-        dataList = [this.props.Patient];
+        dataList = [].concat([this.props.Patient]).sort((a, b) => a.names > b.names);
       }
       return (
         <FlatList
@@ -283,7 +284,8 @@ class PedidosEnfermeria extends Component {
                     object: 'Inventario',
                     text,
                     constrain:
-                    [{ type: 'matches', variable: 'nombre', text, regex: 'i' }]
+                    [{ type: 'containedIn', variable: 'tipo', text: ['medicamento', 'insumo'] },
+                      { type: 'matches', variable: 'nombre', text, bool: 'and', regex: 'i' }]
                   });
                 } else {
                   this.props.cleanFunc();

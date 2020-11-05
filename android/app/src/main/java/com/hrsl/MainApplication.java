@@ -4,17 +4,35 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.reactlibrary.rnwifi.RNWifiPackage;
+import com.wenkesj.voice.VoicePackage;
+import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
+import com.microsoft.codepush.react.CodePush;
+import com.microsoft.appcenter.reactnative.appcenter.AppCenterReactNativePackage;
+import com.microsoft.appcenter.reactnative.crashes.AppCenterReactNativeCrashesPackage;
+import com.microsoft.appcenter.reactnative.analytics.AppCenterReactNativeAnalyticsPackage;
+import com.swmansion.rnscreens.RNScreensPackage;
+import com.swmansion.reanimated.ReanimatedPackage;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import com.wix.reactnativenotifications.RNNotificationsPackage;
+import com.microsoft.codepush.react.CodePush;
 
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
       new ReactNativeHost(this) {
+
+        @Override
+                protected String getJSBundleFile() {
+                    return CodePush.getJSBundleFile();
+                }
+                
         @Override
         public boolean getUseDeveloperSupport() {
           return BuildConfig.DEBUG;
@@ -26,16 +44,16 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
-          packages.add(new RNNotificationsPackage(MainApplication.this)); 
+          packages.add(new RNNotificationsPackage(MainApplication.this));
           return packages;
         }
+
 
         @Override
         protected String getJSMainModuleName() {
           return "index";
         }
       };
-
 
 
   @Override

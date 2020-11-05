@@ -7,6 +7,8 @@ import styles from './SideMenu.style';
 import { session, logOut } from '../actions';
 import WifiManager from "react-native-wifi-reborn";
 import {PermissionsAndroid} from 'react-native';
+import codePush from "react-native-code-push";
+
 
 async function requestLocationPermission() {
   try {
@@ -42,6 +44,12 @@ class SideMenu extends Component {
     this.arrayholder = [];
   }
 
+onUpdateButtonPress() {
+  console.log(this.props.user.toJSON().CODEPUSH_KEY)
+  const deploymentKey = this.props.user.toJSON().CODEPUSH_KEY;
+  codePush.sync(deploymentKey);
+  codePush.checkForUpdate(deploymentKey);
+}
 
   onLogoutButtonPress() {
     this.props.logOut().then(
@@ -70,7 +78,7 @@ class SideMenu extends Component {
   }
 
   fichasPersonales() {
-    if (this.props.userType === 'admin') {
+    if (this.props.userType === 'dev' || this.props.userType === 'admin') {
       return (
         <View>
           <Text style={styles.sectionHeadingStyle}>
@@ -319,6 +327,9 @@ programacionQuirurgica() {
            <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Cafe')}>
              Ventas
            </Text>
+           <Text style={styles.navItemStyle} onPress={this.navigateToScreen('IngresarPedido')}>
+           Ingresar pedido
+           </Text>
          </View>
       );
     }
@@ -364,6 +375,10 @@ programacionQuirurgica() {
   }
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
 lab() {
   if (this.props.userType === 'laboratorio' ||
         this.props.userType === 'recepcion' ||
@@ -395,6 +410,12 @@ lab() {
            </Text>
            <View style={styles.navSectionStyle}>
              {this.cuentaPaciente()}
+           </View>
+           <View style={styles.navSectionStyle}>
+             {this.cargosAdministrativos()}
+           </View>
+           <View style={styles.navSectionStyle}>
+             {this.agregarHonorarios()}
            </View>
            <View style={styles.navSectionStyle}>
              {this.cargosAdministrativos()}
@@ -466,6 +487,9 @@ lab() {
              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Importar')}>
                Importar a DB
              </Text>
+             <Text style={styles.navItemStyle} onPress={this.onUpdateButtonPress.bind(this)}>
+               Actualizar
+             </Text>
            </View>
          </View>
       );
@@ -519,7 +543,11 @@ lab() {
         {this.fichasPersonales()}
         {this.expedienteClinico()}
         {this.ocupacion()}
+<<<<<<< HEAD
         {this.imagen()}
+=======
+        {this.serv()}
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
         {this.lab()}
         {this.enfermeria()}
         {this.farmacia()}

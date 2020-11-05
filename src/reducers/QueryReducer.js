@@ -17,6 +17,7 @@ const INITIAL_STATE = {
   Cirugia: '',
   BancoSangre: '',
   Inventario: '',
+  ProductosCafeteria: '',
   Servicios: '',
   Caja: '',
   multiQry: '',

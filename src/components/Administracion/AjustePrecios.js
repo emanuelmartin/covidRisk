@@ -141,7 +141,7 @@ class AjustePrecios extends Component {
               </CardSection>
               <CardSection>
                 <FlatList
-                  data={this.props.Servicios}
+                  data={[].concat(this.props.Servicios).sort((a, b) => a.nombre > b.nombre)}
                   ItemSeparatorComponent={this.ListViewItemSeparator}
                   //Item Separator View
                   renderItem={({ item }) => (

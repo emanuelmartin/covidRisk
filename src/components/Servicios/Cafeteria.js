@@ -14,13 +14,12 @@ import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
 import SwipeView from 'react-native-swipeview';
 import { NavigationActions } from 'react-navigation';
-import { SearchBar, Icon } from 'react-native-elements';
-import { Dropdown } from 'react-native-material-dropdown';
+import { SearchBar, Icon, CheckBox } from 'react-native-elements';
 import { CardSection, Button, Spinner, Input } from '../common';
 import {
   queryFunc,
   queryAttach,
-  queryPointer,
+  queryIngreso,
   writeFunc,
   cleanFunc,
   addBill,
@@ -62,7 +61,6 @@ class Cafe extends Component {
   }
 
   componentDidMount() {
-    this.props.queryFunc({ text: '' });
     this.props.cleanFunc();
     this.props.printClean();
     this.setState(
@@ -79,6 +77,12 @@ class Cafe extends Component {
         corte: '',
         subtotal: 0,
         iva: 0
+      });
+      this.props.queryFunc({
+        type: 'equalTo',
+        object: 'Inventario',
+        variable: 'tipo',
+        text: 'cafeteria'
       });
   }
 
@@ -120,20 +124,29 @@ class Cafe extends Component {
     let subtotal = 0;
     let impuestos = 0;
     let cant = 0;
+    let descuento = 0;
 
     this.state.Productos.forEach((producto) => {
       if (isNaN(parseFloat(producto.cantidad)) || producto.cantidad <= 0) {
         cant = 0;
       } else { cant = parseFloat(producto.cantidad); }
-      subtotal += producto.precioPublico * cant;
-      impuestos += cant * producto.precioPublico * (producto.iva / 100);
+      if (this.state.empleado) {
+
+        subtotal += (producto.precioPublico * cant) * .9;
+        impuestos += (cant * producto.precioPublico * (producto.iva / 100)) * .9;
+          descuento = (subtotal + impuestos) * .1111111111111
+      } else if (this.state.cortesia) {
+          descuento += (cant * producto.precioPublico) + (cant * producto.precioPublico * (producto.iva / 100))
+        } else {
+        subtotal += producto.precioPublico * cant;
+        impuestos += cant * producto.precioPublico * (producto.iva / 100);
+      }
+
     });
 
     const total = subtotal + impuestos;
 
     this.props.addBill({
-      patient: this.state.Paciente.objectId,
-      ingreso: this.state.Ingreso,
       bill: { Type: 'cafeteria', List: this.state.Productos },
       total
     });
@@ -143,25 +156,39 @@ class Cafe extends Component {
     let subtotal = 0;
     let impuestos = 0;
     let cant = 0;
+    let descuento = 0;
+    let tipoDescuento = '';
 
     this.state.Productos.forEach((producto) => {
       if (isNaN(parseFloat(producto.cantidad)) || producto.cantidad <= 0) {
         cant = 0;
       } else { cant = parseFloat(producto.cantidad); }
-      subtotal += producto.precioPublico * cant;
-      impuestos += cant * producto.precioPublico * (producto.iva / 100);
+      if (this.state.empleado) {
+        subtotal += (producto.precioPublico * cant) * .9;
+        impuestos += (cant * producto.precioPublico * (producto.iva / 100)) * .9;
+        descuento = (subtotal + impuestos) * .111111111111
+        tipoDescuento = 'empleado';
+      } else if (this.state.cortesia) {
+          tipoDescuento = 'cortesia';
+          descuento += (cant * producto.precioPublico) + (cant * producto.precioPublico * (producto.iva / 100))
+        } else {
+        subtotal += producto.precioPublico * cant;
+        impuestos += cant * producto.precioPublico * (producto.iva / 100);
+      }
     });
     this.setState({
       modal: true,
       subtotal,
       iva: impuestos,
-      recibido: (subtotal + impuestos).toFixed(2).toString()
+      recibido: (subtotal + impuestos).toFixed(2).toString(),
+      descuento,
+      tipoDescuento
     });
   }
 
   onPayConfirm() {
     const total = { subtotal: this.state.subtotal, iva: this.state.iva };
-    const { Productos } = this.state;
+    const { Productos, descuento, tipoDescuento } = this.state;
     if (parseFloat(this.state.recibido) < (total.subtotal + total.iva)) {
       Alert.alert(
         'Error',
@@ -177,6 +204,8 @@ class Cafe extends Component {
           tipoVenta: 'ventaPublico',
           lista: { Type: 'cafeteria', farmacia: Productos },
           recibido: parseFloat(this.state.recibido),
+          descuento: descuento.toFixed(2),
+          tipoDescuento: tipoDescuento
       });
     }
   }
@@ -185,7 +214,10 @@ class Cafe extends Component {
     const parseRetiro = parseFloat(retiro);
     if (parseRetiro > 0 && parseRetiro <= this.props.Caja.efectivo) {
       this.setState({ modalCorte: false });
-      this.props.corte('cafeteria', parseRetiro);
+      this.props.corte('cafeteria', parseRetiro).then(() => {
+        console.log('ImprimirCorte')
+        this.onPrintCorte()
+      });
     } else {
       let error = '';
       if (parseRetiro <= 0) {
@@ -206,6 +238,10 @@ class Cafe extends Component {
 
   onPrintTicket() {
     this.props.printHTMLReducer(this.props.ticketInfo, 'ticketVenta', false);
+  }
+
+  onPrintCorte() {
+    this.props.printHTMLReducer(this.props.corteInfo, 'ticketCorte', false);
   }
 
   onNewBillPress() {
@@ -246,7 +282,7 @@ class Cafe extends Component {
   }
 
   updatePaciente(item) {
-    this.setState({ Paciente: item.paciente, Ingreso: item.objectId });
+    this.setState({ Paciente: item, Ingreso: item.ingresoId });
     this.props.queryFunc({ text: '' });
   }
 
@@ -283,9 +319,20 @@ class Cafe extends Component {
     }
     let dataList = null;
     if (Array.isArray(this.props.Inventario)) {
+<<<<<<< HEAD
       dataList = this.props.Inventario;
     } else {
       dataList = [this.props.Inventario];
+=======
+      dataList = [].concat(this.props.Inventario).sort((a, b) => a.nombre > b.nombre);
+    } else {
+      dataList = [].concat([this.props.Inventario]).sort((a, b) => a.nombre > b.nombre);
+    }
+    if (this.props.Inventario === null || this.props.Inventario === undefined || this.props.Inventario === "") {
+      return (
+        <View/>
+      );
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
     }
     return (
       <FlatList
@@ -297,7 +344,11 @@ class Cafe extends Component {
         )}
         enableEmptySections
         style={{ marginTop: 10 }}
+<<<<<<< HEAD
         keyExtractor={(item) => item.code}
+=======
+        keyExtractor={(item, index) => index.toString()}
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
       />
     );
   }
@@ -313,7 +364,11 @@ class Cafe extends Component {
         )}
         enableEmptySections
         style={{ marginTop: 10 }}
+<<<<<<< HEAD
         keyExtractor={(item) => item.code}
+=======
+        keyExtractor={(item, index) => index.toString()}
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
       />
     );
   }
@@ -322,12 +377,21 @@ class Cafe extends Component {
     let subtotal = 0;
     let cant = 0;
     let impuestos = 0;
+    let descuento = 0;
     this.state.Productos.forEach((producto) => {
       if (isNaN(parseFloat(producto.cantidad)) || producto.cantidad <= 0) {
         cant = 0;
       } else { cant = parseFloat(producto.cantidad); }
-      subtotal += producto.precioPublico * cant;
-      impuestos += cant * producto.precioPublico * (producto.iva / 100);
+      if (this.state.empleado) {
+        subtotal += (producto.precioPublico * cant) * .9;
+        impuestos += (cant * producto.precioPublico * (producto.iva / 100)) * .9;
+        descuento = (subtotal + impuestos) * .1111111111111
+      } else if (this.state.cortesia) {
+            descuento += (cant * producto.precioPublico) + (cant * producto.precioPublico * (producto.iva / 100))
+        } else {
+        subtotal += producto.precioPublico * cant;
+        impuestos += cant * producto.precioPublico * (producto.iva / 100);
+      }
     });
     const total = subtotal + impuestos;
 
@@ -347,9 +411,9 @@ class Cafe extends Component {
     } else if (this.props.User !== '') {
       let dataList = null;
       if (Array.isArray(this.props.User)) {
-        dataList = this.props.User;
+        dataList = [].concat(this.props.User).sort((a, b) => a.names > b.names);
       } else {
-        dataList = [this.props.User];
+        dataList = [].concat([this.props.User]).sort((a, b) => a.names > b.names);
       }
       return (
         <FlatList
@@ -386,10 +450,18 @@ class Cafe extends Component {
                 if (text !== '') {
                   if (this.state.Productos.length === 0) {
                     this.props.queryAttach({
+<<<<<<< HEAD
                     object: 'Inventario',
                     text,
                     constrain: [{ type: 'matches', variable: 'nombre', text, regex: 'i' },
                       { type: 'equalTo', variable: 'tipo', text: 'cafeteria', bool: 'and' }]
+=======
+                      object: 'Inventario',
+                      text,
+                      constrain:
+                      [{type: 'equalTo', variable: 'tipo', text: 'cafeteria'},
+                        { type: 'matches', variable: 'nombre', text, bool: 'and', regex: 'i' }]
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
                     });
                   } else {
                     const productoBusqueda = [];
@@ -423,6 +495,18 @@ class Cafe extends Component {
       <View style={{ flex: 1 }}>
         {this.renderModal()}
         <CardSection>
+        <CheckBox
+          title='Empleado'
+          checked={this.state.empleado}
+          onPress={() => this.setState({ empleado: !this.state.empleado })}
+        />
+        <CheckBox
+          title='Cortesia'
+          checked={this.state.cortesia}
+          onPress={() => this.setState({ cortesia: !this.state.cortesia })}
+        />
+        </CardSection>
+        <CardSection>
             <Text style={styles.emphasisTextStyle}>Descripción:</Text>
           <View style={{ flex: 1 }}>
             <Text
@@ -453,12 +537,12 @@ class Cafe extends Component {
               searchIcon={{ size: 24 }}
               containerStyle={{ flex: 1, backgroundColor: 'white' }}
               imputStyle={{ backgroundColor: 'white', marginTop: 0, marginBottom: 0 }}
-              onChangeText={text => this.props.queryPointer({
+              onChangeText={text => this.props.queryIngreso({
                 type: 'startsWith',
                 object: 'User',
                 variable: 'lastName1',
-                text,
-                pointer: { object: 'IngresosActivos', variable: 'paciente' } })}
+                text})
+              }
               onClear={() => this.props.queryFunc({ text: '' })}
               placeholder="Ingresa el primer apellido..."
               value={this.props.text}
@@ -548,6 +632,7 @@ class Cafe extends Component {
           </CardSection>
           <CardSection>
             <Input
+              selectTextOnFocus
 							label="Recibo"
 							placeholder="0"
 							onChangeText={(text) => this.setState({ recibido: text })}
@@ -652,7 +737,6 @@ class Cafe extends Component {
   }
 
   renderCorteCaja() {
-    if (this.state.sellType === '') {
       return (
         <View style={{ flex: 1, justifyContent: 'flex-end', flexDirection: 'column' }} >
           <CardSection>
@@ -673,7 +757,6 @@ class Cafe extends Component {
           <CardSection />
         </View>
       );
-    }
   }
 
   renderButtons() {
@@ -744,7 +827,7 @@ class Cafe extends Component {
         onPress={() => this.updatePaciente(item)}
         >
           <View>
-            <Text style={styles.textStyle} >{item.paciente.names} {item.paciente.lastName1} {item.paciente.lastName2} </Text>
+            <Text style={styles.textStyle} >{item.names} {item.lastName1} {item.lastName2} </Text>
           </View>
         </TouchableWithoutFeedback>
       );
@@ -786,24 +869,6 @@ class Cafe extends Component {
     }
   }
 
-  drop() {
-    const data = [{
-        value: 'Venta al público',
-      }, {
-        value: 'Cuenta Paciente'
-      }];
-    return (
-      <CardSection>
-        <Dropdown
-        containerStyle={{ flex: 1 }}
-        data={data}
-        value={this.state.sellType}
-        onChangeText={value => this.setState({ sellType: value })}
-        placeholder={'Selecciona el tipo de venta'}
-        />
-      </CardSection>
-    );
-  }
   render() {
     return (
       <View style={{ flex: 1 }}>
@@ -856,7 +921,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = ({ query, bill, printR }) => {
  const { text, User, Inventario, Caja } = query;
  const load = query.loading;
- const { loading, error, succesBill, succesPay, ticketInfo } = bill;
+ const { loading, error, succesBill, succesPay, ticketInfo, corteInfo } = bill;
  const { print } = printR;
  return {
    text,
@@ -869,14 +934,15 @@ const mapStateToProps = ({ query, bill, printR }) => {
    succesPay,
    load,
    ticketInfo,
-   print
+   print,
+   corteInfo
  };
 };
 
 export default connect(mapStateToProps,
   { queryFunc,
     queryAttach,
-    queryPointer,
+    queryIngreso,
     writeFunc,
     cleanFunc,
     addBill,

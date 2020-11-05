@@ -71,9 +71,9 @@ class ListaProveedores extends React.Component {
   render() {
     let dataList = null;
     if (Array.isArray(this.props.Proveedor)) {
-      dataList = this.props.Proveedor;
+      dataList = [].concat(this.props.Proveedor).sort((a, b) => a.nombre > b.nombre);
     } else {
-      dataList = [this.props.Proveedor];
+      dataList = [].concat([this.props.Proveedor]).sort((a, b) => a.nombre > b.nombre);
     }
 
     console.log(dataList)

@@ -26,7 +26,8 @@ const INITIAL_STATE = {
   Productos: new Array(),
   dataList: null,
   buscarCuenta: true,
-  buscarHerramienta: false };
+  buscarHerramienta: false,
+query: true };
 
 class AdminLaboratorio extends Component {
 
@@ -165,9 +166,18 @@ class AdminLaboratorio extends Component {
 }
 
   buscarCuenta() {
+    if(this.state.query) {
+      this.props.queryFunc({
+        type: 'equalTo',
+        object: 'Cuenta',
+        variable: 'pendienteLaboratorio',
+        text: true,
+      include: ['paciente', 'medicoSolicitante', 'autor', 'ingresoPaciente.ubicacion'] })
+      this.setState({query: false})
+    }
     return (
       <View style={{ paddingLeft: 10, paddingTop: 30, paddingBottom: 0}}>
-      <TouchableWithoutFeedback onPress={() => { this.setState({ buscarCuenta: true }); }}>
+      <TouchableWithoutFeedback onPress={() => { this.setState({ buscarCuenta: true, query: true }); }}>
       <View>
       {this.nombreCuenta()}
       </View>
@@ -342,12 +352,7 @@ class AdminLaboratorio extends Component {
 
     if (!failed) {
     pedido.save().then(() => {
-      Alert.alert(
-        'Listo',
-        'Estudio confirmado correctamente',
-        [{ text: 'Ok', style: 'cancel' }],
-        { cancelable: false }
-      );
+
       this.setState(INITIAL_STATE)
     })
   } else {
@@ -372,9 +377,11 @@ class AdminLaboratorio extends Component {
   render() {
     console.log(this.state.Productos)
     return (
-      <View>
+      <View style={{ flex: 1 }}>
       {this.buscarCuenta()}
+      <ScrollView>
       {this.listaProductos()}
+      </ScrollView>
         <View>
           </View>
       </View>

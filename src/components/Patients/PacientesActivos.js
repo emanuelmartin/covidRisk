@@ -221,11 +221,11 @@ async query() {
               <TouchableWithoutFeedback
               onPress={this.navigateToScreen('DetalleActivos', item)}
               >
-              <View>
-              <CardSection>
-                  <ComponentePaciente item={item} tipo={'activos'}/>
-                  </CardSection>
-              </View>
+                <View>
+                <CardSection>
+                    <ComponentePaciente item={item} tipo={'activos'}/>
+                    </CardSection>
+                </View>
               </TouchableWithoutFeedback>
             )}
             enableEmptySections

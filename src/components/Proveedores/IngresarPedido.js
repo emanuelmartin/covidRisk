@@ -173,6 +173,11 @@ class IngresarPedido extends Component {
           </CardSection>
           </ScrollView>
           <CardSection>
+          <Button onPress={() => {
+            this.navigateToScreen('AgregarProveedor')
+          this.setState({ buscarProveedor: false })}}>
+            Añadir proveedor
+          </Button>
           <Button
           onPress={() => { this.props.cleanFunc(); this.setState({ buscarProveedor: false }); }}
           >
@@ -199,7 +204,6 @@ class IngresarPedido extends Component {
         <View style={{ flex: 1 }}>
           <CardSection>
             <SearchBar
-            autoCapitalize={'characters'}
               round
               lightTheme
               containerStyle={{ flex: 1, backgroundColor: 'white' }}
@@ -250,9 +254,9 @@ class IngresarPedido extends Component {
     let dataList = null;
 
     if (Array.isArray(this.props.Proveedor)) {
-      dataList = this.props.Proveedor;
+      dataList = [].concat(this.props.Proveedor).sort((a, b) => a.nombre > b.nombre);
     } else {
-      dataList = [this.props.Proveedor];
+      dataList = [].concat([this.props.Proveedor]).sort((a, b) => a.nombre > b.nombre);
     }
 
     if (this.props.loading) {
@@ -286,9 +290,9 @@ class IngresarPedido extends Component {
     let dataList = null;
 
     if (Array.isArray(this.props.Inventario)) {
-      dataList = this.props.Inventario;
+      dataList = [].concat(this.props.Inventario).sort((a, b) => a.nombre > b.nombre);
     } else {
-      dataList = [this.props.Inventario];
+      dataList = [].concat([this.props.Inventario]).sort((a, b) => a.nombre > b.nombre);
     }
 
     if (this.props.loading) {
@@ -703,7 +707,7 @@ class IngresarPedido extends Component {
 
   actualizarPedido() {
     const { Productos, tipoPedido, Proveedor, numFactura } = this.state;
-
+    this.calcularTotales();
     const IngresoProducto = Parse.Object.extend('IngresoProducto');
     const ingresoProducto = new IngresoProducto();
     if (this.state.pedidoID !== '') ingresoProducto.set('objectId', this.state.pedidoID.toString());
@@ -720,6 +724,13 @@ class IngresarPedido extends Component {
 }
 
   ingresarPedido() {
+<<<<<<< HEAD
+=======
+const { Proveedor, Productos, numFactura, totalBruto, totalNeto, iva } = this.state;
+const { user } = this.props;
+
+if (Proveedor && Productos && numFactura) {
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
 
     const pointerProveedor = {
     __type: 'Pointer',
@@ -727,28 +738,41 @@ class IngresarPedido extends Component {
     objectId: Proveedor.objectId.toString()
     };
 
+    const pointerUser = {
+    __type: 'Pointer',
+    className: '_User',
+    objectId: user.toJSON().objectId
+    };
+
+  const objects = [];
+  let success = false;
+
   const IngresoProducto = Parse.Object.extend('IngresoProducto');
   const ingresoProducto = new IngresoProducto();
   if (this.state.pedidoID !== '') ingresoProducto.set('objectId', this.state.pedidoID.toString());
   ingresoProducto.set('pendiente', true);
-  ingresoProducto.set('proveedor', Proveedor.nombre);
+  ingresoProducto.set('autor', pointerUser)
+  ingresoProducto.set('proveedor', pointerProveedor);
   ingresoProducto.set('numFactura', numFactura);
   ingresoProducto.set('productos', Productos);
+  ingresoProducto.set('totalBruto', parseFloat(totalBruto));
+  ingresoProducto.set('iva', parseFloat(iva));
+  ingresoProducto.set('totalNeto', parseFloat(totalNeto));
   objects.push(ingresoProducto);
 
     Parse.Object.saveAll(objects).then((response) => {
 
-      if (tipoPedido === 'Compra') {
         success = false;
       const Pagos = Parse.Object.extend('Pagos');
       const pagos = new Pagos();
-
+      console.log(response)
       const pointerIngreso = {
       __type: 'Pointer',
       className: 'IngresoProducto',
-      objectId: response[1].id.toString()
+      objectId: response[0].id.toString()
       };
-
+      pagos.set('autor', pointerUser)
+      pagos.set('pendiente', true);
       pagos.set('totalBruto', parseFloat(totalBruto));
       pagos.set('iva', parseFloat(iva));
       pagos.set('totalNeto', parseFloat(totalNeto));
@@ -756,8 +780,21 @@ class IngresarPedido extends Component {
       pagos.set('ingresoProducto', pointerIngreso);
       pagos.set('estado', 'Pendiente');
       pagos.save().then(() => {
-      success = true;
+        Alert.alert(
+          'Listo',
+          'Ingreso registrado correctamente',
+          [{ text: 'Ok', style: 'cancel' }]
+        );
+        this.setState(INITIAL_STATE);
+      }).catch((err) => {
+        Alert.alert(
+          'Error',
+          'No se ha podido ingresar el pedido' + err,
+          [{ text: 'Ok', style: 'cancel' }]
+        );
+      })
     });
+<<<<<<< HEAD
     }
   });
   if (success) {
@@ -767,6 +804,8 @@ class IngresarPedido extends Component {
       [{ text: 'Ok', style: 'cancel' }]
     );
     this.setState(INITIAL_STATE);
+=======
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
 } else {
   Alert.alert(
     'Error',
@@ -790,9 +829,10 @@ class IngresarPedido extends Component {
   calcularTotales() {
     if (this.state.Productos && this.state.tipoPedido === 'Compra') {
     const { Productos } = this.state;
-    let { totalBruto } = this.state || 0;
-    let { iva } = this.state || 0;
-    let { totalNeto } = this.state || 0;
+
+    let totalBruto = 0;
+    let iva = 0;
+    let totalNeto = 0;
 
     Productos.forEach((element) => {
       totalBruto += parseFloat(element.costoUMC) * (parseFloat(element.ingresoUMC));
@@ -1004,11 +1044,12 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = ({ query, barCodeReader }) => {
+const mapStateToProps = ({ query, barCodeReader, auth }) => {
 const { barCode, barType } = barCodeReader;
+const { user } = auth;
 const { text, Proveedor, loading, Inventario, IngresoProducto } = query;
 console.log(query);
-return { text, Proveedor, loading, Inventario, barCode, barType, IngresoProducto };
+return { text, Proveedor, loading, Inventario, barCode, barType, IngresoProducto, user };
 };
 
 export default connect(mapStateToProps, { queryFunc, cleanFunc, cleanBarCode })(IngresarPedido);

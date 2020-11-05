@@ -18,6 +18,7 @@ import { CardSection, Button, Spinner, Input } from '../common';
 import {
   queryFunc,
   queryPointer,
+  queryIngreso,
   queryAttach,
   cleanFunc,
   partialPayment,
@@ -39,7 +40,6 @@ class PatientBill extends Component {
     let Otros = false;
 
     this.state = {
-      isLoading: false,
       Paciente,
       Insumos,
       Estudios,
@@ -53,12 +53,10 @@ class PatientBill extends Component {
   }
 
   componentDidMount() {
-    this.props.queryFunc({ text: '' });
     this.props.cleanFunc();
     this.props.printClean();
     this.setState(
       {
-        isLoading: false,
         Paciente: { names: '' },
         modalPagar: false,
         modalAbonar: false,
@@ -66,6 +64,12 @@ class PatientBill extends Component {
         total: 0,
         caja: ''
       });
+    this.props.queryIngreso({
+      type: 'exists',
+      object: 'User',
+      variable: 'lastName1',
+      text: ''
+    });
   }
 
   componentWillUnmount() {
@@ -99,32 +103,32 @@ class PatientBill extends Component {
     const dia = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
     const hora = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
     const info = {
-      paciente: this.state.Paciente.paciente,
+      paciente: this.state.Paciente,
       fecha: { dia, hora },
       lista: { Farmacia, totalFarmacia, Estudios, totalEstudios, totalAdministrativos, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }
     };
     this.props.printHTMLReducer(info, 'resumeBill', false);
   }
 
-  onDetailPrint({ Farmacia, totalFarmacia, Estudios, totalEstudios, totalAdministrativos, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }) {
+  onDetailPrint({ Farmacia, totalFarmacia, Estudios, totalEstudios, Administrativos, totalAdministrativos, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }) {
     const date = new Date();
     const dia = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
     const hora = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
     const info = {
-      paciente: this.state.Paciente.paciente,
+      paciente: this.state.Paciente,
       fecha: { dia, hora },
-      lista: { Farmacia, totalFarmacia, Estudios, totalEstudios, totalAdministrativos, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }
+      lista: { Farmacia, totalFarmacia, Estudios, totalEstudios, Administrativos, totalAdministrativos, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }
     };
     this.props.printHTMLReducer(info, 'detailBill', false);
   }
 
-  onPrintPress({ Farmacia, totalFarmacia, Estudios, totalEstudios, totalAdministrativos, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }) {
+  onPrintPress({ Farmacia, totalFarmacia, Estudios, totalEstudios, Administrativos, totalAdministrativos, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }) {
     Alert.alert(
       'Seleccione el tipo de impresión',
       '',
       [
-        { text: 'Resumida', onPress: () => this.onResumePrint({ Farmacia, totalFarmacia, Estudios, totalEstudios, totalAdministrativos, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }) },
-        { text: 'Detallada', onPress: () => this.onDetailPrint({ Farmacia, totalFarmacia, Estudios, totalEstudios, totalAdministrativos, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }) },
+        { text: 'Resumida', onPress: () => this.onResumePrint({ Farmacia, totalFarmacia, Estudios, totalEstudios, Administrativos, totalAdministrativos, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }) },
+        { text: 'Detallada', onPress: () => this.onDetailPrint({ Farmacia, totalFarmacia, Estudios, totalEstudios, Administrativos, totalAdministrativos, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia }) },
         { text: 'Cancelar', style: 'cancel' }
       ],
       { cancelable: false }
@@ -197,21 +201,14 @@ class PatientBill extends Component {
   }
 
   newLista() {
-    if (this.props.Cuenta === 'Failed') {
+    if (this.props.Cuenta === 'Failed' && this.props.Cirugia === 'Failed' && this.props.Hospitalizacion === 'Failed') {
       Alert.alert(
         'Paciente sin cargos',
         'El paciente seleccionado aún no tiene cargos',
         [{ text: 'Ok', style: 'cancel' }],
         { cancelable: false }
       );
-    } else if (this.props.Cuenta !== '') {
-      let dataList = null;
-      if (Array.isArray(this.props.Cuenta)) {
-        dataList = this.props.Cuenta;
-      } else {
-        dataList = [this.props.Cuenta];
-      }
-
+    } else {
       let totalFarmacia = 0;
       let totalEstudios = 0;
       let totalCirugia = 0;
@@ -224,124 +221,34 @@ class PatientBill extends Component {
       let Hospitalizacion = [];
       let Administrativos = [];
 
-      dataList.forEach((bill) => {
-        if (bill.cuenta.Type === 'devolucion') {
+      if (this.props.Cuenta !== undefined &&
+          this.props.Cuenta !== null &&
+          this.props.Cuenta !== '' &&
+          this.props.Cuenta !== 'Failed') {
+        let dataList = null;
+        if (Array.isArray(this.props.Cuenta)) {
+          dataList = this.props.Cuenta;
         } else {
-          if (bill.cuenta.imagen !== undefined && bill.cuenta.imagen !== null) {
-            if (bill.cuenta.imagen.length > 0) {
-              bill.cuenta.imagen.forEach((desglose) => {
-                if (Estudios.some(producto => producto.objectId === desglose.objectId)) {
-                  const pos = Estudios.map(e => { return e.objectId; }).indexOf(desglose.objectId);
-                  Estudios[pos].cant += parseFloat(desglose.cantidad);
+          dataList = [this.props.Cuenta];
+        }
+
+        dataList.forEach((bill) => {
+          if (bill.cuenta.Type === 'devolucion') {
+            /* Que hacer en caso de devolucion */
+          } else {
+            if (bill.cuenta.imagen !== undefined && bill.cuenta.imagen !== null) {
+              if (bill.cuenta.imagen.length === 1) {
+                if (Estudios.some(producto => producto.objectId === bill.cuenta.imagen[0].objectId)) {
+                  const pos = Estudios.map(e => { return e.objectId; }).indexOf(bill.cuenta.imagen[0].objectId);
+                  Estudios[pos].cant += parseFloat(bill.cuenta.imagen[0].cantidad);
                 } else {
-                  desglose.sellType = 'publico';
-                  desglose.cant = parseFloat(desglose.cantidad);
-                  Estudios.push(desglose);
+                  bill.cuenta.imagen[0].sellType = 'publico';
+                  bill.cuenta.imagen[0].cant = parseFloat(bill.cuenta.imagen[0].cantidad);
+                  Estudios.push(bill.cuenta.imagen[0]);
                 }
-                totalEstudios += desglose.precio * parseFloat(desglose.cantidad) * (1 + (desglose.iva / 100));
-              });
-            } else if (bill.cuenta.imagen.length === 1) {
-              if (Estudios.some(producto => producto.objectId === bill.cuenta.imagen[0].objectId)) {
-                const pos = Estudios.map(e => { return e.objectId; }).indexOf(bill.cuenta.imagen[0].objectId);
-                Estudios[pos].cant += parseFloat(bill.cuenta.imagen[0].cantidad);
-              } else {
-                bill.cuenta.imagen[0].sellType = 'publico';
-                bill.cuenta.imagen[0].cant = parseFloat(bill.cuenta.imagen[0].cantidad);
-                Estudios.push(bill.cuenta.imagen[0]);
-              }
-              totalEstudios += bill.cuenta.imagen[0].precio * parseFloat(bill.cuenta.imagen[0].cantidad) * (1 + (bill.cuenta.imagen[0].iva / 100));
-            }
-          }
-          if (bill.cuenta.laboratorio !== undefined && bill.cuenta.laboratorio !== null) {
-            if (bill.cuenta.laboratorio.length > 0) {
-              bill.cuenta.laboratorio.forEach((desglose) => {
-                if (Estudios.some(producto => producto.objectId === desglose.objectId)) {
-                  const pos = Estudios.map(e => { return e.objectId; }).indexOf(desglose.objectId);
-                  Estudios[pos].cant += parseFloat(desglose.cantidad);
-                } else {
-                  desglose.sellType = 'publico';
-                  desglose.cant = parseFloat(desglose.cantidad);
-                  Estudios.push(desglose);
-                }
-                totalEstudios += desglose.precio * parseFloat(desglose.cantidad) * (1 + (desglose.iva / 100));
-              });
-            } else if (bill.cuenta.laboratorio.length === 1) {
-              if (Estudios.some(producto => producto.objectId === bill.cuenta.laboratorio[0].objectId)) {
-                const pos = Estudios.map(e => { return e.objectId; }).indexOf(bill.cuenta.laboratorio[0].objectId);
-                Estudios[pos].cant += parseFloat(bill.cuenta.laboratorio[0].cantidad);
-              } else {
-                bill.cuenta.laboratorio[0].sellType = 'publico';
-                bill.cuenta.laboratorio[0].cant = parseFloat(bill.cuenta.laboratorio[0].cantidad);
-                Estudios.push(bill.cuenta.laboratorio[0]);
-              }
-              totalEstudios += bill.cuenta.laboratorio[0].precio * parseFloat(bill.cuenta.laboratorio[0].cantidad) * (1 + (bill.cuenta.laboratorio[0].iva / 100));
-            }
-          }
-          if (bill.cuenta.farmacia !== undefined && bill.cuenta.farmacia !== null) {
-            if (bill.cuenta.farmacia.length >=1) {
-              bill.cuenta.farmacia.forEach((desglose) => {
-                if (Farmacia.some(producto => producto.objectId === desglose.objectId)) {
-                  const pos = Farmacia.map(e => { return e.objectId; }).indexOf(desglose.objectId);
-                  Farmacia[pos].cant += parseFloat(desglose.cantidad);
-                } else {
-                  desglose.sellType = 'publico';
-                  desglose.cant = parseFloat(desglose.cantidad);
-                  Farmacia.push(desglose);
-                }
-                totalFarmacia += desglose.precioPublico * parseFloat(desglose.cantidad) * (1 + (desglose.iva / 100));
-              });
-            } else if (bill.cuenta.farmacia.length === 1) {
-              if (Farmacia.some(producto => producto.objectId === bill.cuenta.farmacia[0].objectId)) {
-                const pos = Farmacia.map(e => { return e.objectId; }).indexOf(bill.cuenta.farmacia[0].objectId);
-                Farmacia[pos].cant += parseFloat(bill.cuenta.farmacia[0].cantidad);
-              } else {
-                bill.cuenta.farmacia[0].sellType = 'publico';
-                bill.cuenta.farmacia[0].cant = parseFloat(bill.cuenta.farmacia[0].cantidad);
-                Farmacia.push(bill.cuenta.farmacia[0]);
-              }
-              totalFarmacia += bill.cuenta.farmacia[0].precioPublico * parseFloat(bill.cuenta.farmacia[0].cantidad) * (1 + (bill.cuenta.farmacia[0].iva / 100));
-            }
-          }
-          if (bill.cuenta.administrativo !== undefined && bill.cuenta.administrativo !== null) {
-            if (bill.cuenta.administrativo.length > 0) {
-              bill.cuenta.administrativo.forEach((desglose) => {
-                if (Estudios.some(producto => producto.objectId === desglose.objectId)) {
-                  const pos = Estudios.map(e => { return e.objectId; }).indexOf(desglose.objectId);
-                  Estudios[pos].cant += parseFloat(desglose.cantidad);
-                } else {
-                  desglose.sellType = 'publico';
-                  desglose.cant = parseFloat(desglose.cantidad);
-                  Estudios.push(desglose);
-                }
-                totalAdministrativos += desglose.precio * parseFloat(desglose.cantidad) * (1 + (desglose.iva / 100));
-              });
-            } else if (bill.cuenta.administrativo.length === 1) {
-              if (Estudios.some(producto => producto.objectId === bill.cuenta.administrativo[0].objectId)) {
-                const pos = Estudios.map(e => { return e.objectId; }).indexOf(bill.cuenta.administrativo[0].objectId);
-                Estudios[pos].cant += parseFloat(bill.cuenta.administrativo[0].cantidad);
-              } else {
-                bill.cuenta.administrativo[0].sellType = 'publico';
-                bill.cuenta.administrativo[0].cant = parseFloat(bill.cuenta.administrativo[0].cantidad);
-                Estudios.push(bill.cuenta.administrativo[0]);
-              }
-              totalAdministrativos += bill.cuenta.administrativo[0].precio * parseFloat(bill.cuenta.administrativo[0].cantidad) * (1 + (bill.cuenta.administrativo[0].iva / 100));
-            }
-          }
-          /*
-          if (bill.cuenta.List !== undefined && bill.cuenta.List !== null) {
-            if (bill.cuenta.List.length >=1) {
-              bill.cuenta.List.forEach((desglose) => {
-                if (desglose.precioPublico !== undefined && desglose.precioPublico !== null) {
-                  if (Farmacia.some(producto => producto.objectId === desglose.objectId)) {
-                    const pos = Farmacia.map(e => { return e.objectId; }).indexOf(desglose.objectId);
-                    Farmacia[pos].cant += parseFloat(desglose.cantidad);
-                  } else {
-                    desglose.sellType = 'publico';
-                    desglose.cant = parseFloat(desglose.cantidad);
-                    Farmacia.push(desglose);
-                  }
-                  totalFarmacia += desglose.precioPublico * parseFloat(desglose.cantidad) * (1 + (desglose.iva / 100));
-                } else {
+                totalEstudios += bill.cuenta.imagen[0].precio * parseFloat(bill.cuenta.imagen[0].cantidad) * (1 + (bill.cuenta.imagen[0].iva / 100));
+              } else if (bill.cuenta.imagen.length > 0) {
+                bill.cuenta.imagen.forEach((desglose) => {
                   if (Estudios.some(producto => producto.objectId === desglose.objectId)) {
                     const pos = Estudios.map(e => { return e.objectId; }).indexOf(desglose.objectId);
                     Estudios[pos].cant += parseFloat(desglose.cantidad);
@@ -351,34 +258,137 @@ class PatientBill extends Component {
                     Estudios.push(desglose);
                   }
                   totalEstudios += desglose.precio * parseFloat(desglose.cantidad) * (1 + (desglose.iva / 100));
-                }
-              });
-            } else if (bill.cuenta.List.length === 1) {
-              if (bill.cuenta.List[0].precioPublico !== undefined && bill.cuenta.List[0].precioPublico !== null) {
-                if (Farmacia.some(producto => producto.objectId === bill.cuenta.List[0].objectId)) {
-                  const pos = Farmacia.map(e => { return e.objectId; }).indexOf(bill.cuenta.List[0].objectId);
-                  Farmacia[pos].cant += parseFloat(bill.cuenta.List[0].cantidad);
-                } else {
-                  bill.cuenta.List[0].sellType = 'publico';
-                  bill.cuenta.List[0].cant = parseFloat(bill.cuenta.List[0].cantidad);
-                  Farmacia.push(bill.cuenta.List[0]);
-                }
-                totalFarmacia += bill.cuenta.List[0].precioPublico * parseFloat(bill.cuenta.List[0].cantidad) * (1 + (bill.cuenta.List[0].iva / 100));
-              } else {
-                if (Estudios.some(producto => producto.objectId === bill.cuenta.List[0].objectId)) {
-                  const pos = Estudios.map(e => { return e.objectId; }).indexOf(bill.cuenta.List[0].objectId);
-                  Estudios[pos].cant += parseFloat(bill.cuenta.List[0].cantidad);
-                } else {
-                  bill.cuenta.List[0].sellType = 'publico';
-                  bill.cuenta.List[0].cant = parseFloat(bill.cuenta.List[0].cantidad);
-                  Estudios.push(bill.cuenta.List[0]);
-                }
-                totalEstudios += bill.cuenta.List[0].precioPublico * parseFloat(bill.cuenta.List[0].cantidad) * (1 + (bill.cuenta.List[0].iva / 100));
+                });
               }
             }
-          }*/
-        }
-      });
+            if (bill.cuenta.laboratorio !== undefined && bill.cuenta.laboratorio !== null) {
+              if (bill.cuenta.laboratorio.length === 1) {
+                if (Estudios.some(producto => producto.objectId === bill.cuenta.laboratorio[0].objectId)) {
+                  const pos = Estudios.map(e => { return e.objectId; }).indexOf(bill.cuenta.laboratorio[0].objectId);
+                  Estudios[pos].cant += parseFloat(bill.cuenta.laboratorio[0].cantidad);
+                } else {
+                  bill.cuenta.laboratorio[0].sellType = 'publico';
+                  bill.cuenta.laboratorio[0].cant = parseFloat(bill.cuenta.laboratorio[0].cantidad);
+                  Estudios.push(bill.cuenta.laboratorio[0]);
+                }
+                totalEstudios += bill.cuenta.laboratorio[0].precio * parseFloat(bill.cuenta.laboratorio[0].cantidad) * (1 + (bill.cuenta.laboratorio[0].iva / 100));
+              } else if (bill.cuenta.laboratorio.length > 0) {
+                bill.cuenta.laboratorio.forEach((desglose) => {
+                  if (Estudios.some(producto => producto.objectId === desglose.objectId)) {
+                    const pos = Estudios.map(e => { return e.objectId; }).indexOf(desglose.objectId);
+                    Estudios[pos].cant += parseFloat(desglose.cantidad);
+                  } else {
+                    desglose.sellType = 'publico';
+                    desglose.cant = parseFloat(desglose.cantidad);
+                    Estudios.push(desglose);
+                  }
+                  totalEstudios += desglose.precio * parseFloat(desglose.cantidad) * (1 + (desglose.iva / 100));
+                });
+              }
+            }
+            if (bill.cuenta.farmacia !== undefined && bill.cuenta.farmacia !== null) {
+              if (bill.cuenta.farmacia.length === 1) {
+                if (Farmacia.some(producto => producto.objectId === bill.cuenta.farmacia[0].objectId)) {
+                  const pos = Farmacia.map(e => { return e.objectId; }).indexOf(bill.cuenta.farmacia[0].objectId);
+                  Farmacia[pos].cant += parseFloat(bill.cuenta.farmacia[0].cantidad);
+                } else {
+                  bill.cuenta.farmacia[0].sellType = 'publico';
+                  bill.cuenta.farmacia[0].cant = parseFloat(bill.cuenta.farmacia[0].cantidad);
+                  Farmacia.push(bill.cuenta.farmacia[0]);
+                }
+                totalFarmacia += bill.cuenta.farmacia[0].precioPublico * parseFloat(bill.cuenta.farmacia[0].cantidad) * (1 + (bill.cuenta.farmacia[0].iva / 100));
+              } else if (bill.cuenta.farmacia.length >=1) {
+                bill.cuenta.farmacia.forEach((desglose) => {
+                  if (Farmacia.some(producto => producto.objectId === desglose.objectId)) {
+                    const pos = Farmacia.map(e => { return e.objectId; }).indexOf(desglose.objectId);
+                    Farmacia[pos].cant += parseFloat(desglose.cantidad);
+                  } else {
+                    desglose.sellType = 'publico';
+                    desglose.cant = parseFloat(desglose.cantidad);
+                    Farmacia.push(desglose);
+                  }
+                  totalFarmacia += desglose.precioPublico * parseFloat(desglose.cantidad) * (1 + (desglose.iva / 100));
+                });
+              }
+            }
+            if (bill.cuenta.otros !== undefined && bill.cuenta.otros !== null) {
+              if (bill.cuenta.otros.length === 1) {
+               if (Administrativos.some(producto => producto.objectId === bill.cuenta.otros[0].objectId)) {
+                 const pos = Administrativos.map(e => { return e.objectId; }).indexOf(bill.cuenta.otros[0].objectId);
+                 Administrativos[pos].cant += parseFloat(bill.cuenta.otros[0].cantidad);
+               } else {
+                 bill.cuenta.otros[0].sellType = 'publico';
+                 bill.cuenta.otros[0].cant = parseFloat(bill.cuenta.otros[0].cantidad);
+                 Administrativos.push(bill.cuenta.otros[0]);
+               }
+               totalAdministrativos += bill.cuenta.otros[0].precio * parseFloat(bill.cuenta.otros[0].cantidad) * (1 + (bill.cuenta.otros[0].iva / 100));
+             } else if (bill.cuenta.otros.length > 0) {
+                bill.cuenta.otros.forEach((desglose) => {
+                  if (Administrativos.some(producto => producto.objectId === desglose.objectId)) {
+                    const pos = Administrativos.map(e => { return e.objectId; }).indexOf(desglose.objectId);
+                    Administrativos[pos].cant += parseFloat(desglose.cantidad);
+                  } else {
+                    desglose.sellType = 'publico';
+                    desglose.cant = parseFloat(desglose.cantidad);
+                    Administrativos.push(desglose);
+                  }
+                  totalAdministrativos += desglose.precio * parseFloat(desglose.cantidad) * (1 + (desglose.iva / 100));
+                });
+              }
+            }
+            /*
+            if (bill.cuenta.List !== undefined && bill.cuenta.List !== null) {
+              if (bill.cuenta.List.length >=1) {
+                bill.cuenta.List.forEach((desglose) => {
+                  if (desglose.precioPublico !== undefined && desglose.precioPublico !== null) {
+                    if (Farmacia.some(producto => producto.objectId === desglose.objectId)) {
+                      const pos = Farmacia.map(e => { return e.objectId; }).indexOf(desglose.objectId);
+                      Farmacia[pos].cant += parseFloat(desglose.cantidad);
+                    } else {
+                      desglose.sellType = 'publico';
+                      desglose.cant = parseFloat(desglose.cantidad);
+                      Farmacia.push(desglose);
+                    }
+                    totalFarmacia += desglose.precioPublico * parseFloat(desglose.cantidad) * (1 + (desglose.iva / 100));
+                  } else {
+                    if (Estudios.some(producto => producto.objectId === desglose.objectId)) {
+                      const pos = Estudios.map(e => { return e.objectId; }).indexOf(desglose.objectId);
+                      Estudios[pos].cant += parseFloat(desglose.cantidad);
+                    } else {
+                      desglose.sellType = 'publico';
+                      desglose.cant = parseFloat(desglose.cantidad);
+                      Estudios.push(desglose);
+                    }
+                    totalEstudios += desglose.precio * parseFloat(desglose.cantidad) * (1 + (desglose.iva / 100));
+                  }
+                });
+              } else if (bill.cuenta.List.length === 1) {
+                if (bill.cuenta.List[0].precioPublico !== undefined && bill.cuenta.List[0].precioPublico !== null) {
+                  if (Farmacia.some(producto => producto.objectId === bill.cuenta.List[0].objectId)) {
+                    const pos = Farmacia.map(e => { return e.objectId; }).indexOf(bill.cuenta.List[0].objectId);
+                    Farmacia[pos].cant += parseFloat(bill.cuenta.List[0].cantidad);
+                  } else {
+                    bill.cuenta.List[0].sellType = 'publico';
+                    bill.cuenta.List[0].cant = parseFloat(bill.cuenta.List[0].cantidad);
+                    Farmacia.push(bill.cuenta.List[0]);
+                  }
+                  totalFarmacia += bill.cuenta.List[0].precioPublico * parseFloat(bill.cuenta.List[0].cantidad) * (1 + (bill.cuenta.List[0].iva / 100));
+                } else {
+                  if (Estudios.some(producto => producto.objectId === bill.cuenta.List[0].objectId)) {
+                    const pos = Estudios.map(e => { return e.objectId; }).indexOf(bill.cuenta.List[0].objectId);
+                    Estudios[pos].cant += parseFloat(bill.cuenta.List[0].cantidad);
+                  } else {
+                    bill.cuenta.List[0].sellType = 'publico';
+                    bill.cuenta.List[0].cant = parseFloat(bill.cuenta.List[0].cantidad);
+                    Estudios.push(bill.cuenta.List[0]);
+                  }
+                  totalEstudios += bill.cuenta.List[0].precioPublico * parseFloat(bill.cuenta.List[0].cantidad) * (1 + (bill.cuenta.List[0].iva / 100));
+                }
+              }
+            }*/
+          }
+        });
+      }
 
       if (this.props.Hospitalizacion !== undefined &&
         this.props.Hospitalizacion !== null &&
@@ -392,7 +402,8 @@ class PatientBill extends Component {
         }
 
         dataList.forEach((hosp) => {
-          if(false){
+        console.log('HOSPITALIZACION', hosp);
+        if(false){
           if(hosp.servicio.tipo !== 'Consultorio'){
             const ingreso = new Date(hosp.createdAt.iso);
             let egreso = null;
@@ -410,7 +421,7 @@ class PatientBill extends Component {
             } else {
                 hosp.servicio.cant = dias;
                 hosp.servicio.sellType = 'publico';
-                this.props.Hospitalizacion.push(hosp.servicio);
+                Hospitalizacion.push(hosp.servicio);
             }
           }
         }
@@ -464,11 +475,11 @@ class PatientBill extends Component {
 
       return (
         <View>
-          {this.show('Farmacia', 'objectId', Farmacia, totalFarmacia, this.renderInsumos)}
-          {this.show('Estudios', 'objectId', Estudios, totalEstudios, this.renderServicios)}
-          {this.show('Administrativos', 'objectId', Administrativos, totalAdministrativos, this.renderHosp)}
-          {this.show('Hospitalización', 'objectId', Hospitalizacion, totalHospitalizacion, this.renderHosp)}
-          {this.show('Cirugia', 'objectId', Cirugia, totalCirugia, this.renderCirugia)}
+          {this.show('Farmacia', 'objectId', Farmacia, totalFarmacia, this.renderInsumos, true, 'presentacion')}
+          {this.show('Estudios', 'objectId', Estudios, totalEstudios, this.renderServicios, true, 'nombre')}
+          {this.show('Administrativos', 'objectId', Administrativos, totalAdministrativos, this.renderAdmin, true, 'nombre')}
+          {this.show('Hospitalización', 'objectId', Hospitalizacion, totalHospitalizacion, this.renderHosp, true, 'tipo')}
+          {this.show('Cirugia', 'objectId', Cirugia, totalCirugia, this.renderCirugia, true, 'nombre')}
           <CardSection>
             <View style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center' }}>
               <Text style={styles.emphasisTextStyle}> Total</Text>
@@ -478,7 +489,7 @@ class PatientBill extends Component {
             </View>
           </CardSection>
           <CardSection>
-            <Button onPress={this.onPrintPress.bind(this, { Farmacia, totalFarmacia, Estudios, totalEstudios, totalAdministrativos, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia })}>
+            <Button onPress={() => this.onPrintPress({ Farmacia, totalFarmacia, Estudios, totalEstudios, Administrativos, totalAdministrativos, Hospitalizacion, totalHospitalizacion, Cirugia, totalCirugia })}>
               Imprimir Cuenta
             </Button>
           </CardSection>
@@ -496,7 +507,7 @@ class PatientBill extends Component {
     }
   }
 
-  show(name, key, array, total, renderFunction) {
+  show(name, key, array, total, renderFunction, sort, sortKey) {
     if (total > 0) {
       return (
         <View>
@@ -518,13 +529,19 @@ class PatientBill extends Component {
             </View>
             </TouchableWithoutFeedback>
           </CardSection>
-          {this.listaObjetos(this.state[name], array, key, renderFunction)}
+          {this.listaObjetos(this.state[name], array, key, renderFunction, sort, sortKey)}
         </View>
       );
     }
   }
 
-  listaObjetos(boolean, array, key, renderFunction) {
+  listaObjetos(boolean, array, key, renderFunction, sort, sortKey) {
+    let newSortArray = null;
+    if (sort && sortKey!==null) {
+      newSortArray = [].concat(array).sort((a, b) => a[sortKey] > b[sortKey]);
+    } else {
+      newSortArray = array;
+    }
     if (boolean) {
       return (
         <View>
@@ -558,7 +575,7 @@ class PatientBill extends Component {
           </CardSection>
           <CardSection>
             <FlatList
-              data={array}
+              data={newSortArray}
               ItemSeparatorComponent={this.ListViewItemSeparator}
               //Item Separator View
               renderItem={({ item }) => (
@@ -575,10 +592,17 @@ class PatientBill extends Component {
   }
 
   lista() {
+    let dataUser = null;
+    if (Array.isArray(this.props.User)) {
+      dataUser = [].concat(this.props.User).sort((a, b) => a.names > b.names);
+    } else {
+      dataUser = [].concat([this.props.User]).sort((a, b) => a.names > b.names);
+    }
+    console.log('DATAUSER', dataUser);
     if (this.props.User !== 'Failed') {
       return (
         <FlatList
-          data={this.props.User}
+          data={dataUser}
           renderItem={({ item }) => (
             this.renderIt(item)
           )}
@@ -601,13 +625,14 @@ class PatientBill extends Component {
               searchIcon={{ size: 24 }}
               containerStyle={{ flex: 1, backgroundColor: 'white' }}
               imputStyle={{ backgroundColor: 'white', marginTop: 0, marginBottom: 0 }}
-              onChangeText={text => this.props.queryPointer({
+              onChangeText={text => this.props.queryIngreso({
                 type: 'matches',
                 object: 'User',
                 variable: 'lastName1',
                 text,
                 regex: 'i',
-                pointer: { object: 'IngresosActivos', variable: 'paciente' } })}
+                })
+              }
               onClear={() => this.props.queryFunc({ text: '' })}
               placeholder="Ingresa el primer apellido..."
               value={this.props.text}
@@ -632,7 +657,7 @@ class PatientBill extends Component {
             <Text
               style={[styles.patientTextStyle, { textAlign: 'right' }]}
             >
-              {this.state.Paciente.paciente.names} {this.state.Paciente.paciente.lastName1} {this.state.Paciente.paciente.lastName2}
+              {this.state.Paciente.names} {this.state.Paciente.lastName1} {this.state.Paciente.lastName2}
             </Text>
           </View>
         </CardSection>
@@ -652,13 +677,13 @@ class PatientBill extends Component {
     const pacientePointer = {
       __type: 'Pointer',
       className: '_User',
-      objectId: item.paciente.objectId
+      objectId: item.objectId
     };
 
     const ingresoPointer = {
       __type: 'Pointer',
       className: 'IngresosActivos',
-      objectId: item.objectId
+      objectId: item.ingresoId
     };
     this.setState({ Paciente: item, buscarPaciente: false });
 
@@ -779,8 +804,7 @@ class PatientBill extends Component {
             <Dropdown
             containerStyle={{ flex: 1 }}
             data={[{ value: 'principal' },
-                   { value: 'urgencias' },
-                   { value: 'laboratorio' }]}
+                   { value: 'urgencias' }]}
             value={this.state.caja}
             onChangeText={value => { this.setState({ caja: value }); }}
             placeholder={'Selecciona la caja que cobra'}
@@ -922,6 +946,42 @@ class PatientBill extends Component {
     );
   }
 
+  renderAdmin(item) {
+    return (
+      <CardSection>
+        <View style={{ flex: 1 }}>
+          <Text style={[styles.textStyle, { textAlign: 'left', fontSize: 14 }]}>
+            {item.nombre}
+          </Text>
+        </View>
+        <View style={{ flex: 1 }}>
+          <Text
+            style={[styles.textStyle, { textAlign: 'center', fontSize: 14 }]}
+          >
+            {item.cant}
+          </Text>
+        </View>
+        <View style={{ flex: 1 }}>
+          <Dropdown
+          containerStyle={{ flex: 1 }}
+          data={[{ value: 'publico' },
+                 { value: 'seguro' }]}
+          value={item.sellType}
+          onChangeText={value => { item.sellType = value; }}
+          placeholder={'Selecciona el tipo de venta'}
+          />
+        </View>
+        <View style={{ flex: 1 }}>
+          <Text
+            style={[styles.textStyle, { textAlign: 'right', fontSize: 14 }]}
+          >
+            {(item.precio).toFixed(2)}
+          </Text>
+        </View>
+      </CardSection>
+    );
+  }
+
   renderCirugia(item) {
     return (
       <CardSection>
@@ -959,7 +1019,7 @@ class PatientBill extends Component {
   }
 
   renderIt(item) {
-    if (this.state.isLoading) {
+    if (this.props.isLoading) {
       //Loading View while data is loading
       return (
         <View style={{ flex: 1, paddingTop: 20 }}>
@@ -972,7 +1032,7 @@ class PatientBill extends Component {
       onPress={() => this.updatePaciente(item)}
       >
         <View>
-          <Text style={styles.textStyle} >{item.paciente.names} {item.paciente.lastName1} {item.paciente.lastName2} </Text>
+          <Text style={styles.textStyle} >{item.names} {item.lastName1} {item.lastName2} </Text>
         </View>
       </TouchableWithoutFeedback>
     );
@@ -1010,9 +1070,7 @@ class PatientBill extends Component {
   }
 
   render() {
-   console.log(this.state);
-
-    return (
+   return (
       <View style={{ flex: 1 }}>
         <ScrollView>
           {this.renderDecide()}
@@ -1057,6 +1115,7 @@ const mapStateToProps = ({ bill, query, printR }) => {
  const { print } = printR;
  const { loading, error, succesPay, ticketInfo } = bill;
  const { text, User, Ocupacion, Cuenta, Hospitalizacion, Cirugia } = query;
+ const isLoading = query.loading;
  return {
    text,
    User,
@@ -1066,6 +1125,7 @@ const mapStateToProps = ({ bill, query, printR }) => {
    Cirugia,
    print,
    loading,
+   isLoading,
    error,
    succesPay,
    ticketInfo
@@ -1075,6 +1135,7 @@ const mapStateToProps = ({ bill, query, printR }) => {
 export default connect(mapStateToProps,
   { queryFunc,
     queryPointer,
+    queryIngreso,
     queryAttach,
     cleanFunc,
     partialPayment,

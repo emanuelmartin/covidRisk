@@ -3,12 +3,20 @@ import { connect } from 'react-redux';
 import { View, Text, Image, TouchableHighlight } from 'react-native';
 import { Card, CardSection, Header } from './common';
 import { logOut } from '../actions';
+import codePush from "react-native-code-push";
+
 
 class Home extends Component {
 
   static navigationOptions = {
     headerShown: false  //this will hide the header
   };
+
+  componentDidMount() {
+    const { user } = this.props;
+
+
+  }
 
   onLogoutButtonPress() {
     this.props.logOut();
@@ -196,6 +204,10 @@ class Home extends Component {
 
 const mapStateToProps = ({ auth }) => {
  const { loading, loggedIn, user } = auth;
+ console.log('KEY', user.CODEPUSH_KEY)
+ const deploymentKey = user.CODEPUSH_KEY;
+ codePush.sync({ deploymentKey: user.CODEPUSH_KEY })
+ codePush.checkForUpdate(deploymentKey)
  return { loading, loggedIn, user };
 };
 

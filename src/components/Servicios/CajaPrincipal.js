@@ -22,7 +22,7 @@ import { CardSection, Button, Spinner, Input } from '../common';
 import {
   queryFunc,
   queryAttach,
-  queryPointer,
+  queryIngreso,
   multiQuery,
   writeFunc,
   cleanFunc,
@@ -163,7 +163,6 @@ onPress={() => this.updateField(item, tipo, busqueda)}
   }
 
   componentDidMount() {
-    this.props.queryFunc({ text: '' });
     this.props.cleanFunc();
     this.props.printClean();
     this.setState(
@@ -188,6 +187,12 @@ onPress={() => this.updateField(item, tipo, busqueda)}
         corte: '',
         subtotal: 0,
         iva: 0
+      });
+      this.props.queryIngreso({
+        object: 'User',
+        type: 'exists',
+        variable: 'lastName1',
+        text: '',
       });
   }
 
@@ -640,7 +645,7 @@ onPress={() => this.updateField(item, tipo, busqueda)}
 
   updatePaciente(item) {
     console.log('Ingreso', item)
-    this.setState({ Paciente: item.paciente, Ingreso: item.objectId });
+    this.setState({ Paciente: item, Ingreso: item.ingresoId });
     this.props.queryFunc({ text: '' });
   }
 
@@ -880,9 +885,9 @@ onPress={() => this.updateField(item, tipo, busqueda)}
     } else if (this.props.User !== '') {
       let dataList = null;
       if (Array.isArray(this.props.User)) {
-        dataList = this.props.User;
+        dataList = [].concat(this.props.User).sort((a, b) => a.names > b.names);
       } else {
-        dataList = [this.props.User];
+        dataList = [].concat([this.props.User]).sort((a, b) => a.names > b.names);
       }
       return (
         <FlatList
@@ -1093,13 +1098,13 @@ onPress={() => this.updateField(item, tipo, busqueda)}
               searchIcon={{ size: 24 }}
               containerStyle={{ flex: 1, backgroundColor: 'white' }}
               imputStyle={{ backgroundColor: 'white', marginTop: 0, marginBottom: 0 }}
-              onChangeText={text => this.props.queryPointer({
+              onChangeText={text => this.props.queryIngreso({
                 type: 'matches',
                 object: 'User',
                 variable: 'lastName1',
                 text,
-                regex: 'i',
-                pointer: { object: 'IngresosActivos', variable: 'paciente' } })}
+                regex: 'i'})
+              }
               onClear={() => this.props.queryFunc({ text: '' })}
               placeholder="Ingresa el primer apellido..."
               value={this.props.text}
@@ -1402,7 +1407,7 @@ onPress={() => this.updateField(item, tipo, busqueda)}
         onPress={() => this.updatePaciente(item)}
         >
           <View>
-            <Text style={styles.textStyle} >{item.paciente.names} {item.paciente.lastName1} {item.paciente.lastName2} </Text>
+            <Text style={styles.textStyle} >{item.names} {item.lastName1} {item.lastName2} </Text>
           </View>
         </TouchableWithoutFeedback>
       );
@@ -1542,7 +1547,7 @@ const styles = StyleSheet.create({
 export default connect(mapStateToProps,
   { queryFunc,
     queryAttach,
-    queryPointer,
+    queryIngreso,
     multiQuery,
     writeFunc,
     cleanFunc,

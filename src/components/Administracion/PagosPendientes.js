@@ -57,7 +57,11 @@ class SurtirPedido extends Component {
       const fech = new Date(item.createdAt);
       const fecha = fech.toLocaleDateString('dd/MM/yyyy');
       const hora = fech.toLocaleTimeString();
+<<<<<<< HEAD
 
+=======
+      if(item) {
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
       return (
       <TouchableWithoutFeedback
       onPress={() => { this.props.cleanFunc(); this.updateElement(item, index, objeto, tipo, modal); }}
@@ -81,6 +85,10 @@ class SurtirPedido extends Component {
       </TouchableWithoutFeedback>
     );
   }
+<<<<<<< HEAD
+=======
+}
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
 
   updateElement(item, index, objeto, tipo, modal) {
     if (tipo === 'Lista') {
@@ -250,13 +258,21 @@ console.log('List', dataList)
       </Text>
       <Card>
       <CardSection>
+<<<<<<< HEAD
       <Text> Total sin IVA: {IngresoProducto.subtotal}</Text>
+=======
+      <Text> Total sin IVA: {IngresoProducto.totalBruto}</Text>
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
       </CardSection>
       <CardSection>
       <Text> IVA: {IngresoProducto.iva}</Text>
       </CardSection>
       <CardSection>
+<<<<<<< HEAD
       <Text> Total con IVA: {IngresoProducto.total}</Text>
+=======
+      <Text> Total con IVA: {IngresoProducto.totalNeto}</Text>
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
       </CardSection>
       </Card>
       <ScrollView>

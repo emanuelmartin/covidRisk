@@ -18,7 +18,11 @@ import { CardSection, Button, Spinner } from '../common';
 import {
   queryFunc,
   queryAttach,
+<<<<<<< HEAD
   queryPointer,
+=======
+  queryIngreso,
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
   multiQuery,
   writeFunc,
   cleanFunc,
@@ -61,7 +65,10 @@ class AgregarHonorarios extends Component {
   }
 
   componentDidMount() {
+<<<<<<< HEAD
     this.props.queryFunc({ text: '' });
+=======
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
     this.props.cleanFunc();
     this.props.printClean();
     this.setState(
@@ -79,6 +86,15 @@ class AgregarHonorarios extends Component {
         subtotal: 0,
         iva: 0
       });
+<<<<<<< HEAD
+=======
+      this.props.queryIngreso({
+        object: 'User',
+        type: 'exists',
+        variable: 'lastName1',
+        text: '',
+      });
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
   }
 
   componentWillUnmount() {
@@ -123,10 +139,21 @@ class AgregarHonorarios extends Component {
     })
 
     this.props.addBill({
+<<<<<<< HEAD
       patient: this.state.Paciente.objectId,
       ingreso: this.state.Ingreso,
       bill: { Type: 'admision', administrativos },
       autor: this.props.user
+=======
+      autor: this.props.user,
+      patient: this.state.Paciente.objectId,
+      ingreso: this.state.Ingreso,
+      bill: { Type: 'admision', laboratorio: [], imagen: [], farmacia: [], rehabilitacion: [], administrativos },
+      pendienteLaboratorio: false,
+      pendienteImagen: false,
+      pendienteFarmacia: false,
+      pendienteRehabilitacion: false
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
   });
 }
 
@@ -168,7 +195,11 @@ class AgregarHonorarios extends Component {
   }
 
   updatePaciente(item) {
+<<<<<<< HEAD
     this.setState({ Paciente: item.paciente, Ingreso: item.objectId });
+=======
+    this.setState({ Paciente: item, Ingreso: item.ingresotId });
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
     this.props.queryFunc({ text: '' });
   }
 
@@ -205,9 +236,15 @@ class AgregarHonorarios extends Component {
     }
     let dataList = null;
     if (Array.isArray(this.props.Servicios)) {
+<<<<<<< HEAD
       dataList = this.props.Servicios;
     } else {
       dataList = [this.props.Servicios];
+=======
+      dataList = [].concat(this.props.Servicios).sort((a, b) => a.nombre > b.nombre);
+    } else {
+      dataList = [].concat([this.props.Servicios]).sort((a, b) => a.nombre > b.nombre);
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
     }
     return (
       <FlatList
@@ -247,9 +284,15 @@ class AgregarHonorarios extends Component {
     } else if (this.props.Patient !== '') {
       let dataList = null;
       if (Array.isArray(this.props.Patient)) {
+<<<<<<< HEAD
         dataList = this.props.Patient;
       } else {
         dataList = [this.props.Patient];
+=======
+        dataList = [].concat(this.props.Patient).sort((a, b) => a.names > b.names);
+      } else {
+        dataList = [].concat([this.props.Patient]).sort((a, b) => a.names > b.names);
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
       }
       return (
         <FlatList
@@ -279,13 +322,22 @@ class AgregarHonorarios extends Component {
               searchIcon={{ size: 24 }}
               containerStyle={{ flex: 1, backgroundColor: 'white' }}
               imputStyle={{ backgroundColor: 'white', marginTop: 0, marginBottom: 0 }}
+<<<<<<< HEAD
               onChangeText={text => this.props.queryPointer({
+=======
+              onChangeText={text => this.props.queryIngreso({
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
                 type: 'matches',
                 object: 'User',
                 variable: 'lastName1',
                 regex: 'i',
+<<<<<<< HEAD
                 text,
                 pointer: { object: 'IngresosActivos', variable: 'paciente' } })}
+=======
+                text })
+              }
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
               onClear={() => this.props.queryFunc({ text: '' })}
               placeholder="Ingresa el primer apellido..."
               value={this.props.text}
@@ -469,7 +521,11 @@ class AgregarHonorarios extends Component {
         onPress={() => this.updatePaciente(item)}
         >
           <View>
+<<<<<<< HEAD
             <Text style={styles.textStyle} >{item.paciente.names} {item.paciente.lastName1} {item.paciente.lastName2} </Text>
+=======
+            <Text style={styles.textStyle} >{item.names} {item.lastName1} {item.lastName2} </Text>
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
           </View>
         </TouchableWithoutFeedback>
       );
@@ -576,7 +632,11 @@ const mapStateToProps = ({ query, bill, printR, auth }) => {
 export default connect(mapStateToProps,
   { queryFunc,
     queryAttach,
+<<<<<<< HEAD
     queryPointer,
+=======
+    queryIngreso,
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
     multiQuery,
     writeFunc,
     cleanFunc,

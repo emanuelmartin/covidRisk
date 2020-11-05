@@ -215,10 +215,11 @@ class SolicitudesEstudios extends Component {
       return <Spinner size="large" />;
     }
     let dataList = null;
+
     if (Array.isArray(this.props.Servicios)) {
-      dataList = this.props.Servicios;
+      dataList = [].concat(this.props.Servicios).sort((a, b) => a.nombre > b.nombre);
     } else {
-      dataList = [this.props.Servicios];
+      dataList = [].concat([this.props.Servicios]).sort((a, b) => a.nombre > b.nombre);
     }
     return (
       <FlatList
@@ -236,6 +237,7 @@ class SolicitudesEstudios extends Component {
   }
 
   listaProductoAnadido() {
+    //const dataList = [].concat(this.state.Productos).sort((a, b) => a.nombre > b.nombre);
     return (
       <FlatList
         data={this.state.Productos}
@@ -258,9 +260,9 @@ class SolicitudesEstudios extends Component {
     } else if (this.props.Patient !== '') {
       let dataList = null;
       if (Array.isArray(this.props.Patient)) {
-        dataList = this.props.Patient;
+        dataList = [].concat(this.props.Patient).sort((a, b) => a.names > b.names);
       } else {
-        dataList = [this.props.Patient];
+        dataList = [].concat([this.props.Patient]).sort((a, b) => a.names > b.names);
       }
       return (
         <FlatList
@@ -567,7 +569,6 @@ class SolicitudesEstudios extends Component {
   }
 
   render() {
-    console.log(this.state);
     const data = [{
         value: 'Venta al público',
       }, {
@@ -624,7 +625,6 @@ const mapStateToProps = ({ query, bill, printR, auth }) => {
  const Patient = User;
  const load = query.loading;
  const { user } = auth;
- console.log('USER', user)
  const { loading, error, succesBill, succesPay, ticketInfo } = bill;
  const { print } = printR;
  return {

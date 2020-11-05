@@ -290,9 +290,9 @@ class Laboratorio extends Component {
     }
     let dataList = null;
     if (Array.isArray(this.props.Servicios)) {
-      dataList = this.props.Servicios;
+      dataList = [].concat(this.props.Servicios).sort((a, b) => a.nombre > b.nombre);
     } else {
-      dataList = [this.props.Servicios];
+      dataList = [].concat([this.props.Servicios]).sort((a, b) => a.nombre > b.nombre);
     }
     return (
       <FlatList
@@ -363,9 +363,9 @@ class Laboratorio extends Component {
     } else if (this.props.User !== '') {
       let dataList = null;
       if (Array.isArray(this.props.User)) {
-        dataList = this.props.User;
+        dataList = [].concat(this.props.User).sort((a, b) => a.names > b.names);
       } else {
-        dataList = [this.props.User];
+        dataList = [].concat([this.props.User]).sort((a, b) => a.names > b.names);
       }
       return (
         <FlatList

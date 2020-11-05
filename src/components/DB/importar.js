@@ -30,7 +30,11 @@ export default class Importar extends Component {
 
   importar() {
         const Inventario = Parse.Object.extend('Inventario');
+<<<<<<< HEAD
         const Productos = require('./farmacia.json');
+=======
+        //const Productos = require('./farmacia.json');
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
         const objects = [];
         Productos.forEach((producto) => {
           console.log(producto)

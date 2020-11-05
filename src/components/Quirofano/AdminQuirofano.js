@@ -142,7 +142,7 @@ class AdminQuirofano extends React.Component {
       if (objeto === 'User' && busqueda === 'buscarPaciente') {
         return (
           <FlatList
-            data={dataList}
+            data={[].concat(dataList).sort((a, b) => a.names > b.names)}
             ItemSeparatorComponent={this.ListViewItemSeparator}
             //Item Separator View
             renderItem={({ item }) => (
@@ -156,7 +156,7 @@ class AdminQuirofano extends React.Component {
       } else if (objeto === 'User' && busqueda === 'seleccionarMedicos') {
         return (
           <FlatList
-            data={dataList}
+            data={[].concat(dataList).sort((a, b) => a.names > b.names)}
             ItemSeparatorComponent={this.ListViewItemSeparator}
             //Item Separator View
             renderItem={({ item }) => (
@@ -170,7 +170,7 @@ class AdminQuirofano extends React.Component {
       } else if (objeto === 'Inventario') {
         return (
           <FlatList
-            data={dataList}
+            data={[].concat(dataList).sort((a, b) => a.nombre > b.nombre)}
             ItemSeparatorComponent={this.ListViewItemSeparator}
             //Item Separator View
             renderItem={({ item }) => (
@@ -184,7 +184,7 @@ class AdminQuirofano extends React.Component {
       } else if (objeto === 'rentaEquipos') {
         return (
           <FlatList
-            data={dataList}
+            data={[].concat(dataList).sort((a, b) => a.nombre > b.nombre)}
             ItemSeparatorComponent={this.ListViewItemSeparator}
             //Item Separator View
             renderItem={({ item }) => (

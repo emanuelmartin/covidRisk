@@ -9,6 +9,10 @@ class PruebaCalendario extends Component {
     super(props);
 
     LocaleConfig.locales.en = LocaleConfig.locales[''];
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
 LocaleConfig.locales.mx = {
   monthNames: [
     'Enero',
@@ -50,6 +54,10 @@ LocaleConfig.locales.mx = {
   dayNamesShort: ['Dom.', 'Lun.', 'Mar.', 'Mie.', 'Jue.', 'Vie.', 'Sab.'],
 };
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
 LocaleConfig.defaultLocale = 'mx';
 
     this.state = {
@@ -68,6 +76,10 @@ LocaleConfig.defaultLocale = 'mx';
       variable: 'tipo',
       text: 'Cirugía'
     });
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
     this.loadItems();
   }
 
@@ -118,6 +130,10 @@ this.setState({
         style={[styles.item, {height: item.height}]}
         onPress={() => Alert.alert(
           item.name,
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
           `Sala: ${item.sala}\nHora: ${item.hora}\nDuración aproximada: ${item.duracion}\nTipo de cirugía: ${item.tipo}\nNombre del paciente: ${item.nombrePaciente}\nEdad del paciente: ${item.edadPaciente}\nCirujano: ${item.cirujano}\nAyudante: ${item.ayudante}\nInstrumentista: ${item.instrumentista}\nAnestesiólogo: ${item.anestesiologo}\nPediatra: ${item.pediatra}\nImagenología: ${item.imagenologia}\nPersona que programa: ${item.nombrePrograma}\nEnfermero que programa: ${item.enfermeroPrograma}\nObservaciones: ${item.observaciones}\nFecha de programación: ${item.fechaProgramacion}`
         )}
       >

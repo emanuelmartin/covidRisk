@@ -1,4 +1,5 @@
 import Parse from 'parse/react-native';
+import codePush from "react-native-code-push";
 
 import {
   EMAIL_CHANGED,

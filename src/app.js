@@ -6,15 +6,20 @@ import { createStore, applyMiddleware } from 'redux';
 import reducers from './reducers';
 import Nav from './components/navigator';
 import 'react-native-gesture-handler';
+<<<<<<< HEAD
 import {Notifications} from 'react-native-notifications';
+=======
+import { Notifications } from 'react-native-notifications';
+import codePush from "react-native-code-push";
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
 
 const AsyncStorage = require('react-native').AsyncStorage;
+
 
 Parse.setAsyncStorage(AsyncStorage);
 Parse.serverURL = 'https://parseapi.back4app.com/';
 
-export default class MyComponent extends Component {
-
+class App extends Component {
 
   componentWillMount() {
     console.disableYellowBox = true;
@@ -33,6 +38,10 @@ export default class MyComponent extends Component {
      });
 
      Notifications.postLocalNotification({
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
   body: 'Has recibido un pedido de enfermería',
   title: 'Pedido nuevo',
   sound: 'chime.aiff',
@@ -52,3 +61,16 @@ export default class MyComponent extends Component {
     );
   }
 }
+
+const updateDialogOptions = {
+        title: "Tienes una actualización",
+        optionalUpdateMessage: "Tienes una actualización disponible, ¿quieres instalarla?",
+        optionalIgnoreButtonLabel: "No",
+        optionalInstallButtonLabel: "Sí",
+        mandatoryUpdateMessage: "Se instalará una nueva actualización",
+    };
+    const codePushOptions = { checkFrequency: codePush.CheckFrequency.ON_APP_RESUME, updateDialog: updateDialogOptions, installMode: codePush.InstallMode.IMMEDIATE };
+
+App = codePush(codePushOptions)(App);
+
+export default App;

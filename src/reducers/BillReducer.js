@@ -27,7 +27,7 @@ export default (state = INITIAL_STATE, action) => {
     case ADD_BILL_SUCCES:
       return { ...state, loading: false, succesBill: true };
     case ADD_BILL_FAIL:
-      return { ...state, loading: false, error: 'Error al añadir cuenta' };
+      return { ...state, loading: false, error: action.error };
     case PAYMENT:
       return { ...state, loading: true };
     case PAYMENT_SUCCES:
@@ -37,7 +37,7 @@ export default (state = INITIAL_STATE, action) => {
     case CORTE:
       return { ...state, loading: true };
     case CORTE_SUCCESS:
-        return { ...state, loading: false };
+        return { ...state, loading: false, corteInfo: action.info };
     case ADD_RESTART_STATE:
       return { ...state, ...INITIAL_STATE };
     default:

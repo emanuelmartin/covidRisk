@@ -61,23 +61,285 @@ class AgregarProducto extends Component {
     this.state = INITIAL_STATE;
   }
 
+  productosCafeteria() {
+    const { producto } = this.state;
+
+    if (producto.tipoProducto === 'Envasado') {
+    return(
+      <KeyboardAwareScrollView style={{ flex: 1, padding: 15, paddingEnd: 60 }}>
+
+          <CardSection>
+          <Input
+            label="Código de barras"
+            placeholder="0602760006362"
+            onChangeText={(text) => this.setState({
+              producto: update(this.state.producto, { codigo: { $set: text } })
+            })}
+            value={this.state.producto.codigo}
+          />
+          <Icon
+            name='camera'
+            type='material-community'
+            onPress={this.navigateToScreen('BarCodeScanner', { updateCode: false })}
+          />
+        </CardSection>
+
+      <CardSection>
+        <Input
+          label="Nombre del producto"
+          placeholder="Yogurt Activia (Fresa)"
+          onChangeText={(text) => this.setState({
+            producto: update(this.state.producto, { nombre: { $set: text } })
+          })}
+          value={this.state.producto.nombre}
+        />
+      </CardSection>
+
+      <CardSection>
+        <Input
+          label="Marca"
+          placeholder="Activia"
+          onChangeText={(text) => this.setState({
+            producto: update(this.state.producto, { laboratorio: { $set: text } })
+          })}
+          value={this.state.producto.laboratorio}
+        />
+      </CardSection>
+
+      <CardSection>
+        <Input
+          label="Proveedor"
+          placeholder="Danone"
+          onChangeText={(text) => this.setState({
+            producto: update(this.state.producto, { proveedor: { $set: text } })
+          })}
+          value={this.state.producto.proveedor}
+        />
+      </CardSection>
+
+      <CardSection>
+        <Input
+          label="Costo de adquisición"
+          placeholder="0"
+          keyboardType="numeric"
+          onChangeText={(text) => this.setState({
+            producto: update(this.state.producto, { costoUMC: { $set: parseFloat(text) } })
+          })}
+          value={this.state.producto.costoUMC}
+          />
+          </CardSection>
+
+
+      <CardSection>
+        <Text>IVA: </Text>
+        <Dropdown
+          containerStyle={{ flex: 1 }}
+          data={[{ value: '0' },
+                { value: '16' }
+                ]}
+                onChangeText={(text) => this.setState({
+                  producto: update(this.state.producto, { iva: { $set: text } })
+                })}
+                value={this.state.producto.iva}
+          placeholder={'Seleccione la tasa correspondiente'}
+        />
+      </CardSection>
+
+      <CardSection>
+        <Input
+          label="Precio de venta (neto)"
+          placeholder="350.00"
+          keyboardType="numeric"
+          onChangeText={(text) => this.setState({
+            producto: update(this.state.producto, { precioPublico: { $set: text } })
+          })}
+          value={this.state.producto.precioPublico}
+        />
+      </CardSection>
+      <CardSection>
+        <Input
+          label="Stock"
+          placeholder="0"
+          onChangeText={(text) => this.setState({
+            producto: update(this.state.producto, { stock: { $set: text } })
+          })}
+          value={this.state.producto.stock}
+          keyboardType="numeric"
+        />
+      </CardSection>
+      <CardSection>
+        {this.renderButton()}
+      </CardSection>
+    </KeyboardAwareScrollView>
+  )} else if (producto.tipoProducto === 'Preparado') {
+    return(
+      <KeyboardAwareScrollView style={{ flex: 1, padding: 15, paddingEnd: 60 }}>
+
+      <CardSection>
+        <Input
+          label="Nombre del producto"
+          placeholder="Yogurt Activia (Fresa)"
+          onChangeText={(text) => this.setState({
+            producto: update(this.state.producto, { nombre: { $set: text } })
+          })}
+          value={this.state.producto.nombre}
+        />
+      </CardSection>
+
+      <CardSection>
+        <Text>IVA: </Text>
+        <Dropdown
+          containerStyle={{ flex: 1 }}
+          data={[{ value: '0' },
+                { value: '16' }
+                ]}
+                onChangeText={(text) => this.setState({
+                  producto: update(this.state.producto, { iva: { $set: text } })
+                })}
+                value={this.state.producto.iva}
+          placeholder={'Seleccione la tasa correspondiente'}
+        />
+      </CardSection>
+
+      <CardSection>
+        <Input
+          label="Precio de venta (neto)"
+          placeholder="350.00"
+          keyboardType="numeric"
+          onChangeText={(text) => this.setState({
+            producto: update(this.state.producto, { precioPublico: { $set: text } })
+          })}
+          value={this.state.producto.precioPublico}
+        />
+      </CardSection>
+
+      <CardSection>
+        {this.renderButton()}
+      </CardSection>
+    </KeyboardAwareScrollView>
+  )} else if (producto.tipoProducto === 'Extra') {
+    return(
+      <KeyboardAwareScrollView style={{ flex: 1, padding: 15, paddingEnd: 60 }}>
+
+      <CardSection>
+        <Input
+          label="Nombre del producto"
+          placeholder="Yogurt Activia (Fresa)"
+          onChangeText={(text) => this.setState({
+            producto: update(this.state.producto, { nombre: { $set: text } })
+          })}
+          value={this.state.producto.nombre}
+        />
+      </CardSection>
+
+      <CardSection>
+        <Text>IVA: </Text>
+        <Dropdown
+          containerStyle={{ flex: 1 }}
+          data={[{ value: '0' },
+                { value: '16' }
+                ]}
+                onChangeText={(text) => this.setState({
+                  producto: update(this.state.producto, { iva: { $set: text } })
+                })}
+                value={this.state.producto.iva}
+          placeholder={'Seleccione la tasa correspondiente'}
+        />
+      </CardSection>
+
+      <CardSection>
+        <Input
+          label="Precio de venta (neto)"
+          placeholder="350.00"
+          keyboardType="numeric"
+          onChangeText={(text) => this.setState({
+            producto: update(this.state.producto, { precioPublico: { $set: text } })
+          })}
+          value={this.state.producto.precioPublico}
+        />
+      </CardSection>
+
+      <CardSection>
+        {this.renderButton()}
+      </CardSection>
+    </KeyboardAwareScrollView>
+  )} else if (producto.tipoProducto === 'Materia prima') {
+    return(
+      <KeyboardAwareScrollView style={{ flex: 1, padding: 15, paddingEnd: 60 }}>
+      <CardSection>
+        <Input
+          label="Nombre del producto"
+          placeholder="Yogurt Activia (Fresa)"
+          onChangeText={(text) => this.setState({
+            producto: update(this.state.producto, { nombre: { $set: text } })
+          })}
+          value={this.state.producto.nombre}
+        />
+      </CardSection>
+
+      <CardSection>
+        <Input
+          label="Proveedor"
+          placeholder="Danone"
+          onChangeText={(text) => this.setState({
+            producto: update(this.state.producto, { proveedor: { $set: text } })
+          })}
+          value={this.state.producto.proveedor}
+        />
+      </CardSection>
+
+      <CardSection>
+        <Input
+          label="Costo de adquisición"
+          placeholder="0"
+          keyboardType="numeric"
+          onChangeText={(text) => this.setState({
+            producto: update(this.state.producto, { costoUMV: { $set: parseFloat(text) } })
+          })}
+          value={this.state.producto.costoUMV}
+          />
+          </CardSection>
+
+      <CardSection>
+        <Text>IVA: </Text>
+        <Dropdown
+          containerStyle={{ flex: 1 }}
+          data={[{ value: '0' },
+                { value: '16' }
+                ]}
+                onChangeText={(text) => this.setState({
+                  producto: update(this.state.producto, { iva: { $set: text } })
+                })}
+                value={this.state.producto.iva}
+          placeholder={'Seleccione la tasa correspondiente'}
+        />
+      </CardSection>
+
+
+      <CardSection>
+        {this.renderButton()}
+      </CardSection>
+    </KeyboardAwareScrollView>
+  ) }
+  }
+
     renderFields() {
       const tiposUMC = [{
-          value: 'CAJA',
+          value: 'Caja',
         }, {
-          value: 'PIEZA'
+          value: 'Pieza'
         }, {
-          value: 'PAQUETE'
+          value: 'Paquete'
         }, {
-          value: 'GALON'
+          value: 'Galon'
         }, {
-          value: 'LITRO'
+          value: 'Litro'
         }, {
-          value: 'FRASCO'
+          value: 'Frasco'
         }, {
-          value: 'PAR'
+          value: 'Par'
         }, {
-          value: 'DOCENA'
+          value: 'Docena'
         }];
 
         const proveedores = [{
@@ -132,7 +394,28 @@ class AgregarProducto extends Component {
           </KeyboardAwareScrollView>
           </View>
         );
-        } else {
+      } else if (this.state.producto.tipo === 'cafeteria') {
+    			return (
+    				<View style={{ flex: 1 }}>
+            <CardSection>
+            <Dropdown
+            label="Tipo de producto"
+            containerStyle={{ flex: 1 }}
+            data={[{ value: 'Envasado' },
+                  { value: 'Preparado' },
+                  { value: 'Materia prima' },
+                  { value: 'Extra' }
+                  ]}
+            value={this.state.producto.tipoProducto}
+            onChangeText={value => this.setState({
+              producto: update(this.state.producto, { tipoProducto: { $set: value } })
+            })}
+            />
+            </CardSection>
+    				{this.productosCafeteria()}
+            </View>
+    			);
+    		} else {
       return (
         <View style={{ flex: 1 }}>
         <KeyboardAwareScrollView style={{ flex: 1, padding: 15, paddingEnd: 60 }}>
@@ -751,7 +1034,38 @@ class AgregarProducto extends Component {
           this.setState({ loading: false });
       });
       }
-      } else {
+    }  else if (this.state.producto.tipo === 'cafeteria')  {
+      this.setState({ loading: true });
+    const { producto } = this.state;
+  const Inventario = Parse.Object.extend('Inventario');
+  const parseObject = new Inventario();
+  parseObject.set('nombre', producto.nombre);
+  parseObject.set('tipo', producto.tipo);
+  producto.codigo ? parseObject.set('codigo', producto.codigo) : null
+  producto.laboratorio ? parseObject.set('laboratorio', producto.laboratorio) : null
+  producto.costoUMC ? parseObject.set('costoUMC', parseFloat(producto.costoUMC)) : null
+  parseObject.set('iva', parseInt(producto.iva, 10))
+  producto.precioPublico ? parseObject.set('precioPublico', parseFloat(producto.precioPublico / (1 + (producto.iva / 100)))) : null
+  producto.stock ? parseObject.set('stock', parseInt(producto.stock,10)) : parseObject.set('stock', 0)
+  parseObject.set('tipoCafeteria', producto.tipoProducto)
+
+  parseObject.save().then(() => {
+    Alert.alert(
+      'Listo',
+      'Producto registrado correctamente',
+      [{ text: 'Ok', style: 'cancel' }]
+    );
+    this.setState(INITIAL_STATE);
+  }).catch((error) => {
+    Alert.alert(
+    'Error',
+    'Error al registrar el producto, ' + error.message,
+    [{ text: 'Ok', style: 'cancel' }]
+  )
+    this.setState({ loading: false });
+});
+
+    } else {
       if (this.state.producto.nombre && this.state.producto.precioLista && this.state.producto.laboratorio) {
         this.setState({ loading: true });
       const { producto } = this.state;
@@ -826,19 +1140,35 @@ class AgregarProducto extends Component {
     }
 
     render() {
+      const { user } = this.props;
       console.log('Codigo', this.props.barCode)
       if (this.props.barCode !== '') {
         this.setState({
           producto: update(this.state.producto, { codigo: { $set: this.props.barCode } })
         })
       }
-      const tiposProducto = [{
-          value: 'insumo',
-        }, {
-          value: 'medicamento'
-        }, {
-          value: 'paquete'
-        }];
+        const tiposProducto = [{
+            value: 'insumo',
+          }, {
+            value: 'medicamento'
+          }, {
+            value: 'paquete'
+          }, {
+            value: 'cafeteria'
+          }];
+       if (user.userType === 'farmacia') {
+        const tiposProducto = [{
+            value: 'insumo',
+          }, {
+            value: 'medicamento'
+          }, {
+            value: 'paquete'
+          }];
+      } else if (user.userType === 'cafeteria') {
+        const tiposProducto = [{
+            value: 'cafeteria'
+          }];
+      }
       return (
         <View style={{ flex: 1 }}>
         <CardSection>
@@ -881,10 +1211,11 @@ class AgregarProducto extends Component {
     }
   });
 
-  const mapStateToProps = ({ query, barCodeReader }) => {
+  const mapStateToProps = ({ query, barCodeReader, auth }) => {
   const { barCode, barType } = barCodeReader;
+  const { user } = auth;
   const { text, Proveedor, Inventario } = query;
-  return { text, Proveedor, Inventario, barCode, barType };
+  return { text, Proveedor, Inventario, barCode, barType, user };
   };
 
   export default connect(mapStateToProps, { queryFunc, cleanFunc, cleanBarCode })(AgregarProducto);

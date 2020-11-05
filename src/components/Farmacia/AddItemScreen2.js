@@ -893,7 +893,8 @@ class AddItemScreen2 extends Component {
   render() {
 		console.log(this.state);
 		let data = null;
-		if (this.state.userType === 'admin') {
+		if (this.state.userType === 'admin' ||
+	this.state.userType === 'dev') {
 			data = [{ value: 'medicamento' },
 							{ value: 'insumo' },
 							{ value: 'cafeteria' },

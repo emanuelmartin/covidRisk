@@ -117,6 +117,7 @@ class InventoryList extends React.Component {
     } else if (this.props.userType === 'cafeteria') {
       search.push('cafeteria');
     }
+    console.log('search', search)
     this.props.queryAttach({
       object: 'Inventario',
       text,
@@ -331,7 +332,7 @@ class InventoryList extends React.Component {
           value={this.props.text}
         />
           <FlatList
-            data={dataList}
+            data={[].concat(dataList).sort((a, b) => a.nombre > b.nombre)}
             ItemSeparatorComponent={this.ListViewItemSeparator}
             //Item Separator View
             renderItem={({ item }) => (

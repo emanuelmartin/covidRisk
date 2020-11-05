@@ -24,10 +24,15 @@ import {
   cleanFunc,
   addBill,
   clearBill,
+<<<<<<< HEAD
   payment,
   corte,
   printHTMLReducer,
   printClean
+=======
+  corte
+
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
 } from '../../actions';
 
 class CargosAdmision extends Component {
@@ -141,7 +146,11 @@ class CargosAdmision extends Component {
     });
     this.props.clearBill();
     this.props.cleanFunc();
+<<<<<<< HEAD
     this.props.printClean();
+=======
+
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
   }
 
   onAlertAccept(index) {
@@ -205,9 +214,9 @@ class CargosAdmision extends Component {
     }
     let dataList = null;
     if (Array.isArray(this.props.Servicios)) {
-      dataList = this.props.Servicios;
+      dataList = [].concat(this.props.Servicios).sort((a, b) => a.nombre > b.nombre);
     } else {
-      dataList = [this.props.Servicios];
+      dataList = [].concat([this.props.Servicios]).sort((a, b) => a.nombre > b.nombre);
     }
     return (
       <FlatList
@@ -247,9 +256,9 @@ class CargosAdmision extends Component {
     } else if (this.props.Patient !== '') {
       let dataList = null;
       if (Array.isArray(this.props.Patient)) {
-        dataList = this.props.Patient;
+        dataList = [].concat(this.props.Patient).sort((a, b) => a.names > b.names);
       } else {
-        dataList = [this.props.Patient];
+        dataList = [].concat([this.props.Patient]).sort((a, b) => a.names > b.names);
       }
       return (
         <FlatList
@@ -531,7 +540,12 @@ class CargosAdmision extends Component {
         onPress={() => this.updatePaciente(item)}
         >
           <View>
+<<<<<<< HEAD
             <Text style={styles.textStyle} >{item.paciente.names} {item.paciente.lastName1} {item.paciente.lastName2} </Text>
+=======
+            <Text style={styles.textStyle} >{item.names} {item.lastName1} {item.lastName2} </Text>
+
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
           </View>
         </TouchableWithoutFeedback>
       );
@@ -644,8 +658,13 @@ export default connect(mapStateToProps,
     cleanFunc,
     addBill,
     clearBill,
+<<<<<<< HEAD
     payment,
     corte,
     printHTMLReducer,
     printClean
+=======
+    corte
+
+>>>>>>> 6aa61c925e56282341ae3b180de7d8d7550ba5ea
 })(CargosAdmision);
